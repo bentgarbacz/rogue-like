@@ -4,16 +4,44 @@ using UnityEngine;
 
 public class mapGen : MonoBehaviour
 {
-    // Start is called before the first frame update
+
+
+    public int walkLength;
+    Vector2Int startPosition = new Vector2Int(0, 0);
+    public GameObject floorTile;
+
+    
     void Start()
     {
-        Tile test = new Tile("rouge");
-        test.print();
+
+        HashSet<Vector2Int> path = new HashSet<Vector2Int>();
+
+        var position = startPosition;
+
+        for(int i = 0; i < walkLength; i++){
+            
+            if( !path.Contains(position) ){
+                Vector3 spawnPos = new Vector3(position.x, 0, position.y);
+                Instantiate(floorTile, spawnPos, floorTile.transform.rotation);
+                path.Add(position);
+            }
+            position = position + Direction2D.getRandomDirection();
+
+        }
+        
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+}
+
+public static class Direction2D{
+    public static List<Vector2Int> cardinalDirectionsList = new List<Vector2Int>{
+        new Vector2Int(0, 1), //up
+        new Vector2Int(1, 0), //right
+        new Vector2Int(0, -1), //down
+        new Vector2Int(-1, 0) //left
+    };
+
+    public static Vector2Int getRandomDirection(){
+        return cardinalDirectionsList[Random.Range(0, cardinalDirectionsList.Count)];
     }
 }
