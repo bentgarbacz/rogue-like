@@ -10,7 +10,11 @@ public class mapGen : MonoBehaviour
     Vector2Int startPosition = new Vector2Int(0, 0);
     public GameObject floorTile;
     public GameObject wallTile;
-
+    public GameObject enterance;
+    public GameObject exit;
+    public GameObject hero;
+    public GameObject chest;
+    public GameObject mainCamera;
     
     void Start()
     {
@@ -27,15 +31,45 @@ public class mapGen : MonoBehaviour
     }
 
     private void roomGen(Vector2Int position, int walkLength, int repeatWalks, HashSet<Vector2Int> path){
-        for(int k = 0; k < repeatWalks; k++){
 
-            for(int i = 0; i < walkLength; i++){
+        bool exitSpawned = false;
+
+        for(int i = 0; i < repeatWalks; i++){
+
+            for(int j = 0; j < walkLength; j++){
                 
                 if( !path.Contains(position) ){
+
                     Vector3 spawnPos = new Vector3(position.x, 0, position.y);
-                    var newTile = Instantiate(floorTile, spawnPos, floorTile.transform.rotation);
-                    newTile.GetComponent<Tile>().setCoord(position);
-                    newTile.GetComponent<Renderer>().material.color = Color.black;
+                    int spawnRNG = Random.Range(0, 1000);
+
+                    if(i == 0 && j == 0){
+
+                        var newTile = Instantiate(enterance, spawnPos, enterance.transform.rotation);
+                        newTile.GetComponent<Tile>().setCoord(position);
+
+                    }else if(i == repeatWalks - 1 && j > walkLength / 2 && exitSpawned == false){
+
+                        exitSpawned = true;
+                        spawnPos.y -= 1;
+                        var newTile = Instantiate(exit, spawnPos, exit.transform.rotation);
+                        newTile.GetComponent<Tile>().setCoord(position);
+                    
+                    }else{
+                        var newTile = Instantiate(floorTile, spawnPos, floorTile.transform.rotation);
+                        newTile.GetComponent<Tile>().setCoord(position);
+                    }
+
+                    spawnPos.y += 0.5f;
+                    if(i == 0 && j == 1){
+                        //hero.transform.position = spawnPos;
+                        Instantiate(hero, spawnPos, hero.transform.rotation);
+                        
+                        mainCamera.GetComponent<playerCamera>().setFocalPoint(hero);
+                    }else if(spawnRNG >= 0 && spawnRNG <= 5){
+                        Instantiate(chest, spawnPos, chest.transform.rotation);
+                    }
+                    
                     path.Add(position);
                 }
 
