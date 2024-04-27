@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8601393319930537983}
   - component: {fileID: 6732415209786489350}
   - component: {fileID: 2762048670952145099}
-  - component: {fileID: 5516577259810216533}
+  - component: {fileID: -8644131186755573829}
   m_Layer: 0
   m_Name: Hero
   m_TagString: Player
@@ -30,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 3865046898228932159}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071067}
-  m_LocalPosition: {x: 2.2012136, y: 0.45, z: -0.5031452}
+  m_LocalPosition: {x: 3, y: 0, z: 6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -134,7 +134,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!114 &5516577259810216533
+--- !u!114 &-8644131186755573829
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -143,8 +143,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3865046898228932159}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2eecad89f1934194c9e69a4c69ecdc81, type: 3}
+  m_Script: {fileID: 11500000, guid: 0379e85a0cf9d46499d49c3071816cca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  focalPoint: {fileID: 0}
-  speed: 2
+  pos: {x: 3, y: 0, z: 6}

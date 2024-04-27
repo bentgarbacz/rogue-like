@@ -1,29 +1,29 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
-public class playerCamera : MonoBehaviour
+public class PlayerCamera : MonoBehaviour
 {
     public GameObject focalPoint;
-    Transform Player;
     public float speed = 2f;
     private Vector3 localRotation;
 
     void LateUpdate()
     {
+
         if(focalPoint != null){
 
             transform.position = focalPoint.transform.position;
-            
+
             if(Input.GetMouseButton(1)){
                 RotateCamera();
             }        
         }
     }
 
-    void RotateCamera(){   
-        
-        
+    void RotateCamera()
+    {      
 
         localRotation.x += Input.GetAxis("Mouse X") * speed;
         localRotation.y += Input.GetAxis("Mouse Y") * speed;
@@ -32,13 +32,11 @@ public class playerCamera : MonoBehaviour
 
         Quaternion QT = Quaternion.Euler(0f, localRotation.x, -localRotation.y);
         transform.rotation = QT;
-
     }
 
-    public void setFocalPoint(GameObject fp){
+    public void setFocalPoint(GameObject focalPoint){
 
-        focalPoint = fp;  
-
+        this.focalPoint = focalPoint;  
     }
 }
 

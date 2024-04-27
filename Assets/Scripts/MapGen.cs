@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class mapGen : MonoBehaviour
+public class MapGen : MonoBehaviour
 {
 
 
@@ -15,19 +15,14 @@ public class mapGen : MonoBehaviour
     public GameObject hero;
     public GameObject chest;
     public GameObject mainCamera;
+    public HashSet<Vector2Int> path;
     
     void Start()
     {
 
-        HashSet<Vector2Int> path = new HashSet<Vector2Int>();
-
-        var position = startPosition;
-
-        roomGen(position, walkLength, 100, path); 
-   
+        path = new HashSet<Vector2Int>();
+        roomGen(startPosition, walkLength, 100, path);    
         wallGen(path);
-
-        
     }
 
     private void roomGen(Vector2Int position, int walkLength, int repeatWalks, HashSet<Vector2Int> path){
@@ -56,17 +51,22 @@ public class mapGen : MonoBehaviour
                         newTile.GetComponent<Tile>().setCoord(position);
                     
                     }else{
+
                         var newTile = Instantiate(floorTile, spawnPos, floorTile.transform.rotation);
                         newTile.GetComponent<Tile>().setCoord(position);
                     }
 
                     spawnPos.y += 0.5f;
+
                     if(i == 0 && j == 1){
-                        //hero.transform.position = spawnPos;
-                        Instantiate(hero, spawnPos, hero.transform.rotation);
-                        
-                        mainCamera.GetComponent<playerCamera>().setFocalPoint(hero);
+
+                        //var h = Instantiate(hero, spawnPos, hero.transform.rotation);
+                        hero.GetComponent<PlayerCharacter>().pos = spawnPos;                        
+                        mainCamera.GetComponent<PlayerCamera>().setFocalPoint(hero);
+                        //hero.transform.position = new Vector3(5, 5, 5);
+
                     }else if(spawnRNG >= 0 && spawnRNG <= 5){
+
                         Instantiate(chest, spawnPos, chest.transform.rotation);
                     }
                     
@@ -74,10 +74,8 @@ public class mapGen : MonoBehaviour
                 }
 
                 position = position + Direction2D.getRandomDirection();
-
             }
         }
-
     }
 
     private void wallGen(HashSet<Vector2Int> path){
@@ -105,6 +103,7 @@ public class mapGen : MonoBehaviour
 
 public static class Direction2D{
     public static List<Vector2Int> cardinalDirectionsList = new List<Vector2Int>{
+
         new Vector2Int(0, 1), //up
         new Vector2Int(1, 0), //right
         new Vector2Int(0, -1), //down
@@ -112,6 +111,7 @@ public static class Direction2D{
     };
 
     public static Vector2Int getRandomDirection(){
+
         return cardinalDirectionsList[Random.Range(0, cardinalDirectionsList.Count)];
     }
 }
