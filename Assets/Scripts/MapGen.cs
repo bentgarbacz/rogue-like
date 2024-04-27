@@ -61,7 +61,7 @@ public class MapGen : MonoBehaviour
                     if(i == 0 && j == 1){
 
                         //var h = Instantiate(hero, spawnPos, hero.transform.rotation);
-                        hero.GetComponent<PlayerCharacter>().pos = spawnPos;                        
+                        hero.GetComponent<PlayerCharacter>().Move(spawnPos);                        
                         mainCamera.GetComponent<PlayerCamera>().setFocalPoint(hero);
                         //hero.transform.position = new Vector3(5, 5, 5);
 

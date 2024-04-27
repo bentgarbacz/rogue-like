@@ -25,12 +25,12 @@ public class TurnSequencer : MonoBehaviour
         if (mouse.leftButton.wasPressedThisFrame)
         {
         
-            Tile t = GetComponent<ClickManager>().getTile(mouse);
+            Tile targetTile = GetComponent<ClickManager>().getTile(mouse);
+            PlayerCharacter pc = hero.GetComponent<PlayerCharacter>();
             
-            List<Vector2Int> p = PathFinder.FindPath(new Vector2Int((int)hero.GetComponent<PlayerCharacter>().pos.x, (int)hero.GetComponent<PlayerCharacter>().pos.z), t.coord, path);
-            print(p[1]);
-            //hero.transform.position = new Vector3(p[1].x, 0, p[1].y);
-            hero.GetComponent<PlayerCharacter>().pos = new Vector3(p[1].x, 0.5f, p[1].y); 
+            List<Vector2Int> pathToDestination = PathFinder.FindPath(new Vector2Int((int)pc.pos.x, (int)pc.pos.z), targetTile.coord, path);
+
+            pc.Move(new Vector3(pathToDestination[1].x, 0.5f, pathToDestination[1].y)); 
         }        
     }   
 }
