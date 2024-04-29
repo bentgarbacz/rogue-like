@@ -16,30 +16,27 @@ public class PlayerCharacter : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //transform.position = pos;
+        
     }
 
-    public void Move(Vector3 newPos)
+    public void Move(Vector3 newPos, HashSet<Vector3> occupiedlist)
     {
+        if(!occupiedlist.Contains(newPos))
+        {
 
+            occupiedlist.Add(newPos);
+            occupiedlist.Remove(pos);
+
+            transform.position = newPos;
+            transform.rotation = Quaternion.Euler(0, DetermineRotation(pos, newPos), 0);
+            pos = newPos;
+        }
         
-        transform.position = newPos;
-        transform.rotation = Quaternion.Euler(0, DetermineRotation(pos, newPos), 0);
-        pos = newPos;
     }
 
     private float DetermineRotation(Vector3 start, Vector3 end)
     {
         
-        //0 north
-        //45 north east
-        //90 east
-        //135 south east
-        //180 south
-        //225 south west
-        //270 west
-        //315 north west
-
         if(start.x == end.x && start.z < end.z)
         {
             return 0f; //north

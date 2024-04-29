@@ -14,8 +14,12 @@ public class MapGen : MonoBehaviour
     public GameObject exit;
     public GameObject hero;
     public GameObject chest;
+    public GameObject skeleton;
+    public GameObject goblin;
     public GameObject mainCamera;
     public HashSet<Vector2Int> path;
+    public List<GameObject> enemies = new List<GameObject>();
+    public HashSet<Vector3> occupiedlist = new HashSet<Vector3>();
     
     void Start()
     {
@@ -56,19 +60,31 @@ public class MapGen : MonoBehaviour
                         newTile.GetComponent<Tile>().setCoord(position);
                     }
 
-                    spawnPos.y += 0.5f;
+                    spawnPos.y += 0.1f;
 
                     if(i == 0 && j == 1){
 
-                        //var h = Instantiate(hero, spawnPos, hero.transform.rotation);
-                        hero.GetComponent<PlayerCharacter>().Move(spawnPos);                        
+                        hero.GetComponent<PlayerCharacter>().Move(spawnPos, occupiedlist);                        
                         mainCamera.GetComponent<PlayerCamera>().setFocalPoint(hero);
-                        //hero.transform.position = new Vector3(5, 5, 5);
+                    }
+                    
+                    //spawnPos.y -= 0.4f;
 
-                    }else if(spawnRNG >= 0 && spawnRNG <= 5){
+                    if(spawnRNG >= 0 && spawnRNG <= 2){
 
                         Instantiate(chest, spawnPos, chest.transform.rotation);
+                    }else if(spawnRNG >= 3 && spawnRNG <= 5){
+
+                        GameObject e = Instantiate(skeleton, spawnPos, skeleton.transform.rotation);
+                        e.GetComponent<PlayerCharacter>().Move(spawnPos, occupiedlist);
+                        enemies.Add(e);
+                    }else if(spawnRNG >= 6 && spawnRNG <= 8){
+
+                        GameObject e = Instantiate(goblin, spawnPos, goblin.transform.rotation);
+                        e.GetComponent<PlayerCharacter>().Move(spawnPos, occupiedlist);
+                        enemies.Add(e);
                     }
+                    
                     
                     path.Add(position);
                 }
