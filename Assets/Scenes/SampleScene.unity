@@ -153,15 +153,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   walkLength: 100
-  floorTile: {fileID: 7527326294145698605, guid: 599dea6d09707854db402812c0046c23, type: 3}
+  floorTile: {fileID: 1443122038624732881, guid: 8d4f13fce8820d04ab675de69b3d5d10, type: 3}
   wallTile: {fileID: 6496316614329882983, guid: 0b67c222b2e802841b24d78b73e2683e, type: 3}
   enterance: {fileID: 788843621364057503, guid: c0b54caad63b59940bb7482e869713d5, type: 3}
   exit: {fileID: 3714242766742155764, guid: 7327999a13838064f9fd19c316428d55, type: 3}
   hero: {fileID: 869517488}
-  chest: {fileID: 2433033292852733365, guid: 3d2a97183afeb6843a3d22f8ee50bf01, type: 3}
+  chest: {fileID: 8480279190845118755, guid: 3d2a97183afeb6843a3d22f8ee50bf01, type: 3}
   skeleton: {fileID: 7806514022559795084, guid: 3b210d9e70f6a1f4b9e6170b08367086, type: 3}
   goblin: {fileID: 6521998039571531690, guid: 0fe73ca023d67f9468b8ce7c063dc8fc, type: 3}
   mainCamera: {fileID: 2103700155}
+  enemies: []
 --- !u!4 &438385573
 Transform:
   m_ObjectHideFlags: 0
@@ -602,13 +603,37 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1429860666932865054, guid: 28d44c17f8893ab42b1df60713a0f72a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 705507995}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1773347466035753636, guid: 28d44c17f8893ab42b1df60713a0f72a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6442338754152421633}
   m_SourcePrefab: {fileID: 100100000, guid: 28d44c17f8893ab42b1df60713a0f72a, type: 3}
 --- !u!4 &6442338754152421631 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1429860666932865054, guid: 28d44c17f8893ab42b1df60713a0f72a, type: 3}
   m_PrefabInstance: {fileID: 6442338754152421630}
   m_PrefabAsset: {fileID: 0}
+--- !u!65 &6442338754152421633
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 869517488}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.7783492, y: 1.0192736, z: 0.61452043}
+  m_Center: {x: -0.024092466, y: 0.46257567, z: 0.03854789}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

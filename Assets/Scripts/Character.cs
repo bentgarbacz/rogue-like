@@ -2,15 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerCharacter : MonoBehaviour
+public class Character : MonoBehaviour
 {
 
+    //pos is a position in 3d space
     public Vector3 pos;
+    //coord is a position in 2d space from a top down perspective
+    public Vector2Int coord;
+    public int health = 100;
+    public int accuracy = 75;
+    public int minDamage = 50;
+    public int maxDamage = 100;
 
     // Start is called before the first frame update
     void Start()
     {
         transform.position = pos;
+        coord = new Vector2Int((int)pos.x, (int)pos.z);
     }
 
     // Update is called once per frame
@@ -19,7 +27,21 @@ public class PlayerCharacter : MonoBehaviour
         
     }
 
-    public void Move(Vector3 newPos, HashSet<Vector3> occupiedlist)
+    public void attack(Character target)
+    {
+        if(Random.Range(0, 100) <= accuracy)
+        {
+            target.takeDamage(Random.Range(minDamage, maxDamage + 1));
+        }
+    }
+
+    public int takeDamage(int damage)
+    {
+        
+        return health -= damage;
+    }
+
+    public bool Move(Vector3 newPos, HashSet<Vector3> occupiedlist)
     {
         if(!occupiedlist.Contains(newPos))
         {
@@ -30,8 +52,12 @@ public class PlayerCharacter : MonoBehaviour
             transform.position = newPos;
             transform.rotation = Quaternion.Euler(0, DetermineRotation(pos, newPos), 0);
             pos = newPos;
+            coord = new Vector2Int((int)newPos.x, (int)newPos.z);
+
+            return true;
         }
         
+        return false;             
     }
 
     private float DetermineRotation(Vector3 start, Vector3 end)

@@ -18,7 +18,7 @@ public class MapGen : MonoBehaviour
     public GameObject goblin;
     public GameObject mainCamera;
     public HashSet<Vector2Int> path;
-    public List<GameObject> enemies = new List<GameObject>();
+    public HashSet<GameObject> enemies = new HashSet<GameObject>();
     public HashSet<Vector3> occupiedlist = new HashSet<Vector3>();
     
     void Start()
@@ -64,24 +64,24 @@ public class MapGen : MonoBehaviour
 
                     if(i == 0 && j == 1){
 
-                        hero.GetComponent<PlayerCharacter>().Move(spawnPos, occupiedlist);                        
+                        hero.GetComponent<Character>().Move(spawnPos, occupiedlist);                        
                         mainCamera.GetComponent<PlayerCamera>().setFocalPoint(hero);
                     }
-                    
-                    //spawnPos.y -= 0.4f;
 
                     if(spawnRNG >= 0 && spawnRNG <= 2){
 
                         Instantiate(chest, spawnPos, chest.transform.rotation);
+
                     }else if(spawnRNG >= 3 && spawnRNG <= 5){
 
                         GameObject e = Instantiate(skeleton, spawnPos, skeleton.transform.rotation);
-                        e.GetComponent<PlayerCharacter>().Move(spawnPos, occupiedlist);
+                        e.GetComponent<Character>().Move(spawnPos, occupiedlist);
                         enemies.Add(e);
+
                     }else if(spawnRNG >= 6 && spawnRNG <= 8){
 
                         GameObject e = Instantiate(goblin, spawnPos, goblin.transform.rotation);
-                        e.GetComponent<PlayerCharacter>().Move(spawnPos, occupiedlist);
+                        e.GetComponent<Character>().Move(spawnPos, occupiedlist);
                         enemies.Add(e);
                     }
                     

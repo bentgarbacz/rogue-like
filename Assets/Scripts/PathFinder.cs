@@ -142,7 +142,6 @@ public static class NeighborVals{
     };
 
 }
-
 public class AStarNode
 {
     public Vector2Int position;

@@ -11,7 +11,7 @@ public class ClickManager : MonoBehaviour
         m_Camera = Camera.main;
     }
 
-    public Tile getTile(Mouse mouse)
+    public GameObject getObject(Mouse mouse)
     {
 
         Vector3 mousePosition = mouse.position.ReadValue();
@@ -20,7 +20,7 @@ public class ClickManager : MonoBehaviour
         if (Physics.Raycast(ray, out RaycastHit hit))
         {            
            
-            return hit.collider.GetComponent<Tile>();
+            return hit.collider.gameObject;
         }
 
         return null;
