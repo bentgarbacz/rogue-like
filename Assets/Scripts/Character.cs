@@ -29,8 +29,12 @@ public class Character : MonoBehaviour
 
     public void attack(Character target)
     {
+
+        transform.rotation = Quaternion.Euler(0, DetermineRotation(pos, target.pos), 0);
+
         if(Random.Range(0, 100) <= accuracy)
         {
+
             target.takeDamage(Random.Range(minDamage, maxDamage + 1));
         }
     }
@@ -48,8 +52,12 @@ public class Character : MonoBehaviour
 
             occupiedlist.Add(newPos);
             occupiedlist.Remove(pos);
+            GetComponent<MoveToTarget>().target = newPos;
+            //StartCoroutine(
 
-            transform.position = newPos;
+                        //transform.position = newPos;
+                        //GetComponent<MoveToTarget>().Move(newPos);
+                        //MoveRoutine(newPos));
             transform.rotation = Quaternion.Euler(0, DetermineRotation(pos, newPos), 0);
             pos = newPos;
             coord = new Vector2Int((int)newPos.x, (int)newPos.z);

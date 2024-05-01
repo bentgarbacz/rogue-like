@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: -8137214904841844597}
   - component: {fileID: 7782055704468887805}
   - component: {fileID: 6340884684041781973}
+  - component: {fileID: -6376840821503652289}
   m_Layer: 0
   m_Name: Tile
   m_TagString: Untagged
@@ -30,7 +31,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -1.9436598, y: 0, z: -12.259801}
-  m_LocalScale: {x: 0.45, y: 0.45, z: 0.45}
+  m_LocalScale: {x: 0.43, y: 0.43, z: 0.43}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -120,3 +121,16 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1443122038624732881}
   m_Mesh: {fileID: -2432090755550338912, guid: 09a34bc62fbca2143838125bd08d1f9e, type: 3}
+--- !u!114 &-6376840821503652289
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1443122038624732881}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5294ecea600c22f4eb21799baf7cf0f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineColor: {r: 0.5943396, g: 0.5914356, b: 0.55789423, a: 1}

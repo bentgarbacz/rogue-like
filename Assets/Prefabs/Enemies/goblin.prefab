@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 5334651313001522859}
   - component: {fileID: 5738664676783404688}
   - component: {fileID: 9211279279035538551}
+  - component: {fileID: 7953506311475628501}
+  - component: {fileID: -3064192173896359118}
   m_Layer: 0
   m_Name: goblin
   m_TagString: Untagged
@@ -51,8 +53,8 @@ MonoBehaviour:
   coord: {x: 0, y: 0}
   health: 100
   accuracy: 75
-  minDamage: 50
-  maxDamage: 100
+  minDamage: 1
+  maxDamage: 5
 --- !u!65 &5334651313001522859
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -124,3 +126,30 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &7953506311475628501
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6521998039571531690}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5294ecea600c22f4eb21799baf7cf0f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineColor: {r: 1, g: 0, b: 0, a: 1}
+--- !u!114 &-3064192173896359118
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6521998039571531690}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7645eca2a5a695248b82a2d4b54fe6fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {x: 0, y: 0, z: 0}
+  speed: 5

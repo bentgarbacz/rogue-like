@@ -11,7 +11,9 @@ public class TurnSequencer : MonoBehaviour
     public HashSet<GameObject> enemies = new HashSet<GameObject>();
     public HashSet<GameObject> aggroEnemies = new HashSet<GameObject>();
     public HashSet<Vector3> occupiedlist;
-    
+    //public List<Vector2Int> bufferedPath = new List<Vector2Int>();
+
+
 
     void Start()
     {
@@ -20,7 +22,28 @@ public class TurnSequencer : MonoBehaviour
         occupiedlist = mapGen.GetComponent<MapGen>().occupiedlist;
         enemies = mapGen.GetComponent<MapGen>().enemies;
     }
- 
+   
+    /*
+    public void bufferedWalk(Character pc){
+
+        bool timerReached = false;
+        float timer = 0;
+
+        pc.Move(new Vector3(bufferedPath[1].x, 0.1f, bufferedPath[1].y), occupiedlist);
+
+        while(!timerReached)
+        {
+            timer += Time.deltaTime;
+
+            if (!timerReached && timer > 5)
+            {
+                timerReached = true;
+            }
+        }
+
+        bufferedPath.RemoveAt(0);
+    }*/
+
     void Update()
     {
 
@@ -28,41 +51,56 @@ public class TurnSequencer : MonoBehaviour
 
         Mouse mouse = Mouse.current;
 
+        Character pc = hero.GetComponent<Character>();
+
+        //if(bufferedPath.Count > 0)
+        //{
+        //    
+        //    bufferedWalk(pc);
+
         if (mouse.leftButton.wasPressedThisFrame)
         {
 
             GameObject target = GetComponent<ClickManager>().getObject(mouse);   
-            Character pc = hero.GetComponent<Character>();
 
             //move player character if tile is clicked
-            if(target.GetComponent<Tile>()){
-
-                List<Vector2Int> pathToDestination = PathFinder.FindPath(pc.coord, target.GetComponent<Tile>().coord, path);            
+            if(target.GetComponent<Tile>() != null && target.GetComponent<Tile>().coord != pc.coord)
+            {
+                    
+                List<Vector2Int> pathToDestination = PathFinder.FindPath(pc.coord, target.GetComponent<Tile>().coord, path);                
+                
                 pc.Move(new Vector3(pathToDestination[1].x, 0.1f, pathToDestination[1].y), occupiedlist);
+                
+                /*
+                if(aggroEnemies.Count == 0)
+                {
+                    pathToDestination.RemoveAt(0);
+                    pathToDestination.RemoveAt(0);
+                    bufferedPath = pathToDestination;
+                }*/                
             }
 
             //initiate an attack on clicked enemy
             //attack if adjacent to enemy
             //move towards enemy if not adjacent
-            if(target.GetComponent<Character>())
+            if(target.GetComponent<Character>() != null && target.GetComponent<Character>() != pc)
             {
 
                 Character tc = target.GetComponent<Character>();
-                
+            
                 if(PathFinder.GetNeighbors(tc.coord, path).Contains(pc.coord))
                 {
 
-                    pc.attack(target.GetComponent<Character>());
+                    pc.attack(tc);
 
                     //kills target of attack if it's health falls below 1
-                    if(target.GetComponent<Character>().health <= 0)
+                    if(tc.health <= 0)
                     {
                         
                         aggroEnemies.Remove(target);
                         occupiedlist.Remove(tc.pos);
                         enemies.Remove(target);
-                        Destroy(target);
-                                                                    
+                        Destroy(target);                                                                    
                     }
 
                 }else
@@ -70,50 +108,61 @@ public class TurnSequencer : MonoBehaviour
 
                     List<Vector2Int> pathToDestination = PathFinder.FindPath(pc.coord, tc.coord, path);            
                     pc.Move(new Vector3(pathToDestination[1].x, 0.1f, pathToDestination[1].y), occupiedlist);
-                }
-            }
+                } 
+            }            
 
-            //aggroed enemies attack player character if they are in a neighboring tile
-
-            //aggroed enemies move towards player
+            //give a turn to each aggroed enemy
             foreach(GameObject e in aggroEnemies)
             {
 
-                Character npc = e.GetComponent<Character>();  
-                
-                List<Vector2Int> pathToPlayer = PathFinder.FindPath(npc.coord, pc.coord, path);            
-                if(!npc.Move(new Vector3(pathToPlayer[1].x, 0.1f, pathToPlayer[1].y), occupiedlist))
-                {                  
-        
-                    foreach(Vector2Int v in NeighborVals.allDirectionsList)
+                Character npc = e.GetComponent<Character>();
+
+                //enemy attack player character if they are in a neighboring tile
+                if(PathFinder.GetNeighbors(pc.coord, path).Contains(npc.coord))
+                {
+                    npc.attack(pc);
+
+                    if(pc.health <= 0) //kills player if their health falls below 1
                     {
+                        
+                        Destroy(pc);
+                        print("Game Over");                                            
+                    }
 
-                        List<Vector2Int> pathToPlayerPlusV = PathFinder.FindPath(npc.coord, pc.coord + v, path);
+                }else //enemy move towards player or attack if they are in a neighboring tile                 
+                {
 
-                        if(npc.Move(new Vector3(pathToPlayerPlusV[1].x, 0.1f, pathToPlayerPlusV[1].y), occupiedlist))
+                    List<Vector2Int> pathToPlayer = PathFinder.FindPath(npc.coord, pc.coord, path); 
+
+                    if(!npc.Move(new Vector3(pathToPlayer[1].x, 0.1f, pathToPlayer[1].y), occupiedlist))
+                    {                  
+            
+                        foreach(Vector2Int v in NeighborVals.allDirectionsList)
                         {
-                            break;
-                        }
-                    }        
-                }                              
-            }
 
-            //aggro enemies within 10 units            
-            foreach(GameObject e in enemies)
+                            List<Vector2Int> pathToPlayerPlusV = PathFinder.FindPath(npc.coord, pc.coord + v, path);
+
+                            if(npc.Move(new Vector3(pathToPlayerPlusV[1].x, 0.1f, pathToPlayerPlusV[1].y), occupiedlist))
+                            {
+
+                                break;
+                            }
+                        }        
+                    }  
+                }
+            }                       
+        } 
+
+        //aggro enemies within 10 units            
+        foreach(GameObject e in enemies)
+        {
+
+            if(10 > Vector3.Distance(e.transform.position, hero.transform.position) && !aggroEnemies.Contains(e))
             {
 
-                if(10 > Vector3.Distance(e.transform.position, hero.transform.position) && !aggroEnemies.Contains(e))
-                {
-                    print("adding");
-                    print(aggroEnemies.Count);
-                    aggroEnemies.Add(e);
-                    print(aggroEnemies.Count);
-                }
+                aggroEnemies.Add(e);
+                //bufferedPath.Clear();
             }
-            
         } 
     }   
 }
-
-
-
