@@ -9,7 +9,8 @@ public class Character : MonoBehaviour
     public Vector3 pos;
     //coord is a position in 2d space from a top down perspective
     public Vector2Int coord;
-    public int health = 100;
+    public int maxHealth = 100;
+    public int health;
     public int accuracy = 75;
     public int minDamage = 50;
     public int maxDamage = 100;
@@ -17,7 +18,9 @@ public class Character : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        health = maxHealth;
         transform.position = pos;
+        GetComponent<MoveToTarget>().target = pos;
         coord = new Vector2Int((int)pos.x, (int)pos.z);
     }
 
@@ -52,12 +55,7 @@ public class Character : MonoBehaviour
 
             occupiedlist.Add(newPos);
             occupiedlist.Remove(pos);
-            GetComponent<MoveToTarget>().target = newPos;
-            //StartCoroutine(
-
-                        //transform.position = newPos;
-                        //GetComponent<MoveToTarget>().Move(newPos);
-                        //MoveRoutine(newPos));
+            GetComponent<MoveToTarget>().SetTarget(newPos);
             transform.rotation = Quaternion.Euler(0, DetermineRotation(pos, newPos), 0);
             pos = newPos;
             coord = new Vector2Int((int)newPos.x, (int)newPos.z);

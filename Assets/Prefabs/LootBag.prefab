@@ -71,16 +71,43 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 91babde204936984496df257dc898c15, type: 3}
       insertIndex: -1
+      addedObject: {fileID: -1221842951746267556}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 91babde204936984496df257dc898c15, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 9166578947726934445}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 91babde204936984496df257dc898c15, type: 3}
       insertIndex: -1
       addedObject: {fileID: 404416545001658276}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 91babde204936984496df257dc898c15, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -8006233364288230936}
   m_SourcePrefab: {fileID: 100100000, guid: 91babde204936984496df257dc898c15, type: 3}
 --- !u!1 &4067605956111919682 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 91babde204936984496df257dc898c15, type: 3}
   m_PrefabInstance: {fileID: 3797207116412704531}
   m_PrefabAsset: {fileID: 0}
+--- !u!65 &-1221842951746267556
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4067605956111919682}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.9, y: 0.9, z: 0.9}
+  m_Center: {x: -0.049999997, y: 0.45, z: -0.049999997}
 --- !u!33 &9166578947726934445
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -131,3 +158,16 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &-8006233364288230936
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4067605956111919682}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5294ecea600c22f4eb21799baf7cf0f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineColor: {r: 0.109994836, g: 1, b: 0.015686275, a: 1}

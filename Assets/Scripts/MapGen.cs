@@ -42,11 +42,13 @@ public class MapGen : MonoBehaviour
                     Vector3 spawnPos = new Vector3(position.x, 0, position.y);
                     int spawnRNG = Random.Range(0, 1000);
 
+                    //spawn enterance on first tile
                     if(i == 0 && j == 0){
 
                         var newTile = Instantiate(enterance, spawnPos, enterance.transform.rotation);
                         newTile.GetComponent<Tile>().setCoord(position);
 
+                    //potentially spawn exit after a certain number of steps
                     }else if(i == repeatWalks - 1 && j > walkLength / 2 && exitSpawned == false){
 
                         exitSpawned = true;
@@ -54,6 +56,7 @@ public class MapGen : MonoBehaviour
                         var newTile = Instantiate(exit, spawnPos, exit.transform.rotation);
                         newTile.GetComponent<Tile>().setCoord(position);
                     
+                    //Otherwise spawn a normal tile
                     }else{
 
                         var newTile = Instantiate(floorTile, spawnPos, floorTile.transform.rotation);
@@ -62,9 +65,10 @@ public class MapGen : MonoBehaviour
 
                     spawnPos.y += 0.1f;
 
+                    //move player to first tile generated
                     if(i == 0 && j == 1){
 
-                        hero.GetComponent<Character>().Move(spawnPos, occupiedlist);                        
+                        hero.GetComponent<Character>().Move(spawnPos, occupiedlist);                    
                         mainCamera.GetComponent<PlayerCamera>().setFocalPoint(hero);
                     }
 

@@ -11,7 +11,7 @@ public class TurnSequencer : MonoBehaviour
     public HashSet<GameObject> enemies = new HashSet<GameObject>();
     public HashSet<GameObject> aggroEnemies = new HashSet<GameObject>();
     public HashSet<Vector3> occupiedlist;
-    //public List<Vector2Int> bufferedPath = new List<Vector2Int>();
+    public List<Vector2Int> bufferedPath = new List<Vector2Int>();
 
 
 
@@ -21,29 +21,8 @@ public class TurnSequencer : MonoBehaviour
         hero = mapGen.GetComponent<MapGen>().hero;
         occupiedlist = mapGen.GetComponent<MapGen>().occupiedlist;
         enemies = mapGen.GetComponent<MapGen>().enemies;
-    }
-   
-    /*
-    public void bufferedWalk(Character pc){
-
-        bool timerReached = false;
-        float timer = 0;
-
-        pc.Move(new Vector3(bufferedPath[1].x, 0.1f, bufferedPath[1].y), occupiedlist);
-
-        while(!timerReached)
-        {
-            timer += Time.deltaTime;
-
-            if (!timerReached && timer > 5)
-            {
-                timerReached = true;
-            }
-        }
-
-        bufferedPath.RemoveAt(0);
-    }*/
-
+    }   
+    
     void Update()
     {
 
@@ -53,12 +32,15 @@ public class TurnSequencer : MonoBehaviour
 
         Character pc = hero.GetComponent<Character>();
 
-        //if(bufferedPath.Count > 0)
-        //{
-        //    
-        //    bufferedWalk(pc);
+        //If you have not reached the last node of your path 
+        //and you are not currently moving to a node, move to the next node
+        if(bufferedPath.Count > 0 && pc.GetComponent<MoveToTarget>().distance == 0)
+        {
+            
+            pc.Move(new Vector3(bufferedPath[0].x, 0.1f, bufferedPath[0].y), occupiedlist);
+            bufferedPath.RemoveAt(0);
 
-        if (mouse.leftButton.wasPressedThisFrame)
+        }else if (mouse.leftButton.wasPressedThisFrame)
         {
 
             GameObject target = GetComponent<ClickManager>().getObject(mouse);   
@@ -69,15 +51,15 @@ public class TurnSequencer : MonoBehaviour
                     
                 List<Vector2Int> pathToDestination = PathFinder.FindPath(pc.coord, target.GetComponent<Tile>().coord, path);                
                 
-                pc.Move(new Vector3(pathToDestination[1].x, 0.1f, pathToDestination[1].y), occupiedlist);
+                pc.Move(new Vector3(pathToDestination[1].x, 0.1f, pathToDestination[1].y), occupiedlist);                
                 
-                /*
+                //If there are no enemies alerted to your presence, automatically walk entire path to destiniation
                 if(aggroEnemies.Count == 0)
                 {
                     pathToDestination.RemoveAt(0);
                     pathToDestination.RemoveAt(0);
                     bufferedPath = pathToDestination;
-                }*/                
+                }              
             }
 
             //initiate an attack on clicked enemy
@@ -161,7 +143,7 @@ public class TurnSequencer : MonoBehaviour
             {
 
                 aggroEnemies.Add(e);
-                //bufferedPath.Clear();
+                bufferedPath.Clear();
             }
         } 
     }   
