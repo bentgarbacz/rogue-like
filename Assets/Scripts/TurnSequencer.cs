@@ -7,7 +7,7 @@ public class TurnSequencer : MonoBehaviour
 {
     public GameObject mapGen;
     public GameObject hero;
-    public HashSet<Vector2Int> path;
+    public HashSet<Vector2Int> dungeonCoords;
     public HashSet<GameObject> enemies = new HashSet<GameObject>();
     public HashSet<GameObject> aggroEnemies = new HashSet<GameObject>();
     public HashSet<Vector3> occupiedlist;
@@ -26,7 +26,7 @@ public class TurnSequencer : MonoBehaviour
     void Update()
     {
 
-        path = mapGen.GetComponent<MapGen>().path;
+        dungeonCoords = mapGen.GetComponent<MapGen>().path;
 
         Mouse mouse = Mouse.current;
 
@@ -34,13 +34,13 @@ public class TurnSequencer : MonoBehaviour
 
         //If you have not reached the last node of your path 
         //and you are not currently moving to a node, move to the next node
-        if(bufferedPath.Count > 0 && pc.GetComponent<MoveToTarget>().distance == 0)
+        if(bufferedPath.Count > 0 && pc.GetComponent<MoveToTarget>().GetRemainingDistance() == 0)
         {
             
             pc.Move(new Vector3(bufferedPath[0].x, 0.1f, bufferedPath[0].y), occupiedlist);
             bufferedPath.RemoveAt(0);
 
-        }else if (mouse.leftButton.wasPressedThisFrame)
+        }else if(mouse.leftButton.wasPressedThisFrame)
         {
 
             GameObject target = GetComponent<ClickManager>().getObject(mouse);   
@@ -49,7 +49,7 @@ public class TurnSequencer : MonoBehaviour
             if(target.GetComponent<Tile>() != null && target.GetComponent<Tile>().coord != pc.coord)
             {
                     
-                List<Vector2Int> pathToDestination = PathFinder.FindPath(pc.coord, target.GetComponent<Tile>().coord, path);                
+                List<Vector2Int> pathToDestination = PathFinder.FindPath(pc.coord, target.GetComponent<Tile>().coord, dungeonCoords);                
                 
                 pc.Move(new Vector3(pathToDestination[1].x, 0.1f, pathToDestination[1].y), occupiedlist);                
                 
@@ -70,10 +70,10 @@ public class TurnSequencer : MonoBehaviour
 
                 Character tc = target.GetComponent<Character>();
             
-                if(PathFinder.GetNeighbors(tc.coord, path).Contains(pc.coord))
+                if(PathFinder.GetNeighbors(tc.coord, dungeonCoords).Contains(pc.coord))
                 {
 
-                    pc.attack(tc);
+                    pc.Attack(tc);
 
                     //kills target of attack if it's health falls below 1
                     if(tc.health <= 0)
@@ -88,7 +88,7 @@ public class TurnSequencer : MonoBehaviour
                 }else
                 {
 
-                    List<Vector2Int> pathToDestination = PathFinder.FindPath(pc.coord, tc.coord, path);            
+                    List<Vector2Int> pathToDestination = PathFinder.FindPath(pc.coord, tc.coord, dungeonCoords);            
                     pc.Move(new Vector3(pathToDestination[1].x, 0.1f, pathToDestination[1].y), occupiedlist);
                 } 
             }            
@@ -100,9 +100,9 @@ public class TurnSequencer : MonoBehaviour
                 Character npc = e.GetComponent<Character>();
 
                 //enemy attack player character if they are in a neighboring tile
-                if(PathFinder.GetNeighbors(pc.coord, path).Contains(npc.coord))
+                if(PathFinder.GetNeighbors(pc.coord, dungeonCoords).Contains(npc.coord))
                 {
-                    npc.attack(pc);
+                    npc.Attack(pc);
 
                     if(pc.health <= 0) //kills player if their health falls below 1
                     {
@@ -114,7 +114,7 @@ public class TurnSequencer : MonoBehaviour
                 }else //enemy move towards player or attack if they are in a neighboring tile                 
                 {
 
-                    List<Vector2Int> pathToPlayer = PathFinder.FindPath(npc.coord, pc.coord, path); 
+                    List<Vector2Int> pathToPlayer = PathFinder.FindPath(npc.coord, pc.coord, dungeonCoords); 
 
                     if(!npc.Move(new Vector3(pathToPlayer[1].x, 0.1f, pathToPlayer[1].y), occupiedlist))
                     {                  
@@ -122,7 +122,7 @@ public class TurnSequencer : MonoBehaviour
                         foreach(Vector2Int v in NeighborVals.allDirectionsList)
                         {
 
-                            List<Vector2Int> pathToPlayerPlusV = PathFinder.FindPath(npc.coord, pc.coord + v, path);
+                            List<Vector2Int> pathToPlayerPlusV = PathFinder.FindPath(npc.coord, pc.coord + v, dungeonCoords);
 
                             if(npc.Move(new Vector3(pathToPlayerPlusV[1].x, 0.1f, pathToPlayerPlusV[1].y), occupiedlist))
                             {

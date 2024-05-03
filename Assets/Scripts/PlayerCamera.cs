@@ -13,29 +13,32 @@ public class PlayerCamera : MonoBehaviour
     public float minFov = 10f;
     public float maxFov = 40f;
     public float zoomSensitivity = 20f;
+    float fov = 0;
 
     void Start()
     {
-
+        fov = Camera.main.fieldOfView;
         RotateCamera();
     }
 
     void LateUpdate()
     {
 
-        if(focalPoint != null){
-
-            transform.position = focalPoint.transform.position + new Vector3(0,0,0);
-
-            if(Input.GetMouseButton(1)){
+        if (focalPoint != null) {
+            
+            //follow player on x and z axes, not y axis
+            transform.position = new Vector3(focalPoint.transform.position.x, 0, focalPoint.transform.position.z);
+            
+            if (Input.GetMouseButton(1)) {
 
                 RotateCamera();
             }
 
-            float fov = Camera.main.fieldOfView;
-            fov -= Input.GetAxis("Mouse ScrollWheel") * zoomSensitivity;
-            fov = Mathf.Clamp(fov, minFov, maxFov);
-            Camera.main.fieldOfView = fov;
+            if(Input.GetAxis("Mouse ScrollWheel") != 0)
+            {
+                
+                ZoomCamera();
+            }
         }
     }
 
@@ -49,6 +52,14 @@ public class PlayerCamera : MonoBehaviour
 
         Quaternion QT = Quaternion.Euler(0f, localRotation.x, -localRotation.y);
         transform.rotation = QT;
+    }
+
+    void ZoomCamera()
+    {
+
+        fov -= Input.GetAxis("Mouse ScrollWheel") * zoomSensitivity;
+        fov = Mathf.Clamp(fov, minFov, maxFov);
+        Camera.main.fieldOfView = fov;
     }
 
     public void setFocalPoint(GameObject focalPoint){

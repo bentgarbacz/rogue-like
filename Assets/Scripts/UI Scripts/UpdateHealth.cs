@@ -15,6 +15,6 @@ public class UpdateHealth : MonoBehaviour
     {
         Character c = hero.GetComponent<Character>();
         healthStatus.SetText(c.health.ToString() + " / " + c.maxHealth.ToString());
-        //healthStatus.text = "why";
+
     }
 }

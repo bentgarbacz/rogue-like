@@ -9,6 +9,10 @@ public class MapGen : MonoBehaviour
     public int walkLength;
     Vector2Int startPosition = new Vector2Int(0, 0);
     public GameObject floorTile;
+    public GameObject floorTile1;
+    public GameObject floorTile2;
+    public GameObject floorTile3;
+    public GameObject floorTile4;
     public GameObject wallTile;
     public GameObject enterance;
     public GameObject exit;
@@ -43,13 +47,15 @@ public class MapGen : MonoBehaviour
                     int spawnRNG = Random.Range(0, 1000);
 
                     //spawn enterance on first tile
-                    if(i == 0 && j == 0){
+                    if(i == 0 && j == 0)
+                    {
 
                         var newTile = Instantiate(enterance, spawnPos, enterance.transform.rotation);
                         newTile.GetComponent<Tile>().setCoord(position);
 
                     //potentially spawn exit after a certain number of steps
-                    }else if(i == repeatWalks - 1 && j > walkLength / 2 && exitSpawned == false){
+                    }else if(i == repeatWalks - 1 && j > walkLength / 2 && exitSpawned == false)
+                    {
 
                         exitSpawned = true;
                         spawnPos.y -= 1;
@@ -57,32 +63,58 @@ public class MapGen : MonoBehaviour
                         newTile.GetComponent<Tile>().setCoord(position);
                     
                     //Otherwise spawn a normal tile
-                    }else{
+                    }else
+                    {
 
-                        var newTile = Instantiate(floorTile, spawnPos, floorTile.transform.rotation);
+                        GameObject newTile;
+
+                        if(spawnRNG <= 1000 && spawnRNG >= 997){
+                            
+                            newTile = Instantiate(floorTile1, spawnPos, floorTile.transform.rotation);
+
+                        }else if(spawnRNG <= 996 && spawnRNG >= 993){
+
+                            newTile = Instantiate(floorTile2, spawnPos, floorTile.transform.rotation);
+
+                        }else if(spawnRNG <= 992 && spawnRNG >= 989){
+
+                            newTile = Instantiate(floorTile3, spawnPos, floorTile.transform.rotation);
+
+                        }else if(spawnRNG <= 988 && spawnRNG >= 985){
+
+                            newTile = Instantiate(floorTile4, spawnPos, floorTile.transform.rotation);
+
+                        }else{
+                            newTile = Instantiate(floorTile, spawnPos, floorTile.transform.rotation);
+                        }
+                        
                         newTile.GetComponent<Tile>().setCoord(position);
                     }
 
                     spawnPos.y += 0.1f;
 
                     //move player to first tile generated
-                    if(i == 0 && j == 1){
+                    if(i == 0 && j == 1)
+                    {
 
                         hero.GetComponent<Character>().Move(spawnPos, occupiedlist);                    
                         mainCamera.GetComponent<PlayerCamera>().setFocalPoint(hero);
                     }
 
-                    if(spawnRNG >= 0 && spawnRNG <= 2){
+                    if(spawnRNG >= 0 && spawnRNG <= 2)
+                    {
 
                         Instantiate(chest, spawnPos, chest.transform.rotation);
 
-                    }else if(spawnRNG >= 3 && spawnRNG <= 5){
+                    }else if(spawnRNG >= 3 && spawnRNG <= 5)
+                    {
 
                         GameObject e = Instantiate(skeleton, spawnPos, skeleton.transform.rotation);
                         e.GetComponent<Character>().Move(spawnPos, occupiedlist);
                         enemies.Add(e);
 
-                    }else if(spawnRNG >= 6 && spawnRNG <= 8){
+                    }else if(spawnRNG >= 6 && spawnRNG <= 8)
+                    {
 
                         GameObject e = Instantiate(goblin, spawnPos, goblin.transform.rotation);
                         e.GetComponent<Character>().Move(spawnPos, occupiedlist);

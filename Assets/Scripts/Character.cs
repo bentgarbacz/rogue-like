@@ -24,13 +24,7 @@ public class Character : MonoBehaviour
         coord = new Vector2Int((int)pos.x, (int)pos.z);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    public void attack(Character target)
+    public void Attack(Character target)
     {
 
         transform.rotation = Quaternion.Euler(0, DetermineRotation(pos, target.pos), 0);
@@ -38,13 +32,18 @@ public class Character : MonoBehaviour
         if(Random.Range(0, 100) <= accuracy)
         {
 
-            target.takeDamage(Random.Range(minDamage, maxDamage + 1));
+            target.TakeDamage(Random.Range(minDamage, maxDamage + 1));
+        
+        }else{
+
+            GetComponent<TextPopup>().CreatePopup(transform.position, 2f, "Miss", Color.white);
         }
     }
 
-    public int takeDamage(int damage)
+    public int TakeDamage(int damage)
     {
         
+        GetComponent<TextPopup>().CreatePopup(transform.position, 3f, damage.ToString(), Color.red);
         return health -= damage;
     }
 
@@ -55,8 +54,10 @@ public class Character : MonoBehaviour
 
             occupiedlist.Add(newPos);
             occupiedlist.Remove(pos);
+
             GetComponent<MoveToTarget>().SetTarget(newPos);
             transform.rotation = Quaternion.Euler(0, DetermineRotation(pos, newPos), 0);
+
             pos = newPos;
             coord = new Vector2Int((int)newPos.x, (int)newPos.z);
 

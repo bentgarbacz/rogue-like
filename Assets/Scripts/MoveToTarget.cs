@@ -8,13 +8,12 @@ public class MoveToTarget : MonoBehaviour
 {
     
     public Vector3 target;
-    public float distance;
+    private float distance;
     public float speed = 5f;
 
     void Start()
     {
         distance = 0;
-        //target = transform.position;
     }
 
     void Update()
@@ -29,8 +28,7 @@ public class MoveToTarget : MonoBehaviour
             transform.position = Vector3.MoveTowards(transform.position, 
                                 target + new Vector3(0, arcPos, 0), 
                                 speed * Time.deltaTime);
-        }
-        //transform.position = Vector3.MoveTowards(transform.position, target, speed * Time.deltaTime);     
+        } 
     }
 
     public void SetTarget(Vector3 target)
@@ -41,7 +39,13 @@ public class MoveToTarget : MonoBehaviour
 
     private float CalcArc(float xVal)
     {
-        //return -(4*xVal*xVal) + (4*xVal);
+
         return -Mathf.Pow(xVal,2) + Mathf.Sqrt(2) * xVal;
+    }
+
+    public float GetRemainingDistance()
+    {
+
+        return distance;
     }
 }

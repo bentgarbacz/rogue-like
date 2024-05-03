@@ -39,7 +39,7 @@ public static class PathFinder
 
             foreach(Vector2Int neighborPos in GetNeighbors(currentPos, grid))
             {
-                if (closedSet.Contains(neighborPos))
+                if(closedSet.Contains(neighborPos))
                 {
                  
                     continue;
@@ -47,13 +47,13 @@ public static class PathFinder
 
                 float tentativeGCost = currentNode.gCost + CalculateDistance(currentPos, neighborPos);
 
-                if (!openSet.Contains(neighborPos) || tentativeGCost < nodeMap[neighborPos].gCost)
+                if(!openSet.Contains(neighborPos) || tentativeGCost < nodeMap[neighborPos].gCost)
                 {
 
                     AStarNode neighborNode = new AStarNode(neighborPos, currentNode, tentativeGCost, CalculateDistance(neighborPos, dest));
                     nodeMap[neighborPos] = neighborNode;
 
-                    if (!openSet.Contains(neighborPos))
+                    if(!openSet.Contains(neighborPos))
                     {
 
                         openSet.Add(neighborPos);
@@ -78,7 +78,21 @@ public static class PathFinder
             if(grid.Contains(checkPoint))
             {
 
-                neighbors.Add(checkPoint);
+                if(d.x != 0 && d.y != 0)
+                {
+                    Vector2Int pinchPointOne = new Vector2Int(point.x, point.y + d.y);
+                    Vector2Int pinchPointTwo = new Vector2Int(point.x + d.x, point.y);
+
+                    if(grid.Contains(pinchPointOne) || grid.Contains(pinchPointTwo))
+                    {
+
+                        neighbors.Add(checkPoint);
+                    }
+
+                }else{
+
+                    neighbors.Add(checkPoint);
+                }
             }
         }
 
@@ -129,28 +143,30 @@ public static class PathFinder
 }
 
 public static class NeighborVals{
+
     public static List<Vector2Int> allDirectionsList = new List<Vector2Int>{
 
         new Vector2Int(0, 1), //up
         new Vector2Int(1, 0), //right
         new Vector2Int(0, -1), //down
         new Vector2Int(-1, 0), //left
-        new Vector2Int(1, 1), //up left
-        new Vector2Int(-1, 1), //up right
-        new Vector2Int(1, -1), //down left
-        new Vector2Int(-1, -1) //left down 
+        new Vector2Int(1, 1), //up right
+        new Vector2Int(-1, 1), //up left
+        new Vector2Int(1, -1), //down right
+        new Vector2Int(-1, -1) //down left
     };
-
 }
+
 public class AStarNode
 {
+
     public Vector2Int position;
     public AStarNode parent;
     public float gCost;
     public float hCost;
     public float fCost;
 
-    public AStarNode(Vector2Int position, AStarNode parent, float gCost, float hCost)
+    public AStarNode (Vector2Int position, AStarNode parent, float gCost, float hCost)
     {
 
         this.position = position;

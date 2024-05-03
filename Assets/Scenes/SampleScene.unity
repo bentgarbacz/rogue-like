@@ -154,6 +154,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   walkLength: 100
   floorTile: {fileID: 1443122038624732881, guid: 8d4f13fce8820d04ab675de69b3d5d10, type: 3}
+  floorTile1: {fileID: 7560125021952361657, guid: 47ecf65409af0d146976083feaa53f96, type: 3}
+  floorTile2: {fileID: 5554077760519332602, guid: 05b02c18f42894f4996e9daffaa3911a, type: 3}
+  floorTile3: {fileID: 6613201131015970072, guid: 8f10e5319e364ef43ad642b44a818961, type: 3}
+  floorTile4: {fileID: 1923372031148340765, guid: 04e7a7016ac3a7445a08398038bec9b2, type: 3}
   wallTile: {fileID: 6496316614329882983, guid: 0b67c222b2e802841b24d78b73e2683e, type: 3}
   enterance: {fileID: 9076454919626080596, guid: 5030058fe4e87504c900068b41a0b0be, type: 3}
   exit: {fileID: 1825255563562008377, guid: 57670d2158c8b544a9c7250631b130e5, type: 3}
@@ -321,7 +325,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.392}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -723,6 +727,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mapGen: {fileID: 438385571}
   hero: {fileID: 869517488}
+  bufferedPath: []
 --- !u!4 &1314207892
 Transform:
   m_ObjectHideFlags: 0
@@ -1055,7 +1060,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.392}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1117,6 +1122,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 581084753446573742, guid: 28d44c17f8893ab42b1df60713a0f72a, type: 3}
+      propertyPath: TextGenerator
+      value: 
+      objectReference: {fileID: 9160350199454203246, guid: 2b027f351ca2eb94d90ca350ef6ea2fa, type: 3}
+    - target: {fileID: 581084753446573742, guid: 28d44c17f8893ab42b1df60713a0f72a, type: 3}
+      propertyPath: textGenerator
+      value: 
+      objectReference: {fileID: 9160350199454203246, guid: 2b027f351ca2eb94d90ca350ef6ea2fa, type: 3}
     - target: {fileID: 1429860666932865054, guid: 28d44c17f8893ab42b1df60713a0f72a, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.5
@@ -1199,6 +1212,15 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 1773347466035753636, guid: 28d44c17f8893ab42b1df60713a0f72a, type: 3}
       insertIndex: -1
+      addedObject: {fileID: 6442338754152421637}
+    - targetCorrespondingSourceObject: {fileID: 1773347466035753636, guid: 28d44c17f8893ab42b1df60713a0f72a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6442338754152421639}
+    - targetCorrespondingSourceObject: {fileID: 1773347466035753636, guid: 28d44c17f8893ab42b1df60713a0f72a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6442338754152421641}
+    - targetCorrespondingSourceObject: {fileID: 1773347466035753636, guid: 28d44c17f8893ab42b1df60713a0f72a, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 6442338754152421633}
     - targetCorrespondingSourceObject: {fileID: 1773347466035753636, guid: 28d44c17f8893ab42b1df60713a0f72a, type: 3}
       insertIndex: -1
@@ -1206,12 +1228,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1773347466035753636, guid: 28d44c17f8893ab42b1df60713a0f72a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6442338754152421634}
-    - targetCorrespondingSourceObject: {fileID: 1773347466035753636, guid: 28d44c17f8893ab42b1df60713a0f72a, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 6442338754152421637}
-    - targetCorrespondingSourceObject: {fileID: 1773347466035753636, guid: 28d44c17f8893ab42b1df60713a0f72a, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 6442338754152421639}
   m_SourcePrefab: {fileID: 100100000, guid: 28d44c17f8893ab42b1df60713a0f72a, type: 3}
 --- !u!4 &6442338754152421631 stripped
 Transform:
@@ -1315,14 +1331,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {x: 0, y: 0, z: 0}
   speed: 5
+--- !u!114 &6442338754152421641
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 869517488}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0eaa850960a105148ae3e5c040d8cfb4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  popUpPrefab: {fileID: 5558341210635837680, guid: 2b027f351ca2eb94d90ca350ef6ea2fa, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 438385573}
   - {fileID: 1314207892}
+  - {fileID: 1951313321}
+  - {fileID: 1280773020}
+  - {fileID: 896522263}
   - {fileID: 6442338754152421630}
   - {fileID: 1327978873}
-  - {fileID: 1951313321}
-  - {fileID: 896522263}
-  - {fileID: 1280773020}
