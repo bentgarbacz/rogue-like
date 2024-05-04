@@ -158,7 +158,7 @@ MonoBehaviour:
   floorTile2: {fileID: 5554077760519332602, guid: 05b02c18f42894f4996e9daffaa3911a, type: 3}
   floorTile3: {fileID: 6613201131015970072, guid: 8f10e5319e364ef43ad642b44a818961, type: 3}
   floorTile4: {fileID: 1923372031148340765, guid: 04e7a7016ac3a7445a08398038bec9b2, type: 3}
-  wallTile: {fileID: 6496316614329882983, guid: 0b67c222b2e802841b24d78b73e2683e, type: 3}
+  wallTile: {fileID: 6994728424062997650, guid: 0b67c222b2e802841b24d78b73e2683e, type: 3}
   enterance: {fileID: 9076454919626080596, guid: 5030058fe4e87504c900068b41a0b0be, type: 3}
   exit: {fileID: 1825255563562008377, guid: 57670d2158c8b544a9c7250631b130e5, type: 3}
   hero: {fileID: 869517488}
@@ -728,6 +728,7 @@ MonoBehaviour:
   mapGen: {fileID: 438385571}
   hero: {fileID: 869517488}
   bufferedPath: []
+  aggroRange: 10
 --- !u!4 &1314207892
 Transform:
   m_ObjectHideFlags: 0
@@ -1344,6 +1345,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   popUpPrefab: {fileID: 5558341210635837680, guid: 2b027f351ca2eb94d90ca350ef6ea2fa, type: 3}
+  speed: 2
+  destroyAfterDistance: 0.75
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

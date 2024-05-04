@@ -19,12 +19,14 @@ public class ClickManager : MonoBehaviour
 
         if (Physics.Raycast(ray, out RaycastHit hit))
         {            
-           
+
             return hit.collider.gameObject;
         }
 
         return null;
     }
 }
+
+
 
 

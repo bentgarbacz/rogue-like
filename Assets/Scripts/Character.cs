@@ -27,11 +27,14 @@ public class Character : MonoBehaviour
     public void Attack(Character target)
     {
 
+        //turn towards target
         transform.rotation = Quaternion.Euler(0, DetermineRotation(pos, target.pos), 0);
 
+        //roll to see if you hit
         if(Random.Range(0, 100) <= accuracy)
         {
 
+            //roll damage
             target.TakeDamage(Random.Range(minDamage, maxDamage + 1));
         
         }else{

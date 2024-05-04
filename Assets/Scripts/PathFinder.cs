@@ -10,7 +10,7 @@ public static class PathFinder
     public static List<Vector2Int> FindPath(Vector2Int start, Vector2Int dest, HashSet<Vector2Int> grid)
     {
 
-        List<Vector2Int> path = new List<Vector2Int>();
+        //List<Vector2Int> path = new List<Vector2Int>();
 
         HashSet<Vector2Int> closedSet = new HashSet<Vector2Int>();
         HashSet<Vector2Int> openSet = new HashSet<Vector2Int>();
@@ -30,8 +30,8 @@ public static class PathFinder
             if(currentPos.Equals(dest))
             {
 
-                path = ReconstructPath(currentNode);
-                break;
+                return ReconstructPath(currentNode);
+                //break;
             }
 
             openSet.Remove(currentPos);
@@ -62,7 +62,7 @@ public static class PathFinder
             }
         }
 
-        return path;
+        return null;
     }
 
     public static HashSet<Vector2Int> GetNeighbors(Vector2Int point, HashSet<Vector2Int> grid)
