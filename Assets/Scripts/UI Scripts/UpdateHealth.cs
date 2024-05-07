@@ -9,12 +9,26 @@ public class UpdateHealth : MonoBehaviour
 
     public TextMeshProUGUI healthStatus;
     public GameObject hero;
+    private Character playerCharacter;
 
-    // Update is called once per frame
+    void Start()
+    {
+
+        playerCharacter = hero.GetComponent<Character>();
+    }
+
     void Update()
     {
-        Character c = hero.GetComponent<Character>();
-        healthStatus.SetText(c.health.ToString() + " / " + c.maxHealth.ToString());
+        if(playerCharacter)
+        {
 
+            healthStatus.SetText(playerCharacter.health.ToString() + " / " + playerCharacter.maxHealth.ToString());
+
+        }else
+        {
+
+            healthStatus.SetText("0");
+        }
+        
     }
 }
