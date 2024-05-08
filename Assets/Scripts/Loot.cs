@@ -17,6 +17,8 @@ public class Loot : MonoBehaviour
     public void OpenContainer()
     {
         if(LootPanel){
-        LootPanel.GetComponent<ToggleButton>().Click();}
+            
+            LootPanel.GetComponent<ToggleButton>().Click();
+        }
     }
 }

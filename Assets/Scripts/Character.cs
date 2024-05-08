@@ -101,7 +101,7 @@ public class Character : MonoBehaviour
         return false;
     }
 
-    private float DetermineRotation(Vector3 start, Vector3 end)
+    public static float DetermineRotation(Vector3 start, Vector3 end)
     {
         
         if(start.x == end.x && start.z < end.z)

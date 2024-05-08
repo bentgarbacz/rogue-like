@@ -5,6 +5,7 @@ using UnityEngine;
 public class DropLoot : MonoBehaviour
 {
     public GameObject drop;
+    
 
     private void OnDestroy()
     {

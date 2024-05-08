@@ -40,12 +40,12 @@ public class MapGen : MonoBehaviour
     {
 
         path = new HashSet<Vector2Int>();
-        roomGen(startPosition, walkLength, 100, path);    
-        wallGen(path);
+        LevelGen(startPosition, walkLength, 100, path);    
+        WallGen(path);
         //cachedPathsDict = PrecacheMapPaths(path);
     }
 
-    private void roomGen(Vector2Int position, int walkLength, int repeatWalks, HashSet<Vector2Int> path)
+    private void LevelGen(Vector2Int position, int walkLength, int repeatWalks, HashSet<Vector2Int> path)
     {
 
         bool exitSpawned = false;
@@ -66,19 +66,33 @@ public class MapGen : MonoBehaviour
                     if(i == 0 && j == 0)
                     {
 
-                        var newTile = Instantiate(enterance, spawnPos, enterance.transform.rotation);
-                        LevelSpecificGameObjects.Add(newTile);
-                        newTile.GetComponent<Tile>().setCoord(position);
+                        GameObject newEnterance = Instantiate(enterance, spawnPos, enterance.transform.rotation);
+                        LevelSpecificGameObjects.Add(newEnterance);
+                        newEnterance.GetComponent<Tile>().setCoord(position);
 
                     //potentially spawn exit after a certain number of steps
                     }else if(i == repeatWalks - 1 && j > walkLength / 2 && exitSpawned == false)
                     {
 
                         exitSpawned = true;
-                        spawnPos.y -= 0.85f;
-                        var newTile = Instantiate(exit, spawnPos, exit.transform.rotation);
-                        LevelSpecificGameObjects.Add(newTile);
-                        newTile.GetComponent<Tile>().setCoord(position);
+                        spawnPos.y -= 1f;
+                        GameObject newExit = Instantiate(exit, spawnPos, exit.transform.rotation);
+
+                        foreach(Vector2Int direction in Direction2D.cardinalDirectionsList)
+                        {
+
+                            if(path.Contains(position + direction))
+                            {
+                                
+                                print("got it");
+                                newExit.transform.rotation = Quaternion.Euler(0, (Character.DetermineRotation(newExit.transform.position, new Vector3(position.x + direction.x, 0, position.y + direction.y))), 0);
+                                //newExit.transform.rotation = Quaternion.Euler(0, 180, 0);
+                                break;
+                            }
+                        }
+
+                        LevelSpecificGameObjects.Add(newExit);
+                        newExit.GetComponent<Tile>().setCoord(position);
 
                     
                     //Otherwise spawn a normal tile
@@ -211,7 +225,7 @@ public class MapGen : MonoBehaviour
         LevelSpecificGameObjects = new HashSet<GameObject>();;
     }
 
-    private void wallGen(HashSet<Vector2Int> path){
+    private void WallGen(HashSet<Vector2Int> path){
 
         HashSet<Vector2Int> wallMap = new HashSet<Vector2Int>();
 

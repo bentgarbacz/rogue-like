@@ -3736,7 +3736,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6471838903483931516, guid: 09222f6c45adade43b39ab763da96dec, type: 3}
       propertyPath: m_Name
-      value: Focal Point
+      value: Camera Rig
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -21,10 +21,7 @@ public class TurnSequencer : MonoBehaviour
     {
 
         hero = mapGen.GetComponent<MapGen>().hero;
-        occupiedlist = mapGen.GetComponent<MapGen>().occupiedlist;
-        enemies = mapGen.GetComponent<MapGen>().enemies;
-        dungeonCoords = mapGen.GetComponent<MapGen>().path;
-        cachedPathsDict = mapGen.GetComponent<MapGen>().cachedPathsDict;
+        LevelSetup();        
 
         mouse = Mouse.current;
         playerCharacter = hero.GetComponent<Character>();
@@ -141,13 +138,12 @@ public class TurnSequencer : MonoBehaviour
                     {
 
                         mapGen.GetComponent<MapGen>().CleanUp();
+                        aggroEnemies = new HashSet<GameObject>();
+                        bufferedPath = new List<Vector2Int>();
                         playerCharacter.Teleport(new Vector3(0, 0, 0), occupiedlist);
                         mapGen.GetComponent<MapGen>().NewLevel();
-                        occupiedlist = mapGen.GetComponent<MapGen>().occupiedlist;
-                        enemies = mapGen.GetComponent<MapGen>().enemies;
-                        dungeonCoords = mapGen.GetComponent<MapGen>().path;
-                        cachedPathsDict = mapGen.GetComponent<MapGen>().cachedPathsDict;
-
+                        LevelSetup();
+                        
                     }else //move towards exit
                     {
 
@@ -224,5 +220,14 @@ public class TurnSequencer : MonoBehaviour
                 bufferedPath.Clear();
             }
         }
+    }
+
+    private void LevelSetup()
+    {
+
+        occupiedlist = mapGen.GetComponent<MapGen>().occupiedlist;
+        enemies = mapGen.GetComponent<MapGen>().enemies;
+        dungeonCoords = mapGen.GetComponent<MapGen>().path;
+        cachedPathsDict = mapGen.GetComponent<MapGen>().cachedPathsDict;
     } 
 }
