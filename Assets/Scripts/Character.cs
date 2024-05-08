@@ -37,21 +37,32 @@ public class Character : MonoBehaviour
             //roll damage
             target.TakeDamage(Random.Range(minDamage, maxDamage + 1));
         
-        }else{
+        }else
+        {
 
-            GetComponent<TextPopup>().CreatePopup(transform.position, 2f, "Miss", Color.white);
+            //take 0 damage on miss
+            target.TakeDamage(0);
         }
     }
 
     public int TakeDamage(int damage)
     {
         
-        GetComponent<TextPopup>().CreatePopup(transform.position, 3f, damage.ToString(), Color.red);
+        if(damage > 0)
+        {
+            GetComponent<TextPopup>().CreatePopup(transform.position, 3f, damage.ToString(), Color.red);
+
+        }else
+        {
+
+            GetComponent<TextPopup>().CreatePopup(transform.position, 2f, "Miss", Color.white);
+        }
         return health -= damage;
     }
 
     public bool Move(Vector3 newPos, HashSet<Vector3> occupiedlist)
     {
+
         if(!occupiedlist.Contains(newPos))
         {
 
@@ -70,7 +81,27 @@ public class Character : MonoBehaviour
         return false;             
     }
 
-    private float DetermineRotation(Vector3 start, Vector3 end)
+    public bool Teleport(Vector3 newPos, HashSet<Vector3> occupiedlist)
+    {
+
+        if(!occupiedlist.Contains(newPos))
+        {
+            occupiedlist.Add(newPos);
+            occupiedlist.Remove(pos);
+            
+            transform.position = newPos;
+
+            pos = newPos;
+            coord = new Vector2Int((int)newPos.x, (int)newPos.z);
+
+            return true;
+
+        }
+
+        return false;
+    }
+
+    public static float DetermineRotation(Vector3 start, Vector3 end)
     {
         
         if(start.x == end.x && start.z < end.z)

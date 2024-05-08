@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2824918302630661538}
   - component: {fileID: 789975492301611816}
   - component: {fileID: -5915324958900822460}
+  - component: {fileID: 2867226582852873387}
   m_Layer: 0
   m_Name: Chest
   m_TagString: Untagged
@@ -29,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 8480279190845118755}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.3924258, y: 0, z: -10.932689}
+  m_LocalPosition: {x: 1305.4872, y: 235.19095, z: -10.932689}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -119,3 +120,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   outlineColor: {r: 0.109994836, g: 1, b: 0.015686274, a: 1}
+--- !u!114 &2867226582852873387
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8480279190845118755}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73915f79bda62f347a132f4dc020a911, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  panel: {fileID: 0}
+  state: 0

@@ -2,12 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Unity.Burst;
+using Unity.Jobs;
 
 public static class PathFinder
 {
 
-    //returns a path from start to dest on a grid
-    public static List<Vector2Int> FindPath(Vector2Int start, Vector2Int dest, HashSet<Vector2Int> grid)
+    //[BurstCompile(CompileSynchronouosly = true)]
+    //returns a path from start to destination on a grid
+    public static List<Vector2Int> FindPath(Vector2Int start, Vector2Int destination, HashSet<Vector2Int> grid)
     {
 
         //List<Vector2Int> path = new List<Vector2Int>();
@@ -17,7 +20,7 @@ public static class PathFinder
 
         Dictionary<Vector2Int, AStarNode> nodeMap = new Dictionary<Vector2Int, AStarNode>();
 
-        AStarNode startNode = new AStarNode(start, null, 0, CalculateDistance(start, dest));
+        AStarNode startNode = new AStarNode(start, null, 0, CalculateDistance(start, destination));
         openSet.Add(start);
         nodeMap[start] = startNode;
 
@@ -27,11 +30,10 @@ public static class PathFinder
             Vector2Int currentPos = GetLowestFCostNode(openSet, nodeMap);
             AStarNode currentNode = nodeMap[currentPos];
 
-            if(currentPos.Equals(dest))
+            if(currentPos.Equals(destination))
             {
 
                 return ReconstructPath(currentNode);
-                //break;
             }
 
             openSet.Remove(currentPos);
@@ -50,7 +52,7 @@ public static class PathFinder
                 if(!openSet.Contains(neighborPos) || tentativeGCost < nodeMap[neighborPos].gCost)
                 {
 
-                    AStarNode neighborNode = new AStarNode(neighborPos, currentNode, tentativeGCost, CalculateDistance(neighborPos, dest));
+                    AStarNode neighborNode = new AStarNode(neighborPos, currentNode, tentativeGCost, CalculateDistance(neighborPos, destination));
                     nodeMap[neighborPos] = neighborNode;
 
                     if(!openSet.Contains(neighborPos))
@@ -136,6 +138,19 @@ public static class PathFinder
         return lowestFCostCoord;
     }
 
+    public static void PrecachePath(Vector2Int start, Vector2Int destination, HashSet<Vector2Int> grid, Dictionary<string, List<Vector2Int>> PrecachedPaths)
+    {
+
+        List<Vector2Int> path = FindPath(start, destination, grid);
+
+        if(path != null)
+        {
+
+            PathKey pk = new PathKey(start, destination);
+            PrecachedPaths.Add(pk.key, path);
+        }
+    }
+
     private static float CalculateDistance(Vector2Int a, Vector2Int b)
     {
         return System.Math.Abs(a.x - b.x) + System.Math.Abs(a.y - b.y);
@@ -176,3 +191,45 @@ public class AStarNode
         this.fCost = gCost + hCost;
     }
 }
+
+public class PathKey
+{
+
+    public Vector2Int start;
+    public Vector2Int destination;
+    public string key;
+
+    public PathKey(Vector2Int start, Vector2Int destination)
+    {
+
+        this.start = start;
+        this.destination = destination;
+        key = "sx" +
+              start.x.ToString() +
+              "sy" +
+              start.y.ToString() +
+              "dx" +
+              destination.x.ToString() +
+              "dy" +
+              destination.y.ToString(); 
+    }
+    
+    //public override int GetHashCode()             
+    //{
+
+        //return System.Int32.Parse(key); 
+    //}
+
+    //public override bool Equals(object obj) 
+    //{
+
+        //return Equals(obj as PathKey); 
+    //}
+
+    //public bool Equals(PathKey obj)
+    //{
+
+        //return obj != null && obj.key == this.key; 
+    //}
+}
+
