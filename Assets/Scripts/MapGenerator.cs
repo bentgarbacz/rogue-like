@@ -5,12 +5,11 @@ using UnityEngine;
 using Unity.Burst;
 
 
-public class MapGen : MonoBehaviour
+public class MapGenerator : MonoBehaviour
 {
 
 
     public int walkLength;
-    Vector2Int startPosition = new Vector2Int(0, 0);
     public GameObject floorTile;
     public GameObject floorTile1;
     public GameObject floorTile2;
@@ -19,30 +18,26 @@ public class MapGen : MonoBehaviour
     public GameObject wallTile;
     public GameObject enterance;
     public GameObject exit;
-    public GameObject hero;
     public GameObject chest;
     public GameObject skeleton;
     public GameObject goblin;
-    public GameObject mainCamera;
-    public HashSet<Vector2Int> path;
-    public HashSet<GameObject> enemies = new HashSet<GameObject>();
-    public HashSet<GameObject> LevelSpecificGameObjects = new HashSet<GameObject>();
-    public Dictionary<string, List<Vector2Int>> cachedPathsDict = new Dictionary<string, List<Vector2Int>>();
-    public HashSet<Vector3> occupiedlist = new HashSet<Vector3>();
+    private DungeonManager dum;
+    private Vector2Int startPosition = new Vector2Int(0, 0);
     
     void Start()
     {
 
+        dum = GameObject.Find("System Managers").GetComponent<DungeonManager>();
         NewLevel();        
     }
 
     public void NewLevel()
     {
 
-        path = new HashSet<Vector2Int>();
-        LevelGen(startPosition, walkLength, 100, path);    
-        WallGen(path);
-        //cachedPathsDict = PrecacheMapPaths(path);
+        dum.dungeonCoords = new HashSet<Vector2Int>();
+        LevelGen(startPosition, walkLength, 100, dum.dungeonCoords);    
+        WallGen(dum.dungeonCoords);
+        //gom.cachedPathsDict = PrecacheMapPaths(path);
     }
 
     private void LevelGen(Vector2Int position, int walkLength, int repeatWalks, HashSet<Vector2Int> path)
@@ -67,7 +62,7 @@ public class MapGen : MonoBehaviour
                     {
 
                         GameObject newEnterance = Instantiate(enterance, spawnPos, enterance.transform.rotation);
-                        LevelSpecificGameObjects.Add(newEnterance);
+                        dum.AddGameObject(newEnterance);
                         newEnterance.GetComponent<Tile>().setCoord(position);
 
                     //potentially spawn exit after a certain number of steps
@@ -84,15 +79,13 @@ public class MapGen : MonoBehaviour
                             if(path.Contains(position + direction))
                             {
                                 
-                                print("got it");
                                 newExit.transform.rotation = Quaternion.Euler(0, (Character.DetermineRotation(newExit.transform.position, new Vector3(position.x + direction.x, 0, position.y + direction.y))), 0);
-                                //newExit.transform.rotation = Quaternion.Euler(0, 180, 0);
                                 break;
                             }
                         }
 
-                        LevelSpecificGameObjects.Add(newExit);
-                        newExit.GetComponent<Tile>().setCoord(position);
+                        dum.AddGameObject(newExit);
+                        newExit.GetComponent<Exit>().setCoord(position);
 
                     
                     //Otherwise spawn a normal tile
@@ -100,36 +93,38 @@ public class MapGen : MonoBehaviour
                     {
 
                         GameObject newTile;
+                        //Quaternion tileRotation = Quaternion.Euler(0, UnityEngine.Random.Range(0, 3) * 90, 0);
+                        //floorTile.transform.rotation
 
                         if(spawnRNG <= 1000 && spawnRNG >= 997)
                         {
                             
-                            newTile = Instantiate(floorTile1, spawnPos, floorTile.transform.rotation);
-                            LevelSpecificGameObjects.Add(newTile);
+                            newTile = Instantiate(floorTile1, spawnPos, floorTile1.transform.rotation);
+                            dum.AddGameObject(newTile);
 
                         }else if(spawnRNG <= 996 && spawnRNG >= 993)
                         {
 
-                            newTile = Instantiate(floorTile2, spawnPos, floorTile.transform.rotation);
-                            LevelSpecificGameObjects.Add(newTile);
+                            newTile = Instantiate(floorTile2, spawnPos, floorTile2.transform.rotation);
+                            dum.AddGameObject(newTile);
 
                         }else if(spawnRNG <= 992 && spawnRNG >= 989)
                         {
 
-                            newTile = Instantiate(floorTile3, spawnPos, floorTile.transform.rotation);
-                            LevelSpecificGameObjects.Add(newTile);
+                            newTile = Instantiate(floorTile3, spawnPos, floorTile3.transform.rotation);
+                            dum.AddGameObject(newTile);
 
                         }else if(spawnRNG <= 988 && spawnRNG >= 985)
                         {
 
-                            newTile = Instantiate(floorTile4, spawnPos, floorTile.transform.rotation);
-                            LevelSpecificGameObjects.Add(newTile);
+                            newTile = Instantiate(floorTile4, spawnPos, floorTile4.transform.rotation);
+                            dum.AddGameObject(newTile);
 
                         }else
                         {
 
                             newTile = Instantiate(floorTile, spawnPos, floorTile.transform.rotation);
-                            LevelSpecificGameObjects.Add(newTile);
+                            dum.AddGameObject(newTile);
                         }
                         
                         newTile.GetComponent<Tile>().setCoord(position);
@@ -141,32 +136,31 @@ public class MapGen : MonoBehaviour
                     if(i == 0 && j == 1)
                     {
 
-                        hero.GetComponent<Character>().Move(spawnPos, occupiedlist);                    
-                        mainCamera.GetComponent<PlayerCamera>().setFocalPoint(hero);
+                        dum.hero.GetComponent<Character>().Move(spawnPos, dum.occupiedlist);                    
                     }
 
                     if(spawnRNG >= 0 && spawnRNG <= 2)
                     {
 
                         GameObject c = Instantiate(chest, spawnPos, chest.transform.rotation);
-                        LevelSpecificGameObjects.Add(c);
+                        dum.AddGameObject(c);
                         c.GetComponent<Loot>().coord = new Vector2Int((int)spawnPos.x, (int)spawnPos.z);
 
                     }else if(spawnRNG >= 3 && spawnRNG <= 5)
                     {
 
                         GameObject e = Instantiate(skeleton, spawnPos, skeleton.transform.rotation);
-                        LevelSpecificGameObjects.Add(e);
-                        e.GetComponent<Character>().Move(spawnPos, occupiedlist);
-                        enemies.Add(e);
+                        dum.AddGameObject(e);
+                        e.GetComponent<Character>().Move(spawnPos, dum.occupiedlist);
+                        dum.enemies.Add(e);
 
                     }else if(spawnRNG >= 6 && spawnRNG <= 8)
                     {
 
                         GameObject e = Instantiate(goblin, spawnPos, goblin.transform.rotation);
-                        LevelSpecificGameObjects.Add(e);
-                        e.GetComponent<Character>().Move(spawnPos, occupiedlist);
-                        enemies.Add(e);
+                        dum.AddGameObject(e);
+                        e.GetComponent<Character>().Move(spawnPos, dum.occupiedlist);
+                        dum.enemies.Add(e);
                     }
                     
                     
@@ -183,10 +177,10 @@ public class MapGen : MonoBehaviour
 
         Dictionary<string, List<Vector2Int>> pathsDictionary = new Dictionary<string, List<Vector2Int>>();
 
-        foreach(Vector2Int node1 in path)
+        foreach(Vector2Int node1 in dum.dungeonCoords)
         {   
 
-            foreach(Vector2Int node2 in path)
+            foreach(Vector2Int node2 in dum.dungeonCoords)
             {
                                 
                 if(node1 != node2)
@@ -199,30 +193,12 @@ public class MapGen : MonoBehaviour
                         continue;
                     }
 
-                    PathFinder.PrecachePath(node1, node2, path, pathsDictionary);
+                    PathFinder.PrecachePath(node1, node2, dum.dungeonCoords, pathsDictionary);
                 }
             }
         }
 
         return pathsDictionary;
-    }
-
-    public void CleanUp()
-    {
-        
-        //path is reset in in NewRoom, may need to refactor
-        //path = new HashSet<Vector2Int>();
-        cachedPathsDict = new Dictionary<string, List<UnityEngine.Vector2Int>>();
-        enemies = new HashSet<GameObject>();
-        occupiedlist = new HashSet<Vector3>();
-
-        foreach(GameObject trash in LevelSpecificGameObjects)
-        {
-
-            Destroy(trash);
-        }
-
-        LevelSpecificGameObjects = new HashSet<GameObject>();;
     }
 
     private void WallGen(HashSet<Vector2Int> path){
@@ -242,7 +218,7 @@ public class MapGen : MonoBehaviour
                     
                     Vector3 spawnPos = new Vector3(checkCoord.x, 0, checkCoord.y);
                     var newWall = Instantiate(wallTile, spawnPos, wallTile.transform.rotation);
-                    LevelSpecificGameObjects.Add(newWall);
+                    dum.AddGameObject(newWall);
                     newWall.GetComponent<Renderer>().material.color = Color.gray;
                     wallMap.Add(checkCoord);
                 }

@@ -33,7 +33,7 @@ Transform:
   m_GameObject: {fileID: 7806514022559795084}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3.7303586, y: 0, z: -11.189828}
+  m_LocalPosition: {x: 650.9212, y: 0, z: 133.36606}
   m_LocalScale: {x: 0.75, y: 0.75, z: 0.75}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -184,3 +184,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   drop: {fileID: 4067605956111919682, guid: 8ae8460d89cd89643b89cdf3b8bea50c, type: 3}
+  mapGen: {fileID: 0}
