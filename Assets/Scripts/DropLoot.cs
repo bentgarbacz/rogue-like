@@ -13,16 +13,21 @@ public class DropLoot : MonoBehaviour
         dum = GameObject.Find("System Managers").GetComponent<DungeonManager>();
     }
 
-    private void OnDestroy()
+    public void Drop()
     {
-        if(!this.gameObject.scene.isLoaded)
-        {
-
-            return;
-        }
 
         GameObject lootBag = Instantiate(drop, transform.position, transform.rotation);
-        lootBag.GetComponent<Loot>().coord = new Vector2Int((int)transform.position.x, (int)transform.position.z);
+        Loot loot = lootBag.GetComponent<Loot>();
+        loot.coord = new Vector2Int((int)transform.position.x, (int)transform.position.z);
+
+        List<Item>loots = new List<Item>();
+        for(int i = 0; i < Random.Range(0, 8); i++)
+        {
+            loots.Add(new Potion());
+        }
+        
+        loot.AddItems(loots);
+        
         dum.AddGameObject(lootBag);
     }
 }

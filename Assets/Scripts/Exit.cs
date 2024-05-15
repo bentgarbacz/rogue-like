@@ -2,18 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Exit : MonoBehaviour
+public class Exit : Tile
 {
 
-    [SerializeField] public Vector2Int coord;
-    
-    public void setCoord(Vector2Int crd){
-        coord = crd;
+    private DungeonManager dum;
+
+    void Start()
+    {
+
+        dum = GameObject.Find("System Managers").GetComponent<DungeonManager>();
     }
-    
     public void ExitLevel()
     {
 
-
+        dum.CleanUp();
     }
 }

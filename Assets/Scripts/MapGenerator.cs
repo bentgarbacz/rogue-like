@@ -36,8 +36,8 @@ public class MapGenerator : MonoBehaviour
 
         dum.dungeonCoords = new HashSet<Vector2Int>();
         LevelGen(startPosition, walkLength, 100, dum.dungeonCoords);    
-        WallGen(dum.dungeonCoords);
-        //gom.cachedPathsDict = PrecacheMapPaths(path);
+        GenerateWalls(dum.dungeonCoords);
+        //dum.cachedPathsDict = PrecacheMapPaths(path);
     }
 
     private void LevelGen(Vector2Int position, int walkLength, int repeatWalks, HashSet<Vector2Int> path)
@@ -201,7 +201,7 @@ public class MapGenerator : MonoBehaviour
         return pathsDictionary;
     }
 
-    private void WallGen(HashSet<Vector2Int> path){
+    private void GenerateWalls(HashSet<Vector2Int> path){
 
         HashSet<Vector2Int> wallMap = new HashSet<Vector2Int>();
 

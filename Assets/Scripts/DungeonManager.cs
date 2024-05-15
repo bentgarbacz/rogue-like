@@ -11,6 +11,8 @@ public class DungeonManager : MonoBehaviour
     public HashSet<Vector3> occupiedlist = new HashSet<Vector3>();
     public HashSet<GameObject> dungeonSpecificGameObjects = new HashSet<GameObject>();
     public HashSet<GameObject> enemies = new HashSet<GameObject>();
+    public HashSet<GameObject> aggroEnemies = new HashSet<GameObject>();
+    public List<Vector2Int> bufferedPath = new List<Vector2Int>();
     public Dictionary<string, List<Vector2Int>> cachedPathsDict = new Dictionary<string, List<Vector2Int>>();    
 
     void Start()
@@ -21,12 +23,11 @@ public class DungeonManager : MonoBehaviour
 
     public void AddGameObject(GameObject newGameObject)
     {
-        
 
         dungeonSpecificGameObjects.Add(newGameObject);
     }
 
-        public void CleanUp()
+    public void CleanUp()
     {
         
         cachedPathsDict = new Dictionary<string, List<UnityEngine.Vector2Int>>();
@@ -40,5 +41,9 @@ public class DungeonManager : MonoBehaviour
         }
 
         dungeonSpecificGameObjects = new HashSet<GameObject>();
+        aggroEnemies = new HashSet<GameObject>();
+        bufferedPath = new List<Vector2Int>();
+
+        hero.GetComponent<Character>().Teleport(new Vector3(0, 0, 0), occupiedlist);
     }
 }
