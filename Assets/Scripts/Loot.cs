@@ -4,21 +4,25 @@ using UnityEngine;
 
 public class Loot : MonoBehaviour
 {
-    public GameObject LootPanel;
     public Vector2Int coord;
+    public List<Item> items;
+    private InventoryManager inventoryManager;
 
-    // Start is called before the first frame update
     void Start()
     {
         
-        LootPanel = GameObject.Find("CanvasHUD").GetComponent<InactiveReferences>().LootPanel;
+        inventoryManager = GameObject.Find("CanvasHUD").GetComponent<InventoryManager>();
+    }
+
+    public void AddItems(List<Item> newItems)
+    {
+
+        items = newItems;
     }
 
     public void OpenContainer()
     {
-        if(LootPanel){
-            
-            LootPanel.GetComponent<ToggleButton>().Click();
-        }
+        inventoryManager.ClearItemsLoot();
+        inventoryManager.OpenLootPanel(items);
     }
 }
