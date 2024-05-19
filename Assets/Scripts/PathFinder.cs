@@ -8,7 +8,6 @@ using Unity.Jobs;
 public static class PathFinder
 {
 
-    //[BurstCompile(CompileSynchronouosly = true)]
     //returns a path from start to destination on a grid
     public static List<Vector2Int> FindPath(Vector2Int start, Vector2Int destination, HashSet<Vector2Int> grid)
     {
@@ -213,23 +212,5 @@ public class PathKey
               "dy" +
               destination.y.ToString(); 
     }
-    
-    //public override int GetHashCode()             
-    //{
-
-        //return System.Int32.Parse(key); 
-    //}
-
-    //public override bool Equals(object obj) 
-    //{
-
-        //return Equals(obj as PathKey); 
-    //}
-
-    //public bool Equals(PathKey obj)
-    //{
-
-        //return obj != null && obj.key == this.key; 
-    //}
 }
 

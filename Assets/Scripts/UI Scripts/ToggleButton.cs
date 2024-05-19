@@ -6,19 +6,27 @@ public class ToggleButton : MonoBehaviour
 {
 
     public GameObject panel;
-    public bool state = false;
+    private InventoryManager im;
 
     void Start()
     {
-
-        panel.SetActive(state);
+        im = GameObject.Find("CanvasHUD").GetComponent<InventoryManager>();
     }
 
     public void Click()
     {
 
-        state = !state;
-        panel.SetActive(state);
+        if(im.inventoryIsOpen)
+        {
+
+            im.CloseInventoryPanel();
+            im.CloseLootPanel();
+
+        }else if(!im.inventoryIsOpen)
+        {
+
+            im.OpenInventoryPanel();
+        }
     }
 
 }
