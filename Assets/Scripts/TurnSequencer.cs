@@ -10,6 +10,7 @@ public class TurnSequencer : MonoBehaviour
     public float aggroRange = 10;
     private Character playerCharacter;
     private DungeonManager dum;
+    private InventoryManager im;
     private Mouse mouse;
 
     void Start()
@@ -17,6 +18,7 @@ public class TurnSequencer : MonoBehaviour
  
         mouse = Mouse.current;
         dum = GameObject.Find("System Managers").GetComponent<DungeonManager>();
+        im = GameObject.Find("CanvasHUD").GetComponent<InventoryManager>();
         playerCharacter = dum.hero.GetComponent<Character>();
     }   
     
@@ -37,8 +39,11 @@ public class TurnSequencer : MonoBehaviour
             GameObject target = GetComponent<ClickManager>().getObject(mouse);   
 
             //execute action if actionable object was clicked
-            if(target != null)
+            if(target != null && im.IsPointerOverUI() == false)
             {
+
+                im.CloseInventoryPanel();
+                im.CloseLootPanel();
 
                 if(target.GetComponent<Tile>() && target.GetComponent<Tile>().coord != playerCharacter.coord)
                 {
@@ -85,12 +90,7 @@ public class TurnSequencer : MonoBehaviour
                         if(targetCharacter.health <= 0)
                         {
                             
-                            dum.aggroEnemies.Remove(target);
-                            dum.occupiedlist.Remove(targetCharacter.pos);
-                            dum.enemies.Remove(target);
-                            target.GetComponent<DropLoot>().Drop();
-                            target.GetComponent<TextPopup>().CleanUp();
-                            Destroy(target);                                                                    
+                            dum.Smite(target, targetCharacter.pos);                                                                    
                         }
 
                     }else //move towards target
@@ -98,7 +98,7 @@ public class TurnSequencer : MonoBehaviour
 
                         List<Vector2Int> pathToDestination = PathFinder.FindPath(playerCharacter.coord, targetCharacter.coord, dum.dungeonCoords);            
                         playerCharacter.Move(new Vector3(pathToDestination[1].x, 0.1f, pathToDestination[1].y), dum.occupiedlist);
-                    } 
+                    }
                 }
 
                 //open container and examine loot
@@ -118,7 +118,7 @@ public class TurnSequencer : MonoBehaviour
 
                         List<Vector2Int> pathToDestination = PathFinder.FindPath(playerCharacter.coord, targetContainer.coord, dum.dungeonCoords);            
                         playerCharacter.Move(new Vector3(pathToDestination[1].x, 0.1f, pathToDestination[1].y), dum.occupiedlist); 
-                    }                   
+                    }
                 }
 
                 if(target.GetComponent<Exit>())
@@ -140,7 +140,7 @@ public class TurnSequencer : MonoBehaviour
                         List<Vector2Int> pathToDestination = PathFinder.FindPath(playerCharacter.coord, targetExit.coord, dum.dungeonCoords);            
                         playerCharacter.Move(new Vector3(pathToDestination[1].x, 0.1f, pathToDestination[1].y), dum.occupiedlist); 
                     }   
-                }            
+                }
 
                 //give a turn to each aggroed enemy
                 foreach(GameObject enemy in dum.aggroEnemies)
@@ -188,12 +188,12 @@ public class TurnSequencer : MonoBehaviour
                                             break;
                                         }
                                     }
-                                }        
+                                }
                             } 
                         } 
                     }
-                }                       
-            }              
+                }
+            }
         }
 
         //aggro enemies within aggroRange units            

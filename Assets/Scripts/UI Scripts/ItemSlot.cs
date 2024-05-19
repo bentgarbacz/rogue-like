@@ -6,17 +6,15 @@ using UnityEngine.UI;
 public class ItemSlot : MonoBehaviour
 {
 
-    public Item item;
+    public Item item = null;
     public Button slot;
-    void Start()
-    {
-
-        item = null;
-    }
+    private DungeonManager dum;
+    
 
     public void AddItem(Item newItem)
     {
 
+        dum = GameObject.Find("System Managers").GetComponent<DungeonManager>();
         item = newItem;
         slot.image.sprite = item.sprite;
     }
@@ -28,14 +26,17 @@ public class ItemSlot : MonoBehaviour
         slot.image.sprite = null;
     }
 
-    public void TransferItem(ItemSlot transferItemSlot)
+    public void TransferItem(ItemSlot destinationItemSlot)
     {
 
-        Item itemHold = transferItemSlot.item;
-        transferItemSlot.AddItem(item);
+        Item itemHold = destinationItemSlot.item;
+        destinationItemSlot.AddItem(item);
 
-        if(transferItemSlot.item == null)
+        dum.RemoveItem(item.itemID);
+
+        if(itemHold == null)
         {
+            
             ThrowAway();
 
         }else

@@ -9,17 +9,19 @@ public class Character : MonoBehaviour
     public Vector3 pos;
     //coord is a position in 2d space from a top down perspective
     public Vector2Int coord;
-    public int maxHealth = 100;
-    public int health;
-    public int accuracy = 75;
-    public int minDamage = 50;
-    public int maxDamage = 100;
+    public int maxHealth = 1;
+    public int health = 1;
+    public int accuracy = 100;
+    public int minDamage = 1;
+    public int maxDamage = 1;
+    public int level = 0;
+    public List<Item> dropTable = new List<Item>();
+
 
     // Start is called before the first frame update
-    void Start()
+    public virtual void Start()
     {
         
-        health = maxHealth;
         transform.position = pos;
         GetComponent<MoveToTarget>().target = pos;
         coord = new Vector2Int((int)pos.x, (int)pos.z);

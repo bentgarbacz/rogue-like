@@ -5,10 +5,12 @@ using UnityEngine;
 public class Potion : Consumable
 {
 
-    public Potion()
+    public Potion(int dropChance = 0 )
     {
+
         this.sprite = Resources.Load<Sprite>("Pixel Art/potion");
         this.title = "Potion";
+        this.dropChance = dropChance;
     }
 
 
