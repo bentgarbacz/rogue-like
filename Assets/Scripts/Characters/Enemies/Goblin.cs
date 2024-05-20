@@ -16,6 +16,6 @@ public class Goblin : Character
         maxDamage = 5;
         level = 4;
 
-        dropTable.Add(new Potion(50));
+        dropTable = "Goblin";
     }
 }

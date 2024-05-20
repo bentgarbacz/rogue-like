@@ -9166,6 +9166,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1773347466035753636, guid: 28d44c17f8893ab42b1df60713a0f72a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6442338754152421634}
+    - targetCorrespondingSourceObject: {fileID: 1773347466035753636, guid: 28d44c17f8893ab42b1df60713a0f72a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6442338754152421642}
   m_SourcePrefab: {fileID: 100100000, guid: 28d44c17f8893ab42b1df60713a0f72a, type: 3}
 --- !u!4 &6442338754152421631 stripped
 Transform:
@@ -9272,6 +9275,26 @@ MonoBehaviour:
   popUpPrefab: {fileID: 5558341210635837680, guid: 2b027f351ca2eb94d90ca350ef6ea2fa, type: 3}
   speed: 2
   destroyAfterDistance: 0.75
+--- !u!114 &6442338754152421642
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 869517488}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ebd51f1070e61c4eba459cc2c2cbc62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pos: {x: 0, y: 0, z: 0}
+  coord: {x: 0, y: 0}
+  maxHealth: 1
+  health: 1
+  accuracy: 100
+  minDamage: 1
+  maxDamage: 1
+  level: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

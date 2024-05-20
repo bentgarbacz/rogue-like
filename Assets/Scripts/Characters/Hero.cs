@@ -2,21 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Skeleton : Character
+public class Hero : Character
 {
 
     public override void Start()
     {
         
         base.Start();
-        maxHealth = 15;
+        maxHealth = 20;
         health = maxHealth;
         accuracy = 80;
-        minDamage = 1;
-        maxDamage = 3;
-        level = 3;
-
-        dropTable.Add(new Potion(50));
-        dropTable.Add(new Potion(50));
+        minDamage = 5;
+        maxDamage = 10;
+        level = 1;
     }
 }

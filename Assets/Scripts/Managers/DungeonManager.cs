@@ -40,25 +40,6 @@ public class DungeonManager : MonoBehaviour
         Destroy(target);  
     }
 
-    public void RemoveItem(Guid itemID)
-    {
-        
-        foreach(Loot l in itemContainers)
-        {
-
-            for(int i = 0; i < l.items.Count; i++)
-            {
-
-                if(itemID == l.items[i].itemID)
-                {
-
-                    l.items.RemoveAt(i);
-                    return;
-                }
-            }
-        }
-    }
-
     public void CleanUp()
     {
         

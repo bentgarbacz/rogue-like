@@ -15,7 +15,7 @@ public class Character : MonoBehaviour
     public int minDamage = 1;
     public int maxDamage = 1;
     public int level = 0;
-    public List<Item> dropTable = new List<Item>();
+    public string dropTable;
 
 
     // Start is called before the first frame update

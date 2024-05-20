@@ -17,19 +17,7 @@ public class DropLoot : MonoBehaviour
     public void Drop()
     {
 
-        List<Item> droppedItems = new List<Item>();
-
-        foreach(Item i in GetComponent<Character>().dropTable)
-        {
-
-            int rng = UnityEngine.Random.Range(0, 100);
-
-            if(rng <= i.dropChance)
-            {
-
-                droppedItems.Add(i);
-            }
-        }
+        List<Item> droppedItems = LootTableManager.CreateItems(GetComponent<Character>().dropTable);        
 
         if(droppedItems.Count > 0)
         {

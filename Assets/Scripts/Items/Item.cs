@@ -8,7 +8,6 @@ public class Item
     
     public Sprite sprite;
     public string title;
-    public Guid itemID = Guid.NewGuid();
     public int dropChance = 0;
 
     public void SetDropChance(int dc)

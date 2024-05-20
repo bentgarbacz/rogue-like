@@ -7,9 +7,11 @@ public class InventoryManager : MonoBehaviour
 {
     public List<ItemSlot> inventorySlots = new List<ItemSlot>();
     public List<ItemSlot> lootSlots = new List<ItemSlot>();
+    private readonly int inventorySlotCount = 24;
     public GameObject inventoryPanel;
     public bool inventoryIsOpen = true;
     public GameObject lootPanel;
+    private readonly int lootSlotCount = 8;
     public bool lootIsOpen = true;
 
     void Start()
@@ -25,39 +27,8 @@ public class InventoryManager : MonoBehaviour
         CloseInventoryPanel();
         CloseLootPanel();
 
-        inventorySlots.Add(invGrid.transform.GetChild(0).gameObject.GetComponent<ItemSlot>());
-        inventorySlots.Add(invGrid.transform.GetChild(1).gameObject.GetComponent<ItemSlot>());
-        inventorySlots.Add(invGrid.transform.GetChild(2).gameObject.GetComponent<ItemSlot>());
-        inventorySlots.Add(invGrid.transform.GetChild(3).gameObject.GetComponent<ItemSlot>());
-        inventorySlots.Add(invGrid.transform.GetChild(4).gameObject.GetComponent<ItemSlot>());
-        inventorySlots.Add(invGrid.transform.GetChild(5).gameObject.GetComponent<ItemSlot>());
-        inventorySlots.Add(invGrid.transform.GetChild(6).gameObject.GetComponent<ItemSlot>());
-        inventorySlots.Add(invGrid.transform.GetChild(7).gameObject.GetComponent<ItemSlot>());
-        inventorySlots.Add(invGrid.transform.GetChild(8).gameObject.GetComponent<ItemSlot>());
-        inventorySlots.Add(invGrid.transform.GetChild(9).gameObject.GetComponent<ItemSlot>());
-        inventorySlots.Add(invGrid.transform.GetChild(10).gameObject.GetComponent<ItemSlot>());
-        inventorySlots.Add(invGrid.transform.GetChild(11).gameObject.GetComponent<ItemSlot>());
-        inventorySlots.Add(invGrid.transform.GetChild(12).gameObject.GetComponent<ItemSlot>());
-        inventorySlots.Add(invGrid.transform.GetChild(13).gameObject.GetComponent<ItemSlot>());
-        inventorySlots.Add(invGrid.transform.GetChild(14).gameObject.GetComponent<ItemSlot>());
-        inventorySlots.Add(invGrid.transform.GetChild(15).gameObject.GetComponent<ItemSlot>());
-        inventorySlots.Add(invGrid.transform.GetChild(16).gameObject.GetComponent<ItemSlot>());
-        inventorySlots.Add(invGrid.transform.GetChild(17).gameObject.GetComponent<ItemSlot>());
-        inventorySlots.Add(invGrid.transform.GetChild(18).gameObject.GetComponent<ItemSlot>());
-        inventorySlots.Add(invGrid.transform.GetChild(19).gameObject.GetComponent<ItemSlot>());
-        inventorySlots.Add(invGrid.transform.GetChild(20).gameObject.GetComponent<ItemSlot>());
-        inventorySlots.Add(invGrid.transform.GetChild(21).gameObject.GetComponent<ItemSlot>());
-        inventorySlots.Add(invGrid.transform.GetChild(22).gameObject.GetComponent<ItemSlot>());
-        inventorySlots.Add(invGrid.transform.GetChild(23).gameObject.GetComponent<ItemSlot>()); 
-
-        lootSlots.Add(lootGrid.transform.GetChild(0).gameObject.GetComponent<ItemSlot>());
-        lootSlots.Add(lootGrid.transform.GetChild(1).gameObject.GetComponent<ItemSlot>());
-        lootSlots.Add(lootGrid.transform.GetChild(2).gameObject.GetComponent<ItemSlot>());
-        lootSlots.Add(lootGrid.transform.GetChild(3).gameObject.GetComponent<ItemSlot>());
-        lootSlots.Add(lootGrid.transform.GetChild(4).gameObject.GetComponent<ItemSlot>());
-        lootSlots.Add(lootGrid.transform.GetChild(5).gameObject.GetComponent<ItemSlot>());
-        lootSlots.Add(lootGrid.transform.GetChild(6).gameObject.GetComponent<ItemSlot>());
-        lootSlots.Add(lootGrid.transform.GetChild(7).gameObject.GetComponent<ItemSlot>());      
+        ConstructItemSlotList(inventorySlots, invGrid, inventorySlotCount);
+        ConstructItemSlotList(lootSlots, lootGrid, lootSlotCount);    
     }
 
     private void ConstructItemSlotList(List<ItemSlot> slotList, GameObject grid, int children)
@@ -66,7 +37,10 @@ public class InventoryManager : MonoBehaviour
         for(int i = 0; i < children; i++)
         {
 
-            slotList.Add(grid.transform.GetChild(0).gameObject.GetComponent<ItemSlot>());
+            ItemSlot slot = grid.transform.GetChild(i).gameObject.GetComponent<ItemSlot>();
+
+            slot.slotIndex = i; 
+            slotList.Add(slot);
         }
     }
 
@@ -149,7 +123,17 @@ public class InventoryManager : MonoBehaviour
         foreach(Item i in items)
         {
 
-            AddItemLoot(i);
+            foreach(ItemSlot slot in lootSlots)
+            {
+
+                if(slot.item == null)
+                {
+
+                    slot.AddItem(i);
+                    slot.itemList = items;
+                    break;
+                }
+            }
         }
     
         if(lootIsOpen == false)
@@ -170,9 +154,7 @@ public class InventoryManager : MonoBehaviour
             lootPanel.SetActive(lootIsOpen);
 
             ClearItemsLoot();
-        }
-
-        
+        }        
     }
 
     public void TakeLoot(ItemSlot targetSlot)
@@ -184,8 +166,15 @@ public class InventoryManager : MonoBehaviour
             if(i.item == null)
             {
 
+               List<Item> holdItemList = targetSlot.itemList;
+
                targetSlot.TransferItem(i);
-               targetSlot.slot.GetComponent<MouseOverItemSlot>().MouseExit();
+               
+               targetSlot.slot.GetComponent<MouseOverItemSlot>().MouseExit();               
+               CloseLootPanel();
+               OpenLootPanel(holdItemList);
+               targetSlot.slot.GetComponent<MouseOverItemSlot>().MouseEnter();
+
                break; 
             }
         }
