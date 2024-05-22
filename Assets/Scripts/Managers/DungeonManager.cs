@@ -35,15 +35,19 @@ public class DungeonManager : MonoBehaviour
         aggroEnemies.Remove(target);
         occupiedlist.Remove(targetPosition);
         enemies.Remove(target);
+
         target.GetComponent<DropLoot>().Drop();
         target.GetComponent<TextPopup>().CleanUp();
+
+        hero.GetComponent<TextPopup>().CreatePopup(hero.transform.position, 2f, (target.GetComponent<Character>().level * 5).ToString() + " XP", Color.green);
+
         Destroy(target);  
     }
 
     public void CleanUp()
     {
         
-        cachedPathsDict = new Dictionary<string, List<UnityEngine.Vector2Int>>();
+        cachedPathsDict = new Dictionary<string, List<Vector2Int>>();
         enemies = new HashSet<GameObject>();
         occupiedlist = new HashSet<Vector3>();
         itemContainers = new HashSet<Loot>();

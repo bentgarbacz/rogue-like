@@ -14,6 +14,12 @@ public static class LootTableManager
                                 "Chest",
                                 new List<Item>(){
                                     new Potion(100),
+                                    new Potion(100),
+                                    new Potion(100),
+                                    new Potion(100),
+                                    new Potion(100),
+                                    new Potion(100),
+                                    new Potion(100),
                                     new Potion(50)
                                 }
         );

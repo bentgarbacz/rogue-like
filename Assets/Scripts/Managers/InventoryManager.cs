@@ -179,4 +179,18 @@ public class InventoryManager : MonoBehaviour
             }
         }
     }
+
+    public void ContextualAction(ItemSlot targetSlot)
+    {
+
+        targetSlot.item.Use();
+
+        if(targetSlot.item is Consumable)
+        {
+            
+            targetSlot.ThrowAway();
+            targetSlot.slot.GetComponent<MouseOverItemSlot>().MouseExit();
+            targetSlot.slot.GetComponent<MouseOverItemSlot>().MouseEnter();
+        }
+    }
 }

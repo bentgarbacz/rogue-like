@@ -5,13 +5,23 @@ using UnityEngine;
 public class Potion : Consumable
 {
 
+    private GameObject hero = GameObject.Find("System Managers").GetComponent<DungeonManager>().hero;
+    private readonly int healValue = 10;
+
     public Potion(int dropChance = 0 )
     {
 
         this.sprite = Resources.Load<Sprite>("Pixel Art/potion");
-        this.title = "Potion";
-        this.dropChance = dropChance;
+        this.title = "Potion";    
+        this.description = "Drink this to regain 10 health.";    
+        this.contextText = "Drink";
+        SetDropChance(dropChance);
     }
 
+    public override void Use()
+    {
 
+        hero.GetComponent<Character>().health = System.Math.Min(hero.GetComponent<Character>().maxHealth, hero.GetComponent<Character>().health + healValue);
+
+    }
 }

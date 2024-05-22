@@ -50,6 +50,11 @@ public class MouseOverItemSlot : MonoBehaviour, IPointerEnterHandler, IPointerEx
             state = !state;
             SetChildren(state);
 
+            if(transform.GetChild(0).GetComponent<InventoryContext>())
+            {
+
+                transform.GetChild(0).GetComponent<InventoryContext>().SetText();
+            }
         }
     }
 
