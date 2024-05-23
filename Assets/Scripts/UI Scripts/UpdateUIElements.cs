@@ -8,13 +8,16 @@ public class UpdateHealth : MonoBehaviour
 {
 
     public TextMeshProUGUI healthStatus;
+    public TextMeshProUGUI hungerStatus;
+    public TextMeshProUGUI xpStatus;
+    public TextMeshProUGUI levelStatus;
     public GameObject hero;
-    private Character playerCharacter;
+    private PlayerCharacter playerCharacter;
 
     void Start()
     {
 
-        playerCharacter = hero.GetComponent<Character>();
+        playerCharacter = hero.GetComponent<PlayerCharacter>();
     }
 
     void Update()
@@ -23,6 +26,9 @@ public class UpdateHealth : MonoBehaviour
         {
 
             healthStatus.SetText(playerCharacter.health.ToString() + " / " + playerCharacter.maxHealth.ToString());
+            hungerStatus.SetText(playerCharacter.hunger.ToString());
+            xpStatus.SetText(playerCharacter.totalXP.ToString() + " / " + playerCharacter.levelUpBreakpoints[0].ToString());
+            levelStatus.SetText(playerCharacter.level.ToString());
 
         }else
         {

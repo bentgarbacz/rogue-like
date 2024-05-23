@@ -8,7 +8,7 @@ public class TurnSequencer : MonoBehaviour
 {
     public GameObject mapGen;
     public float aggroRange = 10;
-    private Character playerCharacter;
+    private PlayerCharacter playerCharacter;
     private DungeonManager dum;
     private InventoryManager im;
     private Mouse mouse;
@@ -19,7 +19,7 @@ public class TurnSequencer : MonoBehaviour
         mouse = Mouse.current;
         dum = GameObject.Find("System Managers").GetComponent<DungeonManager>();
         im = GameObject.Find("CanvasHUD").GetComponent<InventoryManager>();
-        playerCharacter = dum.hero.GetComponent<Character>();
+        playerCharacter = dum.hero.GetComponent<PlayerCharacter>();
     }   
     
     void Update()
@@ -32,6 +32,7 @@ public class TurnSequencer : MonoBehaviour
             
             playerCharacter.Move(new Vector3(dum.bufferedPath[0].x, 0.1f, dum.bufferedPath[0].y), dum.occupiedlist);
             dum.bufferedPath.RemoveAt(0);
+            playerCharacter.BecomeHungrier();
 
         }else if(mouse.leftButton.wasPressedThisFrame)
         {
@@ -44,6 +45,8 @@ public class TurnSequencer : MonoBehaviour
 
                 im.CloseInventoryPanel();
                 im.CloseLootPanel();
+
+                playerCharacter.BecomeHungrier();
 
                 if(target.GetComponent<Tile>() && target.GetComponent<Tile>().coord != playerCharacter.coord)
                 {
@@ -111,7 +114,7 @@ public class TurnSequencer : MonoBehaviour
                     if(PathFinder.GetNeighbors(targetContainer.coord, dum.dungeonCoords).Contains(playerCharacter.coord) || targetContainer.coord == playerCharacter.coord )
                     {
                         
-                        targetContainer.OpenContainer();
+                        targetContainer.OpenContainer(target);
 
                     }else //move towards container
                     {

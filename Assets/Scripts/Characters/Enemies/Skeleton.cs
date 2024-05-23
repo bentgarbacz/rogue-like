@@ -16,7 +16,6 @@ public class Skeleton : Character
         maxDamage = 3;
         level = 3;
 
-        dropTable.Add(new Potion(50));
-        dropTable.Add(new Potion(50));
+        dropTable = "Skeleton";
     }
 }

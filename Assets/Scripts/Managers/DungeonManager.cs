@@ -35,34 +35,30 @@ public class DungeonManager : MonoBehaviour
         aggroEnemies.Remove(target);
         occupiedlist.Remove(targetPosition);
         enemies.Remove(target);
+
         target.GetComponent<DropLoot>().Drop();
         target.GetComponent<TextPopup>().CleanUp();
+
+        int gainedXP = target.GetComponent<Character>().level * 5;
+        hero.GetComponent<PlayerCharacter>().GainXP(gainedXP);
+
         Destroy(target);  
     }
 
-    public void RemoveItem(Guid itemID)
+    public void TossContainer(GameObject trashContainer)
     {
-        
-        foreach(Loot l in itemContainers)
+        if(!trashContainer.GetComponent<Chest>())
         {
-
-            for(int i = 0; i < l.items.Count; i++)
-            {
-
-                if(itemID == l.items[i].itemID)
-                {
-
-                    l.items.RemoveAt(i);
-                    return;
-                }
-            }
+            
+            dungeonSpecificGameObjects.Remove(trashContainer);
+            Destroy(trashContainer);
         }
     }
 
     public void CleanUp()
     {
         
-        cachedPathsDict = new Dictionary<string, List<UnityEngine.Vector2Int>>();
+        cachedPathsDict = new Dictionary<string, List<Vector2Int>>();
         enemies = new HashSet<GameObject>();
         occupiedlist = new HashSet<Vector3>();
         itemContainers = new HashSet<Loot>();

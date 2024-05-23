@@ -15,7 +15,7 @@ public class Character : MonoBehaviour
     public int minDamage = 1;
     public int maxDamage = 1;
     public int level = 0;
-    public List<Item> dropTable = new List<Item>();
+    public string dropTable;
 
 
     // Start is called before the first frame update
@@ -61,6 +61,12 @@ public class Character : MonoBehaviour
             GetComponent<TextPopup>().CreatePopup(transform.position, 2f, "Miss", Color.white);
         }
         return health -= damage;
+    }
+
+    public void Heal(int healValue)
+    {
+
+        health = System.Math.Min(maxHealth, health + healValue);
     }
 
     public bool Move(Vector3 newPos, HashSet<Vector3> occupiedlist)

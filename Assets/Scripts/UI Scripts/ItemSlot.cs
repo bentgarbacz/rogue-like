@@ -8,13 +8,13 @@ public class ItemSlot : MonoBehaviour
 
     public Item item = null;
     public Button slot;
-    private DungeonManager dum;
-    
+    public List<Item> itemList;
+    public int slotIndex;
+   
 
     public void AddItem(Item newItem)
     {
 
-        dum = GameObject.Find("System Managers").GetComponent<DungeonManager>();
         item = newItem;
         slot.image.sprite = item.sprite;
     }
@@ -24,6 +24,7 @@ public class ItemSlot : MonoBehaviour
 
         item = null;
         slot.image.sprite = null;
+        itemList = null;
     }
 
     public void TransferItem(ItemSlot destinationItemSlot)
@@ -32,7 +33,10 @@ public class ItemSlot : MonoBehaviour
         Item itemHold = destinationItemSlot.item;
         destinationItemSlot.AddItem(item);
 
-        dum.RemoveItem(item.itemID);
+        if(itemList != null)
+        {
+            itemList.RemoveAt(slotIndex);
+        }
 
         if(itemHold == null)
         {

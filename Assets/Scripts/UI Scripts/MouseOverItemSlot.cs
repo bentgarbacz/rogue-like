@@ -37,14 +37,24 @@ public class MouseOverItemSlot : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-
         
+        MouseEnter();
+    }
+
+    public void MouseEnter()
+    {
+
         if(state == false && itemSlot.item != null)
         {
 
             state = !state;
             SetChildren(state);
 
+            if(transform.GetChild(0).GetComponent<InventoryContext>())
+            {
+
+                transform.GetChild(0).GetComponent<InventoryContext>().SetText();
+            }
         }
     }
 

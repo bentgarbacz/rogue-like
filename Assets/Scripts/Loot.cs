@@ -20,10 +20,10 @@ public class Loot : MonoBehaviour
         items = newItems;
     }
 
-    public void OpenContainer()
+    public void OpenContainer(GameObject container)
     {
 
-        im.OpenLootPanel(items);
+        im.OpenLootPanel(items, container);
         im.OpenInventoryPanel();
     }
 }

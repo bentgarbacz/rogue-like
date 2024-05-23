@@ -16,17 +16,7 @@ public class ToggleButton : MonoBehaviour
     public void Click()
     {
 
-        if(im.inventoryIsOpen)
-        {
-
-            im.CloseInventoryPanel();
-            im.CloseLootPanel();
-
-        }else if(!im.inventoryIsOpen)
-        {
-
-            im.OpenInventoryPanel();
-        }
+        im.ToggleInventory();
     }
 
 }

@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
-public class TakeLoot : MonoBehaviour
+public class InventoryContext : MonoBehaviour
 {
 
     private InventoryManager im;
     private ItemSlot itemSlot;
+    public TextMeshProUGUI contextTextBox; 
 
     void Start()
     {
@@ -18,6 +20,12 @@ public class TakeLoot : MonoBehaviour
     public void Click()
     {
         
-        im.TakeLoot(itemSlot);
-    }    
+        im.ContextualAction(itemSlot);
+    }
+
+    public void SetText()
+    {
+
+        contextTextBox.SetText(itemSlot.item.contextText);
+    }
 }
