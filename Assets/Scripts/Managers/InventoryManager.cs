@@ -13,10 +13,13 @@ public class InventoryManager : MonoBehaviour
     public GameObject lootPanel;
     private readonly int lootSlotCount = 8;
     public bool lootIsOpen = true;
+    public GameObject currentLootContainer;
+    private DungeonManager dum;
 
     void Start()
     {
 
+        dum = GameObject.Find("System Managers").GetComponent<DungeonManager>();
         InactiveReferences ir = GameObject.Find("CanvasHUD").GetComponent<InactiveReferences>();
         inventoryPanel = ir.InventoryPanel;
         lootPanel = ir.LootPanel;        
@@ -90,6 +93,22 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
+    public void ToggleInventory()
+    {
+
+        if(inventoryIsOpen)
+        {
+
+            CloseInventoryPanel();
+            CloseLootPanel();
+
+        }else if(!inventoryIsOpen)
+        {
+
+            OpenInventoryPanel();
+        }
+    }
+
     public bool AddItemLoot(Item lootItem)
     {
         
@@ -117,8 +136,10 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
-    public void OpenLootPanel(List<Item> items)
+    public void OpenLootPanel(List<Item> items, GameObject container)
     {
+
+        currentLootContainer = container;
 
         foreach(Item i in items)
         {
@@ -134,6 +155,12 @@ public class InventoryManager : MonoBehaviour
                     break;
                 }
             }
+        }
+
+        if(items.Count == 0)
+        {
+
+            dum.TossContainer(container);
         }
     
         if(lootIsOpen == false)
@@ -172,7 +199,7 @@ public class InventoryManager : MonoBehaviour
                
                targetSlot.slot.GetComponent<MouseOverItemSlot>().MouseExit();               
                CloseLootPanel();
-               OpenLootPanel(holdItemList);
+               OpenLootPanel(holdItemList, currentLootContainer);
                targetSlot.slot.GetComponent<MouseOverItemSlot>().MouseEnter();
 
                break; 

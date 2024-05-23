@@ -21,7 +21,6 @@ public class Potion : Consumable
     public override void Use()
     {
 
-        hero.GetComponent<Character>().health = System.Math.Min(hero.GetComponent<Character>().maxHealth, hero.GetComponent<Character>().health + healValue);
-
+        hero.GetComponent<Character>().Heal(healValue);
     }
 }

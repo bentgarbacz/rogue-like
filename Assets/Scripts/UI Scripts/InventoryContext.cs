@@ -27,6 +27,5 @@ public class InventoryContext : MonoBehaviour
     {
 
         contextTextBox.SetText(itemSlot.item.contextText);
-
     }
 }

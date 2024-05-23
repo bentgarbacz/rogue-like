@@ -9,4 +9,5 @@ public class InactiveReferences : MonoBehaviour
     //Prefabs that need references to inactive GameObjects should reference this.
     public GameObject InventoryPanel;
     public GameObject LootPanel;
+    public GameObject PausePanel;
 }

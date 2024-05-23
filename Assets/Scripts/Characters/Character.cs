@@ -63,6 +63,12 @@ public class Character : MonoBehaviour
         return health -= damage;
     }
 
+    public void Heal(int healValue)
+    {
+
+        health = System.Math.Min(maxHealth, health + healValue);
+    }
+
     public bool Move(Vector3 newPos, HashSet<Vector3> occupiedlist)
     {
 

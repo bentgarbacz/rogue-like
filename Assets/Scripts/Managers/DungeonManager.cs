@@ -39,9 +39,20 @@ public class DungeonManager : MonoBehaviour
         target.GetComponent<DropLoot>().Drop();
         target.GetComponent<TextPopup>().CleanUp();
 
-        hero.GetComponent<TextPopup>().CreatePopup(hero.transform.position, 2f, (target.GetComponent<Character>().level * 5).ToString() + " XP", Color.green);
+        int gainedXP = target.GetComponent<Character>().level * 5;
+        hero.GetComponent<PlayerCharacter>().GainXP(gainedXP);
 
         Destroy(target);  
+    }
+
+    public void TossContainer(GameObject trashContainer)
+    {
+        if(!trashContainer.GetComponent<Chest>())
+        {
+            
+            dungeonSpecificGameObjects.Remove(trashContainer);
+            Destroy(trashContainer);
+        }
     }
 
     public void CleanUp()
