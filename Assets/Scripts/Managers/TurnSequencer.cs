@@ -11,6 +11,7 @@ public class TurnSequencer : MonoBehaviour
     private PlayerCharacter playerCharacter;
     private DungeonManager dum;
     private InventoryManager im;
+    private UIActiveManager uiam;
     private Mouse mouse;
 
     void Start()
@@ -19,6 +20,7 @@ public class TurnSequencer : MonoBehaviour
         mouse = Mouse.current;
         dum = GameObject.Find("System Managers").GetComponent<DungeonManager>();
         im = GameObject.Find("CanvasHUD").GetComponent<InventoryManager>();
+        uiam = GameObject.Find("System Managers").GetComponent<UIActiveManager>();
         playerCharacter = dum.hero.GetComponent<PlayerCharacter>();
     }   
     
@@ -40,11 +42,11 @@ public class TurnSequencer : MonoBehaviour
             GameObject target = GetComponent<ClickManager>().getObject(mouse);   
 
             //execute action if actionable object was clicked
-            if(target != null && im.IsPointerOverUI() == false)
+            if(target != null && uiam.IsPointerOverUI() == false)
             {
 
-                im.CloseInventoryPanel();
-                im.CloseLootPanel();
+                uiam.CloseInventoryPanel();
+                uiam.CloseLootPanel();
 
                 playerCharacter.BecomeHungrier();
 

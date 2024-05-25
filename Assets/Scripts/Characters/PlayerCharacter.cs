@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class PlayerCharacter : Character
 {
-    public int hunger = 1000;
+    public int hunger;
+    private int maxHunger = 1000;
     private int hungerBuffer = 0;
     public int totalXP = 0;
     public List<int> levelUpBreakpoints = new List<int>{20, 50, 90, 140, 200};
@@ -19,6 +20,7 @@ public class PlayerCharacter : Character
         minDamage = 5;
         maxDamage = 10;
         level = 1;
+        hunger = maxHunger;
     }
 
     public void GainXP(int XP)
@@ -50,6 +52,12 @@ public class PlayerCharacter : Character
     {
         
         level += 1;
+    }
+
+    public void SatiateHunger(int hungerValue)
+    {
+
+        hunger = System.Math.Min(maxHunger, hunger + hungerValue);
     }
 
     public void BecomeHungrier(int hungerValue = 1)

@@ -6,12 +6,12 @@ public class Loot : MonoBehaviour
 {
     public Vector2Int coord;
     public List<Item> items;
-    private InventoryManager im;
+    private UIActiveManager uiam;
 
     void Start()
     {
         
-        im = GameObject.Find("CanvasHUD").GetComponent<InventoryManager>();
+        uiam = GameObject.Find("System Managers").GetComponent<UIActiveManager>();
     }
 
     public void AddItems(List<Item> newItems)
@@ -23,7 +23,8 @@ public class Loot : MonoBehaviour
     public void OpenContainer(GameObject container)
     {
 
-        im.OpenLootPanel(items, container);
-        im.OpenInventoryPanel();
+        uiam.OpenLootPanel(items, container);
+        
+        uiam.OpenInventoryPanel();
     }
 }
