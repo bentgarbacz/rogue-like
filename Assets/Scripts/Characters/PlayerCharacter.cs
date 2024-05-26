@@ -20,6 +20,7 @@ public class PlayerCharacter : Character
         minDamage = 5;
         maxDamage = 10;
         level = 1;
+        speed = 10;
         hunger = maxHunger;
     }
 

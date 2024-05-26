@@ -10,13 +10,11 @@ public class InventoryManager : MonoBehaviour
     private readonly int inventorySlotCount = 24;
     private readonly int lootSlotCount = 8;
     public GameObject currentLootContainer;
-    private DungeonManager dum;
     private UIActiveManager uiam;
 
     void Start()
     {
 
-        dum = GameObject.Find("System Managers").GetComponent<DungeonManager>();
         uiam = GameObject.Find("System Managers").GetComponent<UIActiveManager>();
 
         GameObject invGrid = uiam.inventoryPanel.transform.GetChild(0).gameObject;

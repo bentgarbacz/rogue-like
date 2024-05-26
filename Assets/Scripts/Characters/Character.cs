@@ -15,6 +15,7 @@ public class Character : MonoBehaviour
     public int minDamage = 1;
     public int maxDamage = 1;
     public int level = 0;
+    public int speed;
     public string dropTable;
 
 
