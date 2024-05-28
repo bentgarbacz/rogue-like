@@ -15,6 +15,7 @@ public class Skeleton : Character
         minDamage = 1;
         maxDamage = 3;
         level = 3;
+        speed = 11;
 
         dropTable = "Skeleton";
     }

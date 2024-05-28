@@ -8,27 +8,17 @@ public class InventoryManager : MonoBehaviour
     public List<ItemSlot> inventorySlots = new List<ItemSlot>();
     public List<ItemSlot> lootSlots = new List<ItemSlot>();
     private readonly int inventorySlotCount = 24;
-    public GameObject inventoryPanel;
-    public bool inventoryIsOpen = true;
-    public GameObject lootPanel;
     private readonly int lootSlotCount = 8;
-    public bool lootIsOpen = true;
     public GameObject currentLootContainer;
-    private DungeonManager dum;
+    private UIActiveManager uiam;
 
     void Start()
     {
 
-        dum = GameObject.Find("System Managers").GetComponent<DungeonManager>();
-        InactiveReferences ir = GameObject.Find("CanvasHUD").GetComponent<InactiveReferences>();
-        inventoryPanel = ir.InventoryPanel;
-        lootPanel = ir.LootPanel;        
+        uiam = GameObject.Find("System Managers").GetComponent<UIActiveManager>();
 
-        GameObject invGrid = inventoryPanel.transform.GetChild(0).gameObject;
-        GameObject lootGrid = lootPanel.transform.GetChild(0).gameObject;
-
-        CloseInventoryPanel();
-        CloseLootPanel();
+        GameObject invGrid = uiam.inventoryPanel.transform.GetChild(0).gameObject;
+        GameObject lootGrid = uiam.lootPanel.transform.GetChild(0).gameObject;
 
         ConstructItemSlotList(inventorySlots, invGrid, inventorySlotCount);
         ConstructItemSlotList(lootSlots, lootGrid, lootSlotCount);    
@@ -47,12 +37,6 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
-    public bool IsPointerOverUI()
-    {
-
-        return EventSystem.current.IsPointerOverGameObject();
-    }
-
     public bool AddItemInventory(Item invItem)
     {
 
@@ -68,45 +52,6 @@ public class InventoryManager : MonoBehaviour
         }
 
         return false;
-    }
-
-    public void OpenInventoryPanel()
-    {
-
-        if(inventoryIsOpen == false)
-        {
-
-            inventoryIsOpen = true;
-            inventoryPanel.SetActive(inventoryIsOpen);
-        }
-    }
-
-    public void CloseInventoryPanel()
-    {
-
-        
-        if(inventoryIsOpen == true)
-        {
-
-            inventoryIsOpen = false;
-            inventoryPanel.SetActive(inventoryIsOpen);
-        }
-    }
-
-    public void ToggleInventory()
-    {
-
-        if(inventoryIsOpen)
-        {
-
-            CloseInventoryPanel();
-            CloseLootPanel();
-
-        }else if(!inventoryIsOpen)
-        {
-
-            OpenInventoryPanel();
-        }
     }
 
     public bool AddItemLoot(Item lootItem)
@@ -136,54 +81,6 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
-    public void OpenLootPanel(List<Item> items, GameObject container)
-    {
-
-        currentLootContainer = container;
-
-        foreach(Item i in items)
-        {
-
-            foreach(ItemSlot slot in lootSlots)
-            {
-
-                if(slot.item == null)
-                {
-
-                    slot.AddItem(i);
-                    slot.itemList = items;
-                    break;
-                }
-            }
-        }
-
-        if(items.Count == 0)
-        {
-
-            dum.TossContainer(container);
-        }
-    
-        if(lootIsOpen == false)
-        {
-
-            lootIsOpen = true;
-            lootPanel.SetActive(lootIsOpen);
-        }
-    }
-
-    public void CloseLootPanel()
-    {
-
-        if(lootIsOpen == true)
-        {
-
-            lootIsOpen = false;
-            lootPanel.SetActive(lootIsOpen);
-
-            ClearItemsLoot();
-        }        
-    }
-
     public void TakeLoot(ItemSlot targetSlot)
     {
 
@@ -198,8 +95,8 @@ public class InventoryManager : MonoBehaviour
                targetSlot.TransferItem(i);
                
                targetSlot.slot.GetComponent<MouseOverItemSlot>().MouseExit();               
-               CloseLootPanel();
-               OpenLootPanel(holdItemList, currentLootContainer);
+               uiam.CloseLootPanel();
+               uiam.OpenLootPanel(holdItemList, currentLootContainer);
                targetSlot.slot.GetComponent<MouseOverItemSlot>().MouseEnter();
 
                break; 

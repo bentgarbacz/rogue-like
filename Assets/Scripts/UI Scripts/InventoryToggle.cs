@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PauseToggle : MonoBehaviour
+public class InventoryToggle : MonoBehaviour
 {
-    
+
+
     private UIActiveManager uiam;
-    
+
     void Start()
     {
 
@@ -16,6 +17,7 @@ public class PauseToggle : MonoBehaviour
     public void Click()
     {
 
-        uiam.TogglePause();
+        uiam.ToggleInventory();
     }
+
 }

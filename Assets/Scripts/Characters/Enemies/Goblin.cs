@@ -15,6 +15,7 @@ public class Goblin : Character
         minDamage = 1;
         maxDamage = 5;
         level = 4;
+        speed = 8;
 
         dropTable = "Goblin";
     }

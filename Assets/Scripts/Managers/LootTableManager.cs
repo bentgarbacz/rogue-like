@@ -13,22 +13,18 @@ public static class LootTableManager
         lootTableLookup.Add(
                                 "Chest",
                                 new List<Item>(){
-                                    new Potion(100),
-                                    new Potion(100),
-                                    new Potion(100),
-                                    new Potion(100),
-                                    new Potion(100),
-                                    new Potion(100),
-                                    new Potion(100),
-                                    new Potion(50)
+                                    new Potion(50),
+                                    new Potion(50),  
+                                    new Meat(50),
+                                    new Meat(50)
                                 }
         );
 
         lootTableLookup.Add(
                                 "Goblin",
                                 new List<Item>(){
-                                    new Potion(100),
-                                    new Potion(50)
+                                    new Potion(50),
+                                    new Meat(100)
                                 }
         );
 
@@ -36,8 +32,7 @@ public static class LootTableManager
                                 "Skeleton",
                                 new List<Item>(){
                                     new Potion(100),
-                                    new Potion(100),
-                                    new Potion(50)
+                                    new Meat(50)
                                 }
         );
 

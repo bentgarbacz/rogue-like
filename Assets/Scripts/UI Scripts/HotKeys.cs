@@ -5,17 +5,12 @@ using UnityEngine;
 public class HotKeys : MonoBehaviour
 {
 
-    private GameObject canvasHUD;
-    private InventoryManager im;
-    private InactiveReferences ir;
-    private bool stateHUD = true;
+    private UIActiveManager uiam;
 
     void Start()
     {
 
-        canvasHUD = GameObject.Find("CanvasHUD");
-        im = canvasHUD.GetComponent<InventoryManager>();
-        ir = canvasHUD.GetComponent<InactiveReferences>();
+        uiam = GameObject.Find("System Managers").GetComponent<UIActiveManager>();
     }
 
     void Update()
@@ -24,28 +19,18 @@ public class HotKeys : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.Escape))
         {
 
-            TogglePause();
-        }
+            uiam.TogglePause();
 
-        if(Input.GetKeyDown(KeyCode.I))
+        }else if(Input.GetKeyDown(KeyCode.I))
         {
             
-            im.ToggleInventory();
+            uiam.ToggleInventory();
+
+        }else if(Input.GetKeyDown(KeyCode.C))
+        {
+
+            uiam.ToggleCharacter();
         }
-    }
-
-    public void TogglePause()
-    {
-        stateHUD = !stateHUD;
-
-            foreach (Transform child in canvasHUD.transform)
-            {
-
-                child.gameObject.SetActive(stateHUD);
-                ir.LootPanel.SetActive(false);
-                ir.InventoryPanel.SetActive(false);
-                ir.PausePanel.SetActive(!stateHUD);
-            }
     }
     
 }
