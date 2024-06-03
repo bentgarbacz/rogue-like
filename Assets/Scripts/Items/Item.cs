@@ -9,8 +9,17 @@ public class Item
     public Sprite sprite;
     public string title;
     public string description;
-    public int dropChance = 0;
-    public string contextText = "";
+    public int dropChance;
+    public string contextText;
+    public AudioClip contextClip;
+
+    public Item()
+    {
+
+        dropChance = 0;
+        contextText = "N/A";
+        contextClip = Resources.Load<AudioClip>("Sounds/Click");
+    }
 
     public void SetDropChance(int dc)
     {

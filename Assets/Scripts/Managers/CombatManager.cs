@@ -24,16 +24,17 @@ public class CombatManager : MonoBehaviour
         if(combatBuffer.Count > 0 && fighting == false)
         {
             
+            //Initiates combat and notifies listeners
             fighting = true;
-
             SortBuffer();
-
             StartCoroutine(CombatTurns());
         }
     }
 
     private IEnumerator CombatTurns()
     {
+
+        
 
         while(combatBuffer.Count > 0)
         {
@@ -52,7 +53,8 @@ public class CombatManager : MonoBehaviour
 
                     if(combatBuffer[0].Item2 == combatBuffer[i].Item1)
                     {
-
+                        
+                        //removes attacks from dead combatants
                         combatBuffer.RemoveAt(i);
                         i--;
                     }
@@ -62,22 +64,23 @@ public class CombatManager : MonoBehaviour
             }
             
             combatBuffer.RemoveAt(0);
-            yield return new WaitForSeconds(attackTime);
-            
+            yield return new WaitForSeconds(attackTime);            
         }
         
+        //signals that fighting for the turn is over and regular gameplay can commence
         fighting = false;
     }
 
     public void AddToCombatBuffer(GameObject attacker, GameObject defender)
     {
 
+        //add attack to combat buffer
         combatBuffer.Add((attacker, defender));        
     }
 
     private void SortBuffer()
     {
-
+        //sort combat buffer so fastest characters attack first
         int bufferIndex = combatBuffer.Count;
 
         while(bufferIndex > 1)

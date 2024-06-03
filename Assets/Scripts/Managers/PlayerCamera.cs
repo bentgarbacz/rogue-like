@@ -17,6 +17,7 @@ public class PlayerCamera : MonoBehaviour
 
     void Start()
     {
+
         fov = Camera.main.fieldOfView;
         RotateCamera();
     }
@@ -62,7 +63,7 @@ public class PlayerCamera : MonoBehaviour
         Camera.main.fieldOfView = fov;
     }
 
-    public void setFocalPoint(GameObject focalPoint){
+    public void SetFocalPoint(GameObject focalPoint){
 
         this.focalPoint = focalPoint;  
     }

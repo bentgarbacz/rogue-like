@@ -10,6 +10,7 @@ public class ItemSlot : MonoBehaviour
     public Button slot;
     public List<Item> itemList;
     public int slotIndex;
+    public string type;
    
 
     public void AddItem(Item newItem)
@@ -35,6 +36,7 @@ public class ItemSlot : MonoBehaviour
 
         if(itemList != null)
         {
+            
             itemList.RemoveAt(slotIndex);
         }
 

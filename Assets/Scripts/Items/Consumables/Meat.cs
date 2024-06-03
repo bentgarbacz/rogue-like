@@ -15,6 +15,7 @@ public class Meat : Consumable
         this.title = "Meat";    
         this.description = "Eat to reduce your hunger";    
         this.contextText = "Eat";
+        this.contextClip = Resources.Load<AudioClip>("Sounds/Eat");
         SetDropChance(dropChance);
     }
 

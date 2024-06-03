@@ -12,11 +12,23 @@ public class Character : MonoBehaviour
     public int maxHealth = 1;
     public int health = 1;
     public int accuracy = 100;
-    public int minDamage = 1;
-    public int maxDamage = 1;
+    public int minDamage = 0;
+    public int maxDamage = 0;
     public int level = 0;
     public int speed;
+    public int critChance;
+    public int critMultiplier = 2;
+    public int vitality = 0;
+    public int strength = 0;
+    public int dexterity = 0;
+    public int intelligence = 0;
+    public int armor = 0;
+    public int evasion = 0;
+    
     public string dropTable;
+    public AudioSource audioSource;
+    public AudioClip attackClip;
+    public AudioClip missClip;
 
 
     // Start is called before the first frame update
@@ -26,6 +38,9 @@ public class Character : MonoBehaviour
         transform.position = pos;
         GetComponent<MoveToTarget>().target = pos;
         coord = new Vector2Int((int)pos.x, (int)pos.z);
+
+        audioSource = gameObject.AddComponent<AudioSource>();
+        missClip = Resources.Load<AudioClip>("Sounds/Miss");
     }
 
     public void Attack(Character target)
@@ -34,33 +49,59 @@ public class Character : MonoBehaviour
         //turn towards target
         transform.rotation = Quaternion.Euler(0, DetermineRotation(pos, target.pos), 0);
 
+        float hitChance = (((float)accuracy - (float)target.evasion) / (float)accuracy) * 100f;
+
         //roll to see if you hit
-        if(Random.Range(0, 100) <= accuracy)
+        if(Random.Range(0, 100) <= hitChance)
         {
 
-            //roll damage
-            target.TakeDamage(Random.Range(minDamage, maxDamage + 1));
+            audioSource.PlayOneShot(attackClip);
+
+            //Determine if attack was critical
+            bool isCrit = false;
+
+            if(Random.Range(0, 100) < critChance)
+            {
+
+                isCrit = true;
+            }        
+
+            target.TakeDamage(Random.Range(minDamage, maxDamage + 1), isCrit);
         
         }else
         {
 
             //take 0 damage on miss
+            audioSource.PlayOneShot(missClip);
             target.TakeDamage(0);
         }
     }
 
-    public int TakeDamage(int damage)
+    public int TakeDamage(int damage, bool isCrit = false, int critMultiplier = 2)
     {
         
+        damage = Mathf.Max(0, damage - armor);
+
         if(damage > 0)
         {
-            GetComponent<TextPopup>().CreatePopup(transform.position, 3f, damage.ToString(), Color.red);
+            if(isCrit)
+            {
+
+                damage *= critMultiplier;
+                GetComponent<TextPopup>().CreatePopup(transform.position, 3f, damage.ToString(), Color.yellow);
+
+            }else
+            {
+
+                GetComponent<TextPopup>().CreatePopup(transform.position, 3f, damage.ToString(), Color.red);
+            }            
 
         }else
         {
 
             GetComponent<TextPopup>().CreatePopup(transform.position, 2f, "Miss", Color.white);
         }
+
         return health -= damage;
     }
 
@@ -70,7 +111,7 @@ public class Character : MonoBehaviour
         health = System.Math.Min(maxHealth, health + healValue);
     }
 
-    public bool Move(Vector3 newPos, HashSet<Vector3> occupiedlist)
+    public virtual bool Move(Vector3 newPos, HashSet<Vector3> occupiedlist)
     {
 
         if(!occupiedlist.Contains(newPos))

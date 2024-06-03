@@ -20,7 +20,7 @@ public class DungeonManager : MonoBehaviour
     void Start()
     {
 
-        mainCamera.GetComponent<PlayerCamera>().setFocalPoint(hero);
+        mainCamera.GetComponent<PlayerCamera>().SetFocalPoint(hero);
     }
 
     public void AddGameObject(GameObject newGameObject)

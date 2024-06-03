@@ -8,15 +8,21 @@ public static class LootTableManager
 
     private static Dictionary<string, List<Item>> SetLootTables()
     {
+
+        //Dictionary containing ledger of potential items that can spawn from various entities
         Dictionary<string, List<Item>> lootTableLookup = new Dictionary<string, List<Item>>();
 
         lootTableLookup.Add(
                                 "Chest",
                                 new List<Item>(){
-                                    new Potion(50),
-                                    new Potion(50),  
-                                    new Meat(50),
-                                    new Meat(50)
+                                    new Amulet(100),
+                                    new Dagger(100),  
+                                    new Dagger(100),
+                                    new PlateBody(100),
+                                    new Shield(100),
+                                    new Ring(100),
+                                    new LeatherHelm(100),
+                                    new LeatherBoots(100)
                                 }
         );
 
@@ -24,6 +30,7 @@ public static class LootTableManager
                                 "Goblin",
                                 new List<Item>(){
                                     new Potion(50),
+                                    new Dagger(50),
                                     new Meat(100)
                                 }
         );
@@ -38,9 +45,11 @@ public static class LootTableManager
 
         return lootTableLookup;
     }
+
     public static List<Item> CreateItems(string dropTable)
     {
 
+        //Randomly generate items for a given entity
         List<Item> droppedItems = new List<Item>();
 
         foreach(Item i in lootTableLookup[dropTable])

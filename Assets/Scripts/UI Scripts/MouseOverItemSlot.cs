@@ -5,16 +5,18 @@ using UnityEngine.EventSystems;
 
 public class MouseOverItemSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
+    
     public List<GameObject> children = new List<GameObject>();
     public bool state = false;
     private ItemSlot itemSlot;
     private InventoryManager im;
+    private ToolTipManager ttm;
 
     void Start()
     {
 
         itemSlot = GetComponent<ItemSlot>();
-        im = GameObject.Find("CanvasHUD").GetComponent<InventoryManager>();
+        im = GameObject.Find("System Managers").GetComponent<InventoryManager>();
 
         foreach (Transform child in transform)
         {
@@ -60,6 +62,7 @@ public class MouseOverItemSlot : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
     public void OnPointerExit(PointerEventData eventData)
     {
+
         MouseExit();
     }
 
