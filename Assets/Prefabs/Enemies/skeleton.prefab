@@ -185,3 +185,7 @@ MonoBehaviour:
   minDamage: 1
   maxDamage: 1
   level: 0
+  speed: 0
+  dropTable: 
+  audioSource: {fileID: 0}
+  attackClip: {fileID: 0}

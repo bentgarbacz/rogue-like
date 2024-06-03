@@ -93,8 +93,6 @@ public class MapGenerator : MonoBehaviour
                     {
 
                         GameObject newTile;
-                        //Quaternion tileRotation = Quaternion.Euler(0, UnityEngine.Random.Range(0, 3) * 90, 0);
-                        //floorTile.transform.rotation
 
                         if(spawnRNG <= 1000 && spawnRNG >= 997)
                         {
@@ -203,6 +201,7 @@ public class MapGenerator : MonoBehaviour
 
     private void GenerateWalls(HashSet<Vector2Int> path){
 
+        //finds border tiles and places walls adjacent to them
         HashSet<Vector2Int> wallMap = new HashSet<Vector2Int>();
 
         foreach(Vector2Int t in path)

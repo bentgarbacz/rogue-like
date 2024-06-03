@@ -7,11 +7,13 @@ public class Loot : MonoBehaviour
     public Vector2Int coord;
     public List<Item> items;
     private UIActiveManager uiam;
+    private AudioSource audioSource;
 
     void Start()
     {
         
         uiam = GameObject.Find("System Managers").GetComponent<UIActiveManager>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     public void AddItems(List<Item> newItems)
@@ -23,8 +25,9 @@ public class Loot : MonoBehaviour
     public void OpenContainer(GameObject container)
     {
 
-        uiam.OpenLootPanel(items, container);
-        
+        audioSource.Play();
+
+        uiam.OpenLootPanel(items, container);        
         uiam.OpenInventoryPanel();
     }
 }

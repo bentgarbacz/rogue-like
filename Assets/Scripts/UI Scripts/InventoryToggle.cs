@@ -7,17 +7,20 @@ public class InventoryToggle : MonoBehaviour
 
 
     private UIActiveManager uiam;
+    private AudioSource audioSource;
 
     void Start()
     {
 
         uiam = GameObject.Find("System Managers").GetComponent<UIActiveManager>();
+        audioSource = GameObject.Find("CanvasHUD").GetComponent<AudioSource>();
     }
 
     public void Click()
     {
 
-        uiam.ToggleInventory();
+        audioSource.Play();
+        uiam.ToggleInventory();        
     }
 
 }

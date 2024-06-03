@@ -5,18 +5,21 @@ using UnityEngine.InputSystem;
 
 public class ClickManager : MonoBehaviour
 {
-    Camera m_Camera;
+    
+    Camera mainCamera;
+
     void Awake()
     {
-        m_Camera = Camera.main;
+        mainCamera = Camera.main;
     }
 
     public GameObject getObject(Mouse mouse)
     {
 
         Vector3 mousePosition = mouse.position.ReadValue();
-        Ray ray = m_Camera.ScreenPointToRay(mousePosition);
+        Ray ray = mainCamera.ScreenPointToRay(mousePosition);
 
+        //returns GameObject hit by ray
         if (Physics.Raycast(ray, out RaycastHit hit))
         {            
 

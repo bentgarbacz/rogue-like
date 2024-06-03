@@ -15,6 +15,7 @@ public class Potion : Consumable
         this.title = "Potion";    
         this.description = "Drink this to regain 10 health.";    
         this.contextText = "Drink";
+        this.contextClip = Resources.Load<AudioClip>("Sounds/Drink");
         SetDropChance(dropChance);
     }
 

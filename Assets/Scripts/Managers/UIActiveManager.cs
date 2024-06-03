@@ -15,15 +15,18 @@ public class UIActiveManager : MonoBehaviour
     public bool pauseIsOpen = false;
     public GameObject characterPanel;
     public bool characterIsOpen = false; 
-    private DungeonManager dum;
+    public GameObject equipmentPanel;
+    //public GameObject  toolTipContainer;
+    //public bool toolTipContainerIsOpen = false;
+
     private InventoryManager im;
 
     void Start()
     {
 
-        dum = GameObject.Find("System Managers").GetComponent<DungeonManager>();
-        canvasHUD = GameObject.Find("CanvasHUD"); 
-        im = canvasHUD.GetComponent<InventoryManager>();               
+        im = GameObject.Find("System Managers").GetComponent<InventoryManager>();   
+
+        canvasHUD = GameObject.Find("CanvasHUD");            
     }
 
     public bool IsPointerOverUI()
@@ -62,40 +65,21 @@ public class UIActiveManager : MonoBehaviour
             CloseInventoryPanel();
             CloseLootPanel();
 
-        }else if(!inventoryIsOpen)
+        }else if(!inventoryIsOpen && !pauseIsOpen)
         {
 
+            CloseCharacterPanel();
             OpenInventoryPanel();
         }
     }
 
+    //items - list of items that will be looted
+    //container - GameObject that contains items list, used for disposal if necessary
     public void OpenLootPanel(List<Item> items, GameObject container)
     {
         
-        im.currentLootContainer = container;
-        
-        foreach(Item i in items)
-        {
-
-            foreach(ItemSlot slot in im.lootSlots)
-            {
-
-                if(slot.item == null)
-                {
-
-                    slot.AddItem(i);
-                    slot.itemList = items;
-                    break;
-                }
-            }
-        }
-
-        if(items.Count == 0)
-        {
-
-            dum.TossContainer(container);
-        }
-    
+        im.PopulateLootSlots(items, container);
+            
         if(lootIsOpen == false)
         {
 
@@ -121,12 +105,14 @@ public class UIActiveManager : MonoBehaviour
     {
         pauseIsOpen = !pauseIsOpen;
 
+        //disable UI elements that are not  thepause menu
         foreach (Transform child in canvasHUD.transform)
         {
 
             child.gameObject.SetActive(!pauseIsOpen);
             lootPanel.SetActive(false);
             inventoryPanel.SetActive(false);
+            characterPanel.SetActive(false);
             pausePanel.SetActive(pauseIsOpen);
         }
     }
@@ -161,10 +147,34 @@ public class UIActiveManager : MonoBehaviour
 
             CloseCharacterPanel();
 
-        }else if(!characterIsOpen)
+        }else if(!characterIsOpen && !pauseIsOpen)
         {
 
+            CloseInventoryPanel();
+            CloseLootPanel();
             OpenCharacterPanel();
         }
     }
+
+    /* public void ShowToolTip()
+    {
+
+        if(toolTipContainerIsOpen == false)
+        {
+
+            characterIsOpen = false;
+            characterPanel.SetActive(characterIsOpen);
+        }
+    }
+
+    public void HideToolTip()
+    {
+
+        if(toolTipContainerIsOpen == true)
+        {
+
+            characterIsOpen = false;
+            characterPanel.SetActive(characterIsOpen);
+        }
+    } */
 }

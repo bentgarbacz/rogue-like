@@ -167,7 +167,7 @@ public class TurnSequencer : MonoBehaviour
                                 if(!nonPlayerCharacter.Move(new Vector3(pathToPlayer[1].x, 0.1f, pathToPlayer[1].y), dum.occupiedlist))
                                 {                  
                                     
-                                    //...if that spot is occupied then try to path to a tile adjascent to player character 
+                                    //...if that spot is occupied then try to path to a tile adjacent to player character 
                                     foreach(Vector2Int v in NeighborVals.allDirectionsList)
                                     {
 
@@ -206,6 +206,7 @@ public class TurnSequencer : MonoBehaviour
             }
         }
 
+        //start combat for the turn
         cbm.CommenceCombat();
     }
 }

@@ -5,4 +5,9 @@ using UnityEngine;
 public class Consumable : Item
 {
     
+    public Consumable()
+    {
+
+        contextText = "Consume";
+    }
 }

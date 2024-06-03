@@ -11,12 +11,15 @@ public class Goblin : Character
         base.Start();
         maxHealth = 20;
         health = maxHealth;
-        accuracy = 66;
+        accuracy = 100;
         minDamage = 1;
         maxDamage = 5;
         level = 4;
         speed = 8;
+        evasion = 50;
 
         dropTable = "Goblin";
+
+        attackClip = Resources.Load<AudioClip>("Sounds/Frog");
     }
 }
