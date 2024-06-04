@@ -16,6 +16,11 @@ public class UIActiveManager : MonoBehaviour
     public GameObject characterPanel;
     public bool characterIsOpen = false; 
     public GameObject equipmentPanel;
+    public GameObject levelUpNotification;
+    public GameObject addStrengthButton;
+    public GameObject addDexterityButton;
+    public GameObject addIntelligenceButton;
+    public bool levelUpNotificationIsValid = false; 
     //public GameObject  toolTipContainer;
     //public bool toolTipContainerIsOpen = false;
 
@@ -153,6 +158,34 @@ public class UIActiveManager : MonoBehaviour
             CloseInventoryPanel();
             CloseLootPanel();
             OpenCharacterPanel();
+        }
+    }
+
+    public void ShowLevelUpNotifications()
+    {
+
+        if(levelUpNotificationIsValid == false)
+        {
+
+            levelUpNotificationIsValid = true;
+            levelUpNotification.SetActive(levelUpNotificationIsValid);
+            addStrengthButton.SetActive(levelUpNotificationIsValid);
+            addDexterityButton.SetActive(levelUpNotificationIsValid);
+            addIntelligenceButton.SetActive(levelUpNotificationIsValid);
+        }
+    }
+
+    public void HideLevelUpNotifications()
+    {
+
+        if(levelUpNotificationIsValid == true)
+        {
+
+            levelUpNotificationIsValid = false;
+            levelUpNotification.SetActive(levelUpNotificationIsValid);
+            addStrengthButton.SetActive(levelUpNotificationIsValid);
+            addDexterityButton.SetActive(levelUpNotificationIsValid);
+            addIntelligenceButton.SetActive(levelUpNotificationIsValid);
         }
     }
 

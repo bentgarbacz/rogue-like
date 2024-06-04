@@ -23,6 +23,7 @@ public class UpdateUIElements : MonoBehaviour
     public TextMeshProUGUI evasionStatus;
     public TextMeshProUGUI accuracyStatus;
     public TextMeshProUGUI damageRangeStatus;
+    public TextMeshProUGUI freeStatPointsStatus;
 
     public GameObject hero;
     private PlayerCharacter playerCharacter;
@@ -50,6 +51,7 @@ public class UpdateUIElements : MonoBehaviour
             strengthStatus.SetText("Strength: " + playerCharacter.strength.ToString());
             dexterityStatus.SetText("Dexterity: " + playerCharacter.dexterity.ToString());
             intelligenceStatus.SetText("Intelligence: " + playerCharacter.intelligence.ToString());
+            freeStatPointsStatus.SetText("Available Stat Points: " + playerCharacter.freeStatPoints.ToString());
 
             speedStatus.SetText("Speed: " + playerCharacter.speed.ToString());
             critChanceStatus.SetText("Crit Chance: " + playerCharacter.critChance.ToString());
