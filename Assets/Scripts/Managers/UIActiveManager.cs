@@ -8,13 +8,13 @@ public class UIActiveManager : MonoBehaviour
 
     private GameObject canvasHUD;
     public GameObject inventoryPanel;
-    public bool inventoryIsOpen = false;
+    public bool inventoryIsOpen = true;
     public GameObject lootPanel;
-    public bool lootIsOpen = false;  
+    public bool lootIsOpen = true;  
     public GameObject  pausePanel;
     public bool pauseIsOpen = false;
     public GameObject characterPanel;
-    public bool characterIsOpen = false; 
+    public bool characterIsOpen = true; 
     public GameObject equipmentPanel;
     public GameObject levelUpNotification;
     public GameObject addStrengthButton;
@@ -31,7 +31,11 @@ public class UIActiveManager : MonoBehaviour
 
         im = GameObject.Find("System Managers").GetComponent<InventoryManager>();   
 
-        canvasHUD = GameObject.Find("CanvasHUD");            
+        canvasHUD = GameObject.Find("CanvasHUD");
+
+        CloseInventoryPanel();
+        CloseCharacterPanel();
+        CloseLootPanel();           
     }
 
     public bool IsPointerOverUI()

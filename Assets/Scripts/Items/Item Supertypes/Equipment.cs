@@ -16,6 +16,8 @@ public class Equipment : Item
     public int accuracyBonus = 0;
     public int minDamageBonus = 0;
     public int maxDamageBonus = 0;
+    public int maxHealthBonus = 0;
+
 
     public Equipment()
     {

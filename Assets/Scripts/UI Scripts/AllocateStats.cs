@@ -8,11 +8,13 @@ public class AllocateStats : MonoBehaviour
     public string statType = "";
     public GameObject hero;
     private PlayerCharacter playerCharacter;
+    private InventoryManager im;
 
     void Start()
     {
         
         playerCharacter = hero.GetComponent<PlayerCharacter>();
+        im = GameObject.Find("System Managers").GetComponent<InventoryManager>();
     }
 
     public void Click()
@@ -36,5 +38,7 @@ public class AllocateStats : MonoBehaviour
             playerCharacter.freeStatPoints -= 1;
             playerCharacter.intelligence += 1;
         }
+
+        im.UpdateStats();
     }
 }
