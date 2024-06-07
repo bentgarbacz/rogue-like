@@ -164,7 +164,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5294ecea600c22f4eb21799baf7cf0f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  outlineColor: {r: 0.5943396, g: 0.5914356, b: 0.55789423, a: 1}
+  highlightColor: {r: 0.5943396, g: 0.5914356, b: 0.55789423, a: 1}
+  actionDescription: 
 --- !u!65 &4431526525434636196
 BoxCollider:
   m_ObjectHideFlags: 0

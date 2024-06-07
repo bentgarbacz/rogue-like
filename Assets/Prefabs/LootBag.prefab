@@ -120,7 +120,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5294ecea600c22f4eb21799baf7cf0f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  outlineColor: {r: 0.109994836, g: 1, b: 0.015686275, a: 1}
+  highlightColor: {r: 0.109994836, g: 1, b: 0.015686275, a: 1}
+  actionDescription: Open
 --- !u!114 &-326714829302715285
 MonoBehaviour:
   m_ObjectHideFlags: 0

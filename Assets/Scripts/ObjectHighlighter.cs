@@ -1,28 +1,38 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class ObjectHighlighter : MonoBehaviour
+public class ObjectHighlighter : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     private Color startcolor;
-    public Color outlineColor = Color.yellow;
+    public Color highlightColor = Color.yellow;
+    public string actionDescription = "";
+    private ToolTipManager ttm;
 
     void Start()
     {
 
+        ttm = GameObject.Find("System Managers").GetComponent<UIActiveManager>().toolTipContainer.GetComponent<ToolTipManager>();
         startcolor = GetComponent<Renderer>().material.color;
-        //startcolor = Color.clear;
     }
 
-    void OnMouseEnter()
+    public void OnPointerEnter(PointerEventData eventData)
     {
         
-        GetComponent<Renderer>().material.color = outlineColor;
+        if(actionDescription != "")
+        {
+
+            ttm.SetTooltip(true, actionDescription);
+        }
+
+        GetComponent<Renderer>().material.color = highlightColor;
     }
 
-    void OnMouseExit()
+    public void OnPointerExit(PointerEventData eventData)
     {
 
+        ttm.SetTooltip(false);
         GetComponent<Renderer>().material.color = startcolor;
     }
 }

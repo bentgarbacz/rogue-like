@@ -77,4 +77,27 @@ public class ItemSlot : MonoBehaviour
             AddItem(itemHold);
         }
     }
+
+    public string GetSummary()
+    {
+
+        string summary = item.title;
+
+        if(item is Equipment equipment)
+        {
+
+            foreach(string bonus in equipment.bonusStatDictionary.Keys)
+            {
+
+                if(equipment.bonusStatDictionary[bonus] > 0)
+                {
+
+                    summary += "\n" + bonus + ": " + equipment.bonusStatDictionary[bonus].ToString();
+                }
+            }
+        }        
+
+        return summary + "\n" + item.description;
+        
+    }
 }

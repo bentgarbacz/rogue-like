@@ -21,10 +21,10 @@ public class UIActiveManager : MonoBehaviour
     public GameObject addDexterityButton;
     public GameObject addIntelligenceButton;
     public bool levelUpNotificationIsValid = false; 
-    //public GameObject  toolTipContainer;
-    //public bool toolTipContainerIsOpen = false;
-
+    public GameObject  toolTipContainer;
+    public bool toolTipContainerIsOpen = true;
     private InventoryManager im;
+    public bool mouseOverUI = false;
 
     void Start()
     {
@@ -35,14 +35,16 @@ public class UIActiveManager : MonoBehaviour
 
         CloseInventoryPanel();
         CloseCharacterPanel();
-        CloseLootPanel();           
+        CloseLootPanel();    
+        HideTooltip();      
     }
 
     public bool IsPointerOverUI()
     {
 
-        return EventSystem.current.IsPointerOverGameObject();
+        return mouseOverUI;
     }
+
     public void OpenInventoryPanel()
     {
 
@@ -122,6 +124,7 @@ public class UIActiveManager : MonoBehaviour
             lootPanel.SetActive(false);
             inventoryPanel.SetActive(false);
             characterPanel.SetActive(false);
+            toolTipContainer.SetActive(false);
             pausePanel.SetActive(pauseIsOpen);
         }
     }
@@ -193,25 +196,25 @@ public class UIActiveManager : MonoBehaviour
         }
     }
 
-    /* public void ShowToolTip()
+    public void ShowTooltip()
     {
 
         if(toolTipContainerIsOpen == false)
         {
 
-            characterIsOpen = false;
-            characterPanel.SetActive(characterIsOpen);
+            toolTipContainerIsOpen = true;
+            toolTipContainer.SetActive(toolTipContainerIsOpen);
         }
     }
 
-    public void HideToolTip()
+    public void HideTooltip()
     {
 
         if(toolTipContainerIsOpen == true)
         {
 
-            characterIsOpen = false;
-            characterPanel.SetActive(characterIsOpen);
+            toolTipContainerIsOpen = false;
+            toolTipContainer.SetActive(toolTipContainerIsOpen);
         }
-    } */
+    }
 }

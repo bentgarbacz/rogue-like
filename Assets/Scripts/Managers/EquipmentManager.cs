@@ -51,17 +51,17 @@ public class EquipmentManager : MonoBehaviour
                 if(slot.item is Equipment equipment)
                 {
 
-                    playerCharacter.strengthBonus += equipment.strengthBonus;
-                    playerCharacter.dexterityBonus += equipment.dexterityBonus;
-                    playerCharacter.intelligenceBonus += equipment.intelligenceBonus;
-                    playerCharacter.speedBonus += equipment.speedBonus;
-                    playerCharacter.critChanceBonus += equipment.critChanceBonus;
-                    playerCharacter.armorBonus += equipment.armorBonus;
-                    playerCharacter.evasionBonus += equipment.evasionBonus;
-                    playerCharacter.accuracyBonus += equipment.accuracyBonus;
-                    playerCharacter.minDamageBonus += equipment.minDamageBonus;
-                    playerCharacter.maxDamageBonus += equipment.maxDamageBonus;
-                    playerCharacter.maxHealthBonus += equipment.maxHealthBonus;
+                    playerCharacter.strengthBonus += equipment.bonusStatDictionary["Strength"];
+                    playerCharacter.dexterityBonus += equipment.bonusStatDictionary["Dexterity"];
+                    playerCharacter.intelligenceBonus += equipment.bonusStatDictionary["Intelligence"];
+                    playerCharacter.speedBonus += equipment.bonusStatDictionary["Speed"];
+                    playerCharacter.critChanceBonus += equipment.bonusStatDictionary["Crit Chance"];
+                    playerCharacter.armorBonus += equipment.bonusStatDictionary["Armor"];
+                    playerCharacter.evasionBonus += equipment.bonusStatDictionary["Evasion"];
+                    playerCharacter.accuracyBonus += equipment.bonusStatDictionary["Accuracy"];
+                    playerCharacter.minDamageBonus += equipment.bonusStatDictionary["Min Damage"];
+                    playerCharacter.maxDamageBonus += equipment.bonusStatDictionary["Max Damage"];
+                    playerCharacter.maxHealthBonus += equipment.bonusStatDictionary["Max Health"];
 
                 }
             }
@@ -86,5 +86,6 @@ public class EquipmentManager : MonoBehaviour
         playerCharacter.accuracy += playerCharacter.accuracyBonus;
         playerCharacter.minDamage += playerCharacter.minDamageBonus;
         playerCharacter.maxDamage += playerCharacter.maxDamageBonus;
+        playerCharacter.maxHealth += playerCharacter.maxHealthBonus;
     } 
 }

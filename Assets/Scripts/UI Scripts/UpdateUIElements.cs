@@ -41,12 +41,12 @@ public class UpdateUIElements : MonoBehaviour
 
             healthStatusHUD.SetText(playerCharacter.health.ToString() + " / " + playerCharacter.maxHealth.ToString());
             hungerStatusHUD.SetText(playerCharacter.hunger.ToString());
-            xpStatusHUD.SetText(playerCharacter.totalXP.ToString() + " / " + playerCharacter.levelUpBreakpoints[0].ToString());
+            xpStatusHUD.SetText(playerCharacter.totalXP.ToString() + " / " + playerCharacter.GetCurrentLevelUpBreakpoint().ToString());
             levelStatusHUD.SetText(playerCharacter.level.ToString());
 
             healthStatus.SetText("Health: " + playerCharacter.health.ToString() + " / " + playerCharacter.maxHealth.ToString());
             hungerStatus.SetText("Hunger: " + playerCharacter.hunger.ToString());
-            experienceStatus.SetText("Experience: " + playerCharacter.totalXP.ToString() + " / " + playerCharacter.levelUpBreakpoints[0].ToString());
+            experienceStatus.SetText("Experience: " + playerCharacter.totalXP.ToString() + " / " + playerCharacter.GetCurrentLevelUpBreakpoint().ToString());
 
             strengthStatus.SetText("Strength: " + playerCharacter.strength.ToString());
             dexterityStatus.SetText("Dexterity: " + playerCharacter.dexterity.ToString());

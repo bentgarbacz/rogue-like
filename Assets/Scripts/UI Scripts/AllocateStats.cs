@@ -5,6 +5,7 @@ using UnityEngine;
 public class AllocateStats : MonoBehaviour
 {
 
+    public AudioSource audioSource;
     public string statType = "";
     public GameObject hero;
     private PlayerCharacter playerCharacter;
@@ -15,10 +16,13 @@ public class AllocateStats : MonoBehaviour
         
         playerCharacter = hero.GetComponent<PlayerCharacter>();
         im = GameObject.Find("System Managers").GetComponent<InventoryManager>();
+        audioSource = GameObject.Find("CanvasHUD").GetComponent<AudioSource>();
     }
 
     public void Click()
     {
+
+        audioSource.Play();
 
         if(statType == "Strength")
         {

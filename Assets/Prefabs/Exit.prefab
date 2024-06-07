@@ -229,7 +229,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5294ecea600c22f4eb21799baf7cf0f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  outlineColor: {r: 1, g: 0.5426793, b: 0.08018869, a: 1}
+  highlightColor: {r: 1, g: 0.5426793, b: 0.08018869, a: 1}
+  actionDescription: Descend
 --- !u!1 &9170875677439951552
 GameObject:
   m_ObjectHideFlags: 0

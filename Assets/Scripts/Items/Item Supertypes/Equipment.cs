@@ -6,21 +6,24 @@ public class Equipment : Item
 {
 
     public string equipmentType;
-    public int strengthBonus = 0;
-    public int dexterityBonus = 0;
-    public int intelligenceBonus = 0;
-    public int speedBonus = 0;
-    public int critChanceBonus = 0;
-    public int armorBonus = 0;
-    public int evasionBonus = 0;
-    public int accuracyBonus = 0;
-    public int minDamageBonus = 0;
-    public int maxDamageBonus = 0;
-    public int maxHealthBonus = 0;
-
+    public Dictionary<string, int> bonusStatDictionary;
 
     public Equipment()
     {
+
+        bonusStatDictionary = new Dictionary<string, int>();
+
+        bonusStatDictionary.Add("Strength", 0);
+        bonusStatDictionary.Add("Dexterity", 0);
+        bonusStatDictionary.Add("Intelligence", 0);
+        bonusStatDictionary.Add("Speed", 0);
+        bonusStatDictionary.Add("Crit Chance", 0);
+        bonusStatDictionary.Add("Armor", 0);
+        bonusStatDictionary.Add("Evasion", 0);
+        bonusStatDictionary.Add("Accuracy", 0);
+        bonusStatDictionary.Add("Min Damage", 0);
+        bonusStatDictionary.Add("Max Damage", 0);
+        bonusStatDictionary.Add("Max Health", 0);        
 
         equipmentType = "N/A";
         contextText = "Equip";

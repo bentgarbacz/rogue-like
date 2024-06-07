@@ -67,6 +67,7 @@ public class InventoryManager : MonoBehaviour
     public void PopulateLootSlots(List<Item> items, GameObject container)
     {
 
+        ClearItemsLoot();
         currentLootContainer = container;
         
         foreach(Item item in items)
@@ -113,7 +114,7 @@ public class InventoryManager : MonoBehaviour
                 if(targetSlot.type == "Loot")
                 {  
                              
-                    uiam.CloseLootPanel();
+                    //uiam.CloseLootPanel();
                     uiam.OpenLootPanel(holdItemList, currentLootContainer);
 
                 }else if(equipmentSlotsDictionary[targetSlot.type])

@@ -2,10 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InventoryToggle : MonoBehaviour
+public class PanelToggle : MonoBehaviour
 {
-
-
+    
     private UIActiveManager uiam;
     private AudioSource audioSource;
 
@@ -16,11 +15,24 @@ public class InventoryToggle : MonoBehaviour
         audioSource = GameObject.Find("CanvasHUD").GetComponent<AudioSource>();
     }
 
-    public void Click()
+    public void ClickInventory()
     {
 
         audioSource.Play();
         uiam.ToggleInventory();        
     }
 
+        public void ClickCharacter()
+    {
+
+        audioSource.Play();
+        uiam.ToggleCharacter();        
+    }
+
+        public void ClickPause()
+    {
+        print("qwerasdf");
+        audioSource.Play();
+        uiam.TogglePause();        
+    }
 }
