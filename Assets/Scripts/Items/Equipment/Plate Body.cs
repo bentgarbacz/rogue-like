@@ -10,12 +10,15 @@ public class PlateBody : Equipment
     public PlateBody(int dropChance = 0 )
     {
 
+        this.title = "Plate Body Armor";
+        this.description = "Sturdy as it is heavy.";
+
         this.sprite = Resources.Load<Sprite>("Pixel Art/Equipment/Plate Body");
         this.contextClip = Resources.Load<AudioClip>("Sounds/Equip");
 
         this.equipmentType = "Chest";
 
-        this.armorBonus = 5;
+        this.bonusStatDictionary["Armor"] = 5;
 
         SetDropChance(dropChance);
     }

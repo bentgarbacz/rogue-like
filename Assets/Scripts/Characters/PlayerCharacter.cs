@@ -8,7 +8,7 @@ public class PlayerCharacter : Character
     private int maxHunger = 1000;
     private int hungerBuffer = 0;
     public int totalXP = 0;
-    public List<int> levelUpBreakpoints = new List<int>{20, 50, 90, 140, 200};
+    private List<int> levelUpBreakpoints = new List<int>{20, 50, 90, 140, 200};
     public int freeStatPoints = 0;
     public AudioClip stepAudioClip;
     public AudioClip levelUpAudioClip;
@@ -24,6 +24,7 @@ public class PlayerCharacter : Character
     public int intelligenceBonus = 0;
     public int armorBonus = 0;
     public int evasionBonus = 0;
+    public int maxHealthBonus = 0;
     
 
     public override void Start()
@@ -32,7 +33,7 @@ public class PlayerCharacter : Character
         base.Start();
         maxHealth = 20;
         health = maxHealth;
-        accuracy = 100;
+        accuracy = 1000;
         minDamage = 5;
         maxDamage = 10;
         level = 1;
@@ -80,6 +81,12 @@ public class PlayerCharacter : Character
         freeStatPoints += 5;
 
         level += 1;
+    }
+
+    public int GetCurrentLevelUpBreakpoint()
+    {
+
+        return levelUpBreakpoints[0];
     }
 
     public void SatiateHunger(int hungerValue)

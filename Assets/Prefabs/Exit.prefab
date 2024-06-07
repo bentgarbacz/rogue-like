@@ -44,8 +44,8 @@ Light:
   m_Type: 2
   m_Shape: 0
   m_Color: {r: 1, g: 0.5426793, b: 0.08018869, a: 1}
-  m_Intensity: 1.5
-  m_Range: 1
+  m_Intensity: 3
+  m_Range: 2
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
@@ -124,7 +124,7 @@ Transform:
   m_GameObject: {fileID: 2862989877608427773}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: -0.7071068}
-  m_LocalPosition: {x: 1315.2693, y: 0, z: -383.45026}
+  m_LocalPosition: {x: 494.93784, y: 246.31055, z: -383.45026}
   m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -194,6 +194,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e47d2a07a8ea1f343bc86498c378d42c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  coord: {x: 0, y: 0}
 --- !u!64 &2468885874815086548
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -228,7 +229,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5294ecea600c22f4eb21799baf7cf0f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  outlineColor: {r: 1, g: 0.5426793, b: 0.08018869, a: 1}
+  highlightColor: {r: 1, g: 0.5426793, b: 0.08018869, a: 1}
+  actionDescription: Descend
 --- !u!1 &9170875677439951552
 GameObject:
   m_ObjectHideFlags: 0
@@ -273,8 +275,8 @@ Light:
   m_Type: 2
   m_Shape: 0
   m_Color: {r: 1, g: 0.5426793, b: 0.08018869, a: 1}
-  m_Intensity: 1.5
-  m_Range: 1
+  m_Intensity: 3
+  m_Range: 2
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10

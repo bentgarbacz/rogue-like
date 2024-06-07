@@ -38,10 +38,10 @@ public class TurnSequencer : MonoBehaviour
                 dum.bufferedPath.RemoveAt(0);
                 playerCharacter.BecomeHungrier();
 
-            }else if(mouse.leftButton.wasPressedThisFrame)
+            }else if(mouse.leftButton.wasPressedThisFrame && uiam.IsPointerOverUI() == false)
             {
 
-                GameObject target = GetComponent<ClickManager>().getObject(mouse);   
+                GameObject target = GetComponent<ClickManager>().GetObject();   
 
                 //execute action if actionable object was clicked
                 if(target != null && uiam.IsPointerOverUI() == false)
@@ -49,6 +49,7 @@ public class TurnSequencer : MonoBehaviour
 
                     uiam.CloseInventoryPanel();
                     uiam.CloseLootPanel();
+                    uiam.CloseCharacterPanel();
 
                     playerCharacter.BecomeHungrier();
 

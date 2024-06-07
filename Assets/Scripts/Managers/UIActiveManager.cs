@@ -8,32 +8,43 @@ public class UIActiveManager : MonoBehaviour
 
     private GameObject canvasHUD;
     public GameObject inventoryPanel;
-    public bool inventoryIsOpen = false;
+    public bool inventoryIsOpen = true;
     public GameObject lootPanel;
-    public bool lootIsOpen = false;  
+    public bool lootIsOpen = true;  
     public GameObject  pausePanel;
     public bool pauseIsOpen = false;
     public GameObject characterPanel;
-    public bool characterIsOpen = false; 
+    public bool characterIsOpen = true; 
     public GameObject equipmentPanel;
-    //public GameObject  toolTipContainer;
-    //public bool toolTipContainerIsOpen = false;
-
+    public GameObject levelUpNotification;
+    public GameObject addStrengthButton;
+    public GameObject addDexterityButton;
+    public GameObject addIntelligenceButton;
+    public bool levelUpNotificationIsValid = false; 
+    public GameObject  toolTipContainer;
+    public bool toolTipContainerIsOpen = true;
     private InventoryManager im;
+    public bool mouseOverUI = false;
 
     void Start()
     {
 
         im = GameObject.Find("System Managers").GetComponent<InventoryManager>();   
 
-        canvasHUD = GameObject.Find("CanvasHUD");            
+        canvasHUD = GameObject.Find("CanvasHUD");
+
+        CloseInventoryPanel();
+        CloseCharacterPanel();
+        CloseLootPanel();    
+        HideTooltip();      
     }
 
     public bool IsPointerOverUI()
     {
 
-        return EventSystem.current.IsPointerOverGameObject();
+        return mouseOverUI;
     }
+
     public void OpenInventoryPanel()
     {
 
@@ -113,6 +124,7 @@ public class UIActiveManager : MonoBehaviour
             lootPanel.SetActive(false);
             inventoryPanel.SetActive(false);
             characterPanel.SetActive(false);
+            toolTipContainer.SetActive(false);
             pausePanel.SetActive(pauseIsOpen);
         }
     }
@@ -156,25 +168,53 @@ public class UIActiveManager : MonoBehaviour
         }
     }
 
-    /* public void ShowToolTip()
+    public void ShowLevelUpNotifications()
+    {
+
+        if(levelUpNotificationIsValid == false)
+        {
+
+            levelUpNotificationIsValid = true;
+            levelUpNotification.SetActive(levelUpNotificationIsValid);
+            addStrengthButton.SetActive(levelUpNotificationIsValid);
+            addDexterityButton.SetActive(levelUpNotificationIsValid);
+            addIntelligenceButton.SetActive(levelUpNotificationIsValid);
+        }
+    }
+
+    public void HideLevelUpNotifications()
+    {
+
+        if(levelUpNotificationIsValid == true)
+        {
+
+            levelUpNotificationIsValid = false;
+            levelUpNotification.SetActive(levelUpNotificationIsValid);
+            addStrengthButton.SetActive(levelUpNotificationIsValid);
+            addDexterityButton.SetActive(levelUpNotificationIsValid);
+            addIntelligenceButton.SetActive(levelUpNotificationIsValid);
+        }
+    }
+
+    public void ShowTooltip()
     {
 
         if(toolTipContainerIsOpen == false)
         {
 
-            characterIsOpen = false;
-            characterPanel.SetActive(characterIsOpen);
+            toolTipContainerIsOpen = true;
+            toolTipContainer.SetActive(toolTipContainerIsOpen);
         }
     }
 
-    public void HideToolTip()
+    public void HideTooltip()
     {
 
         if(toolTipContainerIsOpen == true)
         {
 
-            characterIsOpen = false;
-            characterPanel.SetActive(characterIsOpen);
+            toolTipContainerIsOpen = false;
+            toolTipContainer.SetActive(toolTipContainerIsOpen);
         }
-    } */
+    }
 }

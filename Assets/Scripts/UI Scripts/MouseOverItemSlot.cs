@@ -9,14 +9,13 @@ public class MouseOverItemSlot : MonoBehaviour, IPointerEnterHandler, IPointerEx
     public List<GameObject> children = new List<GameObject>();
     public bool state = false;
     private ItemSlot itemSlot;
-    private InventoryManager im;
     private ToolTipManager ttm;
 
-    void Start()
+    void Awake()
     {
 
         itemSlot = GetComponent<ItemSlot>();
-        im = GameObject.Find("System Managers").GetComponent<InventoryManager>();
+        ttm = ttm = GameObject.Find("System Managers").GetComponent<UIActiveManager>().toolTipContainer.GetComponent<ToolTipManager>();
 
         foreach (Transform child in transform)
         {
@@ -52,6 +51,8 @@ public class MouseOverItemSlot : MonoBehaviour, IPointerEnterHandler, IPointerEx
             state = !state;
             SetChildren(state);
 
+            ttm.SetTooltip(true, itemSlot.GetSummary());
+
             if(transform.GetChild(0).GetComponent<InventoryContext>())
             {
 
@@ -62,7 +63,7 @@ public class MouseOverItemSlot : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
     public void OnPointerExit(PointerEventData eventData)
     {
-
+        ttm.SetTooltip(false);
         MouseExit();
     }
 

@@ -51,7 +51,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5294ecea600c22f4eb21799baf7cf0f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  outlineColor: {r: 1, g: 0, b: 0, a: 1}
+  highlightColor: {r: 1, g: 0, b: 0, a: 1}
+  actionDescription: Attack
 --- !u!114 &8789015494173696411
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -186,6 +187,15 @@ MonoBehaviour:
   maxDamage: 1
   level: 0
   speed: 0
+  critChance: 0
+  critMultiplier: 2
+  vitality: 0
+  strength: 0
+  dexterity: 0
+  intelligence: 0
+  armor: 0
+  evasion: 0
   dropTable: 
   audioSource: {fileID: 0}
   attackClip: {fileID: 0}
+  missClip: {fileID: 0}

@@ -1,52 +1,62 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class ToolTipManager : MonoBehaviour
 {
-/* 
-    Camera cam;
-    Vector3 min, max;
-    RectTransform rect;
-    float offset = 10f;
+
+    private Camera mainCamera;
+    private Vector3 min, max;
+    private RectTransform tooltipContainerRect;
+    public TextMeshProUGUI toolTipText;
     private UIActiveManager uiam;
 
-    void Start()
+    void Awake()
     {
 
         uiam = GameObject.Find("System Managers").GetComponent<UIActiveManager>();
 
-        cam = Camera.main;
-        rect = GetComponent<RectTransform>();
+        mainCamera = Camera.main;
+        tooltipContainerRect = GetComponent<RectTransform>();
+
+        
         min = new Vector3(0, 0, 0);
-        max = new Vector3(cam.pixelWidth, cam.pixelHeight, 0);
+        max = new Vector3(mainCamera.pixelWidth, mainCamera.pixelHeight, 0);
     }
 
-    void Update()
+    void LateUpdate()
     {
 
         if (uiam.toolTipContainerIsOpen)
         {
-            //get the tooltip position with offset
-            Vector3 position = new Vector3(Input.mousePosition.x + rect.rect.width, Input.mousePosition.y - (rect.rect.height / 2 + offset), 0f);
-            //clamp it to the screen size so it doesn't go outside
-            transform.position = new Vector3(Mathf.Clamp(position.x, min.x + rect.rect.width/2, max.x - rect.rect.width/2), Mathf.Clamp(position.y, min.y + rect.rect.height / 2, max.y - rect.rect.height / 2), transform.position.z);
+            
+            transform.position = new Vector3(
+                                                Mathf.Clamp(Input.mousePosition.x + 10, min.x, max.x), 
+                                                Mathf.Clamp(Input.mousePosition.y + tooltipContainerRect.rect.height, min.y, max.y), 
+                                                transform.position.z
+                                            );
         }
             
     }
 
-    public void SetToolTip(bool status)
+    public void SetTooltip(bool status, string text = "")
     {
+
+        toolTipText.SetText(text);
+        toolTipText.ForceMeshUpdate(true);
+
+        tooltipContainerRect.sizeDelta = toolTipText.GetRenderedValues() + new Vector2(10, 10);
 
         if(status)
         {
 
-            uiam.ShowToolTip();
+            uiam.ShowTooltip();
 
         }else if(!status)
         {
 
-            uiam.HideToolTip();
+            uiam.HideTooltip();
         }
-    } */
+    }
 }

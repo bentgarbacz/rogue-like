@@ -10,12 +10,15 @@ public class Amulet : Equipment
     public Amulet(int dropChance = 0 )
     {
 
+        this.title = "Amulet";
+        this.description = "Necklace imbued with magical properties.";
+
         this.sprite = Resources.Load<Sprite>("Pixel Art/Equipment/Amulet");
         this.contextClip = Resources.Load<AudioClip>("Sounds/Equip");
 
         this.equipmentType = "Amulet";
 
-        this.critChanceBonus = 15;
+        this.bonusStatDictionary["Crit Chance"] = 15;
 
         SetDropChance(dropChance);
     }

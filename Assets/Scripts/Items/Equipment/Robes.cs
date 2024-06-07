@@ -10,14 +10,17 @@ public class Robes : Equipment
     public Robes(int dropChance = 0 )
     {
 
+        this.title = "Robes";
+        this.description = "The wisdom of it's previous owner rubs off on you.";
+
         this.sprite = Resources.Load<Sprite>("Pixel Art/Equipment/Robes");
         this.contextClip = Resources.Load<AudioClip>("Sounds/Equip");
 
         this.equipmentType = "Chest";
 
-        this.armorBonus = 1;
-        this.evasionBonus = 50;
-        this.intelligenceBonus = 5;
+        this.bonusStatDictionary["Armor"] = 1;
+        this.bonusStatDictionary["Evasion"] = 50;
+        this.bonusStatDictionary["Intelligence"] = 5;
 
         SetDropChance(dropChance);
     }

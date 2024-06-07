@@ -32,7 +32,7 @@ public class InventoryManager : MonoBehaviour
 
         for(int i = 0; i < equipmentSlotCount; i++)
         {
-            ItemSlot slot = equipmentGrid.transform.GetChild(i).gameObject.GetComponent<ItemSlot>();
+            ItemSlot slot = equipmentGrid.transform.GetChild(i).transform.GetChild(0).gameObject.GetComponent<ItemSlot>();
 
             slot.slotIndex = i;
             equipmentSlotsDictionary.Add(slot.type, slot);
@@ -46,7 +46,7 @@ public class InventoryManager : MonoBehaviour
         for(int i = 0; i < children; i++)
         {
 
-            ItemSlot slot = grid.transform.GetChild(i).gameObject.GetComponent<ItemSlot>();
+            ItemSlot slot = grid.transform.GetChild(i).transform.GetChild(0).gameObject.GetComponent<ItemSlot>();
 
             slot.slotIndex = i; 
             slotList.Add(slot);
@@ -67,18 +67,19 @@ public class InventoryManager : MonoBehaviour
     public void PopulateLootSlots(List<Item> items, GameObject container)
     {
 
+        ClearItemsLoot();
         currentLootContainer = container;
         
-        foreach(Item i in items)
+        foreach(Item item in items)
         {
 
             foreach(ItemSlot slot in lootSlots)
             {
-
+                
                 if(slot.item == null)
                 {
 
-                    slot.AddItem(i);
+                    slot.AddItem(item);
                     slot.itemList = items;
                     break;
                 }
@@ -106,14 +107,14 @@ public class InventoryManager : MonoBehaviour
                 List<Item> holdItemList = targetSlot.itemList;
 
                 targetSlot.TransferItem(i);
-                
+
                 targetSlot.slot.GetComponent<MouseOverItemSlot>().MouseExit();    
 
                 //if taking loot, handle loot panel logic
                 if(targetSlot.type == "Loot")
                 {  
                              
-                    uiam.CloseLootPanel();
+                    //uiam.CloseLootPanel();
                     uiam.OpenLootPanel(holdItemList, currentLootContainer);
 
                 }else if(equipmentSlotsDictionary[targetSlot.type])
@@ -168,6 +169,12 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
+    public void UpdateStats()
+    {
+
+        equm.UpdateStats(equipmentSlotsDictionary);
+    }
+
     public void ContextualAction(ItemSlot targetSlot)
     {
 
@@ -184,7 +191,7 @@ public class InventoryManager : MonoBehaviour
         {
 
             targetSlot.TransferItem(GetEquipmentSlot(equipment));
-            equm.UpdateStats(equipmentSlotsDictionary);
+            UpdateStats();
             targetSlot.slot.GetComponent<MouseOverItemSlot>().MouseExit();
             targetSlot.slot.GetComponent<MouseOverItemSlot>().MouseEnter();
         }
