@@ -8,11 +8,14 @@ public class MoveToTarget : MonoBehaviour
 {
     
     public Vector3 target;
-    private float distance;
     public float speed = 5f;
+    private float distance;
+    private float arcPos;
+    private bool terminateOnArrival = false;
 
     void Start()
     {
+
         distance = 0;
     }
 
@@ -22,13 +25,19 @@ public class MoveToTarget : MonoBehaviour
         {
 
             distance = Vector3.Distance(new Vector3(target.x, 0 , target.z), new Vector3(transform.position.x, 0, transform.position.z));
-            float arcPos = CalcArc(distance);
-            arcPos = Mathf.Clamp(arcPos, 0f, 1f);
+            arcPos = Mathf.Clamp(CalcArc(distance), 0f, 1f);
 
-            transform.position = Vector3.MoveTowards(transform.position, 
-                                target + new Vector3(0, arcPos, 0), 
-                                speed * Time.deltaTime);
-        } 
+            transform.position = Vector3.MoveTowards(
+                                                        transform.position, 
+                                                        target + new Vector3(0, arcPos, 0), 
+                                                        speed * Time.deltaTime
+                                                    );
+                                                    
+        }else if(terminateOnArrival && distance == 0)
+        {
+
+            Destroy(gameObject);
+        }
     }
 
     public void SetTarget(Vector3 target)

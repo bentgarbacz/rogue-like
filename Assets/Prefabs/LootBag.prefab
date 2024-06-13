@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: -8006233364288230936}
   - component: {fileID: -326714829302715285}
   - component: {fileID: -1880548147336798038}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: LootBag
   m_TagString: Untagged
   m_Icon: {fileID: 0}

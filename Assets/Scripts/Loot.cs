@@ -30,4 +30,10 @@ public class Loot : MonoBehaviour
         uiam.OpenLootPanel(items, container);        
         uiam.OpenInventoryPanel();
     }
+
+    public int ItemCount()
+    {
+
+        return items.Count;
+    }
 }

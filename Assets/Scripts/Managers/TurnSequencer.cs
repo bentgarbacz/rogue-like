@@ -12,6 +12,7 @@ public class TurnSequencer : MonoBehaviour
     private DungeonManager dum;
     private UIActiveManager uiam;
     private CombatManager cbm;
+    private InventoryManager im;
     private Mouse mouse;
 
     void Start()
@@ -21,6 +22,7 @@ public class TurnSequencer : MonoBehaviour
         dum = GameObject.Find("System Managers").GetComponent<DungeonManager>();
         uiam = GameObject.Find("System Managers").GetComponent<UIActiveManager>();
         cbm = GameObject.Find("System Managers").GetComponent<CombatManager>();
+        im = GameObject.Find("System Managers").GetComponent<InventoryManager>();
         playerCharacter = dum.hero.GetComponent<PlayerCharacter>();
     }   
     
@@ -57,28 +59,31 @@ public class TurnSequencer : MonoBehaviour
                     {
 
                         //Non-precached movement    
-                        List<Vector2Int> pathToDestination = PathFinder.FindPath(playerCharacter.coord, target.GetComponent<Tile>().coord, dum.dungeonCoords);   
+                        List<Vector2Int> pathToDestination = PathFinder.FindPath(playerCharacter.coord, target.GetComponent<Tile>().coord, dum.dungeonCoords);  
 
                         //Precached movement
                         //PathKey pk = new PathKey(playerCharacter.coord, target.GetComponent<Tile>().coord);                                    
                         //List<Vector2Int> pathToDestination = cachedPathsDict[pk.key];
             
-                        
-                        playerCharacter.Move(new Vector3(pathToDestination[1].x, 0.1f, pathToDestination[1].y), dum.occupiedlist);                
-                        
-                        //If there are no enemies alerted to your presence, automatically walk entire path to destiniation
-                        if(dum.aggroEnemies.Count == 0)
+                        if(pathToDestination != null)
                         {
-                            dum.bufferedPath = new List<Vector2Int>(pathToDestination.Count);
 
-                            foreach(Vector2Int node in pathToDestination)
+                            playerCharacter.Move(new Vector3(pathToDestination[1].x, 0.1f, pathToDestination[1].y), dum.occupiedlist);                
+
+                            //If there are no enemies alerted to your presence, automatically walk entire path to destiniation
+                            if(dum.aggroEnemies.Count == 0)
                             {
+                                dum.bufferedPath = new List<Vector2Int>(pathToDestination.Count);
 
-                                dum.bufferedPath.Add(new Vector2Int(node.x, node.y));
-                            }
+                                foreach(Vector2Int node in pathToDestination)
+                                {
 
-                            dum.bufferedPath.RemoveRange(0, 2);
-                        }              
+                                    dum.bufferedPath.Add(new Vector2Int(node.x, node.y));
+                                }
+
+                                dum.bufferedPath.RemoveRange(0, 2);
+                            }   
+                        }           
                     }
 
                     //initiate an attack on clicked enemy
@@ -88,11 +93,21 @@ public class TurnSequencer : MonoBehaviour
                     {
 
                         Character targetCharacter = target.GetComponent<Character>();
-                    
-                        if(PathFinder.GetNeighbors(targetCharacter.coord, dum.dungeonCoords).Contains(playerCharacter.coord))
+                        Equipment mainHandWeapon = (Equipment)im.equipmentSlotsDictionary["Main Hand"].item;
+
+                        if(mainHandWeapon is not RangedWeapon && PathFinder.GetNeighbors(targetCharacter.coord, dum.dungeonCoords).Contains(playerCharacter.coord))
                         {
 
                             cbm.AddToCombatBuffer(dum.hero, target);
+
+                        }else if(mainHandWeapon is RangedWeapon && mainHandWeapon.bonusStatDictionary["Range"] >= Vector3.Distance(target.transform.position, dum.hero.transform.position))
+                        {
+
+                            if(LineOfSight.HasLOS(dum.hero, target))
+                            {
+
+                                cbm.AddToCombatBuffer(dum.hero, target);
+                            }
 
                         }else //move towards target
                         {

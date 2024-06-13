@@ -16,8 +16,8 @@ public static class LootTableManager
                                 "Chest",
                                 new List<Item>(){
                                     new Amulet(100),
-                                    new Dagger(100),  
-                                    new Dagger(100),
+                                    new Sword(100),  
+                                    new Bow(100),
                                     new PlateBody(100),
                                     new Shield(100),
                                     new Ring(100),
@@ -37,6 +37,14 @@ public static class LootTableManager
 
         lootTableLookup.Add(
                                 "Skeleton",
+                                new List<Item>(){
+                                    new Potion(100),
+                                    new Meat(50)
+                                }
+        );
+
+        lootTableLookup.Add(
+                                "Rat",
                                 new List<Item>(){
                                     new Potion(100),
                                     new Meat(50)

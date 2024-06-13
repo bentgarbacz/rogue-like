@@ -70,7 +70,7 @@ public class MapGenerator : MonoBehaviour
                     {
 
                         exitSpawned = true;
-                        spawnPos.y -= 1f;
+                        spawnPos.y -= 0.88f;
                         GameObject newExit = Instantiate(exit, spawnPos, exit.transform.rotation);
 
                         foreach(Vector2Int direction in Direction2D.cardinalDirectionsList)
@@ -85,7 +85,7 @@ public class MapGenerator : MonoBehaviour
                         }
 
                         dum.AddGameObject(newExit);
-                        newExit.GetComponent<Exit>().setCoord(position);
+                        newExit.GetComponent<Exit>().coord = position;
 
                     
                     //Otherwise spawn a normal tile
@@ -217,6 +217,7 @@ public class MapGenerator : MonoBehaviour
                     
                     Vector3 spawnPos = new Vector3(checkCoord.x, 0, checkCoord.y);
                     var newWall = Instantiate(wallTile, spawnPos, wallTile.transform.rotation);
+                    newWall.GetComponent<Tile>().setCoord(new Vector2Int((int)spawnPos.x, (int)spawnPos.z));
                     dum.AddGameObject(newWall);
                     newWall.GetComponent<Renderer>().material.color = Color.gray;
                     wallMap.Add(checkCoord);

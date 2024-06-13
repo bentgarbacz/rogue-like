@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1229237285922920522}
   - component: {fileID: 4395600061025851763}
   - component: {fileID: 2035871654355766833}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Entrance
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 8240057085656814339}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -5.418909, y: 0, z: -1.8715558}
   m_LocalScale: {x: 0.43, y: 0.43, z: 0.43}
   m_ConstrainProportionsScale: 0
   m_Children: []
