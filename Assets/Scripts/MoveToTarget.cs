@@ -11,7 +11,10 @@ public class MoveToTarget : MonoBehaviour
     public float speed = 5f;
     private float distance;
     private float arcPos;
-    private bool terminateOnArrival = false;
+    public bool moving = false;
+    private bool makesNoise = false;
+    public AudioSource audioSource;
+    public AudioClip stepAudioClip;
 
     void Start()
     {
@@ -25,7 +28,9 @@ public class MoveToTarget : MonoBehaviour
         {
 
             distance = Vector3.Distance(new Vector3(target.x, 0 , target.z), new Vector3(transform.position.x, 0, transform.position.z));
+
             arcPos = Mathf.Clamp(CalcArc(distance), 0f, 1f);
+
 
             transform.position = Vector3.MoveTowards(
                                                         transform.position, 
@@ -33,17 +38,25 @@ public class MoveToTarget : MonoBehaviour
                                                         speed * Time.deltaTime
                                                     );
                                                     
-        }else if(terminateOnArrival && distance == 0)
+        }else if(moving && distance == 0)
         {
 
-            Destroy(gameObject);
+            if(makesNoise)
+            {
+
+                audioSource.PlayOneShot(stepAudioClip);
+            }
+
+            moving = false;
         }
     }
 
     public void SetTarget(Vector3 target)
     {
+        moving = true;
         this.target = target;
         distance = Vector3.Distance(new Vector3(target.x, 0 , target.z), new Vector3(transform.position.x, 0, transform.position.z));
+        transform.position = new Vector3(transform.position.x, 0, transform.position.z);
     }
 
     private float CalcArc(float xVal)
@@ -56,5 +69,13 @@ public class MoveToTarget : MonoBehaviour
     {
 
         return distance;
+    }
+
+    public void SetNoise(AudioSource audioSource, AudioClip audioClip)
+    {
+
+        makesNoise = true;
+        this.audioSource = audioSource;
+        this.stepAudioClip = audioClip;
     }
 }

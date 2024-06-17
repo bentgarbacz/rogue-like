@@ -86,10 +86,10 @@ public class UIActiveManager : MonoBehaviour
 
     //items - list of items that will be looted
     //container - GameObject that contains items list, used for disposal if necessary
-    public void OpenLootPanel(List<Item> items, GameObject container)
+    public void OpenLootPanel(List<Item> items)
     {
         
-        im.PopulateLootSlots(items, container);
+        im.PopulateLootSlots(items);
             
         if(lootIsOpen == false)
         {

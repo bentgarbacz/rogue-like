@@ -33,7 +33,7 @@ public class TextPopup : MonoBehaviour
     {
 
         GameObject popup = Instantiate(popUpPrefab, new Vector3(position.x, position.y + height, position.z), Quaternion.identity);
-        TextMeshPro popUpText = popup.transform.GetChild(0).GetComponent<TextMeshPro>();
+        TextMeshPro popUpText = popup.transform.GetChild(1).GetComponent<TextMeshPro>();
         popUpText.text = text;
         popUpText.color = textColor;
 

@@ -29,18 +29,23 @@ public class TurnSequencer : MonoBehaviour
     void Update()
     {         
 
-        if(cbm.fighting == false)
+        //Halt game logic if combat is taking place
+        if(!cbm.fighting)
         {
             //If you have not reached the last node of your path 
             //and you are not currently moving to a node, move to the next node
-            if(dum.bufferedPath.Count > 0 && playerCharacter.GetComponent<MoveToTarget>().GetRemainingDistance() == 0)
+            if(dum.bufferedPath.Count > 0 && !playerCharacter.GetComponent<MoveToTarget>().moving)
             {
                 
                 playerCharacter.Move(new Vector3(dum.bufferedPath[0].x, 0.1f, dum.bufferedPath[0].y), dum.occupiedlist);
                 dum.bufferedPath.RemoveAt(0);
                 playerCharacter.BecomeHungrier();
 
-            }else if(mouse.leftButton.wasPressedThisFrame && uiam.IsPointerOverUI() == false)
+            //Process a turn if:
+            //left mouse was pressed
+            //mouse is not over a blocking UI element
+            //you are not in the middle of an attack animation
+            }else if(mouse.leftButton.wasPressedThisFrame && uiam.IsPointerOverUI() == false && !dum.hero.GetComponent<AttackAnimation>().IsAttacking())
             {
 
                 GameObject target = GetComponent<ClickManager>().GetObject();   
@@ -210,7 +215,7 @@ public class TurnSequencer : MonoBehaviour
             foreach(GameObject enemy in dum.enemies)
             {
 
-                if(aggroRange > Vector3.Distance(enemy.transform.position, dum.hero.transform.position) && !dum.aggroEnemies.Contains(enemy))
+                if(aggroRange > Vector3.Distance(enemy.transform.position, dum.hero.transform.position) && !dum.aggroEnemies.Contains(enemy) && LineOfSight.HasLOS(enemy, dum.hero))
                 {
 
                     dum.aggroEnemies.Add(enemy);

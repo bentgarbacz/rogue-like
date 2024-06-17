@@ -46,6 +46,8 @@ public class PlayerCharacter : Character
         attackClip = Resources.Load<AudioClip>("Sounds/Strike");
         stepAudioClip = Resources.Load<AudioClip>("Sounds/Step");
         levelUpAudioClip = Resources.Load<AudioClip>("Sounds/LevelUp");
+
+        GetComponent<MoveToTarget>().SetNoise(audioSource, stepAudioClip);
     }
 
     public void GainXP(int XP)
@@ -108,12 +110,5 @@ public class PlayerCharacter : Character
             Heal(1);
             hungerBuffer = 0;
         }
-    }
-
-    public override bool Move(Vector3 newPos, HashSet<Vector3> occupiedlist)
-    {
-
-        audioSource.PlayOneShot(stepAudioClip);
-        return base.Move(newPos, occupiedlist);
     }
 }

@@ -28,7 +28,12 @@ public class PlayerCamera : MonoBehaviour
         if (focalPoint != null) {
             
             //follow player on x and z axes, not y axis
-            transform.position = new Vector3(focalPoint.transform.position.x, 0, focalPoint.transform.position.z);
+            if(!focalPoint.GetComponent<AttackAnimation>().IsAttacking())
+            {
+
+                transform.position = new Vector3(focalPoint.transform.position.x, 0, focalPoint.transform.position.z);
+            }
+
             
             if (Input.GetMouseButton(1)) {
 

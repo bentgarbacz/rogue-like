@@ -27,7 +27,7 @@ public class Loot : MonoBehaviour
 
         audioSource.Play();
 
-        uiam.OpenLootPanel(items, container);        
+        uiam.OpenLootPanel(items);        
         uiam.OpenInventoryPanel();
     }
 

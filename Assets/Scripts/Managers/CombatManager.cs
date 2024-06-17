@@ -6,7 +6,7 @@ public class CombatManager : MonoBehaviour
 {
 
     public bool fighting = false;
-    public float attackTime = 0.2f;
+    public float attackTime = 0.5f;
     private DungeonManager dum;
     private List<(GameObject, GameObject)> combatBuffer;    
 
@@ -32,9 +32,7 @@ public class CombatManager : MonoBehaviour
     }
 
     private IEnumerator CombatTurns()
-    {
-
-        
+    {        
 
         while(combatBuffer.Count > 0)
         {
@@ -42,7 +40,9 @@ public class CombatManager : MonoBehaviour
             Character attacker = combatBuffer[0].Item1.GetComponent<Character>();
             Character defender = combatBuffer[0].Item2.GetComponent<Character>();
             
+            
             attacker.Attack(defender);
+            attacker.GetComponent<AttackAnimation>().MeleeAttack();            
 
             //kills defender of attack if it's health falls below 1
             if(defender.health <= 0)

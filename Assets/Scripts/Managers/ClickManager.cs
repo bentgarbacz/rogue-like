@@ -11,6 +11,7 @@ public class ClickManager : MonoBehaviour
 
     void Awake()
     {
+        
         mainCamera = Camera.main;
     }
 
