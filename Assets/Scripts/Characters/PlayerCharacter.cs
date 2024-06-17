@@ -5,10 +5,11 @@ using UnityEngine;
 public class PlayerCharacter : Character
 {
     public int hunger;
-    private int maxHunger = 1000;
+    public int maxHunger = 1000;
     private int hungerBuffer = 0;
     public int totalXP = 0;
-    private List<int> levelUpBreakpoints = new List<int>{20, 50, 90, 140, 200};
+    //private List<int> levelUpBreakpoints = new List<int>{20, 50, 90, 140, 200};
+    public int levelUpBreakpoint = 50;
     public int freeStatPoints = 0;
     public AudioClip stepAudioClip;
     public AudioClip levelUpAudioClip;
@@ -45,6 +46,8 @@ public class PlayerCharacter : Character
         attackClip = Resources.Load<AudioClip>("Sounds/Strike");
         stepAudioClip = Resources.Load<AudioClip>("Sounds/Step");
         levelUpAudioClip = Resources.Load<AudioClip>("Sounds/LevelUp");
+
+        GetComponent<MoveToTarget>().SetNoise(audioSource, stepAudioClip);
     }
 
     public void GainXP(int XP)
@@ -52,17 +55,17 @@ public class PlayerCharacter : Character
 
         totalXP += XP;
 
-        if(totalXP >= levelUpBreakpoints[0])
+        if(totalXP >= levelUpBreakpoint)
         {
 
             GetComponent<TextPopup>().CreatePopup(transform.position, 3f, "Level Up!", Color.yellow);
 
-            while(totalXP >= levelUpBreakpoints[0])
+            while(totalXP >= levelUpBreakpoint)
             {
 
                 LevelUp();
-                totalXP -= levelUpBreakpoints[0];
-                levelUpBreakpoints.RemoveAt(0);
+                totalXP -= levelUpBreakpoint;
+                levelUpBreakpoint += ((2 * levelUpBreakpoint) / 3);
             }
 
         }else
@@ -86,7 +89,7 @@ public class PlayerCharacter : Character
     public int GetCurrentLevelUpBreakpoint()
     {
 
-        return levelUpBreakpoints[0];
+        return levelUpBreakpoint;
     }
 
     public void SatiateHunger(int hungerValue)
@@ -107,12 +110,5 @@ public class PlayerCharacter : Character
             Heal(1);
             hungerBuffer = 0;
         }
-    }
-
-    public override bool Move(Vector3 newPos, HashSet<Vector3> occupiedlist)
-    {
-
-        audioSource.PlayOneShot(stepAudioClip);
-        return base.Move(newPos, occupiedlist);
     }
 }

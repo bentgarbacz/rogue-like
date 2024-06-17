@@ -17,7 +17,8 @@ GameObject:
   - component: {fileID: 9211279279035538551}
   - component: {fileID: 7463741922077288840}
   - component: {fileID: 4758171911530530936}
-  m_Layer: 0
+  - component: {fileID: 3233290293381044806}
+  m_Layer: 6
   m_Name: goblin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -67,6 +68,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {x: 0, y: 0, z: 0}
   speed: 5
+  moving: 0
+  audioSource: {fileID: 0}
+  stepAudioClip: {fileID: 0}
 --- !u!114 &7825521000880870863
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -199,3 +203,15 @@ MonoBehaviour:
   audioSource: {fileID: 0}
   attackClip: {fileID: 0}
   missClip: {fileID: 0}
+--- !u!114 &3233290293381044806
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6521998039571531690}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a051e18fa30d67448aff653d12b693e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

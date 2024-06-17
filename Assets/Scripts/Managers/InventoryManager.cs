@@ -11,7 +11,6 @@ public class InventoryManager : MonoBehaviour
     private readonly int inventorySlotCount = 24;
     private readonly int lootSlotCount = 8;
     private readonly int equipmentSlotCount = 9;
-    public GameObject currentLootContainer;
     private DungeonManager dum;
     private UIActiveManager uiam;
     private EquipmentManager equm;
@@ -64,11 +63,10 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
-    public void PopulateLootSlots(List<Item> items, GameObject container)
+    public void PopulateLootSlots(List<Item> items)
     {
 
         ClearItemsLoot();
-        currentLootContainer = container;
         
         foreach(Item item in items)
         {
@@ -84,12 +82,6 @@ public class InventoryManager : MonoBehaviour
                     break;
                 }
             }
-        }
-
-        if(items.Count == 0)
-        {
-
-            dum.TossContainer(container);
         }
     }
 
@@ -115,7 +107,7 @@ public class InventoryManager : MonoBehaviour
                 {  
                              
                     //uiam.CloseLootPanel();
-                    uiam.OpenLootPanel(holdItemList, currentLootContainer);
+                    uiam.OpenLootPanel(holdItemList);
 
                 }else if(equipmentSlotsDictionary[targetSlot.type])
                 {

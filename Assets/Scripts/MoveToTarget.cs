@@ -8,11 +8,17 @@ public class MoveToTarget : MonoBehaviour
 {
     
     public Vector3 target;
-    private float distance;
     public float speed = 5f;
+    private float distance;
+    private float arcPos;
+    public bool moving = false;
+    private bool makesNoise = false;
+    public AudioSource audioSource;
+    public AudioClip stepAudioClip;
 
     void Start()
     {
+
         distance = 0;
     }
 
@@ -22,19 +28,35 @@ public class MoveToTarget : MonoBehaviour
         {
 
             distance = Vector3.Distance(new Vector3(target.x, 0 , target.z), new Vector3(transform.position.x, 0, transform.position.z));
-            float arcPos = CalcArc(distance);
-            arcPos = Mathf.Clamp(arcPos, 0f, 1f);
 
-            transform.position = Vector3.MoveTowards(transform.position, 
-                                target + new Vector3(0, arcPos, 0), 
-                                speed * Time.deltaTime);
-        } 
+            arcPos = Mathf.Clamp(CalcArc(distance), 0f, 1f);
+
+
+            transform.position = Vector3.MoveTowards(
+                                                        transform.position, 
+                                                        target + new Vector3(0, arcPos, 0), 
+                                                        speed * Time.deltaTime
+                                                    );
+                                                    
+        }else if(moving && distance == 0)
+        {
+
+            if(makesNoise)
+            {
+
+                audioSource.PlayOneShot(stepAudioClip);
+            }
+
+            moving = false;
+        }
     }
 
     public void SetTarget(Vector3 target)
     {
+        moving = true;
         this.target = target;
         distance = Vector3.Distance(new Vector3(target.x, 0 , target.z), new Vector3(transform.position.x, 0, transform.position.z));
+        transform.position = new Vector3(transform.position.x, 0, transform.position.z);
     }
 
     private float CalcArc(float xVal)
@@ -47,5 +69,13 @@ public class MoveToTarget : MonoBehaviour
     {
 
         return distance;
+    }
+
+    public void SetNoise(AudioSource audioSource, AudioClip audioClip)
+    {
+
+        makesNoise = true;
+        this.audioSource = audioSource;
+        this.stepAudioClip = audioClip;
     }
 }

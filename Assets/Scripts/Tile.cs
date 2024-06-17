@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class Tile : MonoBehaviour
 {
-    [SerializeField] public Vector2Int coord;
+    public Vector2Int coord;
     
-    public void setCoord(Vector2Int crd){
-        coord = crd;
+    public void SetCoord(Vector2Int coord){
+        
+        this.coord = coord;
     }
 }

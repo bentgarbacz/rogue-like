@@ -2,9 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Exit : Tile
+public class Exit : MonoBehaviour
 {
 
+    public Vector2Int coord;
     private DungeonManager dum;
 
     void Start()

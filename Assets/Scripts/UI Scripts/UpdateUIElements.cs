@@ -3,14 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using System;
+using UnityEngine.UI;
 
 public class UpdateUIElements : MonoBehaviour
 {
 
     public TextMeshProUGUI healthStatusHUD;
-    public TextMeshProUGUI hungerStatusHUD;
-    public TextMeshProUGUI xpStatusHUD;
-    public TextMeshProUGUI levelStatusHUD;
+    public Image healthBar;
+    public Image hungerBar;
+    public Image xpBar;
+    //public TextMeshProUGUI levelStatusHUD;
     public TextMeshProUGUI healthStatus;
     public TextMeshProUGUI hungerStatus;
     public TextMeshProUGUI experienceStatus;
@@ -40,9 +42,10 @@ public class UpdateUIElements : MonoBehaviour
         {
 
             healthStatusHUD.SetText(playerCharacter.health.ToString() + " / " + playerCharacter.maxHealth.ToString());
-            hungerStatusHUD.SetText(playerCharacter.hunger.ToString());
-            xpStatusHUD.SetText(playerCharacter.totalXP.ToString() + " / " + playerCharacter.GetCurrentLevelUpBreakpoint().ToString());
-            levelStatusHUD.SetText(playerCharacter.level.ToString());
+            healthBar.fillAmount = (float)playerCharacter.health / (float)playerCharacter.maxHealth;
+            hungerBar.fillAmount = (float)playerCharacter.hunger / (float)playerCharacter.maxHunger;
+            xpBar.fillAmount = (float)playerCharacter.totalXP / (float)playerCharacter.GetCurrentLevelUpBreakpoint();
+ 
 
             healthStatus.SetText("Health: " + playerCharacter.health.ToString() + " / " + playerCharacter.maxHealth.ToString());
             hungerStatus.SetText("Hunger: " + playerCharacter.hunger.ToString());
@@ -61,21 +64,6 @@ public class UpdateUIElements : MonoBehaviour
             evasionStatus.SetText("Evasion: " + playerCharacter.evasion.ToString());
 
             damageRangeStatus.SetText("Damage: " + playerCharacter.minDamage.ToString() + " - " + playerCharacter.maxDamage.ToString());
-            
-
-
-
-
-
-
-
-
-
-
-
-
-
-            
 
         }else
         {

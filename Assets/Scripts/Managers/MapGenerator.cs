@@ -63,14 +63,14 @@ public class MapGenerator : MonoBehaviour
 
                         GameObject newEnterance = Instantiate(enterance, spawnPos, enterance.transform.rotation);
                         dum.AddGameObject(newEnterance);
-                        newEnterance.GetComponent<Tile>().setCoord(position);
+                        newEnterance.GetComponent<Tile>().SetCoord(position);
 
                     //potentially spawn exit after a certain number of steps
                     }else if(i == repeatWalks - 1 && j > walkLength / 2 && exitSpawned == false)
                     {
 
                         exitSpawned = true;
-                        spawnPos.y -= 1f;
+                        spawnPos.y -= 0.88f;
                         GameObject newExit = Instantiate(exit, spawnPos, exit.transform.rotation);
 
                         foreach(Vector2Int direction in Direction2D.cardinalDirectionsList)
@@ -85,7 +85,7 @@ public class MapGenerator : MonoBehaviour
                         }
 
                         dum.AddGameObject(newExit);
-                        newExit.GetComponent<Exit>().setCoord(position);
+                        newExit.GetComponent<Exit>().coord = position;
 
                     
                     //Otherwise spawn a normal tile
@@ -125,7 +125,7 @@ public class MapGenerator : MonoBehaviour
                             dum.AddGameObject(newTile);
                         }
                         
-                        newTile.GetComponent<Tile>().setCoord(position);
+                        newTile.GetComponent<Tile>().SetCoord(position);
                     }
 
                     spawnPos.y += 0.1f;
@@ -217,6 +217,7 @@ public class MapGenerator : MonoBehaviour
                     
                     Vector3 spawnPos = new Vector3(checkCoord.x, 0, checkCoord.y);
                     var newWall = Instantiate(wallTile, spawnPos, wallTile.transform.rotation);
+                    newWall.GetComponent<Tile>().SetCoord(new Vector2Int((int)spawnPos.x, (int)spawnPos.z));
                     dum.AddGameObject(newWall);
                     newWall.GetComponent<Renderer>().material.color = Color.gray;
                     wallMap.Add(checkCoord);

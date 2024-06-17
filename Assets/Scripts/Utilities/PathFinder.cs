@@ -11,7 +11,7 @@ public static class PathFinder
     //returns a path from start to destination on a grid
     public static List<Vector2Int> FindPath(Vector2Int start, Vector2Int destination, HashSet<Vector2Int> grid)
     {
-
+        
         //List<Vector2Int> path = new List<Vector2Int>();
 
         HashSet<Vector2Int> closedSet = new HashSet<Vector2Int>();
