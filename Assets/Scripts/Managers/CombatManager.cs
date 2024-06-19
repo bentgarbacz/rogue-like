@@ -100,3 +100,18 @@ public class CombatManager : MonoBehaviour
         }
     }
 }
+
+public class Attack
+{
+
+    Character attacker;
+    Character defender;
+    int minDamage;
+    int maxDamage;
+    int speed;
+
+    public Attack()
+    {
+
+    }
+}

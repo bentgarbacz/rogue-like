@@ -71,7 +71,7 @@ public class EquipmentManager : MonoBehaviour
         playerCharacter.maxHealthBonus += (playerCharacter.strengthBonus + playerCharacter.strength) / 2;
 
         playerCharacter.evasionBonus += (playerCharacter.dexterityBonus + playerCharacter.dexterity) * 5;
-        playerCharacter.speedBonus += (playerCharacter.dexterityBonus + playerCharacter.dexterity);
+        playerCharacter.speedBonus += playerCharacter.dexterityBonus + playerCharacter.dexterity;
 
         playerCharacter.critChance += (playerCharacter.intelligenceBonus + playerCharacter.intelligence) / 2;
         playerCharacter.accuracyBonus += (playerCharacter.intelligenceBonus + playerCharacter.intelligence) * 2;

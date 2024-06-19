@@ -11,8 +11,6 @@ public class AttackAnimation : MonoBehaviour
     private bool attacking = false;
     private bool returning = false;
 
-
-
     void Update()
     {
         

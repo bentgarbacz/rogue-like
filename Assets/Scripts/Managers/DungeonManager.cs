@@ -9,13 +9,13 @@ public class DungeonManager : MonoBehaviour
     public GameObject hero;
     public GameObject mainCamera;
     public HashSet<Vector2Int> dungeonCoords;
-    public HashSet<Vector3> occupiedlist = new HashSet<Vector3>();
-    public HashSet<GameObject> dungeonSpecificGameObjects = new HashSet<GameObject>();
-    public HashSet<GameObject> enemies = new HashSet<GameObject>();
-    public HashSet<GameObject> aggroEnemies = new HashSet<GameObject>();
-    public HashSet<Loot> itemContainers = new HashSet<Loot>();
-    public List<Vector2Int> bufferedPath = new List<Vector2Int>();
-    public Dictionary<string, List<Vector2Int>> cachedPathsDict = new Dictionary<string, List<Vector2Int>>();    
+    public HashSet<Vector3> occupiedlist = new();
+    public HashSet<GameObject> dungeonSpecificGameObjects = new();
+    public HashSet<GameObject> enemies = new();
+    public HashSet<GameObject> aggroEnemies = new();
+    public HashSet<Loot> itemContainers = new();
+    public List<Vector2Int> bufferedPath = new();
+    public Dictionary<string, List<Vector2Int>> cachedPathsDict = new();    
 
     void Start()
     {

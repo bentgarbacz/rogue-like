@@ -14,12 +14,12 @@ public static class PathFinder
         
         //List<Vector2Int> path = new List<Vector2Int>();
 
-        HashSet<Vector2Int> closedSet = new HashSet<Vector2Int>();
-        HashSet<Vector2Int> openSet = new HashSet<Vector2Int>();
+        HashSet<Vector2Int> closedSet = new();
+        HashSet<Vector2Int> openSet = new();
 
-        Dictionary<Vector2Int, AStarNode> nodeMap = new Dictionary<Vector2Int, AStarNode>();
+        Dictionary<Vector2Int, AStarNode> nodeMap = new();
 
-        AStarNode startNode = new AStarNode(start, null, 0, CalculateDistance(start, destination));
+        AStarNode startNode = new(start, null, 0, CalculateDistance(start, destination));
         openSet.Add(start);
         nodeMap[start] = startNode;
 
@@ -51,7 +51,7 @@ public static class PathFinder
                 if(!openSet.Contains(neighborPos) || tentativeGCost < nodeMap[neighborPos].gCost)
                 {
 
-                    AStarNode neighborNode = new AStarNode(neighborPos, currentNode, tentativeGCost, CalculateDistance(neighborPos, destination));
+                    AStarNode neighborNode = new(neighborPos, currentNode, tentativeGCost, CalculateDistance(neighborPos, destination));
                     nodeMap[neighborPos] = neighborNode;
 
                     if(!openSet.Contains(neighborPos))
@@ -69,20 +69,20 @@ public static class PathFinder
     public static HashSet<Vector2Int> GetNeighbors(Vector2Int point, HashSet<Vector2Int> grid)
     {
 
-        HashSet<Vector2Int> neighbors = new HashSet<Vector2Int>();
+        HashSet<Vector2Int> neighbors = new();
 
         foreach(Vector2Int d in NeighborVals.allDirectionsList)
         {
 
-            Vector2Int checkPoint = new Vector2Int(point.x + d.x, point.y + d.y);
+            Vector2Int checkPoint = new(point.x + d.x, point.y + d.y);
 
             if(grid.Contains(checkPoint))
             {
 
                 if(d.x != 0 && d.y != 0)
                 {
-                    Vector2Int pinchPointOne = new Vector2Int(point.x, point.y + d.y);
-                    Vector2Int pinchPointTwo = new Vector2Int(point.x + d.x, point.y);
+                    Vector2Int pinchPointOne = new(point.x, point.y + d.y);
+                    Vector2Int pinchPointTwo = new(point.x + d.x, point.y);
 
                     if(grid.Contains(pinchPointOne) || grid.Contains(pinchPointTwo))
                     {
@@ -103,7 +103,7 @@ public static class PathFinder
     private static List<Vector2Int> ReconstructPath(AStarNode node)
     {
 
-        List<Vector2Int> path = new List<Vector2Int>();
+        List<Vector2Int> path = new();
 
         while(node != null)
         {
@@ -145,7 +145,7 @@ public static class PathFinder
         if(path != null)
         {
 
-            PathKey pk = new PathKey(start, destination);
+            PathKey pk = new(start, destination);
             PrecachedPaths.Add(pk.key, path);
         }
     }
@@ -158,7 +158,8 @@ public static class PathFinder
 
 public static class NeighborVals{
 
-    public static List<Vector2Int> allDirectionsList = new List<Vector2Int>{
+    public static List<Vector2Int> allDirectionsList = new()
+    {
 
         new Vector2Int(0, 1), //up
         new Vector2Int(1, 0), //right

@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 public class MouseOverItemSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     
-    public List<GameObject> children = new List<GameObject>();
+    public List<GameObject> children = new();
     public bool state = false;
     private ItemSlot itemSlot;
     private ToolTipManager ttm;

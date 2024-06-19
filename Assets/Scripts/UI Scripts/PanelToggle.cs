@@ -31,7 +31,7 @@ public class PanelToggle : MonoBehaviour
 
         public void ClickPause()
     {
-        print("qwerasdf");
+
         audioSource.Play();
         uiam.TogglePause();        
     }

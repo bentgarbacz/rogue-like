@@ -9,7 +9,7 @@ public class TextPopup : MonoBehaviour
 {
 
     public GameObject popUpPrefab;
-    private HashSet<FloatingText> popups = new HashSet<FloatingText>();
+    private HashSet<FloatingText> popups = new();
     public float speed = 2;
     public float destroyAfterDistance = 0.75f;
 

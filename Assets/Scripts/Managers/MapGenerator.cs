@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Burst;
+using Unity.VisualScripting;
+using System.Linq;
 
 
 public class MapGenerator : MonoBehaviour
@@ -16,13 +18,14 @@ public class MapGenerator : MonoBehaviour
     public GameObject floorTile3;
     public GameObject floorTile4;
     public GameObject wallTile;
+    public GameObject wallJoiner;
     public GameObject enterance;
     public GameObject exit;
     public GameObject chest;
     public GameObject skeleton;
     public GameObject goblin;
     private DungeonManager dum;
-    private Vector2Int startPosition = new Vector2Int(0, 0);
+    private Vector2Int startPosition = new(0, 0);
     
     void Start()
     {
@@ -54,7 +57,7 @@ public class MapGenerator : MonoBehaviour
                 if( !path.Contains(position) )
                 {
 
-                    Vector3 spawnPos = new Vector3(position.x, 0, position.y);
+                    Vector3 spawnPos = new(position.x, 0, position.y);
                     int spawnRNG = UnityEngine.Random.Range(0, 1000);
 
                     //spawn enterance on first tile
@@ -173,7 +176,7 @@ public class MapGenerator : MonoBehaviour
     public Dictionary<string, List<Vector2Int>> PrecacheMapPaths(HashSet<Vector2Int> p)
     {
 
-        Dictionary<string, List<Vector2Int>> pathsDictionary = new Dictionary<string, List<Vector2Int>>();
+        Dictionary<string, List<Vector2Int>> pathsDictionary = new();
 
         foreach(Vector2Int node1 in dum.dungeonCoords)
         {   
@@ -202,25 +205,45 @@ public class MapGenerator : MonoBehaviour
     private void GenerateWalls(HashSet<Vector2Int> path){
 
         //finds border tiles and places walls adjacent to them
-        HashSet<Vector2Int> wallMap = new HashSet<Vector2Int>();
+        HashSet<Vector2Int> wallMap = new();
+        HashSet<Vector2> wallJoinerMap = new();
 
-        foreach(Vector2Int t in path)
+        foreach(Vector2Int coord in path)
         {
-            
-            foreach(Vector2Int direction in Direction2D.cardinalDirectionsList)
+
+            foreach(Vector2Int direction in Direction2D.intercardinalDirectionsList.Concat(Direction2D.cardinalDirectionsList))            
             {
 
-                Vector2Int checkCoord = t + direction;
+                Vector2Int checkCoord = coord + direction;
 
                 if(!path.Contains(checkCoord) && !wallMap.Contains(checkCoord))
                 {
                     
-                    Vector3 spawnPos = new Vector3(checkCoord.x, 0, checkCoord.y);
-                    var newWall = Instantiate(wallTile, spawnPos, wallTile.transform.rotation);
+                    Vector3 spawnPos = new(checkCoord.x, 0, checkCoord.y);
+                    GameObject newWall = Instantiate(wallTile, spawnPos, wallTile.transform.rotation);
                     newWall.GetComponent<Tile>().SetCoord(new Vector2Int((int)spawnPos.x, (int)spawnPos.z));
                     dum.AddGameObject(newWall);
                     newWall.GetComponent<Renderer>().material.color = Color.gray;
                     wallMap.Add(checkCoord);
+
+                    foreach(Vector2Int direction2 in Direction2D.intercardinalDirectionsList.Concat(Direction2D.cardinalDirectionsList))
+                    {
+
+                        Vector2Int checkCoordWall = checkCoord + direction2;
+                        Vector2 checkCoordWallJoiner = checkCoordWall;
+                        checkCoordWallJoiner.x -= (float) direction2.x / 2;
+                        checkCoordWallJoiner.y -= (float) direction2.y / 2;
+
+                        if(wallMap.Contains(checkCoordWall) && !wallJoinerMap.Contains(checkCoordWallJoiner))
+                        {
+
+                            Vector3 joinerSpawnPos = new(checkCoordWallJoiner.x, 0, checkCoordWallJoiner.y);
+
+                            GameObject newWallJoiner = Instantiate(wallJoiner, joinerSpawnPos, wallJoiner.transform.rotation);
+                            dum.AddGameObject(newWallJoiner);
+                            wallJoinerMap.Add(checkCoordWallJoiner);
+                        }
+                    }
                 }
             }
         }
@@ -229,13 +252,22 @@ public class MapGenerator : MonoBehaviour
 
 public static class Direction2D
 {
-    public static List<Vector2Int> cardinalDirectionsList = new List<Vector2Int>
+    public static List<Vector2Int> cardinalDirectionsList = new()
     {
 
-        new Vector2Int(0, 1), //up
-        new Vector2Int(1, 0), //right
-        new Vector2Int(0, -1), //down
-        new Vector2Int(-1, 0) //left
+        new Vector2Int(0, 1), //North
+        new Vector2Int(1, 0), //East
+        new Vector2Int(0, -1), //South
+        new Vector2Int(-1, 0) //West
+    };
+
+    public static List<Vector2Int> intercardinalDirectionsList = new()
+    {
+
+        new Vector2Int(1, 1), //North East
+        new Vector2Int(1, -1), //South East
+        new Vector2Int(-1, -1), //South West
+        new Vector2Int(-1, 1) //North West
     };
 
     public static Vector2Int getRandomDirection()

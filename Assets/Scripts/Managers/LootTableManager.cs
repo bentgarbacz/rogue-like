@@ -10,13 +10,13 @@ public static class LootTableManager
     {
 
         //Dictionary containing ledger of potential items that can spawn from various entities
-        Dictionary<string, List<Item>> lootTableLookup = new Dictionary<string, List<Item>>();
-
-        lootTableLookup.Add(
-                                "Chest",
-                                new List<Item>(){
+        Dictionary<string, List<Item>> lootTableLookup = new()
+        {
+            {
+                "Chest",
+                new List<Item>(){
                                     new Amulet(100),
-                                    new Sword(100),  
+                                    new Sword(100),
                                     new Bow(100),
                                     new PlateBody(100),
                                     new Shield(100),
@@ -24,32 +24,30 @@ public static class LootTableManager
                                     new LeatherHelm(100),
                                     new LeatherBoots(100)
                                 }
-        );
-
-        lootTableLookup.Add(
-                                "Goblin",
-                                new List<Item>(){
+            },
+            {
+                "Goblin",
+                new List<Item>(){
                                     new Potion(50),
                                     new Dagger(50),
                                     new Meat(100)
                                 }
-        );
-
-        lootTableLookup.Add(
-                                "Skeleton",
-                                new List<Item>(){
+            },
+            {
+                "Skeleton",
+                new List<Item>(){
                                     new Potion(100),
                                     new Meat(50)
                                 }
-        );
-
-        lootTableLookup.Add(
-                                "Rat",
-                                new List<Item>(){
+            },
+            {
+                "Rat",
+                new List<Item>(){
                                     new Potion(100),
                                     new Meat(50)
                                 }
-        );
+            }
+        };
 
         return lootTableLookup;
     }
@@ -58,7 +56,7 @@ public static class LootTableManager
     {
 
         //Randomly generate items for a given entity
-        List<Item> droppedItems = new List<Item>();
+        List<Item> droppedItems = new();
 
         foreach(Item i in lootTableLookup[dropTable])
         {
