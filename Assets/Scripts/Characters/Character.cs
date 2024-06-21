@@ -43,41 +43,7 @@ public class Character : MonoBehaviour
         missClip = Resources.Load<AudioClip>("Sounds/Miss");
     }
 
-    public void Attack(Character target)
-    {
-
-        //turn towards target
-        transform.rotation = Quaternion.Euler(0, DetermineRotation(pos, target.pos), 0);
-
-        float hitChance = (((float)accuracy - (float)target.evasion) / (float)accuracy) * 100f;
-
-        //roll to see if you hit
-        if(Random.Range(0, 100) <= hitChance)
-        {
-
-            audioSource.PlayOneShot(attackClip);
-
-            //Determine if attack was critical
-            bool isCrit = false;
-
-            if(Random.Range(0, 100) < critChance)
-            {
-
-                isCrit = true;
-            }        
-
-            target.TakeDamage(Random.Range(minDamage, maxDamage + 1), isCrit);
-        
-        }else
-        {
-
-            //take 0 damage on miss
-            audioSource.PlayOneShot(missClip);
-            target.TakeDamage(0);
-        }
-    }
-
-    public int TakeDamage(int damage, bool isCrit = false, int critMultiplier = 2)
+   /*  public int TakeDamage(int damage, bool isCrit = false, int critMultiplier = 2)
     {
         
         damage = Mathf.Max(0, damage - armor);
@@ -103,6 +69,12 @@ public class Character : MonoBehaviour
         }
 
         return health -= damage;
+    } */
+
+    public int TakeDamage(int damage)
+    {
+
+        return health -= damage;
     }
 
     public void Heal(int healValue)
@@ -121,7 +93,7 @@ public class Character : MonoBehaviour
             occupiedlist.Remove(pos);
 
             GetComponent<MoveToTarget>().SetTarget(newPos);
-            transform.rotation = Quaternion.Euler(0, DetermineRotation(pos, newPos), 0);
+            transform.rotation = Quaternion.Euler(0, Orientation.DetermineRotation(pos, newPos), 0);
 
             pos = newPos;
             coord = new Vector2Int((int)newPos.x, (int)newPos.z);
@@ -151,41 +123,8 @@ public class Character : MonoBehaviour
 
         return false;
     }
-
-    public static float DetermineRotation(Vector3 start, Vector3 end)
-    {
-        
-        if(start.x == end.x && start.z < end.z)
-        {
-            return 0f; //north
-        }
-        else if(start.x < end.x && start.z < end.z)
-        {
-            return 45f; //north east
-        }
-        else if(start.x < end.x && start.z == end.z)
-        {
-            return 90f; // east
-        }else if(start.x < end.x && start.z > end.z)
-        {
-            return 135f; //south east
-        }else if(start.x == end.x && start.z > end.z)
-        {
-            return 180f; // south
-        }else if(start.x > end.x && start.z > end.z)
-        {
-            return 225f; //south west
-        }else if(start.x > end.x && start.z == end.z)
-        {
-            return 270f; // west
-        }else if(start.x > end.x && start.z < end.z)
-        {
-            return 315f; //north west
-        }
-
-        return 0f;
-    }
 }
+
 
 
 

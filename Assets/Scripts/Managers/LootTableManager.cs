@@ -21,8 +21,8 @@ public static class LootTableManager
                                     new PlateBody(100),
                                     new Shield(100),
                                     new Ring(100),
-                                    new LeatherHelm(100),
-                                    new LeatherBoots(100)
+                                    new Dagger(100),
+                                    new Dagger(100)
                                 }
             },
             {

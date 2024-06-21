@@ -8,14 +8,16 @@ public class CombatManager : MonoBehaviour
     public bool fighting = false;
     public float attackTime = 0.5f;
     private DungeonManager dum;
-    private List<(GameObject, GameObject)> combatBuffer;    
+    private InventoryManager im;
+    private List<Attack> combatBuffer;    
 
 
     void Start()
     {
 
         dum = GameObject.Find("System Managers").GetComponent<DungeonManager>();
-        combatBuffer = new List<(GameObject, GameObject)>();
+        im = GameObject.Find("System Managers").GetComponent<InventoryManager>();
+        combatBuffer = new List<Attack>();
     }
 
     public void CommenceCombat()
@@ -36,33 +38,8 @@ public class CombatManager : MonoBehaviour
 
         while(combatBuffer.Count > 0)
         {
-
-            Character attacker = combatBuffer[0].Item1.GetComponent<Character>();
-            Character defender = combatBuffer[0].Item2.GetComponent<Character>();
             
-            
-            attacker.Attack(defender);
-            attacker.GetComponent<AttackAnimation>().MeleeAttack();            
-
-            //kills defender of attack if it's health falls below 1
-            if(defender.health <= 0)
-            {
-                
-                for(int i = 1; i < combatBuffer.Count; i++ )
-                {
-
-                    if(combatBuffer[0].Item2 == combatBuffer[i].Item1)
-                    {
-                        
-                        //removes attacks from dead combatants
-                        combatBuffer.RemoveAt(i);
-                        i--;
-                    }
-                }
-
-                dum.Smite(combatBuffer[0].Item2, defender.pos);                                                                    
-            }
-            
+            ProcessAttack(combatBuffer[0]);
             combatBuffer.RemoveAt(0);
             yield return new WaitForSeconds(attackTime);            
         }
@@ -71,11 +48,105 @@ public class CombatManager : MonoBehaviour
         fighting = false;
     }
 
-    public void AddToCombatBuffer(GameObject attacker, GameObject defender)
+    public bool AddToCombatBuffer(GameObject attacker, GameObject defender)
     {
+        
+        bool attackOccured = false;
 
-        //add attack to combat buffer
-        combatBuffer.Add((attacker, defender));        
+        Character attackingCharacter = attacker.GetComponent<Character>();
+        Character defendingCharacter = defender.GetComponent<Character>();
+
+        Equipment mainHandWeapon = (Equipment)im.equipmentSlotsDictionary["Main Hand"].item;
+        Equipment offHandWeapon = (Equipment)im.equipmentSlotsDictionary["Off Hand"].item;
+
+        if(mainHandWeapon == null && PathFinder.GetNeighbors(defendingCharacter.coord, dum.dungeonCoords).Contains(attackingCharacter.coord) || attackingCharacter is not PlayerCharacter)
+        {
+
+            attackOccured = true;
+            combatBuffer.Add( new Attack(
+                                        attacker, 
+                                        defender,
+                                        attackingCharacter.minDamage, 
+                                        attackingCharacter.maxDamage, 
+                                        attackingCharacter.speed
+                                        ));
+
+        }else if(mainHandWeapon is not RangedWeapon && PathFinder.GetNeighbors(defendingCharacter.coord, dum.dungeonCoords).Contains(attackingCharacter.coord))
+        {
+            
+            attackOccured = true;
+            combatBuffer.Add( new Attack(
+                                        attacker, 
+                                        defender,
+                                        mainHandWeapon.bonusStatDictionary["Min Damage"], 
+                                        mainHandWeapon.bonusStatDictionary["Max Damage"], 
+                                        attackingCharacter.speed
+                                        ));
+
+        }else if(mainHandWeapon is RangedWeapon && mainHandWeapon.bonusStatDictionary["Range"] >= Vector3.Distance(defendingCharacter.transform.position, dum.hero.transform.position))
+        {
+            
+            if(LineOfSight.HasLOS(dum.hero, defender))
+            {
+                
+                attackOccured = true;
+                combatBuffer.Add( new Attack(
+                                            attacker, 
+                                            defender,
+                                            mainHandWeapon.bonusStatDictionary["Min Damage"], 
+                                            mainHandWeapon.bonusStatDictionary["Max Damage"], 
+                                            attackingCharacter.speed
+                                            ));
+            }
+
+        }
+        
+
+        if(offHandWeapon != null && attackingCharacter is PlayerCharacter)
+        {
+            if(offHandWeapon is not Shield)
+            {
+
+                if(offHandWeapon is not RangedWeapon && PathFinder.GetNeighbors(defendingCharacter.coord, dum.dungeonCoords).Contains(attackingCharacter.coord))
+                {
+                    
+                    attackOccured = true;
+                    combatBuffer.Add( new Attack(
+                                                attacker, 
+                                                defender,
+                                                offHandWeapon.bonusStatDictionary["Min Damage"], 
+                                                offHandWeapon.bonusStatDictionary["Max Damage"], 
+                                                attackingCharacter.speed / 2
+                                                ));
+
+                }else if(offHandWeapon is RangedWeapon && offHandWeapon.bonusStatDictionary["Range"] >= Vector3.Distance(defendingCharacter.transform.position, dum.hero.transform.position))
+                {
+                    
+                    if(LineOfSight.HasLOS(dum.hero, defender))
+                    {
+                        
+                        attackOccured = true;
+                        combatBuffer.Add( new Attack(
+                                                    attacker, 
+                                                    defender,
+                                                    offHandWeapon.bonusStatDictionary["Min Damage"], 
+                                                    offHandWeapon.bonusStatDictionary["Max Damage"], 
+                                                    attackingCharacter.speed / 2
+                                                    ));
+                    }
+
+                }
+            }
+        }
+        
+        if(!attackOccured)//move towards defender
+        {
+
+            List<Vector2Int> pathToDestination = PathFinder.FindPath(attackingCharacter.coord, defendingCharacter.coord, dum.dungeonCoords);            
+            attackingCharacter.Move(new Vector3(pathToDestination[1].x, 0.1f, pathToDestination[1].y), dum.occupiedlist);
+        }
+
+        return attackOccured;
     }
 
     private void SortBuffer()
@@ -89,7 +160,7 @@ public class CombatManager : MonoBehaviour
             for(int i = 0; i < bufferIndex - 1; i++)
             {
 
-                if(combatBuffer[i].Item1.GetComponent<Character>().speed < combatBuffer[i+1].Item1.GetComponent<Character>().speed)
+                if(combatBuffer[i].speed < combatBuffer[i+1].speed)
                 {
 
                     (combatBuffer[i], combatBuffer[i+1]) = (combatBuffer[i+1], combatBuffer[i]);
@@ -99,19 +170,88 @@ public class CombatManager : MonoBehaviour
             bufferIndex--;
         }
     }
+
+    private void ProcessAttack(Attack attack)
+    {
+
+        Character attacker = attack.attacker.GetComponent<Character>();
+        Character defender = attack.defender.GetComponent<Character>();
+
+        //turn towards target
+        attacker.transform.rotation = Quaternion.Euler(0, Orientation.DetermineRotation(attacker.pos, defender.pos), 0);
+
+        float hitChance = ((float)attacker.accuracy - (float)defender.evasion) / (float)attacker.accuracy * 100f;
+
+        //roll to see if you hit
+        if(Random.Range(0, 100) <= hitChance)
+        {
+
+            attacker.audioSource.PlayOneShot(attacker.attackClip);
+
+            int damage = Random.Range(attack.minDamage, attack.maxDamage + 1);
+
+            //Determine if attack was critical         
+            if(Random.Range(0, 100) < attacker.critChance)
+            {
+
+                damage *= attacker.critMultiplier;
+                defender.GetComponent<TextPopup>().CreatePopup(defender.transform.position, 2f, damage.ToString(), Color.yellow);
+
+            }else
+            {
+
+                defender.GetComponent<TextPopup>().CreatePopup(defender.transform.position, 2f, damage.ToString(), Color.red);
+            }
+
+            defender.TakeDamage(damage);
+        
+        }else
+        {
+
+            //take 0 damage on miss
+            defender.audioSource.PlayOneShot(defender.missClip);
+            defender.GetComponent<TextPopup>().CreatePopup(defender.transform.position, 2f, "Miss", Color.white);
+        }
+
+        attacker.GetComponent<AttackAnimation>().MeleeAttack(); 
+
+        //kills defender of attack if it's health falls below 1
+        if(defender.health <= 0)
+        {
+            
+            //Attacks to and from dead combatants removed from buffer
+            for(int i = 1; i < combatBuffer.Count; i++ )
+            {
+
+                if(combatBuffer[0].defender == combatBuffer[i].defender || combatBuffer[0].defender == combatBuffer[i].attacker)
+                {
+                    
+                    combatBuffer.RemoveAt(i);
+                    i--;
+                }
+            }
+
+            dum.Smite(combatBuffer[0].defender, defender.pos);                                                                    
+        }
+    }
 }
 
 public class Attack
 {
 
-    Character attacker;
-    Character defender;
-    int minDamage;
-    int maxDamage;
-    int speed;
+    public GameObject attacker;
+    public GameObject defender;
+    public int minDamage;
+    public int maxDamage;
+    public int speed;
 
-    public Attack()
+    public Attack(GameObject attacker, GameObject defender, int minDamage, int maxDamage, int speed)
     {
 
+        this.attacker = attacker;
+        this.defender = defender;
+        this.minDamage = minDamage;
+        this.maxDamage = maxDamage;
+        this.speed = speed;
     }
 }

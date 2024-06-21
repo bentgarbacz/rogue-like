@@ -35,8 +35,8 @@ public class PlayerCharacter : Character
         maxHealth = 20;
         health = maxHealth;
         accuracy = 1000;
-        minDamage = 5;
-        maxDamage = 10;
+        minDamage = 1;
+        maxDamage = 3;
         level = 1;
         speed = 10;
         hunger = maxHunger;
