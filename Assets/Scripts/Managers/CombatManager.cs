@@ -9,6 +9,7 @@ public class CombatManager : MonoBehaviour
     public float attackTime = 0.5f;
     private DungeonManager dum;
     private InventoryManager im;
+    private ProjectileManager pm;
     private List<Attack> combatBuffer;    
 
 
@@ -17,6 +18,7 @@ public class CombatManager : MonoBehaviour
 
         dum = GameObject.Find("System Managers").GetComponent<DungeonManager>();
         im = GameObject.Find("System Managers").GetComponent<InventoryManager>();
+        pm = GameObject.Find("System Managers").GetComponent<ProjectileManager>();
         combatBuffer = new List<Attack>();
     }
 
@@ -83,7 +85,7 @@ public class CombatManager : MonoBehaviour
                                         attackingCharacter.speed
                                         ));
 
-        }else if(mainHandWeapon is RangedWeapon && mainHandWeapon.bonusStatDictionary["Range"] >= Vector3.Distance(defendingCharacter.transform.position, dum.hero.transform.position))
+        }else if(mainHandWeapon is RangedWeapon rangedWeapon && mainHandWeapon.bonusStatDictionary["Range"] >= Vector3.Distance(defendingCharacter.transform.position, dum.hero.transform.position))
         {
             
             if(LineOfSight.HasLOS(dum.hero, defender))
@@ -95,7 +97,8 @@ public class CombatManager : MonoBehaviour
                                             defender,
                                             mainHandWeapon.bonusStatDictionary["Min Damage"], 
                                             mainHandWeapon.bonusStatDictionary["Max Damage"], 
-                                            attackingCharacter.speed
+                                            attackingCharacter.speed,
+                                            rangedWeapon.projectile
                                             ));
             }
 
@@ -119,7 +122,7 @@ public class CombatManager : MonoBehaviour
                                                 attackingCharacter.speed / 2
                                                 ));
 
-                }else if(offHandWeapon is RangedWeapon && offHandWeapon.bonusStatDictionary["Range"] >= Vector3.Distance(defendingCharacter.transform.position, dum.hero.transform.position))
+                }else if(offHandWeapon is RangedWeapon rangedWeapon && offHandWeapon.bonusStatDictionary["Range"] >= Vector3.Distance(defendingCharacter.transform.position, dum.hero.transform.position))
                 {
                     
                     if(LineOfSight.HasLOS(dum.hero, defender))
@@ -131,10 +134,10 @@ public class CombatManager : MonoBehaviour
                                                     defender,
                                                     offHandWeapon.bonusStatDictionary["Min Damage"], 
                                                     offHandWeapon.bonusStatDictionary["Max Damage"], 
-                                                    attackingCharacter.speed / 2
+                                                    attackingCharacter.speed / 2,
+                                                    rangedWeapon.projectile
                                                     ));
                     }
-
                 }
             }
         }
@@ -178,7 +181,15 @@ public class CombatManager : MonoBehaviour
         Character defender = attack.defender.GetComponent<Character>();
 
         //turn towards target
-        attacker.transform.rotation = Quaternion.Euler(0, Orientation.DetermineRotation(attacker.pos, defender.pos), 0);
+        //attacker.transform.rotation = Quaternion.Euler(0, Orientation.DetermineRotation(attacker.pos, defender.pos), 0);
+        attacker.transform.LookAt(defender.transform);
+
+        if(attack.projectileType != "None")
+        {
+
+            GameObject projectile = pm.CreateProjectile(attack.projectileType, attacker.transform.position, attacker.transform.rotation);
+            projectile.GetComponent<Projectile>().Shoot(defender.pos, attacker.audioSource);
+        }
 
         float hitChance = ((float)attacker.accuracy - (float)defender.evasion) / (float)attacker.accuracy * 100f;
 
@@ -186,7 +197,12 @@ public class CombatManager : MonoBehaviour
         if(Random.Range(0, 100) <= hitChance)
         {
 
-            attacker.audioSource.PlayOneShot(attacker.attackClip);
+            //Skip sound for projectile attack, handled by projectile script
+            if(attack.projectileType == "None")
+            {
+
+                attacker.audioSource.PlayOneShot(attacker.attackClip);
+            }
 
             int damage = Random.Range(attack.minDamage, attack.maxDamage + 1);
 
@@ -244,8 +260,9 @@ public class Attack
     public int minDamage;
     public int maxDamage;
     public int speed;
+    public string projectileType;
 
-    public Attack(GameObject attacker, GameObject defender, int minDamage, int maxDamage, int speed)
+    public Attack(GameObject attacker, GameObject defender, int minDamage, int maxDamage, int speed, string projectileType = "None")
     {
 
         this.attacker = attacker;
@@ -253,5 +270,6 @@ public class Attack
         this.minDamage = minDamage;
         this.maxDamage = maxDamage;
         this.speed = speed;
+        this.projectileType = projectileType;
     }
 }

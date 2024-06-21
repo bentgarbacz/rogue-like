@@ -15,7 +15,7 @@ public class MouseOverItemSlot : MonoBehaviour, IPointerEnterHandler, IPointerEx
     {
 
         itemSlot = GetComponent<ItemSlot>();
-        ttm = ttm = GameObject.Find("System Managers").GetComponent<UIActiveManager>().toolTipContainer.GetComponent<ToolTipManager>();
+        ttm = GameObject.Find("System Managers").GetComponent<UIActiveManager>().toolTipContainer.GetComponent<ToolTipManager>();
 
         foreach (Transform child in transform)
         {

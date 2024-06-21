@@ -10,6 +10,8 @@ public class InventoryContext : MonoBehaviour
     private ItemSlot itemSlot;
     public TextMeshProUGUI contextTextBox; 
     public AudioSource audioSource;
+    public AudioClip errorClip;
+    public AudioClip contextClip;
 
     void Awake()
     {
@@ -17,14 +19,25 @@ public class InventoryContext : MonoBehaviour
         itemSlot = transform.parent.gameObject.GetComponent<ItemSlot>();
 
         im = GameObject.Find("System Managers").GetComponent<InventoryManager>();
-        audioSource = GameObject.Find("CanvasHUD").GetComponent<AudioSource>();    
+        audioSource = GameObject.Find("CanvasHUD").GetComponent<AudioSource>();
+        errorClip = Resources.Load<AudioClip>("Sounds/Error");
     }
 
     public void Click()
     {
         
-        audioSource.PlayOneShot(itemSlot.item.contextClip);
-        im.ContextualAction(itemSlot);
+        contextClip = itemSlot.item.contextClip;
+
+        if(im.ContextualAction(itemSlot))
+        {
+
+            audioSource.PlayOneShot(contextClip);
+
+        }else
+        {
+
+            audioSource.PlayOneShot(errorClip);
+        }
     }
 
     public void SetText()

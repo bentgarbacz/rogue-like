@@ -17087,6 +17087,7 @@ GameObject:
   - component: {fileID: 1314207896}
   - component: {fileID: 1314207897}
   - component: {fileID: 1314207898}
+  - component: {fileID: 1314207899}
   m_Layer: 0
   m_Name: System Managers
   m_TagString: Untagged
@@ -17220,6 +17221,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hero: {fileID: 869517488}
+--- !u!114 &1314207899
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1314207890}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2c413987f43a844d9d47ed26dc77106, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Arrow: {fileID: 6116031008646576556, guid: 9b17ae47d8d0e1a438302d3333723296, type: 3}
 --- !u!1001 &1316023813
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -88,4 +88,21 @@ public class EquipmentManager : MonoBehaviour
         playerCharacter.maxDamage += playerCharacter.maxDamageBonus;
         playerCharacter.maxHealth += playerCharacter.maxHealthBonus;
     } 
+
+    public bool MeetsRequirements(Equipment equipment)
+    {
+
+        if(
+            playerCharacter.strength >= equipment.bonusStatDictionary["Strength Requirement"] && 
+            playerCharacter.dexterity >= equipment.bonusStatDictionary["Dexterity Requirement"] && 
+            playerCharacter.intelligence >= equipment.bonusStatDictionary["Intelligence Requirement"] 
+          )
+
+        {
+
+            return true;
+        }
+
+        return false;
+    }
 }

@@ -22,6 +22,9 @@ public class Bow : RangedWeapon
         this.bonusStatDictionary["Max Damage"] = 3;
         this.bonusStatDictionary["Accuracy"] = 20;
         this.bonusStatDictionary["Range"] = 8;
+        this.bonusStatDictionary["Dexterity Requirement"] = 1;
+
+        this.projectile = "Arrow";
 
         SetDropChance(dropChance);
     }

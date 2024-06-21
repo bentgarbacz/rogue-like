@@ -161,7 +161,7 @@ public class InventoryManager : MonoBehaviour
         equm.UpdateStats(equipmentSlotsDictionary);
     }
 
-    public void ContextualAction(ItemSlot targetSlot)
+    public bool ContextualAction(ItemSlot targetSlot)
     {
 
         //define behavior for click on inventory contextual button
@@ -172,14 +172,22 @@ public class InventoryManager : MonoBehaviour
             targetSlot.ThrowAway();
             targetSlot.slot.GetComponent<MouseOverItemSlot>().MouseExit();
             targetSlot.slot.GetComponent<MouseOverItemSlot>().MouseEnter();
+            return true;
 
         }else if(targetSlot.item is Equipment equipment)
         {
 
-            targetSlot.TransferItem(GetEquipmentSlot(equipment));
-            UpdateStats();
-            targetSlot.slot.GetComponent<MouseOverItemSlot>().MouseExit();
-            targetSlot.slot.GetComponent<MouseOverItemSlot>().MouseEnter();
+            if(equm.MeetsRequirements(equipment))
+            {
+
+                targetSlot.TransferItem(GetEquipmentSlot(equipment));
+                UpdateStats();
+                targetSlot.slot.GetComponent<MouseOverItemSlot>().MouseExit();
+                targetSlot.slot.GetComponent<MouseOverItemSlot>().MouseEnter();
+                return true;
+            }
         }
+
+        return false;
     }
 }

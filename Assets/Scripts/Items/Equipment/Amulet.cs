@@ -19,6 +19,7 @@ public class Amulet : Equipment
         this.equipmentType = "Amulet";
 
         this.bonusStatDictionary["Crit Chance"] = 15;
+        this.bonusStatDictionary["Intelligence Requirement"] = 1;
 
         SetDropChance(dropChance);
     }

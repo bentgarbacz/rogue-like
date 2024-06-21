@@ -8,7 +8,6 @@ public class PlayerCharacter : Character
     public int maxHunger = 1000;
     private int hungerBuffer = 0;
     public int totalXP = 0;
-    //private List<int> levelUpBreakpoints = new List<int>{20, 50, 90, 140, 200};
     public int levelUpBreakpoint = 50;
     public int freeStatPoints = 0;
     public AudioClip stepAudioClip;
