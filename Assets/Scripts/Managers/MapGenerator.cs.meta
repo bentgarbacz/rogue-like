@@ -3,7 +3,18 @@ guid: a04310f158603604aa4128b2fa05efba
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - floorTile: {fileID: 105230754911932028, guid: 8d4f13fce8820d04ab675de69b3d5d10, type: 3}
+  - floorTile1: {fileID: 1039253894988395355, guid: 47ecf65409af0d146976083feaa53f96, type: 3}
+  - floorTile2: {instanceID: 0}
+  - floorTile3: {instanceID: 0}
+  - floorTile4: {instanceID: 0}
+  - wallTile: {instanceID: 0}
+  - enterance: {instanceID: 0}
+  - exit: {instanceID: 0}
+  - chest: {fileID: 6493254730876405042, guid: 3d2a97183afeb6843a3d22f8ee50bf01, type: 3}
+  - skeleton: {instanceID: 0}
+  - goblin: {instanceID: 0}
   executionOrder: 100
   icon: {instanceID: 0}
   userData: 

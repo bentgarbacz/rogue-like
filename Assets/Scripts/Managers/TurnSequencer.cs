@@ -12,7 +12,6 @@ public class TurnSequencer : MonoBehaviour
     private DungeonManager dum;
     private UIActiveManager uiam;
     private CombatManager cbm;
-    private InventoryManager im;
     private Mouse mouse;
 
     void Start()
@@ -22,7 +21,6 @@ public class TurnSequencer : MonoBehaviour
         dum = GameObject.Find("System Managers").GetComponent<DungeonManager>();
         uiam = GameObject.Find("System Managers").GetComponent<UIActiveManager>();
         cbm = GameObject.Find("System Managers").GetComponent<CombatManager>();
-        im = GameObject.Find("System Managers").GetComponent<InventoryManager>();
         playerCharacter = dum.hero.GetComponent<PlayerCharacter>();
     }   
     
@@ -97,29 +95,7 @@ public class TurnSequencer : MonoBehaviour
                     if(target.GetComponent<Character>() && target.GetComponent<Character>() != playerCharacter)
                     {
 
-                        Character targetCharacter = target.GetComponent<Character>();
-                        Equipment mainHandWeapon = (Equipment)im.equipmentSlotsDictionary["Main Hand"].item;
-
-                        if(mainHandWeapon is not RangedWeapon && PathFinder.GetNeighbors(targetCharacter.coord, dum.dungeonCoords).Contains(playerCharacter.coord))
-                        {
-
-                            cbm.AddToCombatBuffer(dum.hero, target);
-
-                        }else if(mainHandWeapon is RangedWeapon && mainHandWeapon.bonusStatDictionary["Range"] >= Vector3.Distance(target.transform.position, dum.hero.transform.position))
-                        {
-
-                            if(LineOfSight.HasLOS(dum.hero, target))
-                            {
-
-                                cbm.AddToCombatBuffer(dum.hero, target);
-                            }
-
-                        }else //move towards target
-                        {
-
-                            List<Vector2Int> pathToDestination = PathFinder.FindPath(playerCharacter.coord, targetCharacter.coord, dum.dungeonCoords);            
-                            playerCharacter.Move(new Vector3(pathToDestination[1].x, 0.1f, pathToDestination[1].y), dum.occupiedlist);
-                        }
+                        cbm.AddToCombatBuffer(dum.hero, target);
                     }
 
                     //open container and examine loot
@@ -172,7 +148,7 @@ public class TurnSequencer : MonoBehaviour
                         //enemy attacks player character if they are in a neighboring tile
                         if(PathFinder.GetNeighbors(playerCharacter.coord, dum.dungeonCoords).Contains(nonPlayerCharacter.coord))
                         {
-
+                            
                             cbm.AddToCombatBuffer(enemy, dum.hero);
 
                         }else //enemy moves towards player or attack if they are in a neighboring tile                 

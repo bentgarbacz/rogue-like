@@ -5,20 +5,15 @@ using UnityEngine.EventSystems;
 
 public class InventoryManager : MonoBehaviour
 {
-    public List<ItemSlot> inventorySlots = new List<ItemSlot>();
-    public List<ItemSlot> lootSlots = new List<ItemSlot>();
-    public Dictionary<string, ItemSlot> equipmentSlotsDictionary = new Dictionary<string, ItemSlot>();
-    private readonly int inventorySlotCount = 24;
-    private readonly int lootSlotCount = 8;
-    private readonly int equipmentSlotCount = 9;
-    private DungeonManager dum;
+    public List<ItemSlot> inventorySlots = new();
+    public List<ItemSlot> lootSlots = new();
+    public Dictionary<string, ItemSlot> equipmentSlotsDictionary = new();
     private UIActiveManager uiam;
     private EquipmentManager equm;
 
     void Start()
     {
 
-        dum = GameObject.Find("System Managers").GetComponent<DungeonManager>();
         uiam = GameObject.Find("System Managers").GetComponent<UIActiveManager>();
         equm = GameObject.Find("System Managers").GetComponent<EquipmentManager>();
 
@@ -26,10 +21,10 @@ public class InventoryManager : MonoBehaviour
         GameObject lootGrid = uiam.lootPanel.transform.GetChild(0).gameObject;
         GameObject equipmentGrid = uiam.equipmentPanel.transform.GetChild(0).gameObject;
 
-        ConstructItemSlotList(inventorySlots, invGrid, inventorySlotCount);
-        ConstructItemSlotList(lootSlots, lootGrid, lootSlotCount);
+        ConstructItemSlotList(inventorySlots, invGrid, 24); // there are 24 inventory slots
+        ConstructItemSlotList(lootSlots, lootGrid, 8); // there are 8 loot slots
 
-        for(int i = 0; i < equipmentSlotCount; i++)
+        for(int i = 0; i < 9; i++) // there are 9 equipment slots
         {
             ItemSlot slot = equipmentGrid.transform.GetChild(i).transform.GetChild(0).gameObject.GetComponent<ItemSlot>();
 
@@ -124,7 +119,6 @@ public class InventoryManager : MonoBehaviour
 
     public ItemSlot GetEquipmentSlot(Equipment equipItem)
     {
-
 
         if(equipItem.equipmentType == "Ring")
         {
