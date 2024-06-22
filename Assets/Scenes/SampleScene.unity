@@ -237,6 +237,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   contextTextBox: {fileID: 1150421896}
   audioSource: {fileID: 0}
+  errorClip: {fileID: 0}
+  contextClip: {fileID: 0}
 --- !u!1 &87749311
 GameObject:
   m_ObjectHideFlags: 0
@@ -389,6 +391,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   children: []
   state: 0
+  mouseOver: 0
 --- !u!1 &99325546 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4650541821758295656, guid: 10ede075d2a3cbe458d869503642a74b, type: 3}
@@ -682,6 +685,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   contextTextBox: {fileID: 974332028}
   audioSource: {fileID: 0}
+  errorClip: {fileID: 0}
+  contextClip: {fileID: 0}
 --- !u!224 &137832128 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6032789311799913055, guid: 10ede075d2a3cbe458d869503642a74b, type: 3}
@@ -1226,6 +1231,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   contextTextBox: {fileID: 818143729}
   audioSource: {fileID: 0}
+  errorClip: {fileID: 0}
+  contextClip: {fileID: 0}
 --- !u!1001 &194678604
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1976,6 +1983,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   children: []
   state: 0
+  mouseOver: 0
 --- !u!1 &265674522 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4650541821758295656, guid: 10ede075d2a3cbe458d869503642a74b, type: 3}
@@ -2151,6 +2159,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   children: []
   state: 0
+  mouseOver: 0
 --- !u!224 &270918746 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6032789311799913055, guid: 10ede075d2a3cbe458d869503642a74b, type: 3}
@@ -2486,6 +2495,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   contextTextBox: {fileID: 1586950168}
   audioSource: {fileID: 0}
+  errorClip: {fileID: 0}
+  contextClip: {fileID: 0}
 --- !u!224 &334280808 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6032789311799913055, guid: 10ede075d2a3cbe458d869503642a74b, type: 3}
@@ -2562,7 +2573,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4281479730
+    rgba: 4287535000
   m_fontColor: {r: 0.5943396, g: 0.5914356, b: 0.55789423, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -3143,6 +3154,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   children: []
   state: 0
+  mouseOver: 0
 --- !u!1 &353210204 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4650541821758295656, guid: 10ede075d2a3cbe458d869503642a74b, type: 3}
@@ -3167,6 +3179,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   contextTextBox: {fileID: 1082393789}
   audioSource: {fileID: 0}
+  errorClip: {fileID: 0}
+  contextClip: {fileID: 0}
 --- !u!114 &358369264 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6734633936159240503, guid: 10ede075d2a3cbe458d869503642a74b, type: 3}
@@ -4845,6 +4859,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   contextTextBox: {fileID: 843155316}
   audioSource: {fileID: 0}
+  errorClip: {fileID: 0}
+  contextClip: {fileID: 0}
 --- !u!1 &511845310
 GameObject:
   m_ObjectHideFlags: 0
@@ -5605,6 +5621,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   children: []
   state: 0
+  mouseOver: 0
 --- !u!1001 &558681045
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6699,6 +6716,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   children: []
   state: 0
+  mouseOver: 0
 --- !u!1001 &622722839
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7057,6 +7075,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   contextTextBox: {fileID: 1601331148}
   audioSource: {fileID: 0}
+  errorClip: {fileID: 0}
+  contextClip: {fileID: 0}
 --- !u!1 &653214804
 GameObject:
   m_ObjectHideFlags: 0
@@ -8753,6 +8773,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   contextTextBox: {fileID: 1588638804}
   audioSource: {fileID: 0}
+  errorClip: {fileID: 0}
+  contextClip: {fileID: 0}
 --- !u!1001 &761303908
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9302,6 +9324,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   contextTextBox: {fileID: 1850939397}
   audioSource: {fileID: 0}
+  errorClip: {fileID: 0}
+  contextClip: {fileID: 0}
 --- !u!1 &780051817 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4650541821758295656, guid: 10ede075d2a3cbe458d869503642a74b, type: 3}
@@ -9652,6 +9676,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   children: []
   state: 0
+  mouseOver: 0
 --- !u!114 &793624151 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5339295171487252005, guid: 10ede075d2a3cbe458d869503642a74b, type: 3}
@@ -10031,6 +10056,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   children: []
   state: 0
+  mouseOver: 0
 --- !u!1 &842568263
 GameObject:
   m_ObjectHideFlags: 0
@@ -10264,6 +10290,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   contextTextBox: {fileID: 1523638538}
   audioSource: {fileID: 0}
+  errorClip: {fileID: 0}
+  contextClip: {fileID: 0}
 --- !u!1 &878241056
 GameObject:
   m_ObjectHideFlags: 0
@@ -10767,6 +10795,7 @@ RectTransform:
   - {fileID: 1288784405}
   - {fileID: 1972573879}
   - {fileID: 1387385337}
+  - {fileID: 1653126811}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -11814,6 +11843,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   contextTextBox: {fileID: 561382875}
   audioSource: {fileID: 0}
+  errorClip: {fileID: 0}
+  contextClip: {fileID: 0}
 --- !u!1 &971904812
 GameObject:
   m_ObjectHideFlags: 0
@@ -11983,6 +12014,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   contextTextBox: {fileID: 1619139882}
   audioSource: {fileID: 0}
+  errorClip: {fileID: 0}
+  contextClip: {fileID: 0}
 --- !u!1 &993626976
 GameObject:
   m_ObjectHideFlags: 0
@@ -12104,6 +12137,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   children: []
   state: 0
+  mouseOver: 0
 --- !u!114 &996482004 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5339295171487252005, guid: 10ede075d2a3cbe458d869503642a74b, type: 3}
@@ -12160,6 +12194,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   children: []
   state: 0
+  mouseOver: 0
 --- !u!1 &1003720809
 GameObject:
   m_ObjectHideFlags: 0
@@ -12488,6 +12523,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   children: []
   state: 0
+  mouseOver: 0
 --- !u!1001 &1015733905
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13068,6 +13104,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   children: []
   state: 0
+  mouseOver: 0
 --- !u!1001 &1043265493
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13536,6 +13573,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   contextTextBox: {fileID: 2096290733}
   audioSource: {fileID: 0}
+  errorClip: {fileID: 0}
+  contextClip: {fileID: 0}
 --- !u!1001 &1068450210
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14075,6 +14114,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   children: []
   state: 0
+  mouseOver: 0
 --- !u!224 &1094044870 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6032789311799913055, guid: 10ede075d2a3cbe458d869503642a74b, type: 3}
@@ -14189,10 +14229,10 @@ RectTransform:
   - {fileID: 1572612526}
   m_Father: {fileID: 689097500}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 125, y: -47.5}
+  m_SizeDelta: {x: 200, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1123356002
 MonoBehaviour:
@@ -14460,6 +14500,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   children: []
   state: 0
+  mouseOver: 0
 --- !u!1 &1168344825
 GameObject:
   m_ObjectHideFlags: 0
@@ -14803,6 +14844,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   contextTextBox: {fileID: 358369264}
   audioSource: {fileID: 0}
+  errorClip: {fileID: 0}
+  contextClip: {fileID: 0}
 --- !u!224 &1170421630 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6032789311799913055, guid: 10ede075d2a3cbe458d869503642a74b, type: 3}
@@ -14848,6 +14891,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   children: []
   state: 0
+  mouseOver: 0
 --- !u!1001 &1175133381
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15758,6 +15802,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   children: []
   state: 0
+  mouseOver: 0
 --- !u!114 &1246791322 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5339295171487252005, guid: 10ede075d2a3cbe458d869503642a74b, type: 3}
@@ -16069,6 +16114,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   children: []
   state: 0
+  mouseOver: 0
 --- !u!1 &1264504393
 GameObject:
   m_ObjectHideFlags: 0
@@ -16280,6 +16326,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   children: []
   state: 0
+  mouseOver: 0
 --- !u!114 &1269260895 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5339295171487252005, guid: 10ede075d2a3cbe458d869503642a74b, type: 3}
@@ -16992,9 +17039,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'howdy
-
-'
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -17179,6 +17224,8 @@ MonoBehaviour:
   levelUpNotificationIsValid: 0
   toolTipContainer: {fileID: 1387385336}
   toolTipContainerIsOpen: 1
+  itemDragContainer: {fileID: 1653126810}
+  itemDragContainerIsOpen: 1
   mouseOverUI: 0
 --- !u!114 &1314207896
 MonoBehaviour:
@@ -18039,7 +18086,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4281479730
+    rgba: 4287535000
   m_fontColor: {r: 0.5943396, g: 0.5914356, b: 0.55789423, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -18768,6 +18815,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   contextTextBox: {fileID: 1529923886}
   audioSource: {fileID: 0}
+  errorClip: {fileID: 0}
+  contextClip: {fileID: 0}
 --- !u!1 &1396381965
 GameObject:
   m_ObjectHideFlags: 0
@@ -18920,6 +18969,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   children: []
   state: 0
+  mouseOver: 0
 --- !u!1 &1413771045
 GameObject:
   m_ObjectHideFlags: 0
@@ -19072,6 +19122,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   children: []
   state: 0
+  mouseOver: 0
 --- !u!1001 &1428864700
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19280,6 +19331,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   contextTextBox: {fileID: 1228206845}
   audioSource: {fileID: 0}
+  errorClip: {fileID: 0}
+  contextClip: {fileID: 0}
 --- !u!1001 &1448428007
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19509,6 +19562,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   children: []
   state: 0
+  mouseOver: 0
 --- !u!224 &1453845827 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6032789311799913055, guid: 10ede075d2a3cbe458d869503642a74b, type: 3}
@@ -19554,6 +19608,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   children: []
   state: 0
+  mouseOver: 0
 --- !u!1 &1470464232 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4650541821758295656, guid: 10ede075d2a3cbe458d869503642a74b, type: 3}
@@ -19604,6 +19659,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   children: []
   state: 0
+  mouseOver: 0
 --- !u!1001 &1480891466
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -20137,6 +20193,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   children: []
   state: 0
+  mouseOver: 0
 --- !u!114 &1529923886 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6734633936159240503, guid: 10ede075d2a3cbe458d869503642a74b, type: 3}
@@ -20362,6 +20419,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   children: []
   state: 0
+  mouseOver: 0
 --- !u!1 &1547799613 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4650541821758295656, guid: 10ede075d2a3cbe458d869503642a74b, type: 3}
@@ -20407,6 +20465,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   children: []
   state: 0
+  mouseOver: 0
 --- !u!114 &1547799622 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5339295171487252005, guid: 10ede075d2a3cbe458d869503642a74b, type: 3}
@@ -20463,6 +20522,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   children: []
   state: 0
+  mouseOver: 0
 --- !u!1001 &1551222940
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -21553,6 +21613,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   children: []
   state: 0
+  mouseOver: 0
 --- !u!114 &1626017131
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21567,6 +21628,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   children: []
   state: 0
+  mouseOver: 0
 --- !u!114 &1626017132
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21581,6 +21643,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   children: []
   state: 0
+  mouseOver: 0
 --- !u!114 &1626017133 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5339295171487252005, guid: 10ede075d2a3cbe458d869503642a74b, type: 3}
@@ -21744,6 +21807,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   children: []
   state: 0
+  mouseOver: 0
 --- !u!1 &1637979845
 GameObject:
   m_ObjectHideFlags: 0
@@ -22185,7 +22249,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4281479730
+    rgba: 4287535000
   m_fontColor: {r: 0.5943396, g: 0.5914356, b: 0.55789423, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -22253,6 +22317,96 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1649632005}
   m_CullTransparentMesh: 1
+--- !u!1 &1653126810
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1653126811}
+  - component: {fileID: 1653126814}
+  - component: {fileID: 1653126813}
+  - component: {fileID: 1653126815}
+  m_Layer: 5
+  m_Name: Item Drag
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1653126811
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1653126810}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 896522263}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 0}
+  m_AnchoredPosition: {x: -1248.5, y: 508}
+  m_SizeDelta: {x: 50, y: 50}
+  m_Pivot: {x: 1, y: 0}
+--- !u!114 &1653126813
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1653126810}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.392}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1653126814
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1653126810}
+  m_CullTransparentMesh: 1
+--- !u!114 &1653126815
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1653126810}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62f2d891bbcd893469ec0a7b365db3f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemSlot: {fileID: 0}
+  itemDragImage: {fileID: 1653126813}
 --- !u!1 &1655000464
 GameObject:
   m_ObjectHideFlags: 0
@@ -22405,6 +22559,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   children: []
   state: 0
+  mouseOver: 0
 --- !u!224 &1655217755 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6032789311799913055, guid: 10ede075d2a3cbe458d869503642a74b, type: 3}
@@ -22450,6 +22605,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   children: []
   state: 0
+  mouseOver: 0
 --- !u!1 &1663003615 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4650541821758295656, guid: 10ede075d2a3cbe458d869503642a74b, type: 3}
@@ -22474,6 +22630,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   contextTextBox: {fileID: 667391942}
   audioSource: {fileID: 0}
+  errorClip: {fileID: 0}
+  contextClip: {fileID: 0}
 --- !u!1001 &1668823651
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -22625,6 +22783,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   contextTextBox: {fileID: 1831510811}
   audioSource: {fileID: 0}
+  errorClip: {fileID: 0}
+  contextClip: {fileID: 0}
 --- !u!1 &1692481989
 GameObject:
   m_ObjectHideFlags: 0
@@ -22923,6 +23083,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   contextTextBox: {fileID: 1370719393}
   audioSource: {fileID: 0}
+  errorClip: {fileID: 0}
+  contextClip: {fileID: 0}
 --- !u!1001 &1701058559
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -23392,6 +23554,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   contextTextBox: {fileID: 831621261}
   audioSource: {fileID: 0}
+  errorClip: {fileID: 0}
+  contextClip: {fileID: 0}
 --- !u!1 &1737905441 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4650541821758295656, guid: 10ede075d2a3cbe458d869503642a74b, type: 3}
@@ -23416,6 +23580,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   contextTextBox: {fileID: 1868163021}
   audioSource: {fileID: 0}
+  errorClip: {fileID: 0}
+  contextClip: {fileID: 0}
 --- !u!1 &1778138929
 GameObject:
   m_ObjectHideFlags: 0
@@ -23588,6 +23754,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   contextTextBox: {fileID: 1278862578}
   audioSource: {fileID: 0}
+  errorClip: {fileID: 0}
+  contextClip: {fileID: 0}
 --- !u!224 &1797073717 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6032789311799913055, guid: 10ede075d2a3cbe458d869503642a74b, type: 3}
@@ -23893,6 +24061,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   children: []
   state: 0
+  mouseOver: 0
 --- !u!114 &1831510811 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6734633936159240503, guid: 10ede075d2a3cbe458d869503642a74b, type: 3}
@@ -23949,6 +24118,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   children: []
   state: 0
+  mouseOver: 0
 --- !u!1 &1833120546
 GameObject:
   m_ObjectHideFlags: 0
@@ -24262,6 +24432,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   children: []
   state: 0
+  mouseOver: 0
 --- !u!1 &1920977152
 GameObject:
   m_ObjectHideFlags: 0
@@ -25269,6 +25440,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   children: []
   state: 0
+  mouseOver: 0
 --- !u!1 &1967297212
 GameObject:
   m_ObjectHideFlags: 0
@@ -25938,6 +26110,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   children: []
   state: 0
+  mouseOver: 0
 --- !u!1 &2012391864 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4650541821758295656, guid: 10ede075d2a3cbe458d869503642a74b, type: 3}
@@ -25983,6 +26156,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   children: []
   state: 0
+  mouseOver: 0
 --- !u!1 &2013735359
 GameObject:
   m_ObjectHideFlags: 0
@@ -26083,6 +26257,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   contextTextBox: {fileID: 1929671537}
   audioSource: {fileID: 0}
+  errorClip: {fileID: 0}
+  contextClip: {fileID: 0}
 --- !u!1 &2033153667 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4650541821758295656, guid: 10ede075d2a3cbe458d869503642a74b, type: 3}
@@ -26227,6 +26403,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   children: []
   state: 0
+  mouseOver: 0
 --- !u!114 &2065416614 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5339295171487252005, guid: 10ede075d2a3cbe458d869503642a74b, type: 3}
@@ -26541,6 +26718,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   children: []
   state: 0
+  mouseOver: 0
 --- !u!1 &2094267355
 GameObject:
   m_ObjectHideFlags: 0
@@ -26776,6 +26954,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   contextTextBox: {fileID: 684681311}
   audioSource: {fileID: 0}
+  errorClip: {fileID: 0}
+  contextClip: {fileID: 0}
 --- !u!1 &2103700155
 GameObject:
   m_ObjectHideFlags: 0
@@ -27118,6 +27298,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   children: []
   state: 0
+  mouseOver: 0
 --- !u!1001 &2122274275
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -27411,6 +27592,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   children: []
   state: 0
+  mouseOver: 0
 --- !u!114 &2145389444 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5339295171487252005, guid: 10ede075d2a3cbe458d869503642a74b, type: 3}

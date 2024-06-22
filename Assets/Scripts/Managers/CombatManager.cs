@@ -61,7 +61,7 @@ public class CombatManager : MonoBehaviour
         Equipment mainHandWeapon = (Equipment)im.equipmentSlotsDictionary["Main Hand"].item;
         Equipment offHandWeapon = (Equipment)im.equipmentSlotsDictionary["Off Hand"].item;
 
-        if(mainHandWeapon == null && PathFinder.GetNeighbors(defendingCharacter.coord, dum.dungeonCoords).Contains(attackingCharacter.coord) || attackingCharacter is not PlayerCharacter)
+        if(mainHandWeapon == null && offHandWeapon == null && PathFinder.GetNeighbors(defendingCharacter.coord, dum.dungeonCoords).Contains(attackingCharacter.coord) || attackingCharacter is not PlayerCharacter)
         {
 
             attackOccured = true;
@@ -73,22 +73,12 @@ public class CombatManager : MonoBehaviour
                                         attackingCharacter.speed
                                         ));
 
-        }else if(mainHandWeapon is not RangedWeapon && PathFinder.GetNeighbors(defendingCharacter.coord, dum.dungeonCoords).Contains(attackingCharacter.coord))
-        {
-            
-            attackOccured = true;
-            combatBuffer.Add( new Attack(
-                                        attacker, 
-                                        defender,
-                                        mainHandWeapon.bonusStatDictionary["Min Damage"], 
-                                        mainHandWeapon.bonusStatDictionary["Max Damage"], 
-                                        attackingCharacter.speed
-                                        ));
+        }
 
-        }else if(mainHandWeapon is RangedWeapon rangedWeapon && mainHandWeapon.bonusStatDictionary["Range"] >= Vector3.Distance(defendingCharacter.transform.position, dum.hero.transform.position))
+        if(mainHandWeapon != null && attackingCharacter is PlayerCharacter)
         {
             
-            if(LineOfSight.HasLOS(dum.hero, defender))
+            if(mainHandWeapon is not RangedWeapon && PathFinder.GetNeighbors(defendingCharacter.coord, dum.dungeonCoords).Contains(attackingCharacter.coord))
             {
                 
                 attackOccured = true;
@@ -97,11 +87,27 @@ public class CombatManager : MonoBehaviour
                                             defender,
                                             mainHandWeapon.bonusStatDictionary["Min Damage"], 
                                             mainHandWeapon.bonusStatDictionary["Max Damage"], 
-                                            attackingCharacter.speed,
-                                            rangedWeapon.projectile
+                                            attackingCharacter.speed
                                             ));
-            }
 
+            }else if(mainHandWeapon is RangedWeapon rangedWeapon && mainHandWeapon.bonusStatDictionary["Range"] >= Vector3.Distance(defendingCharacter.transform.position, dum.hero.transform.position))
+            {
+                
+                if(LineOfSight.HasLOS(dum.hero, defender))
+                {
+                    
+                    attackOccured = true;
+                    combatBuffer.Add( new Attack(
+                                                attacker, 
+                                                defender,
+                                                mainHandWeapon.bonusStatDictionary["Min Damage"], 
+                                                mainHandWeapon.bonusStatDictionary["Max Damage"], 
+                                                attackingCharacter.speed,
+                                                rangedWeapon.projectile
+                                                ));
+                }
+
+            }
         }
         
 

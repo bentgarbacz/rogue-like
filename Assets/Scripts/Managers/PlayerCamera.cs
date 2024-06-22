@@ -13,7 +13,7 @@ public class PlayerCamera : MonoBehaviour
     public float minFov = 10f;
     public float maxFov = 40f;
     public float zoomSensitivity = 20f;
-    float fov = 0;
+    private float fov = 0;
 
     void Start()
     {

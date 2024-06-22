@@ -90,29 +90,35 @@ public class InventoryManager : MonoBehaviour
             if(i.item == null)
             {
 
-                //transfer item to inventory and handle UI logic
-                List<Item> holdItemList = targetSlot.itemList;
-
-                targetSlot.TransferItem(i);
-
-                targetSlot.slot.GetComponent<MouseOverItemSlot>().MouseExit();    
-
-                //if taking loot, handle loot panel logic
-                if(targetSlot.type == "Loot")
-                {  
-                             
-                    //uiam.CloseLootPanel();
-                    uiam.OpenLootPanel(holdItemList);
-
-                }else if(equipmentSlotsDictionary[targetSlot.type])
-                {
-
-                    equm.UpdateStats(equipmentSlotsDictionary);
-                }
-
+                TransferToInventory(targetSlot, i);
                 targetSlot.slot.GetComponent<MouseOverItemSlot>().MouseEnter();
-
                 break; 
+            }
+        }
+    }
+
+    public void TransferToInventory(ItemSlot sourceSlot, ItemSlot targetSlot)
+    {
+
+        //transfer item to inventory and handle UI logic
+        List<Item> holdItemList = sourceSlot.itemList;
+
+        sourceSlot.TransferItem(targetSlot);
+
+        sourceSlot.slot.GetComponent<MouseOverItemSlot>().MouseExit();    
+
+        if(sourceSlot.type != "Inventory")
+        {
+
+            if(sourceSlot.type == "Loot")
+            {  
+                            
+                uiam.OpenLootPanel(holdItemList);
+
+            }else if(equipmentSlotsDictionary[sourceSlot.type])
+            {
+
+                equm.UpdateStats(equipmentSlotsDictionary);
             }
         }
     }

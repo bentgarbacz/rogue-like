@@ -23,6 +23,8 @@ public class UIActiveManager : MonoBehaviour
     public bool levelUpNotificationIsValid = false; 
     public GameObject  toolTipContainer;
     public bool toolTipContainerIsOpen = true;
+    public GameObject  itemDragContainer;
+    public bool itemDragContainerIsOpen = true;
     private InventoryManager im;
     public bool mouseOverUI = false;
 
@@ -36,7 +38,8 @@ public class UIActiveManager : MonoBehaviour
         CloseInventoryPanel();
         CloseCharacterPanel();
         CloseLootPanel();    
-        HideTooltip();      
+        HideTooltip();
+        HideItemDrag();   
     }
 
     public bool IsPointerOverUI()
@@ -215,6 +218,28 @@ public class UIActiveManager : MonoBehaviour
 
             toolTipContainerIsOpen = false;
             toolTipContainer.SetActive(toolTipContainerIsOpen);
+        }
+    }
+
+    public void ShowItemDrag()
+    {
+
+        if(itemDragContainerIsOpen == false)
+        {
+
+            itemDragContainerIsOpen = true;
+            itemDragContainer.SetActive(itemDragContainerIsOpen);
+        }
+    }
+
+    public void HideItemDrag()
+    {
+
+        if(itemDragContainerIsOpen == true)
+        {
+
+            itemDragContainerIsOpen = false;
+            itemDragContainer.SetActive(itemDragContainerIsOpen);
         }
     }
 }

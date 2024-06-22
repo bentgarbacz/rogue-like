@@ -13,8 +13,7 @@ public class ItemSlot : MonoBehaviour
     public string type;
    
     void Awake()
-    {
-        
+    {       
 
         SetVisible(false);
     }
@@ -58,7 +57,12 @@ public class ItemSlot : MonoBehaviour
     {
 
         Item itemHold = destinationItemSlot.item;
-        destinationItemSlot.AddItem(item);
+
+        if(item != null)
+        {
+
+            destinationItemSlot.AddItem(item);
+        }
 
         if(itemList != null)
         {
@@ -68,7 +72,7 @@ public class ItemSlot : MonoBehaviour
 
         if(itemHold == null)
         {
-            
+
             ThrowAway();
 
         }else
