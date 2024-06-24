@@ -16,6 +16,8 @@ public class UIActiveManager : MonoBehaviour
     public GameObject characterPanel;
     public bool characterIsOpen = true; 
     public GameObject equipmentPanel;
+    public GameObject infoAndControlPanel;
+    public bool infoAndControlPanelIsOpen = true;
     public GameObject levelUpNotification;
     public GameObject addStrengthButton;
     public GameObject addDexterityButton;
@@ -117,19 +119,16 @@ public class UIActiveManager : MonoBehaviour
 
     public void TogglePause()
     {
+        
         pauseIsOpen = !pauseIsOpen;
+        pausePanel.SetActive(pauseIsOpen);
 
-        //disable UI elements that are not  thepause menu
-        foreach (Transform child in canvasHUD.transform)
-        {
-
-            child.gameObject.SetActive(!pauseIsOpen);
-            lootPanel.SetActive(false);
-            inventoryPanel.SetActive(false);
-            characterPanel.SetActive(false);
-            toolTipContainer.SetActive(false);
-            pausePanel.SetActive(pauseIsOpen);
-        }
+        ToggleInfoAndControl();
+        CloseLootPanel();
+        CloseInventoryPanel();
+        CloseCharacterPanel();
+        HideTooltip();
+        HideItemDrag();            
     }
 
     public void OpenCharacterPanel()
@@ -168,6 +167,43 @@ public class UIActiveManager : MonoBehaviour
             CloseInventoryPanel();
             CloseLootPanel();
             OpenCharacterPanel();
+        }
+    }
+
+    public void OpenInfoAndControlyPanel()
+    {
+
+        if(infoAndControlPanelIsOpen == false)
+        {
+
+            infoAndControlPanelIsOpen = true;
+            infoAndControlPanel.SetActive(infoAndControlPanelIsOpen);
+        }
+    }
+
+    public void CloseInfoAndControlPanel()
+    {
+
+        if(infoAndControlPanelIsOpen == true)
+        {
+
+            infoAndControlPanelIsOpen = false;
+            infoAndControlPanel.SetActive(infoAndControlPanelIsOpen);
+        }
+    }
+
+    public void ToggleInfoAndControl()
+    {
+
+        if(infoAndControlPanelIsOpen)
+        {
+
+            CloseInfoAndControlPanel();
+
+        }else if(!infoAndControlPanelIsOpen && !pauseIsOpen)
+        {
+
+            OpenInfoAndControlyPanel();
         }
     }
 

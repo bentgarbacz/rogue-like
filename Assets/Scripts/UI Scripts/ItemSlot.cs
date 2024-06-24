@@ -11,11 +11,13 @@ public class ItemSlot : MonoBehaviour
     public List<Item> itemList;
     public int slotIndex;
     public string type;
+    public Sprite defaultSprite;
    
     void Awake()
     {       
 
-        SetVisible(false);
+        slot.image.sprite = defaultSprite;
+        //SetVisible(false);
     }
 
     public void AddItem(Item newItem)
@@ -23,15 +25,15 @@ public class ItemSlot : MonoBehaviour
 
         item = newItem;
         slot.image.sprite = item.sprite;
-        SetVisible(true);
+        //SetVisible(true);
     }
 
     public void ThrowAway()
     {
 
         item = null;
-        slot.image.sprite = null;
-        SetVisible(false);
+        slot.image.sprite = defaultSprite;
+        //SetVisible(false);
         itemList = null;
     }
 

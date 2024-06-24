@@ -8,16 +8,19 @@ public class ItemDragManager : MonoBehaviour
 
     public ItemSlot itemSlot = null;
     public Image itemDragImage;
+    public bool paused = false;
     private RectTransform tooltipContainerRect;
+    public AudioSource audioSource;
     private UIActiveManager uiam;
     private InventoryManager im;
 
     void Awake()
     {
 
-        uiam = GameObject.Find("System Managers").GetComponent<UIActiveManager>();
-        im = GameObject.Find("System Managers").GetComponent<InventoryManager>();
         tooltipContainerRect = GetComponent<RectTransform>();
+        audioSource = GameObject.Find("CanvasHUD").GetComponent<AudioSource>();
+        uiam = GameObject.Find("System Managers").GetComponent<UIActiveManager>();
+        im = GameObject.Find("System Managers").GetComponent<InventoryManager>();  
     }
 
     void LateUpdate()
@@ -45,17 +48,28 @@ public class ItemDragManager : MonoBehaviour
     public void DragItem(ItemSlot itemSlot)
     {
 
-        this.itemSlot = itemSlot;
-        itemDragImage.sprite = itemSlot.item.sprite;
-        uiam.ShowItemDrag();
+        if(paused == false)
+        {
+        
+            this.itemSlot = itemSlot;
+            itemDragImage.sprite = itemSlot.item.sprite;
+            uiam.ShowItemDrag();
+
+            audioSource.PlayOneShot(itemSlot.item.contextClip);
+        }
     }
 
     public void DropItem(ItemSlot destinationItemSlot)
     {
-        im.TransferToInventory(itemSlot, destinationItemSlot);
-        destinationItemSlot.slot.GetComponent<MouseOverItemSlot>().MouseEnter();
-
-        this.itemSlot = null;      
-        uiam.HideItemDrag();
+        
+        if(paused == false)
+        {
+            
+            audioSource.PlayOneShot(itemSlot.item.contextClip);
+            
+            im.TransferToInventory(itemSlot, destinationItemSlot);
+            this.itemSlot = null;      
+            uiam.HideItemDrag();   
+        }    
     }
 }
