@@ -17,7 +17,6 @@ public class ItemSlot : MonoBehaviour
     {       
 
         slot.image.sprite = defaultSprite;
-        //SetVisible(false);
     }
 
     public void AddItem(Item newItem)
@@ -25,7 +24,6 @@ public class ItemSlot : MonoBehaviour
 
         item = newItem;
         slot.image.sprite = item.sprite;
-        //SetVisible(true);
     }
 
     public void ThrowAway()
@@ -33,7 +31,6 @@ public class ItemSlot : MonoBehaviour
 
         item = null;
         slot.image.sprite = defaultSprite;
-        //SetVisible(false);
         itemList = null;
     }
 
@@ -103,7 +100,6 @@ public class ItemSlot : MonoBehaviour
             }
         }        
 
-        return summary + "\n" + item.description;
-        
+        return summary + "\n" + item.description;        
     }
 }

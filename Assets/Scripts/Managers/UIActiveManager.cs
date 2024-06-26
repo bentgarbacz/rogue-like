@@ -10,12 +10,13 @@ public class UIActiveManager : MonoBehaviour
     public GameObject inventoryPanel;
     public bool inventoryIsOpen = true;
     public GameObject lootPanel;
-    public bool lootIsOpen = true;  
+    public bool lootIsOpen = true;   
     public GameObject  pausePanel;
     public bool pauseIsOpen = false;
     public GameObject characterPanel;
     public bool characterIsOpen = true; 
     public GameObject equipmentPanel;
+    //public bool equipmentPanelIsOpen = true;
     public GameObject infoAndControlPanel;
     public bool infoAndControlPanelIsOpen = true;
     public GameObject levelUpNotification;
@@ -29,6 +30,12 @@ public class UIActiveManager : MonoBehaviour
     public bool itemDragContainerIsOpen = true;
     private InventoryManager im;
     public bool mouseOverUI = false;
+
+    [SerializeField]
+    private GameObject dropSlot;
+
+    [SerializeField]
+    private GameObject destroySlot;
 
     void Start()
     {
@@ -58,6 +65,14 @@ public class UIActiveManager : MonoBehaviour
 
             inventoryIsOpen = true;
             inventoryPanel.SetActive(inventoryIsOpen);
+            equipmentPanel.SetActive(inventoryIsOpen);
+
+            if(!lootIsOpen && !characterIsOpen)//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! change when making equipment seperate
+            {
+
+                dropSlot.SetActive(true);
+                destroySlot.SetActive(true);
+            }
         }
     }
 
@@ -69,6 +84,10 @@ public class UIActiveManager : MonoBehaviour
 
             inventoryIsOpen = false;
             inventoryPanel.SetActive(inventoryIsOpen);
+            equipmentPanel.SetActive(inventoryIsOpen);
+
+            dropSlot.SetActive(false);
+            destroySlot.SetActive(false);
         }
     }
 
@@ -139,6 +158,7 @@ public class UIActiveManager : MonoBehaviour
 
             characterIsOpen = true;
             characterPanel.SetActive(characterIsOpen);
+            equipmentPanel.SetActive(characterIsOpen);
         }
     }
 
@@ -150,6 +170,7 @@ public class UIActiveManager : MonoBehaviour
 
             characterIsOpen = false;
             characterPanel.SetActive(characterIsOpen);
+            equipmentPanel.SetActive(characterIsOpen);
         }
     }
 

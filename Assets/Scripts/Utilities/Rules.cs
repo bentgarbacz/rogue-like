@@ -43,10 +43,15 @@ public static class Rules
         return 0f;
     }
 
-     public static bool CheckValidEquipmentSlot(ItemSlot equipmentSlot, Item item)
+    public static bool CheckValidEquipmentSlot(ItemSlot equipmentSlot, Item item)
     {
 
-        if(item is Equipment equipItem)
+        if(equipmentSlot.type == "Inventory")
+        {
+
+            return true;
+            
+        }else if(item is Equipment equipItem)
         {
             
             if(equipItem.equipmentType == equipmentSlot.type)

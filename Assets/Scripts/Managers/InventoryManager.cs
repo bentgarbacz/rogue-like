@@ -118,7 +118,7 @@ public class InventoryManager : MonoBehaviour
             }else if(equipmentSlotsDictionary[sourceSlot.type])
             {
 
-                equm.UpdateStats(equipmentSlotsDictionary);
+                equm.UpdateStats();
             }
         }
     }
@@ -164,7 +164,7 @@ public class InventoryManager : MonoBehaviour
     public void UpdateStats()
     {
 
-        equm.UpdateStats(equipmentSlotsDictionary);
+        equm.UpdateStats();
     }
 
     public bool ContextualAction(ItemSlot targetSlot)

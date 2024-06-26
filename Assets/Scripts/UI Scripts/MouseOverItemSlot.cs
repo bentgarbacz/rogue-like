@@ -13,19 +13,23 @@ public class MouseOverItemSlot : MonoBehaviour, IPointerEnterHandler, IPointerEx
     public AudioClip errorClip;
     private ToolTipManager ttm;
     private ItemDragManager idm;
+    private EquipmentManager equm;
     private Coroutine dragCoroutine;
     private const float dragDelay = 0.2f; // Delay in seconds before starting the drag
 
     void Awake()
     {
+
         itemSlot = GetComponent<ItemSlot>();
         audioSource = GameObject.Find("CanvasHUD").GetComponent<AudioSource>();
         errorClip = Resources.Load<AudioClip>("Sounds/Error");
         ttm = GameObject.Find("System Managers").GetComponent<UIActiveManager>().toolTipContainer.GetComponent<ToolTipManager>();
         idm = GameObject.Find("System Managers").GetComponent<UIActiveManager>().itemDragContainer.GetComponent<ItemDragManager>();
+        equm = GameObject.Find("System Managers").GetComponent<EquipmentManager>();
 
-        foreach (Transform child in transform)
+        foreach(Transform child in transform)
         {
+
             children.Add(child.gameObject);
         }
 
@@ -57,20 +61,24 @@ public class MouseOverItemSlot : MonoBehaviour, IPointerEnterHandler, IPointerEx
             if(idm.itemSlot != null && itemSlot.type != "Loot")
             {
 
-                if(itemSlot.type == "Inventory" ||
-                    (Rules.CheckValidEquipmentSlot(itemSlot, idm.itemSlot.item) && Rules.CheckValidEquipmentSlot(idm.itemSlot, itemSlot.item)) ||
-                    (Rules.CheckValidEquipmentSlot(itemSlot, idm.itemSlot.item) && itemSlot.item == null))
-                {
+                bool isInventory = itemSlot.type == "Inventory";
+                bool isValidEquip = equm.ValidEquip(itemSlot, idm.itemSlot);
 
+                if(isInventory || isValidEquip)
+                {
                     idm.DropItem(itemSlot);
+
+                    if(isValidEquip)
+                    {
+                        equm.UpdateStats();
+                    }
+
                     MouseExit();
                     MouseEnter();
-
-                }else
-                {
-
-                    audioSource.PlayOneShot(errorClip);
+                    return;
                 }
+
+                audioSource.PlayOneShot(errorClip);
             }
         }
     }
