@@ -6,27 +6,32 @@ public class Equipment : Item
 {
 
     public string equipmentType;
+
     public Dictionary<string, int> bonusStatDictionary;
 
     public Equipment()
     {
 
-        bonusStatDictionary = new Dictionary<string, int>();
+        bonusStatDictionary = new Dictionary<string, int>
+        {
 
-        bonusStatDictionary.Add("Strength", 0);
-        bonusStatDictionary.Add("Dexterity", 0);
-        bonusStatDictionary.Add("Intelligence", 0);
-        bonusStatDictionary.Add("Speed", 0);
-        bonusStatDictionary.Add("Crit Chance", 0);
-        bonusStatDictionary.Add("Armor", 0);
-        bonusStatDictionary.Add("Evasion", 0);
-        bonusStatDictionary.Add("Accuracy", 0);
-        bonusStatDictionary.Add("Min Damage", 0);
-        bonusStatDictionary.Add("Max Damage", 0);
-        bonusStatDictionary.Add("Max Health", 0);        
+            { "Strength", 0 },
+            { "Dexterity", 0 },
+            { "Intelligence", 0 },
+            { "Speed", 0 },
+            { "Crit Chance", 0 },
+            { "Armor", 0 },
+            { "Evasion", 0 },
+            { "Accuracy", 0 },
+            { "Min Damage", 0 },
+            { "Max Damage", 0 },
+            { "Max Health", 0 },
+            { "Strength Requirement", 0 },
+            { "Dexterity Requirement", 0 },
+            { "Intelligence Requirement", 0 }
+        };
 
         equipmentType = "N/A";
         contextText = "Equip";
     }
-
 }

@@ -7,14 +7,16 @@ public class EquipmentManager : MonoBehaviour
 
     public GameObject hero;
     private PlayerCharacter playerCharacter;
+    private InventoryManager im;
 
     void Start()
     {
         
         playerCharacter = hero.GetComponent<PlayerCharacter>();
+        im = GameObject.Find("System Managers").GetComponent<InventoryManager>();
     }
 
-    public void UpdateStats(Dictionary<string, ItemSlot> equipmentSlotsDictionary)
+    public void UpdateStats()
     {
 
         playerCharacter.strength -= playerCharacter.strengthBonus;
@@ -42,7 +44,7 @@ public class EquipmentManager : MonoBehaviour
         playerCharacter.maxHealthBonus = 0;
 
 
-        foreach(ItemSlot slot in equipmentSlotsDictionary.Values)
+        foreach(ItemSlot slot in im.equipmentSlotsDictionary.Values)
         {
 
             if(slot.item != null)
@@ -88,4 +90,35 @@ public class EquipmentManager : MonoBehaviour
         playerCharacter.maxDamage += playerCharacter.maxDamageBonus;
         playerCharacter.maxHealth += playerCharacter.maxHealthBonus;
     } 
+
+    public bool MeetsRequirements(Equipment equipment)
+    {
+
+        if(playerCharacter.strength >= equipment.bonusStatDictionary["Strength Requirement"] && 
+           playerCharacter.dexterity >= equipment.bonusStatDictionary["Dexterity Requirement"] && 
+           playerCharacter.intelligence >= equipment.bonusStatDictionary["Intelligence Requirement"])
+        {
+
+            return true;
+        }
+
+        return false;
+    }
+
+    public bool ValidEquip(ItemSlot destinationSlot, ItemSlot originSlot)
+    {
+
+        if((Rules.CheckValidEquipmentSlot(destinationSlot, originSlot.item) && Rules.CheckValidEquipmentSlot(originSlot, destinationSlot.item)) ||
+           (Rules.CheckValidEquipmentSlot(destinationSlot, originSlot.item) && destinationSlot.item == null))
+        {
+
+            if(im.equipmentSlotsDictionary.ContainsKey(destinationSlot.type) && originSlot.item is Equipment equipment)
+            {
+
+                return MeetsRequirements(equipment);            
+            }
+        }
+
+        return false;
+    }
 }

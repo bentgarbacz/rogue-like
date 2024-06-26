@@ -5,6 +5,8 @@ using UnityEngine;
 public class RangedWeapon : Equipment
 {
 
+    public string projectile = "";
+
     public RangedWeapon() : base()
     {
 

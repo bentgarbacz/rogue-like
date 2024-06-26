@@ -23,8 +23,7 @@ public class Character : MonoBehaviour
     public int dexterity = 0;
     public int intelligence = 0;
     public int armor = 0;
-    public int evasion = 0;
-    
+    public int evasion = 0;    
     public string dropTable;
     public AudioSource audioSource;
     public AudioClip attackClip;
@@ -42,34 +41,6 @@ public class Character : MonoBehaviour
         audioSource = gameObject.AddComponent<AudioSource>();
         missClip = Resources.Load<AudioClip>("Sounds/Miss");
     }
-
-   /*  public int TakeDamage(int damage, bool isCrit = false, int critMultiplier = 2)
-    {
-        
-        damage = Mathf.Max(0, damage - armor);
-
-        if(damage > 0)
-        {
-            if(isCrit)
-            {
-
-                damage *= critMultiplier;
-                GetComponent<TextPopup>().CreatePopup(transform.position, 3f, damage.ToString(), Color.yellow);
-
-            }else
-            {
-
-                GetComponent<TextPopup>().CreatePopup(transform.position, 3f, damage.ToString(), Color.red);
-            }            
-
-        }else
-        {
-
-            GetComponent<TextPopup>().CreatePopup(transform.position, 2f, "Miss", Color.white);
-        }
-
-        return health -= damage;
-    } */
 
     public int TakeDamage(int damage)
     {
@@ -93,7 +64,7 @@ public class Character : MonoBehaviour
             occupiedlist.Remove(pos);
 
             GetComponent<MoveToTarget>().SetTarget(newPos);
-            transform.rotation = Quaternion.Euler(0, Orientation.DetermineRotation(pos, newPos), 0);
+            transform.rotation = Quaternion.Euler(0, Rules.DetermineRotation(pos, newPos), 0);
 
             pos = newPos;
             coord = new Vector2Int((int)newPos.x, (int)newPos.z);

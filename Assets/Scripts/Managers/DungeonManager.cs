@@ -47,6 +47,7 @@ public class DungeonManager : MonoBehaviour
 
     public void TossContainer(GameObject trashContainer)
     {
+        
         if(!trashContainer.GetComponent<Chest>())
         {
             

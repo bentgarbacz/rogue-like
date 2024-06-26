@@ -5,31 +5,104 @@ using UnityEngine.EventSystems;
 
 public class MouseOverItemSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    
     public List<GameObject> children = new();
     public bool state = false;
+    public bool mouseOver = false;
     private ItemSlot itemSlot;
+    public AudioSource audioSource;
+    public AudioClip errorClip;
     private ToolTipManager ttm;
+    private ItemDragManager idm;
+    private EquipmentManager equm;
+    private Coroutine dragCoroutine;
+    private const float dragDelay = 0.2f; // Delay in seconds before starting the drag
 
     void Awake()
     {
 
         itemSlot = GetComponent<ItemSlot>();
-        ttm = ttm = GameObject.Find("System Managers").GetComponent<UIActiveManager>().toolTipContainer.GetComponent<ToolTipManager>();
+        audioSource = GameObject.Find("CanvasHUD").GetComponent<AudioSource>();
+        errorClip = Resources.Load<AudioClip>("Sounds/Error");
+        ttm = GameObject.Find("System Managers").GetComponent<UIActiveManager>().toolTipContainer.GetComponent<ToolTipManager>();
+        idm = GameObject.Find("System Managers").GetComponent<UIActiveManager>().itemDragContainer.GetComponent<ItemDragManager>();
+        equm = GameObject.Find("System Managers").GetComponent<EquipmentManager>();
 
-        foreach (Transform child in transform)
+        foreach(Transform child in transform)
         {
 
             children.Add(child.gameObject);
         }
-        
+
         SetChildren(state);
+    }
+
+    void Update()
+    {
+        
+        if(mouseOver && itemSlot.item != null && Input.GetMouseButtonDown(0))
+        {
+
+            if(dragCoroutine == null)
+            {
+
+                dragCoroutine = StartCoroutine(StartDragAfterDelay());
+            }
+
+        }else if(mouseOver && Input.GetMouseButtonUp(0))
+        {
+
+            if(dragCoroutine != null)
+            {
+
+                StopCoroutine(dragCoroutine);
+                dragCoroutine = null;
+            }
+
+            if(idm.itemSlot != null && itemSlot.type != "Loot")
+            {
+
+                bool isInventory = itemSlot.type == "Inventory";
+                bool isValidEquip = equm.ValidEquip(itemSlot, idm.itemSlot);
+
+                if(isInventory || isValidEquip)
+                {
+                    idm.DropItem(itemSlot);
+
+                    if(isValidEquip)
+                    {
+                        equm.UpdateStats();
+                    }
+
+                    MouseExit();
+                    MouseEnter();
+                    return;
+                }
+
+                audioSource.PlayOneShot(errorClip);
+            }
+        }
+    }
+
+    private IEnumerator StartDragAfterDelay()
+    {
+        
+        yield return new WaitForSeconds(dragDelay);
+
+        if(mouseOver && itemSlot.item != null && Input.GetMouseButton(0))
+        {
+
+            idm.DragItem(itemSlot);
+        }
+
+        dragCoroutine = null;
     }
 
     private void SetChildren(bool newState)
     {
 
-        foreach (GameObject child in children)
+        idm.paused = false;
+
+        foreach(GameObject child in children)
         {
 
             child.SetActive(newState);
@@ -38,7 +111,8 @@ public class MouseOverItemSlot : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        
+
+        mouseOver = true;
         MouseEnter();
     }
 
@@ -63,6 +137,8 @@ public class MouseOverItemSlot : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
     public void OnPointerExit(PointerEventData eventData)
     {
+
+        mouseOver = false;
         ttm.SetTooltip(false);
         MouseExit();
     }
@@ -72,9 +148,17 @@ public class MouseOverItemSlot : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
         if(state == true)
         {
-            
+
             state = !state;
             SetChildren(state);
         }
+    }
+
+    public void OnDisable()
+    {
+
+        mouseOver = false;
+        ttm.SetTooltip(false);
+        MouseExit();
     }
 }

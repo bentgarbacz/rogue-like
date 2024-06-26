@@ -82,7 +82,7 @@ public class MapGenerator : MonoBehaviour
                             if(path.Contains(position + direction))
                             {
                                 
-                                newExit.transform.rotation = Quaternion.Euler(0, Orientation.DetermineRotation(newExit.transform.position, new Vector3(position.x + direction.x, 0, position.y + direction.y)), 0);
+                                newExit.transform.rotation = Quaternion.Euler(0, Rules.DetermineRotation(newExit.transform.position, new Vector3(position.x + direction.x, 0, position.y + direction.y)), 0);
                                 break;
                             }
                         }

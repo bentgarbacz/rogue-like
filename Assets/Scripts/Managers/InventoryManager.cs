@@ -90,29 +90,35 @@ public class InventoryManager : MonoBehaviour
             if(i.item == null)
             {
 
-                //transfer item to inventory and handle UI logic
-                List<Item> holdItemList = targetSlot.itemList;
-
-                targetSlot.TransferItem(i);
-
-                targetSlot.slot.GetComponent<MouseOverItemSlot>().MouseExit();    
-
-                //if taking loot, handle loot panel logic
-                if(targetSlot.type == "Loot")
-                {  
-                             
-                    //uiam.CloseLootPanel();
-                    uiam.OpenLootPanel(holdItemList);
-
-                }else if(equipmentSlotsDictionary[targetSlot.type])
-                {
-
-                    equm.UpdateStats(equipmentSlotsDictionary);
-                }
-
+                TransferToInventory(targetSlot, i);
                 targetSlot.slot.GetComponent<MouseOverItemSlot>().MouseEnter();
-
                 break; 
+            }
+        }
+    }
+
+    public void TransferToInventory(ItemSlot sourceSlot, ItemSlot targetSlot)
+    {
+
+        //transfer item to inventory and handle UI logic
+        List<Item> holdItemList = sourceSlot.itemList;
+
+        sourceSlot.TransferItem(targetSlot);
+
+        sourceSlot.slot.GetComponent<MouseOverItemSlot>().MouseExit();    
+
+        if(sourceSlot.type != "Inventory")
+        {
+
+            if(sourceSlot.type == "Loot")
+            {  
+                            
+                uiam.OpenLootPanel(holdItemList);
+
+            }else if(equipmentSlotsDictionary[sourceSlot.type])
+            {
+
+                equm.UpdateStats();
             }
         }
     }
@@ -158,10 +164,10 @@ public class InventoryManager : MonoBehaviour
     public void UpdateStats()
     {
 
-        equm.UpdateStats(equipmentSlotsDictionary);
+        equm.UpdateStats();
     }
 
-    public void ContextualAction(ItemSlot targetSlot)
+    public bool ContextualAction(ItemSlot targetSlot)
     {
 
         //define behavior for click on inventory contextual button
@@ -172,14 +178,22 @@ public class InventoryManager : MonoBehaviour
             targetSlot.ThrowAway();
             targetSlot.slot.GetComponent<MouseOverItemSlot>().MouseExit();
             targetSlot.slot.GetComponent<MouseOverItemSlot>().MouseEnter();
+            return true;
 
         }else if(targetSlot.item is Equipment equipment)
         {
 
-            targetSlot.TransferItem(GetEquipmentSlot(equipment));
-            UpdateStats();
-            targetSlot.slot.GetComponent<MouseOverItemSlot>().MouseExit();
-            targetSlot.slot.GetComponent<MouseOverItemSlot>().MouseEnter();
+            if(equm.MeetsRequirements(equipment))
+            {
+
+                targetSlot.TransferItem(GetEquipmentSlot(equipment));
+                UpdateStats();
+                targetSlot.slot.GetComponent<MouseOverItemSlot>().MouseExit();
+                targetSlot.slot.GetComponent<MouseOverItemSlot>().MouseEnter();
+                return true;
+            }
         }
+
+        return false;
     }
 }

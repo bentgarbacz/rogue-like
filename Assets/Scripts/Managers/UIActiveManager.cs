@@ -10,12 +10,15 @@ public class UIActiveManager : MonoBehaviour
     public GameObject inventoryPanel;
     public bool inventoryIsOpen = true;
     public GameObject lootPanel;
-    public bool lootIsOpen = true;  
+    public bool lootIsOpen = true;   
     public GameObject  pausePanel;
     public bool pauseIsOpen = false;
     public GameObject characterPanel;
     public bool characterIsOpen = true; 
     public GameObject equipmentPanel;
+    //public bool equipmentPanelIsOpen = true;
+    public GameObject infoAndControlPanel;
+    public bool infoAndControlPanelIsOpen = true;
     public GameObject levelUpNotification;
     public GameObject addStrengthButton;
     public GameObject addDexterityButton;
@@ -23,8 +26,16 @@ public class UIActiveManager : MonoBehaviour
     public bool levelUpNotificationIsValid = false; 
     public GameObject  toolTipContainer;
     public bool toolTipContainerIsOpen = true;
+    public GameObject  itemDragContainer;
+    public bool itemDragContainerIsOpen = true;
     private InventoryManager im;
     public bool mouseOverUI = false;
+
+    [SerializeField]
+    private GameObject dropSlot;
+
+    [SerializeField]
+    private GameObject destroySlot;
 
     void Start()
     {
@@ -36,7 +47,8 @@ public class UIActiveManager : MonoBehaviour
         CloseInventoryPanel();
         CloseCharacterPanel();
         CloseLootPanel();    
-        HideTooltip();      
+        HideTooltip();
+        HideItemDrag();   
     }
 
     public bool IsPointerOverUI()
@@ -53,6 +65,14 @@ public class UIActiveManager : MonoBehaviour
 
             inventoryIsOpen = true;
             inventoryPanel.SetActive(inventoryIsOpen);
+            equipmentPanel.SetActive(inventoryIsOpen);
+
+            if(!lootIsOpen && !characterIsOpen)//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! change when making equipment seperate
+            {
+
+                dropSlot.SetActive(true);
+                destroySlot.SetActive(true);
+            }
         }
     }
 
@@ -64,6 +84,10 @@ public class UIActiveManager : MonoBehaviour
 
             inventoryIsOpen = false;
             inventoryPanel.SetActive(inventoryIsOpen);
+            equipmentPanel.SetActive(inventoryIsOpen);
+
+            dropSlot.SetActive(false);
+            destroySlot.SetActive(false);
         }
     }
 
@@ -114,19 +138,16 @@ public class UIActiveManager : MonoBehaviour
 
     public void TogglePause()
     {
+        
         pauseIsOpen = !pauseIsOpen;
+        pausePanel.SetActive(pauseIsOpen);
 
-        //disable UI elements that are not  thepause menu
-        foreach (Transform child in canvasHUD.transform)
-        {
-
-            child.gameObject.SetActive(!pauseIsOpen);
-            lootPanel.SetActive(false);
-            inventoryPanel.SetActive(false);
-            characterPanel.SetActive(false);
-            toolTipContainer.SetActive(false);
-            pausePanel.SetActive(pauseIsOpen);
-        }
+        ToggleInfoAndControl();
+        CloseLootPanel();
+        CloseInventoryPanel();
+        CloseCharacterPanel();
+        HideTooltip();
+        HideItemDrag();            
     }
 
     public void OpenCharacterPanel()
@@ -137,6 +158,7 @@ public class UIActiveManager : MonoBehaviour
 
             characterIsOpen = true;
             characterPanel.SetActive(characterIsOpen);
+            equipmentPanel.SetActive(characterIsOpen);
         }
     }
 
@@ -148,6 +170,7 @@ public class UIActiveManager : MonoBehaviour
 
             characterIsOpen = false;
             characterPanel.SetActive(characterIsOpen);
+            equipmentPanel.SetActive(characterIsOpen);
         }
     }
 
@@ -165,6 +188,43 @@ public class UIActiveManager : MonoBehaviour
             CloseInventoryPanel();
             CloseLootPanel();
             OpenCharacterPanel();
+        }
+    }
+
+    public void OpenInfoAndControlyPanel()
+    {
+
+        if(infoAndControlPanelIsOpen == false)
+        {
+
+            infoAndControlPanelIsOpen = true;
+            infoAndControlPanel.SetActive(infoAndControlPanelIsOpen);
+        }
+    }
+
+    public void CloseInfoAndControlPanel()
+    {
+
+        if(infoAndControlPanelIsOpen == true)
+        {
+
+            infoAndControlPanelIsOpen = false;
+            infoAndControlPanel.SetActive(infoAndControlPanelIsOpen);
+        }
+    }
+
+    public void ToggleInfoAndControl()
+    {
+
+        if(infoAndControlPanelIsOpen)
+        {
+
+            CloseInfoAndControlPanel();
+
+        }else if(!infoAndControlPanelIsOpen && !pauseIsOpen)
+        {
+
+            OpenInfoAndControlyPanel();
         }
     }
 
@@ -215,6 +275,28 @@ public class UIActiveManager : MonoBehaviour
 
             toolTipContainerIsOpen = false;
             toolTipContainer.SetActive(toolTipContainerIsOpen);
+        }
+    }
+
+    public void ShowItemDrag()
+    {
+
+        if(itemDragContainerIsOpen == false)
+        {
+
+            itemDragContainerIsOpen = true;
+            itemDragContainer.SetActive(itemDragContainerIsOpen);
+        }
+    }
+
+    public void HideItemDrag()
+    {
+
+        if(itemDragContainerIsOpen == true)
+        {
+
+            itemDragContainerIsOpen = false;
+            itemDragContainer.SetActive(itemDragContainerIsOpen);
         }
     }
 }

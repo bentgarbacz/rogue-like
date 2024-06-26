@@ -7,26 +7,36 @@ public class IsMouseOverUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 {
 
     private UIActiveManager uiam;
+    private bool isMouseOverSelf = false;
 
     void Awake()
     {
+
         uiam = GameObject.Find("System Managers").GetComponent<UIActiveManager>();
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
         
+        isMouseOverSelf = true;
         uiam.mouseOverUI = true;
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
+        
+        isMouseOverSelf = false;
         uiam.mouseOverUI = false;
     }
 
     public void OnDisable()
     {
 
-        uiam.mouseOverUI = false;
+        if(isMouseOverSelf)
+        {
+
+            isMouseOverSelf = false;
+            uiam.mouseOverUI = false;
+        }
     }
 }
