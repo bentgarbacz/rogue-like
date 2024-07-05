@@ -4,9 +4,7 @@ using UnityEngine;
 
 public class Sword : Equipment
 {
-
-    private GameObject hero = GameObject.Find("System Managers").GetComponent<DungeonManager>().hero;
-
+    
     public Sword(int dropChance = 0 )
     {
 

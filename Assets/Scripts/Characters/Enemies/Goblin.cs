@@ -9,7 +9,7 @@ public class Goblin : Character
     {
         
         base.Start();
-        maxHealth = 20;
+        maxHealth = 10;
         health = maxHealth;
         accuracy = 100;
         minDamage = 1;

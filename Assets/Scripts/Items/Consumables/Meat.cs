@@ -11,7 +11,7 @@ public class Meat : Consumable
     public Meat(int dropChance = 0 )
     {
 
-        this.sprite = Resources.Load<Sprite>("Pixel Art/Meat");
+        this.sprite = Resources.Load<Sprite>("Pixel Art/Items/Meat");
         this.title = "Meat";    
         this.description = "Eat to reduce your hunger";    
         this.contextText = "Eat";

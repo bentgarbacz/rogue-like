@@ -5,8 +5,6 @@ using UnityEngine;
 public class Dagger : Equipment
 {
 
-    private GameObject hero = GameObject.Find("System Managers").GetComponent<DungeonManager>().hero;
-
     public Dagger(int dropChance = 0 )
     {
 

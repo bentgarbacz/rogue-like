@@ -7,19 +7,18 @@ public class CombatManager : MonoBehaviour
 
     public bool fighting = false;
     public float attackTime = 0.5f;
+    public List<Attack> combatBuffer= new();   
     private DungeonManager dum;
     private InventoryManager im;
     private ProjectileManager pm;
-    private List<Attack> combatBuffer;    
-
 
     void Start()
     {
 
-        dum = GameObject.Find("System Managers").GetComponent<DungeonManager>();
-        im = GameObject.Find("System Managers").GetComponent<InventoryManager>();
-        pm = GameObject.Find("System Managers").GetComponent<ProjectileManager>();
-        combatBuffer = new List<Attack>();
+        GameObject managers = GameObject.Find("System Managers");
+        dum = managers.GetComponent<DungeonManager>();
+        im = managers.GetComponent<InventoryManager>();
+        pm = managers.GetComponent<ProjectileManager>();
     }
 
     public void CommenceCombat()
@@ -46,7 +45,7 @@ public class CombatManager : MonoBehaviour
             yield return new WaitForSeconds(attackTime);            
         }
         
-        //signals that fighting for the turn is over and regular gameplay can commence
+        //signals that fighting for the turn is over and regular gameplay can resume
         fighting = false;
     }
 
@@ -217,12 +216,12 @@ public class CombatManager : MonoBehaviour
             {
 
                 damage *= attacker.critMultiplier;
-                defender.GetComponent<TextPopup>().CreatePopup(defender.transform.position, 2f, damage.ToString(), Color.yellow);
+                defender.GetComponent<TextNotification>().CreatePopup(defender.transform.position, 2f, damage.ToString(), Color.yellow);
 
             }else
             {
 
-                defender.GetComponent<TextPopup>().CreatePopup(defender.transform.position, 2f, damage.ToString(), Color.red);
+                defender.GetComponent<TextNotification>().CreatePopup(defender.transform.position, 2f, damage.ToString(), Color.red);
             }
 
             defender.TakeDamage(damage);
@@ -232,7 +231,7 @@ public class CombatManager : MonoBehaviour
 
             //take 0 damage on miss
             defender.audioSource.PlayOneShot(defender.missClip);
-            defender.GetComponent<TextPopup>().CreatePopup(defender.transform.position, 2f, "Miss", Color.white);
+            defender.GetComponent<TextNotification>().CreatePopup(defender.transform.position, 2f, "Miss", Color.white);
         }
 
         attacker.GetComponent<AttackAnimation>().MeleeAttack(); 

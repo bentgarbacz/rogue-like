@@ -5,8 +5,6 @@ using UnityEngine;
 public class LeatherChest : Equipment
 {
 
-    private GameObject hero = GameObject.Find("System Managers").GetComponent<DungeonManager>().hero;
-
     public LeatherChest(int dropChance = 0 )
     {
 

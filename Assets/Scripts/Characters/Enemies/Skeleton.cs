@@ -9,7 +9,7 @@ public class Skeleton : Character
     {
         
         base.Start();
-        maxHealth = 15;
+        maxHealth = 8;
         health = maxHealth;
         accuracy = 100;
         minDamage = 1;

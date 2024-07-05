@@ -5,8 +5,6 @@ using UnityEngine;
 public class Amulet : Equipment
 {
 
-    private GameObject hero = GameObject.Find("System Managers").GetComponent<DungeonManager>().hero;
-
     public Amulet(int dropChance = 0 )
     {
 

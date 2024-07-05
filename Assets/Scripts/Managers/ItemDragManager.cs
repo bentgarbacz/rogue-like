@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -44,7 +45,7 @@ public class ItemDragManager : MonoBehaviour
         }
             
     }
-
+    
     public void DragItem(ItemSlot itemSlot)
     {
 
@@ -71,5 +72,31 @@ public class ItemDragManager : MonoBehaviour
             this.itemSlot = null;      
             uiam.HideItemDrag();   
         }    
+    }
+
+    //Determines if a drag transfer has a destination at an inventory slot
+    public bool TransferToInventoryCheck(ItemSlot destinationItemSlot)
+    {
+
+        if(destinationItemSlot.type == "Inventory" || destinationItemSlot.type == "Drop" || destinationItemSlot.type == "Destroy")
+        {
+
+            return true;
+        }
+
+        return false;
+    }
+
+    //Checks if a transfer to a drop or destroy slot does not come from an invalid start slot type
+    public bool ValidTransfertoDropOrDestroyCheck(ItemSlot destinationItemSlot)
+    {
+
+        if((itemSlot.type == "Loot" || im.equipmentSlotsDictionary.Keys.Contains(itemSlot.type)) && (destinationItemSlot.type == "Drop" || destinationItemSlot.type == "Destroy"))
+        {
+
+            return false;
+        }
+
+        return true;
     }
 }

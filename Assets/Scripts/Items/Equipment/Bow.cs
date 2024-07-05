@@ -5,8 +5,6 @@ using UnityEngine;
 public class Bow : RangedWeapon
 {
 
-    private GameObject hero = GameObject.Find("System Managers").GetComponent<DungeonManager>().hero;
-
     public Bow(int dropChance = 0 )
     {
 

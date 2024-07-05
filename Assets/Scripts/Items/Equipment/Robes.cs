@@ -5,8 +5,6 @@ using UnityEngine;
 public class Robes : Equipment
 {
 
-    private GameObject hero = GameObject.Find("System Managers").GetComponent<DungeonManager>().hero;
-
     public Robes(int dropChance = 0 )
     {
 
