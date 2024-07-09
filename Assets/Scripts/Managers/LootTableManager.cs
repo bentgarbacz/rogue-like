@@ -14,9 +14,16 @@ public static class LootTableManager
         {
             {
                 "Chest",
-                new List<Item>(){
-                                    new Amulet(100),
-                                    new Sword(100),
+                new List<Item>(){   
+                                    new FireballScroll(100),
+                                    new FireballScroll(100),
+                                    new FireballScroll(100),
+                                    new FireballScroll(100),
+                                    new FireballScroll(100),
+                                    new FireballScroll(100),
+                                    new FireballScroll(100),
+                                    new FireballScroll(100),
+                                    new HealScroll(100),
                                     new Bow(100),
                                     new PlateBody(100),
                                     new Shield(100),

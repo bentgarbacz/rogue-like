@@ -34,24 +34,6 @@ public class ItemSlot : MonoBehaviour
         itemList = null;
     }
 
-    public void SetVisible(bool isVisable)
-    {
-
-        Color color = slot.image.color;
-
-        if(isVisable)
-        {
-
-            color.a = 1f;
-
-        }else{
-
-            color.a = 0f;
-        }
-
-        slot.image.color = color;
-    }
-
     public void TransferItem(ItemSlot destinationItemSlot)
     {
 

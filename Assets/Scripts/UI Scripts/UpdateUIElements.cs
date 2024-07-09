@@ -12,10 +12,12 @@ public class UpdateUIElements : MonoBehaviour
     public Image healthBar;
     public Image hungerBar;
     public Image xpBar;
-    //public TextMeshProUGUI levelStatusHUD;
+    public TextMeshProUGUI manaStatusHUD;
+    public Image manaBar;
     public TextMeshProUGUI healthStatus;
     public TextMeshProUGUI hungerStatus;
     public TextMeshProUGUI experienceStatus;
+    public TextMeshProUGUI manaStatus;
     public TextMeshProUGUI strengthStatus;
     public TextMeshProUGUI dexterityStatus;
     public TextMeshProUGUI intelligenceStatus;
@@ -45,11 +47,14 @@ public class UpdateUIElements : MonoBehaviour
             healthBar.fillAmount = (float)playerCharacter.health / (float)playerCharacter.maxHealth;
             hungerBar.fillAmount = (float)playerCharacter.hunger / (float)playerCharacter.maxHunger;
             xpBar.fillAmount = (float)playerCharacter.totalXP / (float)playerCharacter.GetCurrentLevelUpBreakpoint();
+            manaStatusHUD.SetText(playerCharacter.mana.ToString() + " / " + playerCharacter.maxMana.ToString());
+            manaBar.fillAmount = (float)playerCharacter.mana / (float)playerCharacter.maxMana;
  
 
             healthStatus.SetText("Health: " + playerCharacter.health.ToString() + " / " + playerCharacter.maxHealth.ToString());
             hungerStatus.SetText("Hunger: " + playerCharacter.hunger.ToString());
             experienceStatus.SetText("Experience: " + playerCharacter.totalXP.ToString() + " / " + playerCharacter.GetCurrentLevelUpBreakpoint().ToString());
+            manaStatus.SetText("Mana: " + playerCharacter.mana.ToString() + " / " + playerCharacter.maxMana.ToString());
 
             strengthStatus.SetText("Strength: " + playerCharacter.strength.ToString());
             dexterityStatus.SetText("Dexterity: " + playerCharacter.dexterity.ToString());

@@ -5,8 +5,6 @@ using UnityEngine;
 public class Ring : Equipment
 {
 
-    private GameObject hero = GameObject.Find("System Managers").GetComponent<DungeonManager>().hero;
-
     public Ring(int dropChance = 0 )
     {
 

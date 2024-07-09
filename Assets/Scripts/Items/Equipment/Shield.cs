@@ -5,8 +5,6 @@ using UnityEngine;
 public class Shield : Equipment
 {
 
-    private GameObject hero = GameObject.Find("System Managers").GetComponent<DungeonManager>().hero;
-
     public Shield(int dropChance = 0 )
     {
 

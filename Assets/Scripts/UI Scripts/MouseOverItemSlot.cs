@@ -61,10 +61,11 @@ public class MouseOverItemSlot : MonoBehaviour, IPointerEnterHandler, IPointerEx
             if(idm.itemSlot != null && itemSlot.type != "Loot")
             {
 
-                bool isInventory = itemSlot.type == "Inventory";
+                bool isToInventory = idm.TransferToInventoryCheck(itemSlot);
+                bool isValidDropOrDestroyTransfer = idm.ValidTransfertoDropOrDestroyCheck(itemSlot);
                 bool isValidEquip = equm.ValidEquip(itemSlot, idm.itemSlot);
 
-                if(isInventory || isValidEquip)
+                if(isValidDropOrDestroyTransfer && isToInventory || isValidEquip)
                 {
                     idm.DropItem(itemSlot);
 

@@ -11,6 +11,7 @@ public class ToolTipManager : MonoBehaviour
     private RectTransform tooltipContainerRect;
     public TextMeshProUGUI toolTipText;
     private UIActiveManager uiam;
+    private bool forcedTooltipEnabled = false;
 
     void Awake()
     {
@@ -43,20 +44,45 @@ public class ToolTipManager : MonoBehaviour
     public void SetTooltip(bool status, string text = "")
     {
 
+        if(!forcedTooltipEnabled)
+        {
+
+            SetText(text);
+
+            if(status)
+            {
+
+                uiam.ShowTooltip();
+
+            }else if(!status)
+            {
+
+                uiam.HideTooltip();
+            }
+        }
+    }
+
+    public void EnableForceTooltip(string text)
+    {
+        
+        forcedTooltipEnabled = true;
+        uiam.ShowTooltip();
+        SetText(text);
+    }
+
+    public void DisableForceTooltip()
+    {
+
+        forcedTooltipEnabled = false;
+        uiam.HideTooltip();
+    }
+
+    private void SetText(string text)
+    {
+
         toolTipText.SetText(text);
         toolTipText.ForceMeshUpdate(true);
 
         tooltipContainerRect.sizeDelta = toolTipText.GetRenderedValues() + new Vector2(10, 10);
-
-        if(status)
-        {
-
-            uiam.ShowTooltip();
-
-        }else if(!status)
-        {
-
-            uiam.HideTooltip();
-        }
     }
 }

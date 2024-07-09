@@ -16,7 +16,6 @@ public class UIActiveManager : MonoBehaviour
     public GameObject characterPanel;
     public bool characterIsOpen = true; 
     public GameObject equipmentPanel;
-    //public bool equipmentPanelIsOpen = true;
     public GameObject infoAndControlPanel;
     public bool infoAndControlPanelIsOpen = true;
     public GameObject levelUpNotification;
@@ -46,7 +45,10 @@ public class UIActiveManager : MonoBehaviour
 
         CloseInventoryPanel();
         CloseCharacterPanel();
-        CloseLootPanel();    
+        CloseLootPanel();
+
+        pausePanel.SetActive(false);
+          
         HideTooltip();
         HideItemDrag();   
     }
@@ -67,7 +69,7 @@ public class UIActiveManager : MonoBehaviour
             inventoryPanel.SetActive(inventoryIsOpen);
             equipmentPanel.SetActive(inventoryIsOpen);
 
-            if(!lootIsOpen && !characterIsOpen)//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! change when making equipment seperate
+            if(!lootIsOpen && !characterIsOpen)
             {
 
                 dropSlot.SetActive(true);

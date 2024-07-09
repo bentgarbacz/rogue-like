@@ -5,8 +5,6 @@ using UnityEngine;
 public class PlateBody : Equipment
 {
 
-    private GameObject hero = GameObject.Find("System Managers").GetComponent<DungeonManager>().hero;
-
     public PlateBody(int dropChance = 0 )
     {
 

@@ -37,7 +37,7 @@ public class DungeonManager : MonoBehaviour
         enemies.Remove(target);
 
         target.GetComponent<DropLoot>().Drop();
-        target.GetComponent<TextPopup>().CleanUp();
+        target.GetComponent<TextNotification>().CleanUp();
 
         int gainedXP = target.GetComponent<Character>().level * 5;
         hero.GetComponent<PlayerCharacter>().GainXP(gainedXP);

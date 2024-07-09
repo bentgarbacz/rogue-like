@@ -11,13 +11,13 @@ GameObject:
   - component: {fileID: 7430270366871199030}
   - component: {fileID: 2183630908104534012}
   - component: {fileID: 8789015494173696411}
-  - component: {fileID: 3959076222394138909}
   - component: {fileID: 1134515840101115021}
   - component: {fileID: 5481132297656176786}
   - component: {fileID: 6619011844636850668}
   - component: {fileID: -1126335519071965115}
   - component: {fileID: -8359036503546255196}
   - component: {fileID: 4570589818020675942}
+  - component: {fileID: 6244909000317428381}
   m_Layer: 6
   m_Name: skeleton
   m_TagString: Untagged
@@ -71,21 +71,6 @@ MonoBehaviour:
   moving: 0
   audioSource: {fileID: 0}
   stepAudioClip: {fileID: 0}
---- !u!114 &3959076222394138909
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7806514022559795084}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0eaa850960a105148ae3e5c040d8cfb4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  popUpPrefab: {fileID: 5558341210635837680, guid: 2b027f351ca2eb94d90ca350ef6ea2fa, type: 3}
-  speed: 2
-  destroyAfterDistance: 0.75
 --- !u!65 &1134515840101115021
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -215,3 +200,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a051e18fa30d67448aff653d12b693e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6244909000317428381
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7806514022559795084}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8ec80ce4ee28e3428f3e1c92c80adc1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  notificationPrefab: {fileID: 5558341210635837680, guid: 2b027f351ca2eb94d90ca350ef6ea2fa, type: 3}
+  speed: 2
+  destroyAfterDistance: 0.75
+  xMin: 0.5
+  xBuffer: 0.1
+  yBuffer: 0.1

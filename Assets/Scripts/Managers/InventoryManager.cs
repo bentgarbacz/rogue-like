@@ -10,21 +10,27 @@ public class InventoryManager : MonoBehaviour
     public Dictionary<string, ItemSlot> equipmentSlotsDictionary = new();
     private UIActiveManager uiam;
     private EquipmentManager equm;
+    private SpellCaster sc;
+    private readonly int inventorySlotCount = 24;
+    private readonly int lootSlotCount = 8;
+    private readonly int equipmentSlotCount = 9;
 
     void Start()
     {
 
-        uiam = GameObject.Find("System Managers").GetComponent<UIActiveManager>();
-        equm = GameObject.Find("System Managers").GetComponent<EquipmentManager>();
+        GameObject managers = GameObject.Find("System Managers");
+        uiam = managers.GetComponent<UIActiveManager>();
+        equm = managers.GetComponent<EquipmentManager>();
+        sc = equm.hero.GetComponent<SpellCaster>();
 
         GameObject invGrid = uiam.inventoryPanel.transform.GetChild(0).gameObject;
         GameObject lootGrid = uiam.lootPanel.transform.GetChild(0).gameObject;
         GameObject equipmentGrid = uiam.equipmentPanel.transform.GetChild(0).gameObject;
 
-        ConstructItemSlotList(inventorySlots, invGrid, 24); // there are 24 inventory slots
-        ConstructItemSlotList(lootSlots, lootGrid, 8); // there are 8 loot slots
+        ConstructItemSlotList(inventorySlots, invGrid, inventorySlotCount); // there are 24 inventory slots
+        ConstructItemSlotList(lootSlots, lootGrid, lootSlotCount); // there are 8 loot slots
 
-        for(int i = 0; i < 9; i++) // there are 9 equipment slots
+        for(int i = 0; i < equipmentSlotCount; i++) // there are 9 equipment slots
         {
             ItemSlot slot = equipmentGrid.transform.GetChild(i).transform.GetChild(0).gameObject.GetComponent<ItemSlot>();
 
@@ -58,6 +64,7 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
+    //Puts list of items into loot slots
     public void PopulateLootSlots(List<Item> items)
     {
 
@@ -107,7 +114,7 @@ public class InventoryManager : MonoBehaviour
 
         sourceSlot.slot.GetComponent<MouseOverItemSlot>().MouseExit();    
 
-        if(sourceSlot.type != "Inventory")
+        if(sourceSlot.type != "Inventory" && sourceSlot.type != "Drop" && sourceSlot.type != "Destroy")
         {
 
             if(sourceSlot.type == "Loot")
@@ -123,6 +130,8 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
+    //Given a piece of equipment, return a equipment slot meant for that equipment
+    //Will return a deterministic equipment slot if there are multiple eligible slots
     public ItemSlot GetEquipmentSlot(Equipment equipItem)
     {
 
@@ -170,15 +179,16 @@ public class InventoryManager : MonoBehaviour
     public bool ContextualAction(ItemSlot targetSlot)
     {
 
+        bool actionIsSuccessful = false;
+
         //define behavior for click on inventory contextual button
         if(targetSlot.item is Consumable consumable)
         {
             
             consumable.Use();
             targetSlot.ThrowAway();
-            targetSlot.slot.GetComponent<MouseOverItemSlot>().MouseExit();
-            targetSlot.slot.GetComponent<MouseOverItemSlot>().MouseEnter();
-            return true;
+            actionIsSuccessful = true;
+            RefreshItemSlot(targetSlot);
 
         }else if(targetSlot.item is Equipment equipment)
         {
@@ -188,12 +198,26 @@ public class InventoryManager : MonoBehaviour
 
                 targetSlot.TransferItem(GetEquipmentSlot(equipment));
                 UpdateStats();
-                targetSlot.slot.GetComponent<MouseOverItemSlot>().MouseExit();
-                targetSlot.slot.GetComponent<MouseOverItemSlot>().MouseEnter();
-                return true;
+                actionIsSuccessful = true;
+                RefreshItemSlot(targetSlot);
             }
+
+        }else if(targetSlot.item is Scroll scroll)
+        {
+
+            targetSlot.slot.GetComponent<MouseOverItemSlot>().MouseExit();
+            uiam.ToggleInventory();
+            sc.CastScroll(scroll, targetSlot);
+            actionIsSuccessful = true;
         }
 
-        return false;
+        return actionIsSuccessful;
+    }
+
+    private void RefreshItemSlot(ItemSlot targetSlot)
+    {
+
+        targetSlot.slot.GetComponent<MouseOverItemSlot>().MouseExit();
+        targetSlot.slot.GetComponent<MouseOverItemSlot>().MouseEnter();
     }
 }

@@ -8,6 +8,8 @@ public class TurnSequencer : MonoBehaviour
 {
     public GameObject mapGen;
     public float aggroRange = 10;
+    public bool gameplayHalted = false;
+    private bool actionTaken = false;
     private PlayerCharacter playerCharacter;
     private DungeonManager dum;
     private UIActiveManager uiam;
@@ -18,9 +20,10 @@ public class TurnSequencer : MonoBehaviour
     {
  
         mouse = Mouse.current;
-        dum = GameObject.Find("System Managers").GetComponent<DungeonManager>();
-        uiam = GameObject.Find("System Managers").GetComponent<UIActiveManager>();
-        cbm = GameObject.Find("System Managers").GetComponent<CombatManager>();
+        GameObject managers = GameObject.Find("System Managers");
+        dum = managers.GetComponent<DungeonManager>();
+        uiam = managers.GetComponent<UIActiveManager>();
+        cbm = managers.GetComponent<CombatManager>();
         playerCharacter = dum.hero.GetComponent<PlayerCharacter>();
     }   
     
@@ -38,12 +41,14 @@ public class TurnSequencer : MonoBehaviour
                 playerCharacter.Move(new Vector3(dum.bufferedPath[0].x, 0.1f, dum.bufferedPath[0].y), dum.occupiedlist);
                 dum.bufferedPath.RemoveAt(0);
                 playerCharacter.BecomeHungrier();
+                playerCharacter.DecrementCooldowns();
 
             //Process a turn if:
             //left mouse was pressed
             //mouse is not over a blocking UI element
             //you are not in the middle of an attack animation
-            }else if(mouse.leftButton.wasPressedThisFrame && uiam.IsPointerOverUI() == false && !dum.hero.GetComponent<AttackAnimation>().IsAttacking())
+            //some other action has not paused regular gameplay by setting gameplayHalted to true
+            }else if(mouse.leftButton.wasPressedThisFrame && uiam.IsPointerOverUI() == false && !dum.hero.GetComponent<AttackAnimation>().IsAttacking() && !gameplayHalted)
             {
 
                 GameObject target = GetComponent<ClickManager>().GetObject();   
@@ -56,7 +61,9 @@ public class TurnSequencer : MonoBehaviour
                     uiam.CloseLootPanel();
                     uiam.CloseCharacterPanel();
 
+                    actionTaken = true;
                     playerCharacter.BecomeHungrier();
+                    playerCharacter.DecrementCooldowns();
 
                     if(target.GetComponent<Tile>() && target.GetComponent<Tile>().coord != playerCharacter.coord)
                     {
@@ -119,7 +126,7 @@ public class TurnSequencer : MonoBehaviour
                     }
 
                     if(target.GetComponent<Exit>())
-                    { 
+                    {
 
                         Exit targetExit = target.GetComponent<Exit>();
 
@@ -138,54 +145,65 @@ public class TurnSequencer : MonoBehaviour
                             playerCharacter.Move(new Vector3(pathToDestination[1].x, 0.1f, pathToDestination[1].y), dum.occupiedlist); 
                         }   
                     }
-
-                    //give a turn to each aggroed enemy
-                    foreach(GameObject enemy in dum.aggroEnemies)
-                    {
-
-                        Character nonPlayerCharacter = enemy.GetComponent<Character>();
-
-                        //enemy attacks player character if they are in a neighboring tile
-                        if(PathFinder.GetNeighbors(playerCharacter.coord, dum.dungeonCoords).Contains(nonPlayerCharacter.coord))
-                        {
-                            
-                            cbm.AddToCombatBuffer(enemy, dum.hero);
-
-                        }else //enemy moves towards player or attack if they are in a neighboring tile                 
-                        {
-
-                            List<Vector2Int> pathToPlayer = PathFinder.FindPath(nonPlayerCharacter.coord, playerCharacter.coord, dum.dungeonCoords); 
-
-                            //If enemy is not neighboring player character...
-                            if(pathToPlayer.Count > 1)
-                            {
-                                
-                                //...try to move towards player character...
-                                if(!nonPlayerCharacter.Move(new Vector3(pathToPlayer[1].x, 0.1f, pathToPlayer[1].y), dum.occupiedlist))
-                                {                  
-                                    
-                                    //...if that spot is occupied then try to path to a tile adjacent to player character 
-                                    foreach(Vector2Int v in NeighborVals.allDirectionsList)
-                                    {
-
-                                        List<Vector2Int> pathToPlayerPlusV = PathFinder.FindPath(nonPlayerCharacter.coord, playerCharacter.coord + v, dum.dungeonCoords);
-                                        
-                                        if(pathToPlayerPlusV != null)
-                                        {
-
-                                            if(nonPlayerCharacter.Move(new Vector3(pathToPlayerPlusV[1].x, 0.1f, pathToPlayerPlusV[1].y), dum.occupiedlist))
-                                            {
-
-                                                break;
-                                            }
-                                        }
-                                    }
-                                } 
-                            } 
-                        }
-                    }
                 }
             }
+
+            //If the player has taken an action, give enemies a turn
+            if(actionTaken && !gameplayHalted)
+            {
+                
+                actionTaken = false;
+
+                //give a turn to each aggroed enemy
+                foreach(GameObject enemy in dum.aggroEnemies)
+                {
+
+                    Character nonPlayerCharacter = enemy.GetComponent<Character>();
+
+                    //enemy attacks player character if they are in a neighboring tile
+                    if(PathFinder.GetNeighbors(playerCharacter.coord, dum.dungeonCoords).Contains(nonPlayerCharacter.coord))
+                    {
+                        
+                        cbm.AddToCombatBuffer(enemy, dum.hero);
+
+                    }else //enemy moves towards player or attack if they are in a neighboring tile                 
+                    {
+
+                        List<Vector2Int> pathToPlayer = PathFinder.FindPath(nonPlayerCharacter.coord, playerCharacter.coord, dum.dungeonCoords); 
+
+                        //If enemy is not neighboring player character...
+                        if(pathToPlayer.Count > 1)
+                        {
+                            
+                            //...try to move towards player character...
+                            if(!nonPlayerCharacter.Move(new Vector3(pathToPlayer[1].x, 0.1f, pathToPlayer[1].y), dum.occupiedlist))
+                            {                  
+                                
+                                //...if that spot is occupied then try to path to a tile adjacent to player character 
+                                foreach(Vector2Int v in NeighborVals.allDirectionsList)
+                                {
+
+                                    List<Vector2Int> pathToPlayerPlusV = PathFinder.FindPath(nonPlayerCharacter.coord, playerCharacter.coord + v, dum.dungeonCoords);
+                                    
+                                    if(pathToPlayerPlusV != null)
+                                    {
+
+                                        if(nonPlayerCharacter.Move(new Vector3(pathToPlayerPlusV[1].x, 0.1f, pathToPlayerPlusV[1].y), dum.occupiedlist))
+                                        {
+
+                                            break;
+                                        }
+                                    }
+                                }
+                            } 
+                        } 
+                    }
+                }
+
+                //start combat for the turn
+                cbm.CommenceCombat();
+            }
+            
 
             //aggro enemies within aggroRange units            
             foreach(GameObject enemy in dum.enemies)
@@ -195,7 +213,7 @@ public class TurnSequencer : MonoBehaviour
                 {
 
                     dum.aggroEnemies.Add(enemy);
-                    enemy.GetComponent<TextPopup>().CreatePopup(enemy.transform.position, 2, "!", Color.red);
+                    enemy.GetComponent<TextNotification>().CreatePopup(enemy.transform.position, 2, "!", Color.red);
 
                     //automated walking via buffer is halted when an enemy sees you
                     dum.bufferedPath.Clear();
@@ -203,7 +221,12 @@ public class TurnSequencer : MonoBehaviour
             }
         }
 
-        //start combat for the turn
-        cbm.CommenceCombat();
+
+    }
+
+    public void SignalAction()
+    {
+
+        actionTaken = true;
     }
 }
