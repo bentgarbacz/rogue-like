@@ -12,7 +12,13 @@ public class Tooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     void Start()
     {
         
-        ttm = ttm = GameObject.Find("System Managers").GetComponent<UIActiveManager>().toolTipContainer.GetComponent<ToolTipManager>();
+        ttm = GameObject.Find("System Managers").GetComponent<UIActiveManager>().toolTipContainer.GetComponent<ToolTipManager>();
+    }
+
+    public void SetTooltip(string tooltip)
+    {
+
+        this.tooltip = tooltip;
     }
 
     public void OnPointerEnter(PointerEventData eventData)

@@ -11,6 +11,9 @@ public class InventoryManager : MonoBehaviour
     private UIActiveManager uiam;
     private EquipmentManager equm;
     private SpellCaster sc;
+    private readonly int inventorySlotCount = 24;
+    private readonly int lootSlotCount = 8;
+    private readonly int equipmentSlotCount = 9;
 
     void Start()
     {
@@ -24,10 +27,10 @@ public class InventoryManager : MonoBehaviour
         GameObject lootGrid = uiam.lootPanel.transform.GetChild(0).gameObject;
         GameObject equipmentGrid = uiam.equipmentPanel.transform.GetChild(0).gameObject;
 
-        ConstructItemSlotList(inventorySlots, invGrid, 24); // there are 24 inventory slots
-        ConstructItemSlotList(lootSlots, lootGrid, 8); // there are 8 loot slots
+        ConstructItemSlotList(inventorySlots, invGrid, inventorySlotCount); // there are 24 inventory slots
+        ConstructItemSlotList(lootSlots, lootGrid, lootSlotCount); // there are 8 loot slots
 
-        for(int i = 0; i < 9; i++) // there are 9 equipment slots
+        for(int i = 0; i < equipmentSlotCount; i++) // there are 9 equipment slots
         {
             ItemSlot slot = equipmentGrid.transform.GetChild(i).transform.GetChild(0).gameObject.GetComponent<ItemSlot>();
 
@@ -185,7 +188,7 @@ public class InventoryManager : MonoBehaviour
             consumable.Use();
             targetSlot.ThrowAway();
             actionIsSuccessful = true;
-            refreshItemSlot(targetSlot);
+            RefreshItemSlot(targetSlot);
 
         }else if(targetSlot.item is Equipment equipment)
         {
@@ -196,13 +199,14 @@ public class InventoryManager : MonoBehaviour
                 targetSlot.TransferItem(GetEquipmentSlot(equipment));
                 UpdateStats();
                 actionIsSuccessful = true;
-                refreshItemSlot(targetSlot);
+                RefreshItemSlot(targetSlot);
             }
 
         }else if(targetSlot.item is Scroll scroll)
         {
 
             targetSlot.slot.GetComponent<MouseOverItemSlot>().MouseExit();
+            uiam.ToggleInventory();
             sc.CastScroll(scroll, targetSlot);
             actionIsSuccessful = true;
         }
@@ -210,7 +214,7 @@ public class InventoryManager : MonoBehaviour
         return actionIsSuccessful;
     }
 
-    private void refreshItemSlot(ItemSlot targetSlot)
+    private void RefreshItemSlot(ItemSlot targetSlot)
     {
 
         targetSlot.slot.GetComponent<MouseOverItemSlot>().MouseExit();

@@ -41,6 +41,7 @@ public class TurnSequencer : MonoBehaviour
                 playerCharacter.Move(new Vector3(dum.bufferedPath[0].x, 0.1f, dum.bufferedPath[0].y), dum.occupiedlist);
                 dum.bufferedPath.RemoveAt(0);
                 playerCharacter.BecomeHungrier();
+                playerCharacter.DecrementCooldowns();
 
             //Process a turn if:
             //left mouse was pressed
@@ -49,8 +50,6 @@ public class TurnSequencer : MonoBehaviour
             //some other action has not paused regular gameplay by setting gameplayHalted to true
             }else if(mouse.leftButton.wasPressedThisFrame && uiam.IsPointerOverUI() == false && !dum.hero.GetComponent<AttackAnimation>().IsAttacking() && !gameplayHalted)
             {
-
-                actionTaken = true;
 
                 GameObject target = GetComponent<ClickManager>().GetObject();   
 
@@ -62,7 +61,9 @@ public class TurnSequencer : MonoBehaviour
                     uiam.CloseLootPanel();
                     uiam.CloseCharacterPanel();
 
+                    actionTaken = true;
                     playerCharacter.BecomeHungrier();
+                    playerCharacter.DecrementCooldowns();
 
                     if(target.GetComponent<Tile>() && target.GetComponent<Tile>().coord != playerCharacter.coord)
                     {
@@ -125,7 +126,7 @@ public class TurnSequencer : MonoBehaviour
                     }
 
                     if(target.GetComponent<Exit>())
-                    { 
+                    {
 
                         Exit targetExit = target.GetComponent<Exit>();
 
@@ -198,6 +199,9 @@ public class TurnSequencer : MonoBehaviour
                         } 
                     }
                 }
+
+                //start combat for the turn
+                cbm.CommenceCombat();
             }
             
 
@@ -217,8 +221,7 @@ public class TurnSequencer : MonoBehaviour
             }
         }
 
-        //start combat for the turn
-        cbm.CommenceCombat();
+
     }
 
     public void SignalAction()

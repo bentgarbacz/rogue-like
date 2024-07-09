@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class PlayerCharacter : Character
@@ -8,6 +9,8 @@ public class PlayerCharacter : Character
     public int maxHunger = 1000;
     private int hungerBuffer = 0;
     public int totalXP = 0;
+    public int mana;
+    public int maxMana = 30;
     public int levelUpBreakpoint = 50;
     public int freeStatPoints = 0;
     public AudioClip stepAudioClip;
@@ -19,12 +22,13 @@ public class PlayerCharacter : Character
     public int critChanceBonus = 0;
     public int critMultiplierBonus = 0;
     public int vitalityBonus = 0;
-    public int strengthBonus = 0;
-    public int dexterityBonus = 0;
-    public int intelligenceBonus = 0;
+    public int strengthBonus = 99;
+    public int dexterityBonus = 99;
+    public int intelligenceBonus = 99;
     public int armorBonus = 0;
     public int evasionBonus = 0;
     public int maxHealthBonus = 0;
+    public Dictionary<string, int> knownSpells = new();
     
 
     public override void Start()
@@ -39,6 +43,7 @@ public class PlayerCharacter : Character
         level = 1;
         speed = 10;
         hunger = maxHunger;
+        mana = maxMana;
         armor = 0;
         evasion = 50;
         
@@ -119,6 +124,20 @@ public class PlayerCharacter : Character
             }
 
             hungerBuffer = 0;
+        }
+    }
+
+    public void DecrementCooldowns()
+    {
+
+        foreach(string spellName in knownSpells.Keys.ToList())
+        {
+
+            if(knownSpells[spellName] > 0)
+            {   
+
+                knownSpells[spellName] -= 1;
+            }
         }
     }
 }

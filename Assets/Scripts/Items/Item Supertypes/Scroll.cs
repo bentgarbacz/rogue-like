@@ -10,7 +10,6 @@ public class Scroll : Item
     public int intelligenceRequirement = 0;
     public string spellName = "";
     public PlayerCharacter playerCharacter = GameObject.Find("System Managers").GetComponent<DungeonManager>().hero.GetComponent<PlayerCharacter>();
-    private UIActiveManager uiam = GameObject.Find("System Managers").GetComponent<UIActiveManager>();
 
     public Scroll()
     {
@@ -23,7 +22,11 @@ public class Scroll : Item
     public override void Use()
     {
 
-        uiam.ToggleInventory();
+        if(MeetsRequirements() && !playerCharacter.knownSpells.ContainsKey(spellName))
+        {
+            
+            playerCharacter.knownSpells.Add(spellName, 0);
+        }
     }
 
     public bool MeetsRequirements()
