@@ -16,7 +16,7 @@ public class Shield : Equipment
 
         this.equipmentType = "Off Hand";
 
-        this.bonusStatDictionary["Armor"] = 5;
+        this.bonusStatDictionary["Armor"] = 1;
 
         SetDropChance(dropChance);
     }

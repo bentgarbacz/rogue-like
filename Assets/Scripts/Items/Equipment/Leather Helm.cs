@@ -16,7 +16,7 @@ public class LeatherHelm : Equipment
 
         this.equipmentType = "Helmet";
 
-        this.bonusStatDictionary["Evasion"] = 50;
+        this.bonusStatDictionary["Evasion"] = 10;
 
         SetDropChance(dropChance);
     }

@@ -24,6 +24,7 @@ public class MapGenerator : MonoBehaviour
     public GameObject chest;
     public GameObject skeleton;
     public GameObject goblin;
+    public GameObject rat;
     private DungeonManager dum;
     private Vector2Int startPosition = new(0, 0);
     
@@ -147,21 +148,29 @@ public class MapGenerator : MonoBehaviour
                         dum.AddGameObject(c);
                         c.GetComponent<Loot>().coord = new Vector2Int((int)spawnPos.x, (int)spawnPos.z);
 
-                    }else if(spawnRNG >= 3 && spawnRNG <= 5)
+                    }else if(spawnRNG >= 3 && spawnRNG <= 4)
                     {
 
-                        GameObject e = Instantiate(skeleton, spawnPos, skeleton.transform.rotation);
-                        dum.AddGameObject(e);
-                        e.GetComponent<Character>().Move(spawnPos, dum.occupiedlist);
-                        dum.enemies.Add(e);
+                        GameObject enemy = Instantiate(skeleton, spawnPos, skeleton.transform.rotation);
+                        dum.AddGameObject(enemy);
+                        enemy.GetComponent<Character>().Move(spawnPos, dum.occupiedlist);
+                        dum.enemies.Add(enemy);
 
-                    }else if(spawnRNG >= 6 && spawnRNG <= 8)
+                    }else if(spawnRNG >= 5 && spawnRNG <= 6)
                     {
 
-                        GameObject e = Instantiate(goblin, spawnPos, goblin.transform.rotation);
-                        dum.AddGameObject(e);
-                        e.GetComponent<Character>().Move(spawnPos, dum.occupiedlist);
-                        dum.enemies.Add(e);
+                        GameObject enemy = Instantiate(goblin, spawnPos, goblin.transform.rotation);
+                        dum.AddGameObject(enemy);
+                        enemy.GetComponent<Character>().Move(spawnPos, dum.occupiedlist);
+                        dum.enemies.Add(enemy);
+
+                    }else if(spawnRNG >= 7 && spawnRNG <= 8)
+                    {
+
+                        GameObject enemy = Instantiate(rat, spawnPos, rat.transform.rotation);
+                        dum.AddGameObject(enemy);
+                        enemy.GetComponent<Character>().Move(spawnPos, dum.occupiedlist);
+                        dum.enemies.Add(enemy);
                     }
                     
                     

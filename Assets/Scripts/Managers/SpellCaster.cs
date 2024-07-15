@@ -42,7 +42,7 @@ public class SpellCaster : MonoBehaviour
 
                 GameObject target = cm.GetObject();
 
-                if(target != null && target.GetComponent<Character>() && currentSpell != null)
+                if(target != null && currentSpell != null)
                 {
                     
                     bool spellCastSuccessfully = currentSpell.Cast(this.gameObject, target);

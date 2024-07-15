@@ -16,8 +16,7 @@ public class Robes : Equipment
 
         this.equipmentType = "Chest";
 
-        this.bonusStatDictionary["Armor"] = 1;
-        this.bonusStatDictionary["Evasion"] = 50;
+        this.bonusStatDictionary["Evasion"] = 10;
         this.bonusStatDictionary["Intelligence"] = 5;
 
         SetDropChance(dropChance);

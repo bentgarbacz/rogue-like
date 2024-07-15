@@ -30,6 +30,12 @@ public class Tooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     public void OnPointerExit(PointerEventData eventData)
     {
 
+        ClearTooltip();
+    }
+
+    public void ClearTooltip()
+    {
+
         ttm.SetTooltip(false);
     }
 }

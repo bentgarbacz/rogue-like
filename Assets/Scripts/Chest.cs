@@ -6,6 +6,7 @@ public class Chest : MonoBehaviour
 {
     public List<Item> dropTable = new();
     public Mesh openMesh;
+    public string lootTable = "Chest";
     private Loot loot;
     private DungeonManager dum;
     
@@ -15,7 +16,7 @@ public class Chest : MonoBehaviour
         dum = GameObject.Find("System Managers").GetComponent<DungeonManager>();
         loot = GetComponent<Loot>();
 
-        loot.AddItems(LootTableManager.CreateItems("Chest"));  
+        loot.AddItems(LootTableManager.CreateItems(lootTable));  
         dum.itemContainers.Add(loot);
     }
 
