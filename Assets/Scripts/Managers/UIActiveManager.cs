@@ -27,6 +27,8 @@ public class UIActiveManager : MonoBehaviour
     public bool toolTipContainerIsOpen = true;
     public GameObject  itemDragContainer;
     public bool itemDragContainerIsOpen = true;
+    public GameObject assignSpellContainer;
+    public bool assignSpellContainerIsOpen = true;
     private InventoryManager im;
     public bool mouseOverUI = false;
 
@@ -50,7 +52,8 @@ public class UIActiveManager : MonoBehaviour
         pausePanel.SetActive(false);
           
         HideTooltip();
-        HideItemDrag();   
+        HideItemDrag();
+        HideAssignSpell(); 
     }
 
     public bool IsPointerOverUI()
@@ -61,6 +64,8 @@ public class UIActiveManager : MonoBehaviour
 
     public void OpenInventoryPanel()
     {
+
+        HideAssignSpell();
 
         if(inventoryIsOpen == false)
         {
@@ -149,11 +154,14 @@ public class UIActiveManager : MonoBehaviour
         CloseInventoryPanel();
         CloseCharacterPanel();
         HideTooltip();
-        HideItemDrag();            
+        HideItemDrag();      
+        HideAssignSpell();      
     }
 
     public void OpenCharacterPanel()
     {
+
+        HideAssignSpell();
 
         if(characterIsOpen == false)
         {
@@ -205,7 +213,9 @@ public class UIActiveManager : MonoBehaviour
     }
 
     public void CloseInfoAndControlPanel()
-    {
+    {   
+
+        HideAssignSpell();
 
         if(infoAndControlPanelIsOpen == true)
         {
@@ -299,6 +309,27 @@ public class UIActiveManager : MonoBehaviour
 
             itemDragContainerIsOpen = false;
             itemDragContainer.SetActive(itemDragContainerIsOpen);
+        }
+    }
+
+    public void ShowAssignSpell()
+    {
+
+        assignSpellContainer.SetActive(false);
+        assignSpellContainerIsOpen = true;
+        assignSpellContainer.SetActive(assignSpellContainerIsOpen);
+
+        assignSpellContainer.GetComponent<RectTransform>().anchoredPosition = Input.mousePosition;
+    }
+
+    public void HideAssignSpell()
+    {
+
+        if(assignSpellContainerIsOpen == true)
+        {
+
+            assignSpellContainerIsOpen = false;
+            assignSpellContainer.SetActive(assignSpellContainerIsOpen);
         }
     }
 }

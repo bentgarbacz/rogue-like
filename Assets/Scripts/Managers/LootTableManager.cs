@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public static class LootTableManager
@@ -13,16 +14,11 @@ public static class LootTableManager
         Dictionary<string, List<Item>> lootTableLookup = new()
         {
             {
-                "Chest",
+                "DebugChest",
                 new List<Item>(){   
+                                    new ManaPotion1(100),
                                     new FireballScroll(100),
-                                    new FireballScroll(100),
-                                    new FireballScroll(100),
-                                    new FireballScroll(100),
-                                    new FireballScroll(100),
-                                    new FireballScroll(100),
-                                    new FireballScroll(100),
-                                    new FireballScroll(100),
+                                    new TeleportScroll(100),
                                     new HealScroll(100),
                                     new Bow(100),
                                     new PlateBody(100),
@@ -33,24 +29,40 @@ public static class LootTableManager
                                 }
             },
             {
+                "Chest",
+                new List<Item>(){   
+                                    new LeatherBoots(10),
+                                    new LeatherChest(10),
+                                    new LeatherHelm(10),
+                                    new Robes(10),
+                                    new FireballScroll(10),
+                                    new HealScroll(10),
+                                    new Bow(10),
+                                    new PlateBody(10),
+                                    new Shield(10),
+                                    new Ring(10),
+                                    new Amulet(10),
+                                    new Dagger(10)
+                                }
+            },
+            {
                 "Goblin",
                 new List<Item>(){
-                                    new Potion(50),
-                                    new Dagger(50),
-                                    new Meat(100)
+                                    new HealthPotion1(7),
+                                    new ManaPotion1(7),
+                                    new Meat(7)
                                 }
             },
             {
                 "Skeleton",
                 new List<Item>(){
-                                    new Potion(100),
-                                    new Meat(50)
+                                    new HealthPotion1(15),
+                                    new ManaPotion1(15),
                                 }
             },
             {
                 "Rat",
                 new List<Item>(){
-                                    new Potion(100),
                                     new Meat(50)
                                 }
             }
@@ -65,15 +77,19 @@ public static class LootTableManager
         //Randomly generate items for a given entity
         List<Item> droppedItems = new();
 
-        foreach(Item i in lootTableLookup[dropTable])
+        if(lootTableLookup.Keys.Contains(dropTable))
         {
-
-            int rng = UnityEngine.Random.Range(0, 100);
-
-            if(rng <= i.dropChance)
+        
+            foreach(Item i in lootTableLookup[dropTable])
             {
 
-                droppedItems.Add(i);
+                int rng = UnityEngine.Random.Range(0, 100);
+
+                if(rng <= i.dropChance)
+                {
+
+                    droppedItems.Add(i);
+                }
             }
         }
 

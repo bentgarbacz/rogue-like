@@ -15,8 +15,8 @@ public class Rat : Character
         minDamage = 1;
         maxDamage = 3;
         level = 3;
-        speed = 11;
-        evasion = 50;
+        speed = 15;
+        evasion = 75;
 
         dropTable = "Rat";
 

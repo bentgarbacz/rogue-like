@@ -22,17 +22,24 @@ public class PanelToggle : MonoBehaviour
         uiam.ToggleInventory();        
     }
 
-        public void ClickCharacter()
+    public void ClickCharacter()
     {
 
         audioSource.Play();
         uiam.ToggleCharacter();        
     }
 
-        public void ClickPause()
+    public void ClickPause()
     {
 
         audioSource.Play();
         uiam.TogglePause();        
+    }
+
+    public void ClickAssignSpell()
+    {
+
+        audioSource.Play();
+        uiam.HideAssignSpell();
     }
 }

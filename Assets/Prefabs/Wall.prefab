@@ -98,6 +98,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   coord: {x: 0, y: 0}
+  traversable: 0
 --- !u!65 &2518684346852878964
 BoxCollider:
   m_ObjectHideFlags: 0

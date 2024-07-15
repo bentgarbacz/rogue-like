@@ -22,9 +22,9 @@ public class PlayerCharacter : Character
     public int critChanceBonus = 0;
     public int critMultiplierBonus = 0;
     public int vitalityBonus = 0;
-    public int strengthBonus = 99;
-    public int dexterityBonus = 99;
-    public int intelligenceBonus = 99;
+    public int strengthBonus = 0;
+    public int dexterityBonus = 0;
+    public int intelligenceBonus = 0;
     public int armorBonus = 0;
     public int evasionBonus = 0;
     public int maxHealthBonus = 0;
@@ -79,6 +79,12 @@ public class PlayerCharacter : Character
         }
     }
 
+    public void RegainMana(int regainValue)
+    {
+
+        mana = System.Math.Min(maxMana, mana + regainValue);
+    }
+
     public void LevelUp()
     {
         
@@ -114,6 +120,13 @@ public class PlayerCharacter : Character
             {
 
                 Heal(1);
+                int regainManaCheck = UnityEngine.Random.Range(0, 2);
+                
+                if(regainManaCheck == 1)
+                {
+
+                    RegainMana(1);
+                }
 
             }else
             {

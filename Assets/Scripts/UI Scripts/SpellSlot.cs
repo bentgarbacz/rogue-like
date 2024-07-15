@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,9 +9,9 @@ public class SpellSlot : MonoBehaviour
 
     public string spell = "";
     public Button slot;
+    public Image cooldownMask;
     public Sprite defaultSprite;
     private SpellManager sm;    
-    private TurnSequencer ts;
     private AudioSource audioSource;
     private AudioClip errorClip;
     [SerializeField] private SpellCaster sc;
@@ -21,10 +22,11 @@ public class SpellSlot : MonoBehaviour
         
         GameObject managers = GameObject.Find("System Managers");
         sm = managers.GetComponent<SpellManager>();
-        ts = managers.GetComponent<TurnSequencer>();
         errorClip = Resources.Load<AudioClip>("Sounds/Error");
         audioSource = GameObject.Find("CanvasHUD").GetComponent<AudioSource>();
+        defaultSprite = Resources.Load<Sprite>("Pixel Art/UI/Inventory/emptySprite");
         slot.image.sprite = defaultSprite;
+        cooldownMask.fillAmount = 0f;
     }
 
     void Update()
@@ -34,26 +36,47 @@ public class SpellSlot : MonoBehaviour
         {
 
             slot.image.sprite = sm.spellDictionary[spell].sprite;
-            slot.image.fillAmount = 1f - ((float)pc.knownSpells[spell] / (float)sm.spellDictionary[spell].cooldown);
+
+            if(pc.knownSpells[spell] == 0)
+            {
+
+                cooldownMask.fillAmount = 0f;
+
+            }else
+            {
+
+                cooldownMask.fillAmount = ((float)pc.knownSpells[spell] / (float)sm.spellDictionary[spell].cooldown);
+            }
 
         }else
         {
 
-            slot.image.fillAmount = 1;
+            cooldownMask.fillAmount = 0f;
         }
     }
 
     public void SetSpell(string spell)
     {
 
-        this.spell = spell;
+        if(sm.spellDictionary.Keys.Contains(spell))
+        {
+
+            this.spell = spell;
+            this.slot.image.sprite = sm.spellDictionary[spell].sprite;
+
+        }else
+        {
+
+            this.spell = "";
+            this.slot.image.sprite = defaultSprite;
+        }
     }
 
     public void ClearSpell()
     {
 
         this.spell = "";
-        slot.image.sprite = defaultSprite;
+        this.slot.image.sprite = defaultSprite;
     }
 
     public void Click()

@@ -39,4 +39,10 @@ public class IsMouseOverUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
             uiam.mouseOverUI = false;
         }
     }
+
+    public bool IsMouseOverSelf()
+    {
+
+        return isMouseOverSelf;
+    }
 }

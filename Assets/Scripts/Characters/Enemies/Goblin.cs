@@ -11,9 +11,9 @@ public class Goblin : Character
         base.Start();
         maxHealth = 10;
         health = maxHealth;
-        accuracy = 100;
+        accuracy = 66;
         minDamage = 1;
-        maxDamage = 5;
+        maxDamage = 4;
         level = 4;
         speed = 8;
         evasion = 50;

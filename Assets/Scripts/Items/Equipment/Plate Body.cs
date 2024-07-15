@@ -16,8 +16,8 @@ public class PlateBody : Equipment
 
         this.equipmentType = "Chest";
 
-        this.bonusStatDictionary["Armor"] = 5;
-        this.bonusStatDictionary["Strength Requirement"] = 1;
+        this.bonusStatDictionary["Armor"] = 2;
+        this.bonusStatDictionary["Strength Requirement"] = 10;
 
         SetDropChance(dropChance);
     }
