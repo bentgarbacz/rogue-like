@@ -18,6 +18,8 @@ public class Robes : Equipment
 
         this.bonusStatDictionary["Evasion"] = 10;
         this.bonusStatDictionary["Intelligence"] = 5;
+        this.bonusStatDictionary["Strength"] = 5;
+        this.bonusStatDictionary["Dexterity"] = 5;
 
         SetDropChance(dropChance);
     }

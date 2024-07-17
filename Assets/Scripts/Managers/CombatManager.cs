@@ -60,7 +60,7 @@ public class CombatManager : MonoBehaviour
         Equipment mainHandWeapon = (Equipment)im.equipmentSlotsDictionary["Main Hand"].item;
         Equipment offHandWeapon = (Equipment)im.equipmentSlotsDictionary["Off Hand"].item;
 
-        if(mainHandWeapon == null && offHandWeapon == null && PathFinder.GetNeighbors(defendingCharacter.coord, dum.dungeonCoords).Contains(attackingCharacter.coord) || attackingCharacter is not PlayerCharacter)
+        if(mainHandWeapon == null && PathFinder.GetNeighbors(defendingCharacter.coord, dum.dungeonCoords).Contains(attackingCharacter.coord) || attackingCharacter is not PlayerCharacter)
         {
 
             attackOccured = true;

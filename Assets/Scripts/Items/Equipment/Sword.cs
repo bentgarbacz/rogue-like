@@ -18,8 +18,8 @@ public class Sword : Equipment
 
         this.bonusStatDictionary["Min Damage"] = 4;
         this.bonusStatDictionary["Max Damage"] = 10;
-        this.bonusStatDictionary["Strength Requirement"] = 1;
-        this.bonusStatDictionary["Dexterity Requirement"] = 1;
+        this.bonusStatDictionary["Strength Requirement"] = 5;
+        this.bonusStatDictionary["Dexterity Requirement"] = 5;
 
         SetDropChance(dropChance);
     }
