@@ -26,6 +26,7 @@ public class Equipment : Item
             { "Min Damage", 0 },
             { "Max Damage", 0 },
             { "Max Health", 0 },
+            { "Max Mana", 0 },
             { "Strength Requirement", 0 },
             { "Dexterity Requirement", 0 },
             { "Intelligence Requirement", 0 }

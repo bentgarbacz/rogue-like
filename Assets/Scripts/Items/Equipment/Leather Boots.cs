@@ -20,9 +20,4 @@ public class LeatherBoots : Equipment
 
         SetDropChance(dropChance);
     }
-
-    public override void Use()
-    {
-
-    }
 }

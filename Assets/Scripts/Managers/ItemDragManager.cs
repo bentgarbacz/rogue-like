@@ -63,7 +63,7 @@ public class ItemDragManager : MonoBehaviour
     public void DropItem(ItemSlot destinationItemSlot)
     {
         
-        if(paused == false)
+        if(paused == false && itemSlot.item != null)
         {
             
             audioSource.PlayOneShot(itemSlot.item.contextClip);

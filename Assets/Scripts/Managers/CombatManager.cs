@@ -186,7 +186,6 @@ public class CombatManager : MonoBehaviour
         Character defender = attack.defender.GetComponent<Character>();
 
         //turn towards target
-        //attacker.transform.rotation = Quaternion.Euler(0, Orientation.DetermineRotation(attacker.pos, defender.pos), 0);
         attacker.transform.LookAt(defender.transform);
 
         if(attack.projectileType != "None")

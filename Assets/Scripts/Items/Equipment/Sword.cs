@@ -23,9 +23,4 @@ public class Sword : Equipment
 
         SetDropChance(dropChance);
     }
-
-    public override void Use()
-    {
-
-    }
 }

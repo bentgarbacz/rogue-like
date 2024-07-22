@@ -17,8 +17,9 @@ public class EquipmentManager : MonoBehaviour
     }
 
     public void UpdateStats()
-    {
+    { 
 
+        //Subtract stat bonuses from all stats
         playerCharacter.strength -= playerCharacter.strengthBonus;
         playerCharacter.dexterity -= playerCharacter.dexterityBonus;
         playerCharacter.intelligence -= playerCharacter.intelligenceBonus;
@@ -30,7 +31,9 @@ public class EquipmentManager : MonoBehaviour
         playerCharacter.minDamage -= playerCharacter.minDamageBonus;
         playerCharacter.maxDamage -= playerCharacter.maxDamageBonus;
         playerCharacter.maxHealth -= playerCharacter.maxHealthBonus;
+        playerCharacter.maxMana -= playerCharacter.maxManaBonus;
 
+        //Set all stat bonuses to zero
         playerCharacter.strengthBonus = 0;
         playerCharacter.dexterityBonus = 0;
         playerCharacter.intelligenceBonus = 0;
@@ -42,8 +45,10 @@ public class EquipmentManager : MonoBehaviour
         playerCharacter.minDamageBonus = 0;
         playerCharacter.maxDamageBonus = 0;
         playerCharacter.maxHealthBonus = 0;
+        playerCharacter.maxManaBonus = 0;
 
 
+        //For each equiped item, add stat bonuses provided by item to the overall stat bonus
         foreach(ItemSlot slot in im.equipmentSlotsDictionary.Values)
         {
 
@@ -64,20 +69,24 @@ public class EquipmentManager : MonoBehaviour
                     playerCharacter.minDamageBonus += equipment.bonusStatDictionary["Min Damage"];
                     playerCharacter.maxDamageBonus += equipment.bonusStatDictionary["Max Damage"];
                     playerCharacter.maxHealthBonus += equipment.bonusStatDictionary["Max Health"];
-
+                    playerCharacter.maxManaBonus += equipment.bonusStatDictionary["Max Mana"];
                 }
             }
         }
 
+        //Calculate secondary stat bonuses granted by strength
         playerCharacter.armorBonus += (playerCharacter.strengthBonus + playerCharacter.strength) / 10;
         playerCharacter.maxHealthBonus += (playerCharacter.strengthBonus + playerCharacter.strength) / 2;
 
+        //Calculate secondary stat bonuses granted by dexterity
         playerCharacter.evasionBonus += (playerCharacter.dexterityBonus + playerCharacter.dexterity) * 5;
-        playerCharacter.speedBonus += playerCharacter.dexterityBonus + playerCharacter.dexterity;
+        playerCharacter.accuracyBonus += (playerCharacter.dexterityBonus + playerCharacter.dexterity) * 2;
 
-        playerCharacter.critChanceBonus += (playerCharacter.intelligenceBonus + playerCharacter.intelligence) / 2;
-        playerCharacter.accuracyBonus += (playerCharacter.intelligenceBonus + playerCharacter.intelligence) * 2;
+        //Calculate secondary stat bonuses granted by intelligence
+        playerCharacter.critChanceBonus += (playerCharacter.intelligenceBonus + playerCharacter.intelligence) / 5;
+        playerCharacter.maxManaBonus += (playerCharacter.intelligenceBonus + playerCharacter.intelligence) / 2;
 
+        //Add newly calculated stat bonuses to the actual stat
         playerCharacter.strength += playerCharacter.strengthBonus;
         playerCharacter.dexterity += playerCharacter.dexterityBonus;
         playerCharacter.intelligence += playerCharacter.intelligenceBonus;
@@ -89,8 +98,14 @@ public class EquipmentManager : MonoBehaviour
         playerCharacter.minDamage += playerCharacter.minDamageBonus;
         playerCharacter.maxDamage += playerCharacter.maxDamageBonus;
         playerCharacter.maxHealth += playerCharacter.maxHealthBonus;
+        playerCharacter.maxMana += playerCharacter.maxManaBonus;
+
+        //Set health and mana values so that they do not exceed their maximum values after recalculating stats
+        playerCharacter.health = Mathf.Min(playerCharacter.health, playerCharacter.maxHealth);
+        playerCharacter.mana = Mathf.Min(playerCharacter.mana, playerCharacter.maxMana);
     } 
 
+    //Checks to see if given equipment can be equiped based on its stat requirements
     public bool MeetsRequirements(Equipment equipment)
     {
 
@@ -105,6 +120,7 @@ public class EquipmentManager : MonoBehaviour
         return false;
     }
 
+    //Checks to see if item in originSlot is permited to be placed in destinationSlot
     public bool ValidEquip(ItemSlot destinationSlot, ItemSlot originSlot)
     {
 

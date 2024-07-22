@@ -28,6 +28,7 @@ public class PlayerCharacter : Character
     public int armorBonus = 0;
     public int evasionBonus = 0;
     public int maxHealthBonus = 0;
+    public int maxManaBonus = 0;
     public Dictionary<string, int> knownSpells = new();
     
 

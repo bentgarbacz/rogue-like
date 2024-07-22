@@ -20,9 +20,4 @@ public class LeatherHelm : Equipment
 
         SetDropChance(dropChance);
     }
-
-    public override void Use()
-    {
-
-    }
 }

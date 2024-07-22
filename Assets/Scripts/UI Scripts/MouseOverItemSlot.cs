@@ -15,7 +15,7 @@ public class MouseOverItemSlot : MonoBehaviour, IPointerEnterHandler, IPointerEx
     private ItemDragManager idm;
     private EquipmentManager equm;
     private Coroutine dragCoroutine;
-    private const float dragDelay = 0.2f; // Delay in seconds before starting the drag
+    private const float dragDelay = 0.1f; // Delay in seconds before starting the drag
 
     void Awake()
     {

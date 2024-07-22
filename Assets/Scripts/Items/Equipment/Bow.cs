@@ -26,9 +26,4 @@ public class Bow : RangedWeapon
 
         SetDropChance(dropChance);
     }
-
-    public override void Use()
-    {
-
-    }
 }
