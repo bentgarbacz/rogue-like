@@ -60,6 +60,7 @@ public class TurnSequencer : MonoBehaviour
                     uiam.CloseInventoryPanel();
                     uiam.CloseLootPanel();
                     uiam.CloseCharacterPanel();
+                    uiam.HideAssignSpell();
 
                     actionTaken = true;
                     playerCharacter.BecomeHungrier();
@@ -220,8 +221,6 @@ public class TurnSequencer : MonoBehaviour
                 }
             }
         }
-
-
     }
 
     public void SignalAction()

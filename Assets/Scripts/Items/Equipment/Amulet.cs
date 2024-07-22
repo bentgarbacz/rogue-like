@@ -21,9 +21,4 @@ public class Amulet : Equipment
 
         SetDropChance(dropChance);
     }
-
-    public override void Use()
-    {
-
-    }
 }

@@ -17,13 +17,8 @@ public class Robes : Equipment
         this.equipmentType = "Chest";
 
         this.bonusStatDictionary["Evasion"] = 10;
-        this.bonusStatDictionary["Intelligence"] = 5;
+        this.bonusStatDictionary["Max Mana"] = 10;
 
         SetDropChance(dropChance);
-    }
-
-    public override void Use()
-    {
-
     }
 }

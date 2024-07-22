@@ -21,9 +21,4 @@ public class PlateBody : Equipment
 
         SetDropChance(dropChance);
     }
-
-    public override void Use()
-    {
-
-    }
 }

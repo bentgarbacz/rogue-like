@@ -16,6 +16,7 @@ public static class LootTableManager
             {
                 "DebugChest",
                 new List<Item>(){   
+                                    new Robes(100),
                                     new ManaPotion1(100),
                                     new FireballScroll(100),
                                     new TeleportScroll(100),
@@ -23,8 +24,7 @@ public static class LootTableManager
                                     new Bow(100),
                                     new PlateBody(100),
                                     new Shield(100),
-                                    new Ring(100),
-                                    new Dagger(100),
+                                    new Ring(100),                                    
                                     new Dagger(100)
                                 }
             },
@@ -37,12 +37,14 @@ public static class LootTableManager
                                     new Robes(10),
                                     new FireballScroll(10),
                                     new HealScroll(10),
+                                    new TeleportScroll(10),
                                     new Bow(10),
                                     new PlateBody(10),
                                     new Shield(10),
                                     new Ring(10),
                                     new Amulet(10),
-                                    new Dagger(10)
+                                    new Dagger(10),
+                                    new Sword(10)
                                 }
             },
             {
@@ -63,7 +65,7 @@ public static class LootTableManager
             {
                 "Rat",
                 new List<Item>(){
-                                    new Meat(50)
+                                    new Meat(33)
                                 }
             }
         };

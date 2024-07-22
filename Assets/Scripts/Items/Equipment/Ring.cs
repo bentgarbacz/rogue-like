@@ -20,9 +20,4 @@ public class Ring : Equipment
 
         SetDropChance(dropChance);
     }
-
-    public override void Use()
-    {
-
-    }
 }

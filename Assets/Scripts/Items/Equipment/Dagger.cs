@@ -22,9 +22,4 @@ public class Dagger : Equipment
 
         SetDropChance(dropChance);
     }
-
-    public override void Use()
-    {
-
-    }
 }

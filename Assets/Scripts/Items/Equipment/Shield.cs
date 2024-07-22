@@ -20,9 +20,4 @@ public class Shield : Equipment
 
         SetDropChance(dropChance);
     }
-
-    public override void Use()
-    {
-
-    }
 }
