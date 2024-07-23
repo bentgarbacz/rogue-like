@@ -25,6 +25,7 @@ public class MapGenerator : MonoBehaviour
     public GameObject skeleton;
     public GameObject goblin;
     public GameObject rat;
+    public GameObject skeletonArcher;
     private DungeonManager dum;
     private Vector2Int startPosition = new(0, 0);
     
@@ -159,7 +160,9 @@ public class MapGenerator : MonoBehaviour
                     }else if(spawnRNG >= 5 && spawnRNG <= 6)
                     {
 
-                        GameObject enemy = Instantiate(goblin, spawnPos, goblin.transform.rotation);
+                        //GameObject enemy = Instantiate(goblin, spawnPos, goblin.transform.rotation);
+                        GameObject enemy = Instantiate(skeletonArcher, spawnPos, skeletonArcher.transform.rotation);
+
                         dum.AddGameObject(enemy);
                         enemy.GetComponent<Character>().Move(spawnPos, dum.occupiedlist);
                         dum.enemies.Add(enemy);

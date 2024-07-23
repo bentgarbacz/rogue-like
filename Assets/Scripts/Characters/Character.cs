@@ -29,7 +29,6 @@ public class Character : MonoBehaviour
     public AudioClip attackClip;
     public AudioClip missClip;
 
-    // Start is called before the first frame update
     public virtual void Start()
     {
         

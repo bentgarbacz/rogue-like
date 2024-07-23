@@ -159,46 +159,7 @@ public class TurnSequencer : MonoBehaviour
                 foreach(GameObject enemy in dum.aggroEnemies)
                 {
 
-                    Character nonPlayerCharacter = enemy.GetComponent<Character>();
-
-                    //enemy attacks player character if they are in a neighboring tile
-                    if(PathFinder.GetNeighbors(playerCharacter.coord, dum.dungeonCoords).Contains(nonPlayerCharacter.coord))
-                    {
-                        
-                        cbm.AddToCombatBuffer(enemy, dum.hero);
-
-                    }else //enemy moves towards player or attack if they are in a neighboring tile                 
-                    {
-
-                        List<Vector2Int> pathToPlayer = PathFinder.FindPath(nonPlayerCharacter.coord, playerCharacter.coord, dum.dungeonCoords); 
-
-                        //If enemy is not neighboring player character...
-                        if(pathToPlayer.Count > 1)
-                        {
-                            
-                            //...try to move towards player character...
-                            if(!nonPlayerCharacter.Move(new Vector3(pathToPlayer[1].x, 0.1f, pathToPlayer[1].y), dum.occupiedlist))
-                            {                  
-                                
-                                //...if that spot is occupied then try to path to a tile adjacent to player character 
-                                foreach(Vector2Int v in NeighborVals.allDirectionsList)
-                                {
-
-                                    List<Vector2Int> pathToPlayerPlusV = PathFinder.FindPath(nonPlayerCharacter.coord, playerCharacter.coord + v, dum.dungeonCoords);
-                                    
-                                    if(pathToPlayerPlusV != null)
-                                    {
-
-                                        if(nonPlayerCharacter.Move(new Vector3(pathToPlayerPlusV[1].x, 0.1f, pathToPlayerPlusV[1].y), dum.occupiedlist))
-                                        {
-
-                                            break;
-                                        }
-                                    }
-                                }
-                            } 
-                        } 
-                    }
+                    enemy.GetComponent<Enemy>().AggroBehavior(playerCharacter, dum, cbm);
                 }
 
                 //start combat for the turn
