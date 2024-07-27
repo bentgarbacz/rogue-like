@@ -40,8 +40,8 @@ public class TurnSequencer : MonoBehaviour
                 
                 playerCharacter.Move(new Vector3(dum.bufferedPath[0].x, 0.1f, dum.bufferedPath[0].y), dum.occupiedlist);
                 dum.bufferedPath.RemoveAt(0);
-                playerCharacter.BecomeHungrier();
-                playerCharacter.DecrementCooldowns();
+
+                UpkeepEffects();
 
             //Process a turn if:
             //left mouse was pressed
@@ -63,8 +63,8 @@ public class TurnSequencer : MonoBehaviour
                     uiam.HideAssignSpell();
 
                     actionTaken = true;
-                    playerCharacter.BecomeHungrier();
-                    playerCharacter.DecrementCooldowns();
+
+                    UpkeepEffects();
 
                     if(target.GetComponent<Tile>() && target.GetComponent<Tile>().coord != playerCharacter.coord)
                     {
@@ -156,49 +156,10 @@ public class TurnSequencer : MonoBehaviour
                 actionTaken = false;
 
                 //give a turn to each aggroed enemy
-                foreach(GameObject enemy in dum.aggroEnemies)
+                foreach(GameObject enemy in new HashSet<GameObject>(dum.aggroEnemies))
                 {
-
-                    Character nonPlayerCharacter = enemy.GetComponent<Character>();
-
-                    //enemy attacks player character if they are in a neighboring tile
-                    if(PathFinder.GetNeighbors(playerCharacter.coord, dum.dungeonCoords).Contains(nonPlayerCharacter.coord))
-                    {
-                        
-                        cbm.AddToCombatBuffer(enemy, dum.hero);
-
-                    }else //enemy moves towards player or attack if they are in a neighboring tile                 
-                    {
-
-                        List<Vector2Int> pathToPlayer = PathFinder.FindPath(nonPlayerCharacter.coord, playerCharacter.coord, dum.dungeonCoords); 
-
-                        //If enemy is not neighboring player character...
-                        if(pathToPlayer.Count > 1)
-                        {
-                            
-                            //...try to move towards player character...
-                            if(!nonPlayerCharacter.Move(new Vector3(pathToPlayer[1].x, 0.1f, pathToPlayer[1].y), dum.occupiedlist))
-                            {                  
-                                
-                                //...if that spot is occupied then try to path to a tile adjacent to player character 
-                                foreach(Vector2Int v in NeighborVals.allDirectionsList)
-                                {
-
-                                    List<Vector2Int> pathToPlayerPlusV = PathFinder.FindPath(nonPlayerCharacter.coord, playerCharacter.coord + v, dum.dungeonCoords);
-                                    
-                                    if(pathToPlayerPlusV != null)
-                                    {
-
-                                        if(nonPlayerCharacter.Move(new Vector3(pathToPlayerPlusV[1].x, 0.1f, pathToPlayerPlusV[1].y), dum.occupiedlist))
-                                        {
-
-                                            break;
-                                        }
-                                    }
-                                }
-                            } 
-                        } 
-                    }
+                    
+                    enemy.GetComponent<Enemy>().AggroBehavior(playerCharacter, dum, cbm);
                 }
 
                 //start combat for the turn
@@ -214,7 +175,7 @@ public class TurnSequencer : MonoBehaviour
                 {
 
                     dum.aggroEnemies.Add(enemy);
-                    enemy.GetComponent<TextNotification>().CreatePopup(enemy.transform.position, 2, "!", Color.red);
+                    enemy.GetComponent<TextNotificationManager>().CreateNotificationOrder(enemy.transform.position, 2, "!", Color.red);
 
                     //automated walking via buffer is halted when an enemy sees you
                     dum.bufferedPath.Clear();
@@ -227,5 +188,13 @@ public class TurnSequencer : MonoBehaviour
     {
 
         actionTaken = true;
+    }
+
+    private void UpkeepEffects()
+    {
+
+        dum.TriggerStatusEffects();
+        playerCharacter.BecomeHungrier();
+        playerCharacter.DecrementCooldowns();
     }
 }

@@ -25,6 +25,9 @@ public class MapGenerator : MonoBehaviour
     public GameObject skeleton;
     public GameObject goblin;
     public GameObject rat;
+    public GameObject skeletonArcher;
+    public GameObject slime;
+    public GameObject witch;
     private DungeonManager dum;
     private Vector2Int startPosition = new(0, 0);
     
@@ -151,7 +154,7 @@ public class MapGenerator : MonoBehaviour
                     }else if(spawnRNG >= 3 && spawnRNG <= 4)
                     {
 
-                        GameObject enemy = Instantiate(skeleton, spawnPos, skeleton.transform.rotation);
+                        GameObject enemy = Instantiate(slime, spawnPos, slime.transform.rotation);
                         dum.AddGameObject(enemy);
                         enemy.GetComponent<Character>().Move(spawnPos, dum.occupiedlist);
                         dum.enemies.Add(enemy);
@@ -159,7 +162,9 @@ public class MapGenerator : MonoBehaviour
                     }else if(spawnRNG >= 5 && spawnRNG <= 6)
                     {
 
-                        GameObject enemy = Instantiate(goblin, spawnPos, goblin.transform.rotation);
+                        //GameObject enemy = Instantiate(goblin, spawnPos, goblin.transform.rotation);
+                        GameObject enemy = Instantiate(witch, spawnPos, witch.transform.rotation);
+
                         dum.AddGameObject(enemy);
                         enemy.GetComponent<Character>().Move(spawnPos, dum.occupiedlist);
                         dum.enemies.Add(enemy);
@@ -177,7 +182,7 @@ public class MapGenerator : MonoBehaviour
                     path.Add(position);
                 }
 
-                position += Direction2D.getRandomDirection();
+                position += Direction2D.GetRandomDirection();
             }
         }
     }
@@ -279,7 +284,7 @@ public static class Direction2D
         new Vector2Int(-1, 1) //North West
     };
 
-    public static Vector2Int getRandomDirection()
+    public static Vector2Int GetRandomDirection()
     {
 
         return cardinalDirectionsList[UnityEngine.Random.Range(0, cardinalDirectionsList.Count)];

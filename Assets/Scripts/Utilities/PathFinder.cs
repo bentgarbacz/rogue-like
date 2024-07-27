@@ -150,7 +150,7 @@ public static class PathFinder
         }
     }
 
-    private static float CalculateDistance(Vector2Int a, Vector2Int b)
+    public static float CalculateDistance(Vector2Int a, Vector2Int b)
     {
         return System.Math.Abs(a.x - b.x) + System.Math.Abs(a.y - b.y);
     }

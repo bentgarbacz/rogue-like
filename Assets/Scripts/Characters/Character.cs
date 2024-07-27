@@ -25,17 +25,19 @@ public class Character : MonoBehaviour
     public int armor = 0;
     public int evasion = 0;    
     public string dropTable;
+    public StatusEffectManager sem;
     public AudioSource audioSource;
     public AudioClip attackClip;
     public AudioClip missClip;
 
-    // Start is called before the first frame update
     public virtual void Start()
     {
         
         transform.position = pos;
         GetComponent<MoveToTarget>().target = pos;
         coord = new Vector2Int((int)pos.x, (int)pos.z);
+
+        sem = gameObject.AddComponent<StatusEffectManager>();
 
         audioSource = gameObject.AddComponent<AudioSource>();
         missClip = Resources.Load<AudioClip>("Sounds/Miss");

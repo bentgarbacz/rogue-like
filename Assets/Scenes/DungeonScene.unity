@@ -5950,6 +5950,9 @@ MonoBehaviour:
   skeleton: {fileID: 7806514022559795084, guid: 3b210d9e70f6a1f4b9e6170b08367086, type: 3}
   goblin: {fileID: 6521998039571531690, guid: 0fe73ca023d67f9468b8ce7c063dc8fc, type: 3}
   rat: {fileID: 2415684302311000984, guid: dcf8a7a24bba19044a4dc32251b8ab86, type: 3}
+  skeletonArcher: {fileID: 3972246722018788467, guid: f114ea6c3de591b44808cb9aa30df140, type: 3}
+  slime: {fileID: 1896811922957596743, guid: f7c9141ada6af9c479bddefc6b348ccd, type: 3}
+  witch: {fileID: 1209241037779243595, guid: e82ad701c0f11ad4fa3ebe2e09d151d7, type: 3}
 --- !u!4 &438385573
 Transform:
   m_ObjectHideFlags: 0
@@ -21109,6 +21112,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   arrow: {fileID: 6116031008646576556, guid: 9b17ae47d8d0e1a438302d3333723296, type: 3}
   fireball: {fileID: 3680323558455822798, guid: 1ce5e46bf6c9bd84b9ed12417e54a06a, type: 3}
+  magicMissile: {fileID: 3859681515829984516, guid: 2ff5894e307a6ef45978755285a10032, type: 3}
 --- !u!114 &1314207900
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -33696,6 +33700,7 @@ MonoBehaviour:
   armor: 0
   evasion: 0
   dropTable: 
+  sem: {fileID: 0}
   audioSource: {fileID: 0}
   attackClip: {fileID: 0}
   missClip: {fileID: 0}
@@ -33761,7 +33766,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   notificationPrefab: {fileID: 5558341210635837680, guid: 2b027f351ca2eb94d90ca350ef6ea2fa, type: 3}
-  speed: 2
   destroyAfterDistance: 0.75
   xMin: 0.5
   xBuffer: 0.1

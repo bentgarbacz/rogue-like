@@ -4,18 +4,17 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
-    private float speed = 8f;
+    public float speed = 8f;
     private Vector3 target;
     private bool shooting = false;
-    public AudioSource audioSource;
-    public AudioClip shot;
-    public AudioClip hit;
+    private AudioSource projectileAudioSource;
+    [SerializeField] private AudioClip shot;
+    [SerializeField] private AudioClip hit;
 
     void Awake()
     {
 
-        shot = Resources.Load<AudioClip>("Sounds/OpenBag");
-        hit = Resources.Load<AudioClip>("Sounds/Arrow");
+        projectileAudioSource = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -34,20 +33,39 @@ public class Projectile : MonoBehaviour
             //Destroy self after reaching target
             if(transform.position == target)
             {
-
-                audioSource.PlayOneShot(hit);
-                Destroy(gameObject);
+                
+                shooting = false;
+                StartCoroutine(HitTarget());
             }
         }
     }
 
-    public void Shoot(Vector3 target, AudioSource audioSource, float speed = 15f)
+    private IEnumerator HitTarget()
+    {
+
+        //Remove all visual components of projectile on hit
+        Destroy(gameObject.GetComponent<MeshFilter>());
+        Destroy(gameObject.GetComponent<MeshRenderer>());
+
+        foreach (Transform child in transform)
+        {
+
+            Destroy(child.gameObject);
+        }
+
+        //Play hit sound clip then wait for sound clip to finish
+        projectileAudioSource.PlayOneShot(hit);
+        yield return new WaitForSeconds(hit.length);   
+        
+        Destroy(gameObject);
+    }
+
+    public void Shoot(Vector3 target, AudioSource originAudioSource, float speed = 15f)
     {
 
         this.speed = speed;
         this.target = target;
-        this.audioSource = audioSource;
-        this.audioSource.PlayOneShot(shot);
+        originAudioSource.PlayOneShot(shot);
         this.shooting = true;
     }
 }

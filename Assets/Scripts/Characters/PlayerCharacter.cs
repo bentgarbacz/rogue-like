@@ -63,7 +63,7 @@ public class PlayerCharacter : Character
         if(totalXP >= levelUpBreakpoint)
         {
 
-            GetComponent<TextNotification>().CreatePopup(transform.position, 3f, "Level Up!", Color.yellow);
+            GetComponent<TextNotificationManager>().CreateNotificationOrder(transform.position, 3f, "Level Up!", Color.yellow);
 
             while(totalXP >= levelUpBreakpoint)
             {
@@ -76,7 +76,7 @@ public class PlayerCharacter : Character
         }else
         {
 
-            GetComponent<TextNotification>().CreatePopup(transform.position, 2f, XP.ToString() + " XP", Color.green);
+            GetComponent<TextNotificationManager>().CreateNotificationOrder(transform.position, 2f, XP.ToString() + " XP", Color.green);
         }
     }
 
@@ -134,7 +134,7 @@ public class PlayerCharacter : Character
 
                 hunger = 0;
                 TakeDamage(1);
-                GetComponent<TextNotification>().CreatePopup(transform.position, 2f, "Hungry!", Color.red);
+                GetComponent<TextNotificationManager>().CreateNotificationOrder(transform.position, 2f, "Hungry!", Color.red);
             }
 
             hungerBuffer = 0;

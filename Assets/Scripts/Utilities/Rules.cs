@@ -73,4 +73,10 @@ public static class Rules
 
         return false;
     }
+
+    public static Vector3 CoordToPos(Vector2Int coord, float xMod = 0, float yMod = 0, float zMod = 0)
+    {
+
+        return new Vector3((float)coord.x + xMod, yMod, (float)coord.y + zMod);
+    }
 }

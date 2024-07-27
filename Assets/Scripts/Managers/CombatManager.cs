@@ -39,10 +39,28 @@ public class CombatManager : MonoBehaviour
 
         while(combatBuffer.Count > 0)
         {
-            
+
+            float waitTime = attackTime;
+
+            if(combatBuffer[0].projectileType != "None")
+            {
+
+                float projectileSpeed = pm.projectileDictionary[combatBuffer[0].projectileType].GetComponent<Projectile>().speed;
+                Vector2Int attackerCoord = combatBuffer[0].attacker.GetComponent<Character>().coord;
+                Vector2Int defenderCoord = combatBuffer[0].defender.GetComponent<Character>().coord;
+
+                float projectileTime = ProjectileAirTime(projectileSpeed, attackerCoord, defenderCoord);
+
+                if(projectileTime > waitTime)
+                {
+
+                    waitTime = projectileTime;
+                }
+            }
+
             ProcessAttack(combatBuffer[0]);
-            combatBuffer.RemoveAt(0);
-            yield return new WaitForSeconds(attackTime);            
+            yield return new WaitForSeconds(waitTime);
+            combatBuffer.RemoveAt(0);            
         }
         
         //signals that fighting for the turn is over and regular gameplay can resume
@@ -105,7 +123,6 @@ public class CombatManager : MonoBehaviour
                                                 rangedWeapon.projectile
                                                 ));
                 }
-
             }
         }
         
@@ -193,7 +210,7 @@ public class CombatManager : MonoBehaviour
 
             GameObject projectile = pm.CreateProjectile(attack.projectileType, attacker.transform.position, attacker.transform.rotation);
             projectile.GetComponent<Projectile>().Shoot(defender.pos, attacker.audioSource);
-        }
+        }      
 
         float hitChance = ((float)attacker.accuracy - (float)defender.evasion) / (float)attacker.accuracy * 100f;
 
@@ -215,12 +232,12 @@ public class CombatManager : MonoBehaviour
             {
 
                 damage *= attacker.critMultiplier;
-                defender.GetComponent<TextNotification>().CreatePopup(defender.transform.position, 2f, damage.ToString(), Color.yellow);
+                defender.GetComponent<TextNotificationManager>().CreateNotificationOrder(defender.transform.position, 2f, damage.ToString(), Color.yellow);
 
             }else
             {
 
-                defender.GetComponent<TextNotification>().CreatePopup(defender.transform.position, 2f, damage.ToString(), Color.red);
+                defender.GetComponent<TextNotificationManager>().CreateNotificationOrder(defender.transform.position, 2f, damage.ToString(), Color.red);
             }
 
             defender.TakeDamage(damage);
@@ -230,31 +247,27 @@ public class CombatManager : MonoBehaviour
 
             //take 0 damage on miss
             defender.audioSource.PlayOneShot(defender.missClip);
-            defender.GetComponent<TextNotification>().CreatePopup(defender.transform.position, 2f, "Miss", Color.white);
+            defender.GetComponent<TextNotificationManager>().CreateNotificationOrder(defender.transform.position, 2f, "Miss", Color.white);
         }
 
-        attacker.GetComponent<AttackAnimation>().MeleeAttack(); 
+        attacker.GetComponent<AttackAnimation>().MeleeAttack();      
 
         //kills defender of attack if it's health falls below 1
         if(defender.health <= 0)
         {
-            
-            //Attacks to and from dead combatants removed from buffer
-            for(int i = 1; i < combatBuffer.Count; i++ )
-            {
-
-                if(combatBuffer[0].defender == combatBuffer[i].defender || combatBuffer[0].defender == combatBuffer[i].attacker)
-                {
-                    
-                    combatBuffer.RemoveAt(i);
-                    i--;
-                }
-            }
-
+        
             dum.Smite(combatBuffer[0].defender, defender.pos);                                                                    
         }
     }
+
+    private float ProjectileAirTime(float projectileSpeed, Vector2Int originCoord, Vector2Int destinationCoord)
+    {
+
+        return PathFinder.CalculateDistance(originCoord, destinationCoord) / projectileSpeed;
+    }
 }
+
+
 
 public class Attack
 {

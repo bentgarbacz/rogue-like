@@ -16,6 +16,7 @@ public class SpellCaster : MonoBehaviour
     private SpellManager sm;
     private ClickManager cm;
     private ToolTipManager ttm;
+    private AudioSource audioSource;
     [SerializeField] private PlayerCharacter pc;
     private Mouse mouse;
 
@@ -27,6 +28,7 @@ public class SpellCaster : MonoBehaviour
         sm = managers.GetComponent<SpellManager>();
         cm = managers.GetComponent<ClickManager>();
         ttm = managers.GetComponent<UIActiveManager>().toolTipContainer.GetComponent<ToolTipManager>();
+        audioSource = GetComponent<AudioSource>();
 
         mouse = Mouse.current;
     }
@@ -51,6 +53,12 @@ public class SpellCaster : MonoBehaviour
                     {
 
                         ts.SignalAction();
+
+                        if(currentSpell.castSound != null)
+                        {
+
+                            audioSource.PlayOneShot(currentSpell.castSound);
+                        }
 
                         if(selfCasting)
                         {
@@ -100,6 +108,12 @@ public class SpellCaster : MonoBehaviour
             
         }else
         {
+
+            if(spell.castSound != null)
+            {
+
+                audioSource.PlayOneShot(spell.castSound);
+            }
 
             spell.Cast(this.gameObject);
             return true;
