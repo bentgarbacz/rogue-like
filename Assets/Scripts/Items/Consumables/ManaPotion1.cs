@@ -5,7 +5,7 @@ using UnityEngine;
 public class ManaPotion1 : Consumable
 {
     private GameObject hero = GameObject.Find("System Managers").GetComponent<DungeonManager>().hero;
-    private readonly int regainValue = 15;
+    private readonly int manaRestoreValue = 15;
 
     public ManaPotion1(int dropChance = 0 )
     {
@@ -21,6 +21,6 @@ public class ManaPotion1 : Consumable
     public override void Use()
     {
 
-        hero.GetComponent<PlayerCharacter>().RegainMana(regainValue);
+        hero.GetComponent<PlayerCharacter>().RegainMana(manaRestoreValue);
     }
 }

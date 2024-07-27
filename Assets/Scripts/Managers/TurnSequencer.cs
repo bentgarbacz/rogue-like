@@ -40,8 +40,8 @@ public class TurnSequencer : MonoBehaviour
                 
                 playerCharacter.Move(new Vector3(dum.bufferedPath[0].x, 0.1f, dum.bufferedPath[0].y), dum.occupiedlist);
                 dum.bufferedPath.RemoveAt(0);
-                playerCharacter.BecomeHungrier();
-                playerCharacter.DecrementCooldowns();
+
+                UpkeepEffects();
 
             //Process a turn if:
             //left mouse was pressed
@@ -63,8 +63,8 @@ public class TurnSequencer : MonoBehaviour
                     uiam.HideAssignSpell();
 
                     actionTaken = true;
-                    playerCharacter.BecomeHungrier();
-                    playerCharacter.DecrementCooldowns();
+
+                    UpkeepEffects();
 
                     if(target.GetComponent<Tile>() && target.GetComponent<Tile>().coord != playerCharacter.coord)
                     {
@@ -156,9 +156,9 @@ public class TurnSequencer : MonoBehaviour
                 actionTaken = false;
 
                 //give a turn to each aggroed enemy
-                foreach(GameObject enemy in dum.aggroEnemies)
+                foreach(GameObject enemy in new HashSet<GameObject>(dum.aggroEnemies))
                 {
-
+                    
                     enemy.GetComponent<Enemy>().AggroBehavior(playerCharacter, dum, cbm);
                 }
 
@@ -175,7 +175,7 @@ public class TurnSequencer : MonoBehaviour
                 {
 
                     dum.aggroEnemies.Add(enemy);
-                    enemy.GetComponent<TextNotification>().CreatePopup(enemy.transform.position, 2, "!", Color.red);
+                    enemy.GetComponent<TextNotificationManager>().CreateNotificationOrder(enemy.transform.position, 2, "!", Color.red);
 
                     //automated walking via buffer is halted when an enemy sees you
                     dum.bufferedPath.Clear();
@@ -188,5 +188,13 @@ public class TurnSequencer : MonoBehaviour
     {
 
         actionTaken = true;
+    }
+
+    private void UpkeepEffects()
+    {
+
+        dum.TriggerStatusEffects();
+        playerCharacter.BecomeHungrier();
+        playerCharacter.DecrementCooldowns();
     }
 }

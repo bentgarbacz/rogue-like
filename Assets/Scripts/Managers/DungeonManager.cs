@@ -16,11 +16,27 @@ public class DungeonManager : MonoBehaviour
     public HashSet<Loot> itemContainers = new();
     public List<Vector2Int> bufferedPath = new();
     public Dictionary<string, List<Vector2Int>> cachedPathsDict = new();    
+    private CombatManager cbm;
 
     void Start()
     {
 
+        GameObject managers = GameObject.Find("System Managers");
+        cbm = managers.GetComponent<CombatManager>();
+
         mainCamera.GetComponent<PlayerCamera>().SetFocalPoint(hero);
+    }
+
+    public void TriggerStatusEffects()
+    {
+
+        hero.GetComponent<Character>().GetComponent<StatusEffectManager>().ProcessStatusEffects();
+
+        foreach(GameObject enemy in new HashSet<GameObject>(enemies))
+        {
+
+            enemy.GetComponent<Character>().GetComponent<StatusEffectManager>().ProcessStatusEffects();
+        }
     }
 
     public void AddGameObject(GameObject newGameObject)
@@ -31,13 +47,23 @@ public class DungeonManager : MonoBehaviour
 
     public void Smite(GameObject target, Vector3 targetPosition)
     {
+        //Attacks to and from dead combatants removed from combat buffer
+        for(int i = 1; i < cbm.combatBuffer.Count; i++ )
+        {
+
+            if(target == cbm.combatBuffer[i].defender || target == cbm.combatBuffer[i].attacker)
+            {
+                
+                cbm.combatBuffer.RemoveAt(i);
+                i--;
+            }
+        }
 
         aggroEnemies.Remove(target);
         occupiedlist.Remove(targetPosition);
         enemies.Remove(target);
 
         target.GetComponent<DropLoot>().Drop();
-        target.GetComponent<TextNotification>().CleanUp();
 
         int gainedXP = target.GetComponent<Character>().level * 5;
         hero.GetComponent<PlayerCharacter>().GainXP(gainedXP);

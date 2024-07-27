@@ -16,6 +16,10 @@ public static class LootTableManager
             {
                 "DebugChest",
                 new List<Item>(){   
+                                    new DebugHelm(100),
+                                    new FortifyScroll(100),
+                                    new SavageLeapScroll(100),
+                                    new PoisonousStrikeScroll(100),
                                     new Robes(100),
                                     new ManaPotion1(100),
                                     new FireballScroll(100),
@@ -59,13 +63,27 @@ public static class LootTableManager
                 "Skeleton",
                 new List<Item>(){
                                     new HealthPotion1(15),
-                                    new ManaPotion1(15),
+                                    new ManaPotion1(15)
                                 }
             },
             {
                 "Rat",
                 new List<Item>(){
                                     new Meat(33)
+                                }
+            },
+            {
+                "Slime",
+                new List<Item>(){
+                                    new BlueJelly(33)
+                                }
+            },
+            {
+                "Witch",
+                new List<Item>(){
+                                    new FireballScroll(10),
+                                    new HealScroll(10),
+                                    new TeleportScroll(10)
                                 }
             }
         };

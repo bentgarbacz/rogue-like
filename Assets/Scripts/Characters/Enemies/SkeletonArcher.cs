@@ -61,7 +61,8 @@ public class SkeletonArcher : Enemy
         }else
         {
 
-            Vector2Int randomDirection = new(coord.x + Direction2D.getRandomDirection().x, coord.y + Direction2D.getRandomDirection().y);
+            //randomly walk while reloading ranged attack
+            Vector2Int randomDirection = new(coord.x + Direction2D.GetRandomDirection().x, coord.y + Direction2D.GetRandomDirection().y);
 
             if(dum.dungeonCoords.Contains(randomDirection))
             {
