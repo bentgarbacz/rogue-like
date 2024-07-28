@@ -34,7 +34,12 @@ public class Teleport : Spell
 
                 Vector3 targetPos = new Vector3(target.GetComponent<Tile>().coord.x, 0, target.GetComponent<Tile>().coord.y);
 
-                caster.GetComponent<Character>().Teleport(targetPos, dum.occupiedlist);
+                if(!caster.GetComponent<Character>().Teleport(targetPos, dum))
+                {
+
+                    return false;
+                }
+                
                 ResetCooldown(caster);
                 return true;
             }

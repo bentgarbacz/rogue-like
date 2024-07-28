@@ -79,4 +79,10 @@ public static class Rules
 
         return new Vector3((float)coord.x + xMod, yMod, (float)coord.y + zMod);
     }
+
+    public static Vector2Int PosToCoord(Vector3 pos)
+    {
+
+        return new Vector2Int((int)pos.x, (int)pos.z);
+    }
 }

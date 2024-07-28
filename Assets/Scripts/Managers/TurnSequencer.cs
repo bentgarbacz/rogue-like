@@ -167,18 +167,22 @@ public class TurnSequencer : MonoBehaviour
             }
             
 
-            //aggro enemies within aggroRange units            
-            foreach(GameObject enemy in dum.enemies)
+            //aggro enemies within aggroRange units 
+            if(dum.enemiesOnLookout)
             {
-
-                if(aggroRange > Vector3.Distance(enemy.transform.position, dum.hero.transform.position) && !dum.aggroEnemies.Contains(enemy) && LineOfSight.HasLOS(enemy, dum.hero))
+        
+                foreach(GameObject enemy in dum.enemies)
                 {
 
-                    dum.aggroEnemies.Add(enemy);
-                    enemy.GetComponent<TextNotificationManager>().CreateNotificationOrder(enemy.transform.position, 2, "!", Color.red);
+                    if(aggroRange > Vector3.Distance(enemy.transform.position, dum.hero.transform.position) && !dum.aggroEnemies.Contains(enemy) && LineOfSight.HasLOS(enemy, dum.hero))
+                    {
 
-                    //automated walking via buffer is halted when an enemy sees you
-                    dum.bufferedPath.Clear();
+                        dum.aggroEnemies.Add(enemy);
+                        enemy.GetComponent<TextNotificationManager>().CreateNotificationOrder(enemy.transform.position, 2, "!", Color.red);
+
+                        //automated walking via buffer is halted when an enemy sees you
+                        dum.bufferedPath.Clear();
+                    }
                 }
             }
         }

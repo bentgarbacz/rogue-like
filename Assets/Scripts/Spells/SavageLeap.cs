@@ -72,7 +72,7 @@ public class SavageLeap : Spell
         List<Vector2Int> path = PathFinder.FindPath(attackingCharacter.coord, defendingCharacter.coord, dum.dungeonCoords);
 
         // Try to teleport to the last node on the path to the target
-        if(attackingCharacter.Teleport(Rules.CoordToPos(path[^2]), dum.occupiedlist))
+        if(attackingCharacter.Teleport(Rules.CoordToPos(path[^2]), dum))
         {
 
             return true;
@@ -82,7 +82,7 @@ public class SavageLeap : Spell
         foreach(Vector2Int coord in PathFinder.GetNeighbors(defendingCharacter.coord, dum.dungeonCoords))
         {
 
-            if(attackingCharacter.Teleport(Rules.CoordToPos(coord), dum.occupiedlist))
+            if(attackingCharacter.Teleport(Rules.CoordToPos(coord), dum))
             {
 
                 return true;

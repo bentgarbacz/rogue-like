@@ -8,6 +8,7 @@ public class DungeonManager : MonoBehaviour
 
     public GameObject hero;
     public GameObject mainCamera;
+    public bool enemiesOnLookout = true;
     public HashSet<Vector2Int> dungeonCoords;
     public HashSet<Vector3> occupiedlist = new();
     public HashSet<GameObject> dungeonSpecificGameObjects = new();
@@ -85,6 +86,7 @@ public class DungeonManager : MonoBehaviour
     public void CleanUp()
     {
         
+        enemiesOnLookout = true;
         cachedPathsDict = new Dictionary<string, List<Vector2Int>>();
         enemies = new HashSet<GameObject>();
         occupiedlist = new HashSet<Vector3>();
@@ -100,6 +102,35 @@ public class DungeonManager : MonoBehaviour
         aggroEnemies = new HashSet<GameObject>();
         bufferedPath = new List<Vector2Int>();
 
-        hero.GetComponent<Character>().Teleport(new Vector3(0, 0, 0), occupiedlist);
+        //This is weird
+        hero.GetComponent<Character>().Teleport(new Vector3(0, 0, 0), gameObject.GetComponent<DungeonManager>());
+    }
+
+    public bool CheckPosForOccupancy(Vector3 pos)
+    {
+
+        foreach(Vector3 checkPos in occupiedlist)
+        {
+            
+            if(Rules.PosToCoord(pos) == Rules.PosToCoord(checkPos))
+            {
+
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public void ClearAggroBuffer()
+    {
+
+        foreach(GameObject enemy in aggroEnemies)
+        {
+
+            enemy.GetComponent<TextNotificationManager>().CreateNotificationOrder(enemy.transform.position, 2, "?", Color.red);
+        }
+
+        aggroEnemies = new HashSet<GameObject>();
     }
 }
