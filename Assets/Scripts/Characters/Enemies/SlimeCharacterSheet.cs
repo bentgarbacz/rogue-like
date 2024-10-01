@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Goblin : Enemy
+public class SlimeCharacterSheet : EnemyCharacterSheet
 {
-
+   
     public override void Start()
     {
         
@@ -18,12 +18,12 @@ public class Goblin : Enemy
         speed = 8;
         evasion = 50;
 
-        dropTable = "Goblin";
+        dropTable = "Slime";
 
-        attackClip = Resources.Load<AudioClip>("Sounds/Frog");
+        attackClip = Resources.Load<AudioClip>("Sounds/Slime");
     }
 
-    public override void AggroBehavior(PlayerCharacter playerCharacter, DungeonManager dum, CombatManager cbm)
+    public override void AggroBehavior(PlayerCharacterSheet playerCharacter, DungeonManager dum, CombatManager cbm)
     {
 
         //enemy attacks player character if they are in a neighboring tile

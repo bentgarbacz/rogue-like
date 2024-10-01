@@ -17,7 +17,7 @@ public class SpellCaster : MonoBehaviour
     private ClickManager cm;
     private ToolTipManager ttm;
     private AudioSource audioSource;
-    [SerializeField] private PlayerCharacter pc;
+    [SerializeField] private PlayerCharacterSheet pc;
     private Mouse mouse;
 
     void Start()

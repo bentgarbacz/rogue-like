@@ -30,12 +30,12 @@ public class UpdateUIElements : MonoBehaviour
     public TextMeshProUGUI freeStatPointsStatus;
 
     public GameObject hero;
-    private PlayerCharacter playerCharacter;
+    private PlayerCharacterSheet playerCharacter;
 
     void Start()
     {
 
-        playerCharacter = hero.GetComponent<PlayerCharacter>();
+        playerCharacter = hero.GetComponent<PlayerCharacterSheet>();
     }
 
     void Update()

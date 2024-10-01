@@ -15,7 +15,7 @@ public class SpellSlot : MonoBehaviour
     private AudioSource audioSource;
     private AudioClip errorClip;
     [SerializeField] private SpellCaster sc;
-    [SerializeField] private PlayerCharacter pc;
+    [SerializeField] private PlayerCharacterSheet pc;
 
     void Awake()
     {

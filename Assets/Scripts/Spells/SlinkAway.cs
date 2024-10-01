@@ -34,13 +34,13 @@ public class SlinkAway : Spell
 
                 Vector3 targetPos = new Vector3(target.GetComponent<Tile>().coord.x, 0, target.GetComponent<Tile>().coord.y);
 
-                if(!caster.GetComponent<Character>().Teleport(targetPos, dum))
+                if(!caster.GetComponent<CharacterSheet>().Teleport(targetPos, dum))
                 {
 
                     return false;
                 }
 
-                caster.GetComponent<StatusEffectManager>().statusEffects.Add(new Stealth(caster.GetComponent<Character>(), duration, dum));
+                caster.GetComponent<StatusEffectManager>().statusEffects.Add(new Stealth(caster.GetComponent<CharacterSheet>(), duration, dum));
                 ResetCooldown(caster);
                 return true;
             }

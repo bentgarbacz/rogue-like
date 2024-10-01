@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class PlayerCharacter : Character
+public class PlayerCharacterSheet : CharacterSheet
 {
     public int hunger;
     public int maxHunger = 1000;

@@ -7,7 +7,7 @@ public class StatusEffect
 
     public string type = "None";
     public int duration = 0;
-    public Character affectedCharacter;
+    public CharacterSheet affectedCharacter;
 
     public virtual int Effect()
     {

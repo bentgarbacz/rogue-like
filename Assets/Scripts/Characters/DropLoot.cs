@@ -19,7 +19,7 @@ public class DropLoot : MonoBehaviour
     public void Drop()
     {
 
-        List<Item> droppedItems = LootTableManager.CreateItems(GetComponent<Character>().dropTable);        
+        List<Item> droppedItems = LootTableManager.CreateItems(GetComponent<CharacterSheet>().dropTable);        
 
         if(droppedItems.Count > 0)
         {

@@ -10,7 +10,7 @@ public class TurnSequencer : MonoBehaviour
     public float aggroRange = 10;
     public bool gameplayHalted = false;
     private bool actionTaken = false;
-    private PlayerCharacter playerCharacter;
+    private PlayerCharacterSheet playerCharacter;
     private DungeonManager dum;
     private UIActiveManager uiam;
     private CombatManager cbm;
@@ -24,7 +24,7 @@ public class TurnSequencer : MonoBehaviour
         dum = managers.GetComponent<DungeonManager>();
         uiam = managers.GetComponent<UIActiveManager>();
         cbm = managers.GetComponent<CombatManager>();
-        playerCharacter = dum.hero.GetComponent<PlayerCharacter>();
+        playerCharacter = dum.hero.GetComponent<PlayerCharacterSheet>();
     }   
     
     void Update()
@@ -100,7 +100,7 @@ public class TurnSequencer : MonoBehaviour
                     //initiate an attack on clicked enemy
                     //attack if adjacent to enemy
                     //move towards enemy if not adjacent
-                    if(target.GetComponent<Character>() && target.GetComponent<Character>() != playerCharacter)
+                    if(target.GetComponent<CharacterSheet>() && target.GetComponent<CharacterSheet>() != playerCharacter)
                     {
 
                         cbm.AddToCombatBuffer(dum.hero, target);
@@ -159,7 +159,7 @@ public class TurnSequencer : MonoBehaviour
                 foreach(GameObject enemy in new HashSet<GameObject>(dum.aggroEnemies))
                 {
                     
-                    enemy.GetComponent<Enemy>().AggroBehavior(playerCharacter, dum, cbm);
+                    enemy.GetComponent<EnemyCharacterSheet>().AggroBehavior(playerCharacter, dum, cbm);
                 }
 
                 //start combat for the turn

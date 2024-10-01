@@ -2,28 +2,28 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Skeleton : Enemy
+public class GoblinCharacterSheet : EnemyCharacterSheet
 {
 
     public override void Start()
     {
         
         base.Start();
-        maxHealth = 8;
+        maxHealth = 10;
         health = maxHealth;
-        accuracy = 100;
+        accuracy = 66;
         minDamage = 1;
-        maxDamage = 3;
-        level = 3;
-        speed = 11;
+        maxDamage = 4;
+        level = 4;
+        speed = 8;
         evasion = 50;
 
-        dropTable = "Skeleton";
+        dropTable = "Goblin";
 
-        attackClip = Resources.Load<AudioClip>("Sounds/Skeleton");
+        attackClip = Resources.Load<AudioClip>("Sounds/Frog");
     }
 
-    public override void AggroBehavior(PlayerCharacter playerCharacter, DungeonManager dum, CombatManager cbm)
+    public override void AggroBehavior(PlayerCharacterSheet playerCharacter, DungeonManager dum, CombatManager cbm)
     {
 
         //enemy attacks player character if they are in a neighboring tile

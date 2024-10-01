@@ -7,7 +7,7 @@ public class Stealth : StatusEffect
     
     private DungeonManager dum;
 
-    public Stealth(Character affectedCharacter, int duration, DungeonManager dum)
+    public Stealth(CharacterSheet affectedCharacter, int duration, DungeonManager dum)
     {
 
         this.type = "Buff";

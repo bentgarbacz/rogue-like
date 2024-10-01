@@ -28,12 +28,12 @@ public class SavageLeap : Spell
     public override bool Cast(GameObject caster, GameObject target)
     {
 
-        if(target.GetComponent<Character>())
+        if(target.GetComponent<CharacterSheet>())
         {
 
             Equipment mainHandWeapon = (Equipment)im.equipmentSlotsDictionary["Main Hand"].item;
-            Character attackingCharacter = caster.GetComponent<Character>();
-            Character defendingCharacter = target.GetComponent<Character>();
+            CharacterSheet attackingCharacter = caster.GetComponent<CharacterSheet>();
+            CharacterSheet defendingCharacter = target.GetComponent<CharacterSheet>();
 
             if(mainHandWeapon != null)
             {
@@ -66,7 +66,7 @@ public class SavageLeap : Spell
         return false;
     }
 
-    private bool TeleportToTarget(Character attackingCharacter, Character defendingCharacter)
+    private bool TeleportToTarget(CharacterSheet attackingCharacter, CharacterSheet defendingCharacter)
     {
 
         List<Vector2Int> path = PathFinder.FindPath(attackingCharacter.coord, defendingCharacter.coord, dum.dungeonCoords);

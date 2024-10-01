@@ -6,13 +6,13 @@ public class EquipmentManager : MonoBehaviour
 {
 
     public GameObject hero;
-    private PlayerCharacter playerCharacter;
+    private PlayerCharacterSheet playerCharacter;
     private InventoryManager im;
 
     void Start()
     {
         
-        playerCharacter = hero.GetComponent<PlayerCharacter>();
+        playerCharacter = hero.GetComponent<PlayerCharacterSheet>();
         im = GameObject.Find("System Managers").GetComponent<InventoryManager>();
     }
 

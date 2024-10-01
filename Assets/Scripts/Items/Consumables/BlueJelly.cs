@@ -23,7 +23,7 @@ public class BlueJelly : Consumable
     public override void Use()
     {
 
-        hero.GetComponent<PlayerCharacter>().SatiateHunger(hungerValue);
-        hero.GetComponent<PlayerCharacter>().RegainMana(manaRestoreValue);
+        hero.GetComponent<PlayerCharacterSheet>().SatiateHunger(hungerValue);
+        hero.GetComponent<PlayerCharacterSheet>().RegainMana(manaRestoreValue);
     }
 }

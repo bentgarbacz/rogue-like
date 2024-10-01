@@ -22,7 +22,7 @@ public class Fortify : Spell
     public override bool Cast(GameObject caster, GameObject target = null)
     {
 
-        caster.GetComponent<StatusEffectManager>().statusEffects.Add(new StoneSkin(caster.GetComponent<Character>(), duration, armorIncrease));
+        caster.GetComponent<StatusEffectManager>().statusEffects.Add(new StoneSkin(caster.GetComponent<CharacterSheet>(), duration, armorIncrease));
         ResetCooldown(caster);
         return true;
     }

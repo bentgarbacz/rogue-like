@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Character : MonoBehaviour
+public class CharacterSheet : MonoBehaviour
 {
 
     //pos is a position in 3d space

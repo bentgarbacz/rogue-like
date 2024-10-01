@@ -10,7 +10,7 @@ public class SpellAssignmentManager : MonoBehaviour
     private SpellSlot currentSpellSlot = null;
     private Tooltip currentTooltip = null;
     private RectTransform spellAssignmentContainerRect;
-    [SerializeField] private PlayerCharacter pc;
+    [SerializeField] private PlayerCharacterSheet pc;
     [SerializeField] private GameObject spellIconPrefab;
     [SerializeField] private GameObject spellIconGrid;
 

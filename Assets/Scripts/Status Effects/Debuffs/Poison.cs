@@ -8,7 +8,7 @@ public class Poison : StatusEffect
     public int damageOverTime;
     private DungeonManager dum;
 
-    public Poison(Character affectedCharacter, int duration, int damageOverTime, DungeonManager dum)
+    public Poison(CharacterSheet affectedCharacter, int duration, int damageOverTime, DungeonManager dum)
     {
 
         this.type = "Debuff";

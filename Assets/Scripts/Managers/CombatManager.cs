@@ -46,8 +46,8 @@ public class CombatManager : MonoBehaviour
             {
 
                 float projectileSpeed = pm.projectileDictionary[combatBuffer[0].projectileType].GetComponent<Projectile>().speed;
-                Vector2Int attackerCoord = combatBuffer[0].attacker.GetComponent<Character>().coord;
-                Vector2Int defenderCoord = combatBuffer[0].defender.GetComponent<Character>().coord;
+                Vector2Int attackerCoord = combatBuffer[0].attacker.GetComponent<CharacterSheet>().coord;
+                Vector2Int defenderCoord = combatBuffer[0].defender.GetComponent<CharacterSheet>().coord;
 
                 float projectileTime = ProjectileAirTime(projectileSpeed, attackerCoord, defenderCoord);
 
@@ -72,13 +72,13 @@ public class CombatManager : MonoBehaviour
         
         bool attackOccured = false;
 
-        Character attackingCharacter = attacker.GetComponent<Character>();
-        Character defendingCharacter = defender.GetComponent<Character>();
+        CharacterSheet attackingCharacter = attacker.GetComponent<CharacterSheet>();
+        CharacterSheet defendingCharacter = defender.GetComponent<CharacterSheet>();
 
         Equipment mainHandWeapon = (Equipment)im.equipmentSlotsDictionary["Main Hand"].item;
         Equipment offHandWeapon = (Equipment)im.equipmentSlotsDictionary["Off Hand"].item;
 
-        if(mainHandWeapon == null && PathFinder.GetNeighbors(defendingCharacter.coord, dum.dungeonCoords).Contains(attackingCharacter.coord) || attackingCharacter is not PlayerCharacter)
+        if(mainHandWeapon == null && PathFinder.GetNeighbors(defendingCharacter.coord, dum.dungeonCoords).Contains(attackingCharacter.coord) || attackingCharacter is not PlayerCharacterSheet)
         {
 
             attackOccured = true;
@@ -92,7 +92,7 @@ public class CombatManager : MonoBehaviour
 
         }
 
-        if(mainHandWeapon != null && attackingCharacter is PlayerCharacter)
+        if(mainHandWeapon != null && attackingCharacter is PlayerCharacterSheet)
         {
             
             if(mainHandWeapon is not RangedWeapon && PathFinder.GetNeighbors(defendingCharacter.coord, dum.dungeonCoords).Contains(attackingCharacter.coord))
@@ -127,7 +127,7 @@ public class CombatManager : MonoBehaviour
         }
         
 
-        if(offHandWeapon != null && attackingCharacter is PlayerCharacter)
+        if(offHandWeapon != null && attackingCharacter is PlayerCharacterSheet)
         {
             if(offHandWeapon is not Shield)
             {
@@ -199,8 +199,8 @@ public class CombatManager : MonoBehaviour
     private void ProcessAttack(Attack attack)
     {
 
-        Character attacker = attack.attacker.GetComponent<Character>();
-        Character defender = attack.defender.GetComponent<Character>();
+        CharacterSheet attacker = attack.attacker.GetComponent<CharacterSheet>();
+        CharacterSheet defender = attack.defender.GetComponent<CharacterSheet>();
 
         //turn towards target
         attacker.transform.LookAt(defender.transform);

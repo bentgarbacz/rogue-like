@@ -141,7 +141,7 @@ public class MapGenerator : MonoBehaviour
                     if(i == 0 && j == 1)
                     {
 
-                        dum.hero.GetComponent<Character>().Move(spawnPos, dum.occupiedlist);                    
+                        dum.hero.GetComponent<CharacterSheet>().Move(spawnPos, dum.occupiedlist);                    
                     }
 
                     if(spawnRNG >= 0 && spawnRNG <= 2)
@@ -156,7 +156,7 @@ public class MapGenerator : MonoBehaviour
 
                         GameObject enemy = Instantiate(slime, spawnPos, slime.transform.rotation);
                         dum.AddGameObject(enemy);
-                        enemy.GetComponent<Character>().Move(spawnPos, dum.occupiedlist);
+                        enemy.GetComponent<CharacterSheet>().Move(spawnPos, dum.occupiedlist);
                         dum.enemies.Add(enemy);
 
                     }else if(spawnRNG >= 5 && spawnRNG <= 6)
@@ -166,7 +166,7 @@ public class MapGenerator : MonoBehaviour
                         GameObject enemy = Instantiate(witch, spawnPos, witch.transform.rotation);
 
                         dum.AddGameObject(enemy);
-                        enemy.GetComponent<Character>().Move(spawnPos, dum.occupiedlist);
+                        enemy.GetComponent<CharacterSheet>().Move(spawnPos, dum.occupiedlist);
                         dum.enemies.Add(enemy);
 
                     }else if(spawnRNG >= 7 && spawnRNG <= 8)
@@ -174,7 +174,7 @@ public class MapGenerator : MonoBehaviour
 
                         GameObject enemy = Instantiate(rat, spawnPos, rat.transform.rotation);
                         dum.AddGameObject(enemy);
-                        enemy.GetComponent<Character>().Move(spawnPos, dum.occupiedlist);
+                        enemy.GetComponent<CharacterSheet>().Move(spawnPos, dum.occupiedlist);
                         dum.enemies.Add(enemy);
                     }
                     

@@ -32,9 +32,9 @@ public class Teleport : Spell
             if(target.GetComponent<Tile>().traversable)
             {
 
-                Vector3 targetPos = new Vector3(target.GetComponent<Tile>().coord.x, 0, target.GetComponent<Tile>().coord.y);
+                Vector3 targetPos = new(target.GetComponent<Tile>().coord.x, 0, target.GetComponent<Tile>().coord.y);
 
-                if(!caster.GetComponent<Character>().Teleport(targetPos, dum))
+                if(!caster.GetComponent<CharacterSheet>().Teleport(targetPos, dum))
                 {
 
                     return false;
