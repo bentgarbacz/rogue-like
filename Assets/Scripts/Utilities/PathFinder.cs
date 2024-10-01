@@ -2,8 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using Unity.Burst;
-using Unity.Jobs;
+using System;
 
 public static class PathFinder
 {
@@ -152,7 +151,13 @@ public static class PathFinder
 
     public static float CalculateDistance(Vector2Int a, Vector2Int b)
     {
-        return System.Math.Abs(a.x - b.x) + System.Math.Abs(a.y - b.y);
+
+        float x1 = a.x;
+        float x2 = b.x;
+        float y1 = a.y;
+        float y2 = b.y;
+
+        return (float)Math.Sqrt(Math.Pow(x2 - x1, 2) + Math.Pow(y2 - y1, 2));
     }
 }
 
