@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ProjectileManager : MonoBehaviour
+public class ProjectileReferences : MonoBehaviour
 {
 
     public Dictionary<string, GameObject> projectileDictionary = new();

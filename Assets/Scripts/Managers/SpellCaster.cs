@@ -13,7 +13,7 @@ public class SpellCaster : MonoBehaviour
     private ItemSlot currentItemSlot;
     private Scroll currentScroll;
     private TurnSequencer ts;
-    private SpellManager sm;
+    private SpellReferences sm;
     private ClickManager cm;
     private ToolTipManager ttm;
     private AudioSource audioSource;
@@ -25,7 +25,7 @@ public class SpellCaster : MonoBehaviour
 
         GameObject managers = GameObject.Find("System Managers");
         ts = managers.GetComponent<TurnSequencer>();
-        sm = managers.GetComponent<SpellManager>();
+        sm = managers.GetComponent<SpellReferences>();
         cm = managers.GetComponent<ClickManager>();
         ttm = managers.GetComponent<UIActiveManager>().toolTipContainer.GetComponent<ToolTipManager>();
         audioSource = GetComponent<AudioSource>();

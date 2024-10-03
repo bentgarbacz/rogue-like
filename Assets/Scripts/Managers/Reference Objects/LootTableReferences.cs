@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public static class LootTableManager
+public static class LootTableReferences
 {
     public static Dictionary<string, List<Item>> lootTableLookup = SetLootTables();
 

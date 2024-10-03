@@ -13,14 +13,14 @@ public class SpellSelector : MonoBehaviour
     private SpellSlot spellSlot;
     private Tooltip spellSlotTooltip;
     private Tooltip selectorTooltip;
-    private SpellManager sm; 
+    private SpellReferences sm; 
     private UIActiveManager uiam;
 
     void Awake()
     {
         
         GameObject managers = GameObject.Find("System Managers");
-        sm = managers.GetComponent<SpellManager>();
+        sm = managers.GetComponent<SpellReferences>();
         uiam = managers.GetComponent<UIActiveManager>();
         clearSprite = Resources.Load<Sprite>("Pixel Art/UI/X white");
         selectorTooltip = GetComponent<Tooltip>();

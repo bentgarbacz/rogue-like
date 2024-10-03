@@ -7,10 +7,11 @@ public class CombatManager : MonoBehaviour
 
     public bool fighting = false;
     public float attackTime = 0.5f;
+    public float trimTime = 0.25f;
     public List<Attack> combatBuffer= new();
     private DungeonManager dum;
     private InventoryManager im;
-    private ProjectileManager pm;
+    private ProjectileReferences pm;
 
     void Start()
     {
@@ -18,7 +19,7 @@ public class CombatManager : MonoBehaviour
         GameObject managers = GameObject.Find("System Managers");
         dum = managers.GetComponent<DungeonManager>();
         im = managers.GetComponent<InventoryManager>();
-        pm = managers.GetComponent<ProjectileManager>();
+        pm = managers.GetComponent<ProjectileReferences>();
     }
 
     public void CommenceCombat()
@@ -87,7 +88,8 @@ public class CombatManager : MonoBehaviour
             }
 
             attacker.GetComponent<AttackAnimation>().MeleeAttack();
-            yield return new WaitForSeconds(waitTime);
+
+            yield return new WaitForSeconds(waitTime - trimTime); //Trim some time here because it feels more responsive
 
             //Calculate damage 
             if(hitSuccessful)
@@ -115,12 +117,14 @@ public class CombatManager : MonoBehaviour
 
                 //take 0 damage on miss
                 defender.GetComponent<TextNotificationManager>().CreateNotificationOrder(defender.transform.position, 2f, "Miss", Color.white);
-            }      
+            }
+
+            yield return new WaitForSeconds(trimTime); //Wait out time trimmed from above
 
             //kills defender of attack if it's health falls below 1
             if(defender.health <= 0)
             {
-                yield return new WaitForSeconds(0.05f);
+                yield return new WaitForSeconds(0.05f); //Give the GameObject of dead character time to wrap up before it is destroyed
                 dum.Smite(combatBuffer[0].defender, defender.pos);                                                                    
             }
 
@@ -266,8 +270,6 @@ public class CombatManager : MonoBehaviour
         return PathFinder.CalculateDistance(originCoord, destinationCoord) / projectileSpeed;
     }
 }
-
-
 
 public class Attack
 {

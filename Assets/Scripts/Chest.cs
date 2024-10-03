@@ -16,7 +16,7 @@ public class Chest : MonoBehaviour
         dum = GameObject.Find("System Managers").GetComponent<DungeonManager>();
         loot = GetComponent<Loot>();
 
-        loot.AddItems(LootTableManager.CreateItems(lootTable));  
+        loot.AddItems(LootTableReferences.CreateItems(lootTable));  
         dum.itemContainers.Add(loot);
     }
 
