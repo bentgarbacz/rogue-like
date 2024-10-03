@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Character : MonoBehaviour
+public class CharacterSheet : MonoBehaviour
 {
 
     //pos is a position in 3d space
@@ -76,13 +76,14 @@ public class Character : MonoBehaviour
         return false;             
     }
 
-    public bool Teleport(Vector3 newPos, HashSet<Vector3> occupiedlist)
+    public bool Teleport(Vector3 newPos, DungeonManager dum)
     {
 
-        if(!occupiedlist.Contains(newPos))
+        if(!dum.CheckPosForOccupancy(newPos))
         {
-            occupiedlist.Add(newPos);
-            occupiedlist.Remove(pos);
+
+            dum.occupiedlist.Add(newPos);
+            dum.occupiedlist.Remove(pos);
             
             transform.position = newPos;
 

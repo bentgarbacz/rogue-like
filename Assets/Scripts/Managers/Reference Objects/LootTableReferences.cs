@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public static class LootTableManager
+public static class LootTableReferences
 {
     public static Dictionary<string, List<Item>> lootTableLookup = SetLootTables();
 
@@ -17,6 +17,7 @@ public static class LootTableManager
                 "DebugChest",
                 new List<Item>(){   
                                     new DebugHelm(100),
+                                    new SlinkAwayScroll(100),
                                     new FortifyScroll(100),
                                     new SavageLeapScroll(100),
                                     new PoisonousStrikeScroll(100),
@@ -24,7 +25,6 @@ public static class LootTableManager
                                     new ManaPotion1(100),
                                     new FireballScroll(100),
                                     new TeleportScroll(100),
-                                    new HealScroll(100),
                                     new Bow(100),
                                     new PlateBody(100),
                                     new Shield(100),

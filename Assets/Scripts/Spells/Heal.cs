@@ -18,7 +18,7 @@ public class Heal : Spell
     public override bool Cast(GameObject caster, GameObject target = null)
     {
 
-        caster.GetComponent<Character>().Heal(10);
+        caster.GetComponent<CharacterSheet>().Heal(10);
         ResetCooldown(caster);
         return true;
     }

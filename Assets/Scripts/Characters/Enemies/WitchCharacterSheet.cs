@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Witch : Enemy
+public class WitchCharacterSheet : EnemyCharacterSheet
 {
 
     private int attackCooldown = 0;
@@ -30,7 +30,7 @@ public class Witch : Enemy
         teleportClip = Resources.Load<AudioClip>("Sounds/Teleport");
     }
 
-    public override void AggroBehavior(PlayerCharacter playerCharacter, DungeonManager dum, CombatManager cbm)
+    public override void AggroBehavior(PlayerCharacterSheet playerCharacter, DungeonManager dum, CombatManager cbm)
     {
 
         if(attackCooldown == 0)
@@ -84,7 +84,7 @@ public class Witch : Enemy
     {
 
         //run away from player
-        Vector2Int playerCoord = dum.hero.GetComponent<PlayerCharacter>().coord;
+        Vector2Int playerCoord = dum.hero.GetComponent<PlayerCharacterSheet>().coord;
         Vector2Int fleePath  = coord;
 
         foreach(Vector2Int p in PathFinder.GetNeighbors(coord, dum.dungeonCoords))

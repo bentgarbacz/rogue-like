@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SkeletonArcher : Enemy
+public class SkeletonArcherCharacterSheet : EnemyCharacterSheet
 {
 
     int attackCooldown = 0;
@@ -27,7 +27,7 @@ public class SkeletonArcher : Enemy
         attackClip = Resources.Load<AudioClip>("Sounds/Skeleton");
     }
 
-    public override void AggroBehavior(PlayerCharacter playerCharacter, DungeonManager dum, CombatManager cbm)
+    public override void AggroBehavior(PlayerCharacterSheet playerCharacter, DungeonManager dum, CombatManager cbm)
     {
 
         if(attackCooldown == 0)

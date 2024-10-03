@@ -24,7 +24,7 @@ public class Fireball : Spell
     public override bool Cast(GameObject caster, GameObject target)
     {
 
-        if(target.GetComponent<Character>())
+        if(target.GetComponent<CharacterSheet>())
         {
 
             float distance = Vector3.Distance(caster.transform.position, target.transform.position);
@@ -32,7 +32,7 @@ public class Fireball : Spell
             if(LineOfSight.HasLOS(caster, target) && distance <= range)
             {
 
-                cbm.combatBuffer.Add(new Attack(caster, target, minDamage, maxDamage, caster.GetComponent<Character>().speed, projectileType));
+                cbm.combatBuffer.Add(new Attack(caster, target, minDamage, maxDamage, caster.GetComponent<CharacterSheet>().speed, projectileType));
                 ResetCooldown(caster);
                 return true;
             }

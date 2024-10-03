@@ -9,7 +9,7 @@ public class Scroll : Item
     public int dexterityRequirement = 0;
     public int intelligenceRequirement = 0;
     public string spellName = "";
-    public PlayerCharacter playerCharacter = GameObject.Find("System Managers").GetComponent<DungeonManager>().hero.GetComponent<PlayerCharacter>();
+    public PlayerCharacterSheet playerCharacter = GameObject.Find("System Managers").GetComponent<DungeonManager>().hero.GetComponent<PlayerCharacterSheet>();
 
     public Scroll()
     {

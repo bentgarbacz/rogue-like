@@ -10,31 +10,18 @@ using System.Linq;
 public class MapGenerator : MonoBehaviour
 {
 
-
     public int walkLength;
-    public GameObject floorTile;
-    public GameObject floorTile1;
-    public GameObject floorTile2;
-    public GameObject floorTile3;
-    public GameObject floorTile4;
-    public GameObject wallTile;
-    public GameObject wallJoiner;
-    public GameObject enterance;
-    public GameObject exit;
-    public GameObject chest;
-    public GameObject skeleton;
-    public GameObject goblin;
-    public GameObject rat;
-    public GameObject skeletonArcher;
-    public GameObject slime;
-    public GameObject witch;
     private DungeonManager dum;
+    private NPCGenerator npcGen;
+    private TileReferences tileRef;
     private Vector2Int startPosition = new(0, 0);
     
     void Start()
     {
 
         dum = GameObject.Find("System Managers").GetComponent<DungeonManager>();
+        npcGen = GetComponent<NPCGenerator>();
+        tileRef = GetComponent<TileReferences>();
         NewLevel();        
     }
 
@@ -68,114 +55,48 @@ public class MapGenerator : MonoBehaviour
                     if(i == 0 && j == 0)
                     {
 
-                        GameObject newEnterance = Instantiate(enterance, spawnPos, enterance.transform.rotation);
-                        dum.AddGameObject(newEnterance);
-                        newEnterance.GetComponent<Tile>().SetCoord(position);
+                        tileRef.CreateEnteranceTile(spawnPos, position, dum);
 
                     //potentially spawn exit after a certain number of steps
                     }else if(i == repeatWalks - 1 && j > walkLength / 2 && exitSpawned == false)
                     {
 
+                        tileRef.CreateExitTile(spawnPos, position, path, dum);
                         exitSpawned = true;
-                        spawnPos.y -= 0.88f;
-                        GameObject newExit = Instantiate(exit, spawnPos, exit.transform.rotation);
-
-                        foreach(Vector2Int direction in Direction2D.cardinalDirectionsList)
-                        {
-
-                            if(path.Contains(position + direction))
-                            {
-                                
-                                newExit.transform.rotation = Quaternion.Euler(0, Rules.DetermineRotation(newExit.transform.position, new Vector3(position.x + direction.x, 0, position.y + direction.y)), 0);
-                                break;
-                            }
-                        }
-
-                        dum.AddGameObject(newExit);
-                        newExit.GetComponent<Exit>().coord = position;
-
                     
                     //Otherwise spawn a normal tile
                     }else
                     {
 
-                        GameObject newTile;
-
-                        if(spawnRNG <= 1000 && spawnRNG >= 997)
-                        {
-                            
-                            newTile = Instantiate(floorTile1, spawnPos, floorTile1.transform.rotation);
-                            dum.AddGameObject(newTile);
-
-                        }else if(spawnRNG <= 996 && spawnRNG >= 993)
-                        {
-
-                            newTile = Instantiate(floorTile2, spawnPos, floorTile2.transform.rotation);
-                            dum.AddGameObject(newTile);
-
-                        }else if(spawnRNG <= 992 && spawnRNG >= 989)
-                        {
-
-                            newTile = Instantiate(floorTile3, spawnPos, floorTile3.transform.rotation);
-                            dum.AddGameObject(newTile);
-
-                        }else if(spawnRNG <= 988 && spawnRNG >= 985)
-                        {
-
-                            newTile = Instantiate(floorTile4, spawnPos, floorTile4.transform.rotation);
-                            dum.AddGameObject(newTile);
-
-                        }else
-                        {
-
-                            newTile = Instantiate(floorTile, spawnPos, floorTile.transform.rotation);
-                            dum.AddGameObject(newTile);
-                        }
-                        
-                        newTile.GetComponent<Tile>().SetCoord(position);
+                        tileRef.CreateTile(spawnPos, position, spawnRNG, dum);                        
                     }
-
-                    spawnPos.y += 0.1f;
 
                     //move player to first tile generated
                     if(i == 0 && j == 1)
                     {
 
-                        dum.hero.GetComponent<Character>().Move(spawnPos, dum.occupiedlist);                    
+                        dum.hero.GetComponent<CharacterSheet>().Move(spawnPos, dum.occupiedlist);                    
                     }
 
                     if(spawnRNG >= 0 && spawnRNG <= 2)
                     {
 
-                        GameObject c = Instantiate(chest, spawnPos, chest.transform.rotation);
-                        dum.AddGameObject(c);
-                        c.GetComponent<Loot>().coord = new Vector2Int((int)spawnPos.x, (int)spawnPos.z);
+                        npcGen.CreateChest(spawnPos, dum);
 
                     }else if(spawnRNG >= 3 && spawnRNG <= 4)
                     {
 
-                        GameObject enemy = Instantiate(slime, spawnPos, slime.transform.rotation);
-                        dum.AddGameObject(enemy);
-                        enemy.GetComponent<Character>().Move(spawnPos, dum.occupiedlist);
-                        dum.enemies.Add(enemy);
+                        npcGen.CreateNPC("slime", spawnPos, dum);
 
                     }else if(spawnRNG >= 5 && spawnRNG <= 6)
                     {
 
-                        //GameObject enemy = Instantiate(goblin, spawnPos, goblin.transform.rotation);
-                        GameObject enemy = Instantiate(witch, spawnPos, witch.transform.rotation);
-
-                        dum.AddGameObject(enemy);
-                        enemy.GetComponent<Character>().Move(spawnPos, dum.occupiedlist);
-                        dum.enemies.Add(enemy);
+                        npcGen.CreateNPC("witch", spawnPos, dum);
 
                     }else if(spawnRNG >= 7 && spawnRNG <= 8)
                     {
 
-                        GameObject enemy = Instantiate(rat, spawnPos, rat.transform.rotation);
-                        dum.AddGameObject(enemy);
-                        enemy.GetComponent<Character>().Move(spawnPos, dum.occupiedlist);
-                        dum.enemies.Add(enemy);
+                        npcGen.CreateNPC("goatman", spawnPos, dum);
                     }
                     
                     
@@ -225,19 +146,15 @@ public class MapGenerator : MonoBehaviour
         foreach(Vector2Int coord in path)
         {
 
-            foreach(Vector2Int direction in Direction2D.intercardinalDirectionsList.Concat(Direction2D.cardinalDirectionsList))            
+            foreach(Vector2Int direction1 in Direction2D.intercardinalDirectionsList.Concat(Direction2D.cardinalDirectionsList))            
             {
 
-                Vector2Int checkCoord = coord + direction;
+                Vector2Int checkCoord = coord + direction1;
 
                 if(!path.Contains(checkCoord) && !wallMap.Contains(checkCoord))
                 {
                     
-                    Vector3 spawnPos = new(checkCoord.x, 0, checkCoord.y);
-                    GameObject newWall = Instantiate(wallTile, spawnPos, wallTile.transform.rotation);
-                    newWall.GetComponent<Tile>().SetCoord(new Vector2Int((int)spawnPos.x, (int)spawnPos.z));
-                    dum.AddGameObject(newWall);
-                    newWall.GetComponent<Renderer>().material.color = Color.gray;
+                    tileRef.CreateWallTile(new Vector3(checkCoord.x, 0, checkCoord.y), dum);
                     wallMap.Add(checkCoord);
 
                     foreach(Vector2Int direction2 in Direction2D.intercardinalDirectionsList.Concat(Direction2D.cardinalDirectionsList))
@@ -251,10 +168,7 @@ public class MapGenerator : MonoBehaviour
                         if(wallMap.Contains(checkCoordWall) && !wallJoinerMap.Contains(checkCoordWallJoiner))
                         {
 
-                            Vector3 joinerSpawnPos = new(checkCoordWallJoiner.x, 0, checkCoordWallJoiner.y);
-
-                            GameObject newWallJoiner = Instantiate(wallJoiner, joinerSpawnPos, wallJoiner.transform.rotation);
-                            dum.AddGameObject(newWallJoiner);
+                            tileRef.CreateWallJoiner(new Vector3(checkCoordWallJoiner.x, 0, checkCoordWallJoiner.y), dum);
                             wallJoinerMap.Add(checkCoordWallJoiner);
                         }
                     }

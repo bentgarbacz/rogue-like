@@ -11,17 +11,17 @@ public class SpellSlot : MonoBehaviour
     public Button slot;
     public Image cooldownMask;
     public Sprite defaultSprite;
-    private SpellManager sm;    
+    private SpellReferences sm;    
     private AudioSource audioSource;
     private AudioClip errorClip;
     [SerializeField] private SpellCaster sc;
-    [SerializeField] private PlayerCharacter pc;
+    [SerializeField] private PlayerCharacterSheet pc;
 
     void Awake()
     {
         
         GameObject managers = GameObject.Find("System Managers");
-        sm = managers.GetComponent<SpellManager>();
+        sm = managers.GetComponent<SpellReferences>();
         errorClip = Resources.Load<AudioClip>("Sounds/Error");
         audioSource = GameObject.Find("CanvasHUD").GetComponent<AudioSource>();
         defaultSprite = Resources.Load<Sprite>("Pixel Art/UI/Inventory/emptySprite");

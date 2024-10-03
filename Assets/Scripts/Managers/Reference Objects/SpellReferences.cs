@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class SpellManager : MonoBehaviour
+public class SpellReferences : MonoBehaviour
 {
 
     public Dictionary<string, Spell> spellDictionary = new();

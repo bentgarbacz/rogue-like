@@ -10,7 +10,7 @@ public class TurnSequencer : MonoBehaviour
     public float aggroRange = 10;
     public bool gameplayHalted = false;
     private bool actionTaken = false;
-    private PlayerCharacter playerCharacter;
+    private PlayerCharacterSheet playerCharacter;
     private DungeonManager dum;
     private UIActiveManager uiam;
     private CombatManager cbm;
@@ -24,7 +24,7 @@ public class TurnSequencer : MonoBehaviour
         dum = managers.GetComponent<DungeonManager>();
         uiam = managers.GetComponent<UIActiveManager>();
         cbm = managers.GetComponent<CombatManager>();
-        playerCharacter = dum.hero.GetComponent<PlayerCharacter>();
+        playerCharacter = dum.hero.GetComponent<PlayerCharacterSheet>();
     }   
     
     void Update()
@@ -100,7 +100,7 @@ public class TurnSequencer : MonoBehaviour
                     //initiate an attack on clicked enemy
                     //attack if adjacent to enemy
                     //move towards enemy if not adjacent
-                    if(target.GetComponent<Character>() && target.GetComponent<Character>() != playerCharacter)
+                    if(target.GetComponent<CharacterSheet>() && target.GetComponent<CharacterSheet>() != playerCharacter)
                     {
 
                         cbm.AddToCombatBuffer(dum.hero, target);
@@ -159,7 +159,7 @@ public class TurnSequencer : MonoBehaviour
                 foreach(GameObject enemy in new HashSet<GameObject>(dum.aggroEnemies))
                 {
                     
-                    enemy.GetComponent<Enemy>().AggroBehavior(playerCharacter, dum, cbm);
+                    enemy.GetComponent<EnemyCharacterSheet>().AggroBehavior(playerCharacter, dum, cbm);
                 }
 
                 //start combat for the turn
@@ -167,18 +167,22 @@ public class TurnSequencer : MonoBehaviour
             }
             
 
-            //aggro enemies within aggroRange units            
-            foreach(GameObject enemy in dum.enemies)
+            //aggro enemies within aggroRange units 
+            if(dum.enemiesOnLookout)
             {
-
-                if(aggroRange > Vector3.Distance(enemy.transform.position, dum.hero.transform.position) && !dum.aggroEnemies.Contains(enemy) && LineOfSight.HasLOS(enemy, dum.hero))
+        
+                foreach(GameObject enemy in dum.enemies)
                 {
 
-                    dum.aggroEnemies.Add(enemy);
-                    enemy.GetComponent<TextNotificationManager>().CreateNotificationOrder(enemy.transform.position, 2, "!", Color.red);
+                    if(aggroRange > Vector3.Distance(enemy.transform.position, dum.hero.transform.position) && !dum.aggroEnemies.Contains(enemy) && LineOfSight.HasLOS(enemy, dum.hero))
+                    {
 
-                    //automated walking via buffer is halted when an enemy sees you
-                    dum.bufferedPath.Clear();
+                        dum.aggroEnemies.Add(enemy);
+                        enemy.GetComponent<TextNotificationManager>().CreateNotificationOrder(enemy.transform.position, 2, "!", Color.red);
+
+                        //automated walking via buffer is halted when an enemy sees you
+                        dum.bufferedPath.Clear();
+                    }
                 }
             }
         }

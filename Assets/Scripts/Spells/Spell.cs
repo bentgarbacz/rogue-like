@@ -19,12 +19,12 @@ public class Spell
     public void ResetCooldown(GameObject caster)
     {
 
-        PlayerCharacter pc = caster.GetComponent<PlayerCharacter>();
+        PlayerCharacterSheet pc = caster.GetComponent<PlayerCharacterSheet>();
 
         if(pc.knownSpells.ContainsKey(spellName))
         {
 
-            caster.GetComponent<PlayerCharacter>().knownSpells[spellName] = 0;
+            caster.GetComponent<PlayerCharacterSheet>().knownSpells[spellName] = 0;
         }        
     }
 

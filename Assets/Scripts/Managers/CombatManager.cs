@@ -7,10 +7,11 @@ public class CombatManager : MonoBehaviour
 
     public bool fighting = false;
     public float attackTime = 0.5f;
-    public List<Attack> combatBuffer= new();   
+    public float trimTime = 0.25f;
+    public List<Attack> combatBuffer= new();
     private DungeonManager dum;
     private InventoryManager im;
-    private ProjectileManager pm;
+    private ProjectileReferences pm;
 
     void Start()
     {
@@ -18,7 +19,7 @@ public class CombatManager : MonoBehaviour
         GameObject managers = GameObject.Find("System Managers");
         dum = managers.GetComponent<DungeonManager>();
         im = managers.GetComponent<InventoryManager>();
-        pm = managers.GetComponent<ProjectileManager>();
+        pm = managers.GetComponent<ProjectileReferences>();
     }
 
     public void CommenceCombat()
@@ -40,14 +41,22 @@ public class CombatManager : MonoBehaviour
         while(combatBuffer.Count > 0)
         {
 
+            Attack attack = combatBuffer[0];
             float waitTime = attackTime;
+            CharacterSheet attacker = attack.attacker.GetComponent<CharacterSheet>();
+            CharacterSheet defender = attack.defender.GetComponent<CharacterSheet>();
+            float hitChance = ((float)attacker.accuracy - (float)defender.evasion) / (float)attacker.accuracy * 100f;
+            bool hitSuccessful = Random.Range(0, 100) <= hitChance;
 
-            if(combatBuffer[0].projectileType != "None")
+            //turn towards target
+            attacker.transform.LookAt(defender.transform);
+
+            if(attack.projectileType != "None")
             {
 
-                float projectileSpeed = pm.projectileDictionary[combatBuffer[0].projectileType].GetComponent<Projectile>().speed;
-                Vector2Int attackerCoord = combatBuffer[0].attacker.GetComponent<Character>().coord;
-                Vector2Int defenderCoord = combatBuffer[0].defender.GetComponent<Character>().coord;
+                float projectileSpeed = pm.projectileDictionary[attack.projectileType].GetComponent<Projectile>().speed;
+                Vector2Int attackerCoord = attack.attacker.GetComponent<CharacterSheet>().coord;
+                Vector2Int defenderCoord = attack.defender.GetComponent<CharacterSheet>().coord;
 
                 float projectileTime = ProjectileAirTime(projectileSpeed, attackerCoord, defenderCoord);
 
@@ -56,10 +65,69 @@ public class CombatManager : MonoBehaviour
 
                     waitTime = projectileTime;
                 }
+
+                GameObject projectile = pm.CreateProjectile(attack.projectileType, attacker.transform.position, attacker.transform.rotation);
+                projectile.GetComponent<Projectile>().Shoot(defender.pos, attacker.audioSource);
+            } 
+
+            //Play combat noises
+            if(hitSuccessful)
+            {
+
+                 //Skip sound for projectile attack, handled by projectile script
+                if(attack.projectileType == "None")
+                {
+
+                    attacker.audioSource.PlayOneShot(attacker.attackClip);
+                }
+            
+            }else
+            {
+
+                defender.audioSource.PlayOneShot(defender.missClip);
             }
 
-            ProcessAttack(combatBuffer[0]);
-            yield return new WaitForSeconds(waitTime);
+            attacker.GetComponent<AttackAnimation>().MeleeAttack();
+
+            yield return new WaitForSeconds(waitTime - trimTime); //Trim some time here because it feels more responsive
+
+            //Calculate damage 
+            if(hitSuccessful)
+            {
+
+                int damage = Random.Range(attack.minDamage, attack.maxDamage + 1);
+
+                //Determine if attack was critical         
+                if(Random.Range(0, 100) < attacker.critChance)
+                {
+
+                    damage *= attacker.critMultiplier;
+                    defender.GetComponent<TextNotificationManager>().CreateNotificationOrder(defender.transform.position, 2f, damage.ToString(), Color.yellow);
+
+                }else
+                {
+
+                    defender.GetComponent<TextNotificationManager>().CreateNotificationOrder(defender.transform.position, 2f, damage.ToString(), Color.red);
+                }
+
+                defender.TakeDamage(damage);
+            
+            }else
+            {
+
+                //take 0 damage on miss
+                defender.GetComponent<TextNotificationManager>().CreateNotificationOrder(defender.transform.position, 2f, "Miss", Color.white);
+            }
+
+            yield return new WaitForSeconds(trimTime); //Wait out time trimmed from above
+
+            //kills defender of attack if it's health falls below 1
+            if(defender.health <= 0)
+            {
+                yield return new WaitForSeconds(0.05f); //Give the GameObject of dead character time to wrap up before it is destroyed
+                dum.Smite(combatBuffer[0].defender, defender.pos);                                                                    
+            }
+
             combatBuffer.RemoveAt(0);            
         }
         
@@ -72,13 +140,13 @@ public class CombatManager : MonoBehaviour
         
         bool attackOccured = false;
 
-        Character attackingCharacter = attacker.GetComponent<Character>();
-        Character defendingCharacter = defender.GetComponent<Character>();
+        CharacterSheet attackingCharacter = attacker.GetComponent<CharacterSheet>();
+        CharacterSheet defendingCharacter = defender.GetComponent<CharacterSheet>();
 
         Equipment mainHandWeapon = (Equipment)im.equipmentSlotsDictionary["Main Hand"].item;
         Equipment offHandWeapon = (Equipment)im.equipmentSlotsDictionary["Off Hand"].item;
 
-        if(mainHandWeapon == null && PathFinder.GetNeighbors(defendingCharacter.coord, dum.dungeonCoords).Contains(attackingCharacter.coord) || attackingCharacter is not PlayerCharacter)
+        if(mainHandWeapon == null && PathFinder.GetNeighbors(defendingCharacter.coord, dum.dungeonCoords).Contains(attackingCharacter.coord) || attackingCharacter is not PlayerCharacterSheet)
         {
 
             attackOccured = true;
@@ -92,7 +160,7 @@ public class CombatManager : MonoBehaviour
 
         }
 
-        if(mainHandWeapon != null && attackingCharacter is PlayerCharacter)
+        if(mainHandWeapon != null && attackingCharacter is PlayerCharacterSheet)
         {
             
             if(mainHandWeapon is not RangedWeapon && PathFinder.GetNeighbors(defendingCharacter.coord, dum.dungeonCoords).Contains(attackingCharacter.coord))
@@ -127,7 +195,7 @@ public class CombatManager : MonoBehaviour
         }
         
 
-        if(offHandWeapon != null && attackingCharacter is PlayerCharacter)
+        if(offHandWeapon != null && attackingCharacter is PlayerCharacterSheet)
         {
             if(offHandWeapon is not Shield)
             {
@@ -196,78 +264,12 @@ public class CombatManager : MonoBehaviour
         }
     }
 
-    private void ProcessAttack(Attack attack)
-    {
-
-        Character attacker = attack.attacker.GetComponent<Character>();
-        Character defender = attack.defender.GetComponent<Character>();
-
-        //turn towards target
-        attacker.transform.LookAt(defender.transform);
-
-        if(attack.projectileType != "None")
-        {
-
-            GameObject projectile = pm.CreateProjectile(attack.projectileType, attacker.transform.position, attacker.transform.rotation);
-            projectile.GetComponent<Projectile>().Shoot(defender.pos, attacker.audioSource);
-        }      
-
-        float hitChance = ((float)attacker.accuracy - (float)defender.evasion) / (float)attacker.accuracy * 100f;
-
-        //roll to see if you hit
-        if(Random.Range(0, 100) <= hitChance)
-        {
-
-            //Skip sound for projectile attack, handled by projectile script
-            if(attack.projectileType == "None")
-            {
-
-                attacker.audioSource.PlayOneShot(attacker.attackClip);
-            }
-
-            int damage = Random.Range(attack.minDamage, attack.maxDamage + 1);
-
-            //Determine if attack was critical         
-            if(Random.Range(0, 100) < attacker.critChance)
-            {
-
-                damage *= attacker.critMultiplier;
-                defender.GetComponent<TextNotificationManager>().CreateNotificationOrder(defender.transform.position, 2f, damage.ToString(), Color.yellow);
-
-            }else
-            {
-
-                defender.GetComponent<TextNotificationManager>().CreateNotificationOrder(defender.transform.position, 2f, damage.ToString(), Color.red);
-            }
-
-            defender.TakeDamage(damage);
-        
-        }else
-        {
-
-            //take 0 damage on miss
-            defender.audioSource.PlayOneShot(defender.missClip);
-            defender.GetComponent<TextNotificationManager>().CreateNotificationOrder(defender.transform.position, 2f, "Miss", Color.white);
-        }
-
-        attacker.GetComponent<AttackAnimation>().MeleeAttack();      
-
-        //kills defender of attack if it's health falls below 1
-        if(defender.health <= 0)
-        {
-        
-            dum.Smite(combatBuffer[0].defender, defender.pos);                                                                    
-        }
-    }
-
     private float ProjectileAirTime(float projectileSpeed, Vector2Int originCoord, Vector2Int destinationCoord)
     {
 
         return PathFinder.CalculateDistance(originCoord, destinationCoord) / projectileSpeed;
     }
 }
-
-
 
 public class Attack
 {

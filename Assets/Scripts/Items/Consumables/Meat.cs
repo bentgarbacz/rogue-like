@@ -22,6 +22,6 @@ public class Meat : Consumable
     public override void Use()
     {
 
-        hero.GetComponent<PlayerCharacter>().SatiateHunger(hungerValue);
+        hero.GetComponent<PlayerCharacterSheet>().SatiateHunger(hungerValue);
     }
 }

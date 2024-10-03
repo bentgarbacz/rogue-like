@@ -2,20 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StoneSkin : StatusEffect
+public class Stealth : StatusEffect
 {
+    
+    private DungeonManager dum;
 
-    private int armorIncrease;
-
-    public StoneSkin(CharacterSheet affectedCharacter, int duration, int armorIncrease)
+    public Stealth(CharacterSheet affectedCharacter, int duration, DungeonManager dum)
     {
 
         this.type = "Buff";
         this.affectedCharacter = affectedCharacter;
         this.duration = duration;
-        this.armorIncrease = armorIncrease;
-        
-        affectedCharacter.armor += armorIncrease;
+        this.dum = dum;
+
+        dum.enemiesOnLookout = false;
+        dum.ClearAggroBuffer();
     }
 
     public override int Effect()
@@ -27,7 +28,7 @@ public class StoneSkin : StatusEffect
 
     public override void EndEffect()
     {
-
-        affectedCharacter.armor -= armorIncrease;
+        
+        dum.enemiesOnLookout = true;
     }
 }

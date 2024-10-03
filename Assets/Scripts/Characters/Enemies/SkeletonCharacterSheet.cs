@@ -2,28 +2,28 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Rat : Enemy
+public class SkeletonCharacterSheet : EnemyCharacterSheet
 {
 
     public override void Start()
     {
         
         base.Start();
-        maxHealth = 15;
+        maxHealth = 8;
         health = maxHealth;
         accuracy = 100;
         minDamage = 1;
         maxDamage = 3;
         level = 3;
-        speed = 15;
-        evasion = 75;
+        speed = 11;
+        evasion = 50;
 
-        dropTable = "Rat";
+        dropTable = "Skeleton";
 
-        attackClip = Resources.Load<AudioClip>("Sounds/Rat");
+        attackClip = Resources.Load<AudioClip>("Sounds/Skeleton");
     }
 
-    public override void AggroBehavior(PlayerCharacter playerCharacter, DungeonManager dum, CombatManager cbm)
+    public override void AggroBehavior(PlayerCharacterSheet playerCharacter, DungeonManager dum, CombatManager cbm)
     {
 
         //enemy attacks player character if they are in a neighboring tile

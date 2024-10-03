@@ -7,12 +7,12 @@ public class LevelUpNotification : MonoBehaviour
     
     public GameObject hero;
     private UIActiveManager uiam;
-    private PlayerCharacter playerCharacter;
+    private PlayerCharacterSheet playerCharacter;
 
     void Start()
     {
         
-        playerCharacter = hero.GetComponent<PlayerCharacter>();
+        playerCharacter = hero.GetComponent<PlayerCharacterSheet>();
         uiam = GameObject.Find("System Managers").GetComponent<UIActiveManager>();
     }
 
