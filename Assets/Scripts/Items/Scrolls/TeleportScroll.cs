@@ -11,7 +11,7 @@ public class TeleportScroll : Scroll
         this.intelligenceRequirement = 15;
         this.title = "Teleport Scroll";    
         this.description = "Read this incantation to cast a spell.\nMemorization requirement: " + this.intelligenceRequirement + " intelligence";
-        this.spellName = "Teleport";
+        this.spellType = SpellType.Teleport;
         SetDropChance(dropChance);
     }
 }

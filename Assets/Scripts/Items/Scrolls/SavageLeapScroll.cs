@@ -11,7 +11,7 @@ public class SavageLeapScroll : Scroll
         this.strengthRequirement = 5;
         this.title = "Savage Leap Scroll";    
         this.description = "Read this incantation to cast a spell.\nMemorization requirement: " + this.strengthRequirement + " strength";
-        this.spellName = "Savage Leap";
+        this.spellType = SpellType.SavageLeap;
         SetDropChance(dropChance);
     }
 }

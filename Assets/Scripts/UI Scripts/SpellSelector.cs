@@ -7,7 +7,7 @@ using System.Linq;
 public class SpellSelector : MonoBehaviour
 {
 
-    public string spell;
+    public SpellType spell;
     private Sprite clearSprite;
     public Button spellImage;
     private SpellSlot spellSlot;
@@ -26,7 +26,7 @@ public class SpellSelector : MonoBehaviour
         selectorTooltip = GetComponent<Tooltip>();
     }
 
-    public void SetSpell(string spell, SpellSlot spellSlot, Tooltip tooltip)
+    public void SetSpell(SpellType spell, SpellSlot spellSlot, Tooltip tooltip)
     {
 
         this.spellSlot = spellSlot;
@@ -37,12 +37,12 @@ public class SpellSelector : MonoBehaviour
 
             this.spell = spell;
             this.spellImage.image.sprite = sm.spellDictionary[spell].sprite;
-            selectorTooltip.SetTooltip(spell);
+            selectorTooltip.SetTooltip(spell.ToString());
 
         }else
         {
 
-            this.spell = "";
+            this.spell = SpellType.None;
             this.spellImage.image.sprite = clearSprite;
             selectorTooltip.SetTooltip("Clear Slot");
         }
@@ -53,7 +53,7 @@ public class SpellSelector : MonoBehaviour
 
         spellSlot.SetSpell(spell);
 
-        if(spell == "")
+        if(spell is SpellType.None)
         {
 
             spellSlotTooltip.SetTooltip("Right click to add spell ");

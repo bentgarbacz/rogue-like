@@ -8,7 +8,7 @@ public class Scroll : Item
     public int strengthRequirement = 0;
     public int dexterityRequirement = 0;
     public int intelligenceRequirement = 0;
-    public string spellName = "";
+    public SpellType spellType;
     public PlayerCharacterSheet playerCharacter = GameObject.Find("System Managers").GetComponent<DungeonManager>().hero.GetComponent<PlayerCharacterSheet>();
 
     public Scroll()
@@ -22,10 +22,10 @@ public class Scroll : Item
     public override void Use()
     {
 
-        if(MeetsRequirements() && !playerCharacter.knownSpells.ContainsKey(spellName))
+        if(MeetsRequirements() && !playerCharacter.knownSpells.ContainsKey(spellType))
         {
             
-            playerCharacter.knownSpells.Add(spellName, 0);
+            playerCharacter.knownSpells.Add(spellType, 0);
         }
     }
 

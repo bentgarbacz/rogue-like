@@ -10,7 +10,7 @@ public class Teleport : Spell
     public Teleport()
     {
         
-        this.spellName = "Teleport";
+        this.spellType = SpellType.Teleport;
         this.targeted = true;
         this.range = 20;
         this.cooldown = 30;

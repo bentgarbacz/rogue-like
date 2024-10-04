@@ -63,7 +63,7 @@ public class SpellCaster : MonoBehaviour
                         if(selfCasting)
                         {
 
-                            SpendSpellCost(currentSpell.spellName);
+                            SpendSpellCost(currentSpell.spellType);
                             selfCasting = false;
                         }
 
@@ -92,17 +92,17 @@ public class SpellCaster : MonoBehaviour
         targeting = state;
     }
 
-    private bool CastSpell(string spellName, GameObject target = null)
+    private bool CastSpell(SpellType spellType, GameObject target = null)
     {
 
-        Spell spell = sm.spellDictionary[spellName];
+        Spell spell = sm.spellDictionary[spellType];
 
         if(spell.targeted && target == null)
         {
 
             SetTargeting(true);
             currentSpell = spell;
-            ttm.EnableForceTooltip("Casting " + spellName);
+            ttm.EnableForceTooltip("Casting " + spellType);
 
             return false;
             
@@ -120,20 +120,20 @@ public class SpellCaster : MonoBehaviour
         }
     }
 
-    public void SpendSpellCost(string spellName)
+    public void SpendSpellCost(SpellType spellType)
     {
 
-        pc.knownSpells[spellName] = sm.spellDictionary[spellName].cooldown;
-        pc.mana -= sm.spellDictionary[spellName].manaCost;
+        pc.knownSpells[spellType] = sm.spellDictionary[spellType].cooldown;
+        pc.mana -= sm.spellDictionary[spellType].manaCost;
     }
 
-    public void SelfCast(string spellName)
+    public void SelfCast(SpellType spellType)
     {
 
-        if(CastSpell(spellName))
+        if(CastSpell(spellType))
         {
 
-            SpendSpellCost(spellName);
+            SpendSpellCost(spellType);
             ts.SignalAction();
 
         }else{
@@ -146,7 +146,7 @@ public class SpellCaster : MonoBehaviour
     public void CastScroll(Scroll scroll, ItemSlot slot)
     {
        
-        if(CastSpell(scroll.spellName))
+        if(CastSpell(scroll.spellType))
         {
 
             scroll.Use();

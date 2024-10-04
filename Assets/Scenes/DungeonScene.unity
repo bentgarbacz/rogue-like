@@ -5714,8 +5714,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 438385573}
-  - component: {fileID: 438385575}
   - component: {fileID: 438385574}
+  - component: {fileID: 438385576}
+  - component: {fileID: 438385575}
   m_Layer: 0
   m_Name: Map Generator
   m_TagString: Untagged
@@ -5750,23 +5751,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a04310f158603604aa4128b2fa05efba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  walkLength: 0
-  floorTile: {fileID: 105230754911932028, guid: 8d4f13fce8820d04ab675de69b3d5d10, type: 3}
-  floorTile1: {fileID: 1039253894988395355, guid: 47ecf65409af0d146976083feaa53f96, type: 3}
-  floorTile2: {fileID: 0}
-  floorTile3: {fileID: 0}
-  floorTile4: {fileID: 0}
-  wallTile: {fileID: 0}
-  wallJoiner: {fileID: 0}
-  enterance: {fileID: 0}
-  exit: {fileID: 0}
-  chest: {fileID: 6493254730876405042, guid: 3d2a97183afeb6843a3d22f8ee50bf01, type: 3}
-  skeleton: {fileID: 0}
-  goblin: {fileID: 0}
-  rat: {fileID: 0}
-  skeletonArcher: {fileID: 0}
-  slime: {fileID: 0}
-  witch: {fileID: 0}
+  walkLength: 100
 --- !u!114 &438385575
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5780,14 +5765,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   wallJoiner: {fileID: 1025472403522751266, guid: 20f1a7c70bc0d8948ab390c0e7b73c5e, type: 3}
-  prisonFloorTile: {fileID: 105230754911932028, guid: 8d4f13fce8820d04ab675de69b3d5d10, type: 3}
-  prisonFloorTileAlt1: {fileID: 1039253894988395355, guid: 47ecf65409af0d146976083feaa53f96, type: 3}
-  prisonFloorTileAlt2: {fileID: 528344045854216182, guid: 05b02c18f42894f4996e9daffaa3911a, type: 3}
-  prisonFloorTileAlt3: {fileID: 352516955065432291, guid: 8f10e5319e364ef43ad642b44a818961, type: 3}
-  prisonFloorTileAlt4: {fileID: 479981325958945124, guid: 04e7a7016ac3a7445a08398038bec9b2, type: 3}
-  prisonWallTile: {fileID: 2564236300543592276, guid: 341c12a892e0bfc4d989278622d531fb, type: 3}
-  prisonEnterance: {fileID: 8240057085656814339, guid: f6b63ce657227bd4c9f0ea79119baacf, type: 3}
-  prisonExit: {fileID: 2862989877608427773, guid: 57670d2158c8b544a9c7250631b130e5, type: 3}
+  floorTile: {fileID: 105230754911932028, guid: 8d4f13fce8820d04ab675de69b3d5d10, type: 3}
+  floorTileAlt1: {fileID: 1039253894988395355, guid: 47ecf65409af0d146976083feaa53f96, type: 3}
+  floorTileAlt2: {fileID: 528344045854216182, guid: 05b02c18f42894f4996e9daffaa3911a, type: 3}
+  floorTileAlt3: {fileID: 352516955065432291, guid: 8f10e5319e364ef43ad642b44a818961, type: 3}
+  floorTileAlt4: {fileID: 479981325958945124, guid: 04e7a7016ac3a7445a08398038bec9b2, type: 3}
+  wallTile: {fileID: 2564236300543592276, guid: 341c12a892e0bfc4d989278622d531fb, type: 3}
+  enterance: {fileID: 8240057085656814339, guid: f6b63ce657227bd4c9f0ea79119baacf, type: 3}
+  exit: {fileID: 2862989877608427773, guid: 57670d2158c8b544a9c7250631b130e5, type: 3}
+--- !u!114 &438385576
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 438385571}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e6b437c73cd0d446a8e1a933af186e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  chest: {fileID: 6493254730876405042, guid: 3d2a97183afeb6843a3d22f8ee50bf01, type: 3}
+  skeleton: {fileID: 7806514022559795084, guid: 3b210d9e70f6a1f4b9e6170b08367086, type: 3}
+  skeletonArcher: {fileID: 3972246722018788467, guid: f114ea6c3de591b44808cb9aa30df140, type: 3}
+  goblin: {fileID: 6521998039571531690, guid: 0fe73ca023d67f9468b8ce7c063dc8fc, type: 3}
+  rat: {fileID: 2415684302311000984, guid: dcf8a7a24bba19044a4dc32251b8ab86, type: 3}
+  slime: {fileID: 1896811922957596743, guid: f7c9141ada6af9c479bddefc6b348ccd, type: 3}
+  witch: {fileID: 1209241037779243595, guid: e82ad701c0f11ad4fa3ebe2e09d151d7, type: 3}
+  goatMan: {fileID: 126544009712155564, guid: 32b73e10b7875634c966bc0ac94d5771, type: 3}
 --- !u!1 &448411409
 GameObject:
   m_ObjectHideFlags: 0

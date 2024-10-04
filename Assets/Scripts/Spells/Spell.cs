@@ -5,7 +5,7 @@ using UnityEngine;
 public class Spell
 {
 
-    public string spellName;
+    public SpellType spellType;
     public bool targeted;
     public int minDamage = 0;
     public int maxDamage = 0;
@@ -13,7 +13,7 @@ public class Spell
     public int cooldown = 0;
     public int manaCost = 0;
     public Sprite sprite;
-    public string projectileType = "None";
+    public ProjectileType projectileType = ProjectileType.None;
     public AudioClip castSound = null;
 
     public void ResetCooldown(GameObject caster)
@@ -21,10 +21,10 @@ public class Spell
 
         PlayerCharacterSheet pc = caster.GetComponent<PlayerCharacterSheet>();
 
-        if(pc.knownSpells.ContainsKey(spellName))
+        if(pc.knownSpells.ContainsKey(spellType))
         {
 
-            caster.GetComponent<PlayerCharacterSheet>().knownSpells[spellName] = 0;
+            caster.GetComponent<PlayerCharacterSheet>().knownSpells[spellType] = 0;
         }        
     }
 

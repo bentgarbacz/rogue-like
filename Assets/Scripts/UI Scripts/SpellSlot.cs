@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class SpellSlot : MonoBehaviour
 {
 
-    public string spell = "";
+    public SpellType spell = SpellType.None;
     public Button slot;
     public Image cooldownMask;
     public Sprite defaultSprite;
@@ -32,7 +32,7 @@ public class SpellSlot : MonoBehaviour
     void Update()
     {
 
-        if(spell != "")
+        if(spell is not SpellType.None)
         {
 
             slot.image.sprite = sm.spellDictionary[spell].sprite;
@@ -55,7 +55,7 @@ public class SpellSlot : MonoBehaviour
         }
     }
 
-    public void SetSpell(string spell)
+    public void SetSpell(SpellType spell)
     {
 
         if(sm.spellDictionary.Keys.Contains(spell))
@@ -67,7 +67,7 @@ public class SpellSlot : MonoBehaviour
         }else
         {
 
-            this.spell = "";
+            this.spell = SpellType.None;
             this.slot.image.sprite = defaultSprite;
         }
     }
@@ -75,14 +75,14 @@ public class SpellSlot : MonoBehaviour
     public void ClearSpell()
     {
 
-        this.spell = "";
+        this.spell = SpellType.None;
         this.slot.image.sprite = defaultSprite;
     }
 
     public void Click()
     {
 
-        if(spell != "")
+        if(spell is not SpellType.None)
         {
 
             if(pc.knownSpells[spell] <= 0 && pc.mana >= sm.spellDictionary[spell].manaCost)

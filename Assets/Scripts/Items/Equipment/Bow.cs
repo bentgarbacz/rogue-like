@@ -22,7 +22,7 @@ public class Bow : RangedWeapon
         this.bonusStatDictionary["Range"] = 8;
         this.bonusStatDictionary["Dexterity Requirement"] = 10;
 
-        this.projectile = "Arrow";
+        this.projectile = ProjectileType.Arrow;
 
         SetDropChance(dropChance);
     }

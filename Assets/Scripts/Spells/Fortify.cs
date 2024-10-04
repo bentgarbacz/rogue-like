@@ -11,7 +11,7 @@ public class Fortify : Spell
     public Fortify()
     {
 
-        this.spellName = "Fortify";
+        this.spellType =SpellType.Fireball;
         this.targeted = false;
         this.cooldown = 30;
         this.manaCost = 20;

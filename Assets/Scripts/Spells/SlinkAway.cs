@@ -10,7 +10,7 @@ public class SlinkAway : Spell
     public SlinkAway()
     {
         
-        this.spellName = "Slink Away";
+        this.spellType = SpellType.SlinkAway;
         this.targeted = true;
         this.range = 5;
         this.cooldown = 30;

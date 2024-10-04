@@ -10,7 +10,7 @@ public class PoisonousStrikeScroll : Scroll
         this.dexterityRequirement = 10;
         this.title = "Poisonous Strike Scroll";    
         this.description = "Read this incantation to cast a spell.\nMemorization requirement: " + this.dexterityRequirement + " dexterity";
-        this.spellName = "Poisonous Strike";
+        this.spellType = SpellType.PoisonousStrike;
         SetDropChance(dropChance);
     }
 }

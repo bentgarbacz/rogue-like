@@ -11,7 +11,7 @@ public class HealScroll : Scroll
         this.intelligenceRequirement = 5;
         this.title = "Heal Scroll";    
         this.description = "Read this incantation to cast a spell.\nMemorization requirement: " + this.intelligenceRequirement + " intelligence";
-        this.spellName = "Heal";
+        this.spellType = SpellType.Heal;
         SetDropChance(dropChance);
     }
 }

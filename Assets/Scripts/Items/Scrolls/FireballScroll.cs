@@ -11,7 +11,7 @@ public class FireballScroll : Scroll
         this.intelligenceRequirement = 10;
         this.title = "Fireball Scroll";    
         this.description = "Read this incantation to cast a spell.\nMemorization requirement: " + this.intelligenceRequirement + " intelligence";    
-        this.spellName = "Fireball";
+        this.spellType = SpellType.Fireball;
         SetDropChance(dropChance);
     }
 }

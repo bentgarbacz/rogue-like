@@ -9,7 +9,7 @@ public class Fireball : Spell
     public Fireball()
     {
         
-        this.spellName = "Fireball";
+        this.spellType = SpellType.Fireball;
         this.targeted = true;
         this.minDamage = 10;
         this.maxDamage = 20;
@@ -17,7 +17,7 @@ public class Fireball : Spell
         this.cooldown = 10;
         this.manaCost = 10;
         this.sprite = Resources.Load<Sprite>("Pixel Art/Spells/Fireball");
-        this.projectileType = "Fireball";
+        this.projectileType = ProjectileType.Fireball;
         cbm = GameObject.Find("System Managers").GetComponent<CombatManager>();
     }
 

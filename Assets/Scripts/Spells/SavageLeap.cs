@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class SavageLeap : Spell
@@ -12,7 +13,7 @@ public class SavageLeap : Spell
     public SavageLeap()
     {
         
-        this.spellName = "Savage Leap";
+        this.spellType = SpellType.SavageLeap;
         this.targeted = true;
         this.cooldown = 10;
         this.manaCost = 10;

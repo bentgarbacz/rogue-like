@@ -14,7 +14,7 @@ public class PoisonousStrike : Spell
     public PoisonousStrike()
     {
         
-        this.spellName = "Poisonous Strike";
+        this.spellType = SpellType.PoisonousStrike;
         this.targeted = true;
         this.cooldown = 10;
         this.manaCost = 10;

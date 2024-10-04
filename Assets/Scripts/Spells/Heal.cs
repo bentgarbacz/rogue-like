@@ -7,7 +7,7 @@ public class Heal : Spell
     public Heal()
     {
 
-        this.spellName = "Heal";
+        this.spellType = SpellType.Heal;
         this.targeted = false;
         this.cooldown = 30;
         this.manaCost = 20;

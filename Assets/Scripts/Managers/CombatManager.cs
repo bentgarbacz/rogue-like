@@ -51,10 +51,10 @@ public class CombatManager : MonoBehaviour
             //turn towards target
             attacker.transform.LookAt(defender.transform);
 
-            if(attack.projectileType != "None")
+            if(attack.projectileType is not ProjectileType.None)
             {
 
-                float projectileSpeed = pm.projectileDictionary[attack.projectileType].GetComponent<Projectile>().speed;
+                float projectileSpeed = pm.projectileDict[attack.projectileType].GetComponent<Projectile>().speed;
                 Vector2Int attackerCoord = attack.attacker.GetComponent<CharacterSheet>().coord;
                 Vector2Int defenderCoord = attack.defender.GetComponent<CharacterSheet>().coord;
 
@@ -75,7 +75,7 @@ public class CombatManager : MonoBehaviour
             {
 
                  //Skip sound for projectile attack, handled by projectile script
-                if(attack.projectileType == "None")
+                if(attack.projectileType is ProjectileType.None)
                 {
 
                     attacker.audioSource.PlayOneShot(attacker.attackClip);
@@ -279,9 +279,9 @@ public class Attack
     public int minDamage;
     public int maxDamage;
     public int speed;
-    public string projectileType;
+    public ProjectileType projectileType;
 
-    public Attack(GameObject attacker, GameObject defender, int minDamage, int maxDamage, int speed, string projectileType = "None")
+    public Attack(GameObject attacker, GameObject defender, int minDamage, int maxDamage, int speed, ProjectileType projectileType = ProjectileType.None)
     {
 
         this.attacker = attacker;

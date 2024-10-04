@@ -11,7 +11,7 @@ public class SlinkAwayScroll : Scroll
         this.dexterityRequirement = 5;
         this.title = "Slink Away Scroll";    
         this.description = "Read this incantation to cast a spell.\nMemorization requirement: " + this.dexterityRequirement + " dexterity";
-        this.spellName = "Slink Away";
+        this.spellType = SpellType.SlinkAway;
         SetDropChance(dropChance);
     }
 }

@@ -5,6 +5,7 @@ using UnityEngine;
 public class NPCGenerator : MonoBehaviour
 {
 
+    private Dictionary<NPCType, GameObject> npcDict;
     [SerializeField] private GameObject chest;
     [SerializeField] private GameObject skeleton;
     [SerializeField] private GameObject skeletonArcher;
@@ -15,8 +16,26 @@ public class NPCGenerator : MonoBehaviour
     [SerializeField] private GameObject goatMan;
     private readonly float spawnPosVertOffset = 0.1f;
 
+    void Start()
+    {
+
+        npcDict = new()
+        {
+
+            {NPCType.Chest, chest},
+            {NPCType.Skeleton, skeleton},
+            {NPCType.SkeletonArcher, skeletonArcher},
+            {NPCType.Goblin, goblin},
+            {NPCType.Rat, rat},
+            {NPCType.Slime, slime},
+            {NPCType.Witch, witch},
+            {NPCType.GoatMan, goatMan}
+        };
+    }
+
     public void CreateChest(Vector3 spawnPos, DungeonManager dum)
     {
+        
         spawnPos.y += spawnPosVertOffset;
 
         GameObject newChest = Instantiate(chest, spawnPos, chest.transform.rotation);
@@ -24,11 +43,11 @@ public class NPCGenerator : MonoBehaviour
         newChest.GetComponent<Loot>().coord = new Vector2Int((int)spawnPos.x, (int)spawnPos.z);
     }
 
-    public void CreateNPC(string npcName, Vector3 spawnPos, DungeonManager dum)
+    public void CreateNPC(NPCType npcType, Vector3 spawnPos, DungeonManager dum)
     {
 
         spawnPos.y += spawnPosVertOffset;
-        GameObject enemy = GetPrefab(npcName, spawnPos);     
+        GameObject enemy = GetPrefab(npcType, spawnPos);     
 
         if(enemy != null)
         { 
@@ -39,53 +58,35 @@ public class NPCGenerator : MonoBehaviour
 
         }else{
 
-            Debug.LogWarning("NPC with name " + npcName + " not found.");
+            Debug.LogWarning("NPC of type " + npcType.ToString() + " not found.");
         }
     }
 
-    private GameObject GetPrefab(string npcName, Vector3 spawnPos)
+    private GameObject GetPrefab(NPCType npcType, Vector3 spawnPos)
     {
 
-        if(npcName == "skeleton")
+        if (npcDict.TryGetValue(npcType, out GameObject npcPrefab))
         {
 
-            return Instantiate(skeleton, spawnPos, skeleton.transform.rotation);
+            return Instantiate(npcPrefab, spawnPos, npcPrefab.transform.rotation);
 
-        }else if(npcName == "skeleton archer")
-        {
-
-            return Instantiate(skeletonArcher, spawnPos, skeletonArcher.transform.rotation);
-
-        }else if(npcName == "goblin")
-        {
-
-            return Instantiate(goblin, spawnPos, goblin.transform.rotation);
-
-        }else if(npcName == "rat")
-        {
-
-            return Instantiate(rat, spawnPos, rat.transform.rotation);
-
-        }else if(npcName == "slime")
-        {
-
-            return Instantiate(slime, spawnPos, slime.transform.rotation);
-
-        }else if(npcName == "witch")
-        {
-
-            return Instantiate(witch, spawnPos, witch.transform.rotation);
-
-        }else if(npcName == "goatman")
-        {
-
-            return Instantiate(goatMan, spawnPos, goatMan.transform.rotation);
-
-        }else
-        {
+        }else{
 
             return null;
         }
 
     }
+}
+
+public enum NPCType
+{
+
+    Chest,
+    Skeleton,
+    SkeletonArcher,
+    Goblin,
+    Rat,
+    Slime,
+    Witch,
+    GoatMan
 }
