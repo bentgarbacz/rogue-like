@@ -14,9 +14,9 @@ public class LeatherBoots : Equipment
         this.sprite = Resources.Load<Sprite>("Pixel Art/Equipment/Leather Boots");
         this.contextClip = Resources.Load<AudioClip>("Sounds/Equip");
 
-        this.equipmentType = "Boot";
+        this.type = EquipmentType.Boot;
 
-        this.bonusStatDictionary["Speed"] = 15;
+        this.bonusStatDictionary[StatType.Speed] = 15;
 
         SetDropChance(dropChance);
     }

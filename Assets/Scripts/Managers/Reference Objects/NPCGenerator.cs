@@ -48,7 +48,7 @@ public class NPCGenerator : MonoBehaviour
 
         spawnPos.y += spawnPosVertOffset;
         GameObject enemy = GetPrefab(npcType, spawnPos);     
-
+        
         if(enemy != null)
         { 
 
@@ -76,17 +76,4 @@ public class NPCGenerator : MonoBehaviour
         }
 
     }
-}
-
-public enum NPCType
-{
-
-    Chest,
-    Skeleton,
-    SkeletonArcher,
-    Goblin,
-    Rat,
-    Slime,
-    Witch,
-    GoatMan
 }

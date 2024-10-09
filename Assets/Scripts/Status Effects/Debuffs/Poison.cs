@@ -11,7 +11,7 @@ public class Poison : StatusEffect
     public Poison(CharacterSheet affectedCharacter, int duration, int damageOverTime, DungeonManager dum)
     {
 
-        this.type = "Debuff";
+        this.type = EffectType.Debuff;
         this.affectedCharacter = affectedCharacter;
         this.duration = duration;
         this.damageOverTime = damageOverTime;

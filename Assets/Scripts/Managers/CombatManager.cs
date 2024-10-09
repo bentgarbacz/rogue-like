@@ -43,8 +43,13 @@ public class CombatManager : MonoBehaviour
 
             Attack attack = combatBuffer[0];
             float waitTime = attackTime;
+
             CharacterSheet attacker = attack.attacker.GetComponent<CharacterSheet>();
+            AttackAnimation attackerAnimation = attacker.GetComponent<AttackAnimation>();
+
             CharacterSheet defender = attack.defender.GetComponent<CharacterSheet>();
+            TextNotificationManager defenderNotifier = defender.GetComponent<TextNotificationManager>();
+
             float hitChance = ((float)attacker.accuracy - (float)defender.evasion) / (float)attacker.accuracy * 100f;
             bool hitSuccessful = Random.Range(0, 100) <= hitChance;
 
@@ -54,11 +59,10 @@ public class CombatManager : MonoBehaviour
             if(attack.projectileType is not ProjectileType.None)
             {
 
-                float projectileSpeed = pm.projectileDict[attack.projectileType].GetComponent<Projectile>().speed;
-                Vector2Int attackerCoord = attack.attacker.GetComponent<CharacterSheet>().coord;
-                Vector2Int defenderCoord = attack.defender.GetComponent<CharacterSheet>().coord;
+                GameObject projectileObject = pm.CreateProjectile(attack.projectileType, attacker.transform.position, attacker.transform.rotation);
+                Projectile projectile = projectileObject.GetComponent<Projectile>();
 
-                float projectileTime = ProjectileAirTime(projectileSpeed, attackerCoord, defenderCoord);
+                float projectileTime = ProjectileAirTime(projectile.speed, attacker.coord, defender.coord);
 
                 if(projectileTime > waitTime)
                 {
@@ -66,8 +70,7 @@ public class CombatManager : MonoBehaviour
                     waitTime = projectileTime;
                 }
 
-                GameObject projectile = pm.CreateProjectile(attack.projectileType, attacker.transform.position, attacker.transform.rotation);
-                projectile.GetComponent<Projectile>().Shoot(defender.pos, attacker.audioSource);
+                projectile.Shoot(defender.pos, attacker.audioSource);
             } 
 
             //Play combat noises
@@ -87,7 +90,7 @@ public class CombatManager : MonoBehaviour
                 defender.audioSource.PlayOneShot(defender.missClip);
             }
 
-            attacker.GetComponent<AttackAnimation>().MeleeAttack();
+            attackerAnimation.MeleeAttack();
 
             yield return new WaitForSeconds(waitTime - trimTime); //Trim some time here because it feels more responsive
 
@@ -96,18 +99,19 @@ public class CombatManager : MonoBehaviour
             {
 
                 int damage = Random.Range(attack.minDamage, attack.maxDamage + 1);
+                
 
                 //Determine if attack was critical         
                 if(Random.Range(0, 100) < attacker.critChance)
                 {
 
                     damage *= attacker.critMultiplier;
-                    defender.GetComponent<TextNotificationManager>().CreateNotificationOrder(defender.transform.position, 2f, damage.ToString(), Color.yellow);
+                    defenderNotifier.CreateNotificationOrder(defender.transform.position, 2f, damage.ToString(), Color.yellow);
 
                 }else
                 {
 
-                    defender.GetComponent<TextNotificationManager>().CreateNotificationOrder(defender.transform.position, 2f, damage.ToString(), Color.red);
+                    defenderNotifier.CreateNotificationOrder(defender.transform.position, 2f, damage.ToString(), Color.red);
                 }
 
                 defender.TakeDamage(damage);
@@ -116,7 +120,7 @@ public class CombatManager : MonoBehaviour
             {
 
                 //take 0 damage on miss
-                defender.GetComponent<TextNotificationManager>().CreateNotificationOrder(defender.transform.position, 2f, "Miss", Color.white);
+                defenderNotifier.CreateNotificationOrder(defender.transform.position, 2f, "Miss", Color.white);
             }
 
             yield return new WaitForSeconds(trimTime); //Wait out time trimmed from above
@@ -143,8 +147,8 @@ public class CombatManager : MonoBehaviour
         CharacterSheet attackingCharacter = attacker.GetComponent<CharacterSheet>();
         CharacterSheet defendingCharacter = defender.GetComponent<CharacterSheet>();
 
-        Equipment mainHandWeapon = (Equipment)im.equipmentSlotsDictionary["Main Hand"].item;
-        Equipment offHandWeapon = (Equipment)im.equipmentSlotsDictionary["Off Hand"].item;
+        Equipment mainHandWeapon = (Equipment)im.equipmentSlotsDictionary[ItemSlotType.MainHand].item;
+        Equipment offHandWeapon = (Equipment)im.equipmentSlotsDictionary[ItemSlotType.OffHand].item;
 
         if(mainHandWeapon == null && PathFinder.GetNeighbors(defendingCharacter.coord, dum.dungeonCoords).Contains(attackingCharacter.coord) || attackingCharacter is not PlayerCharacterSheet)
         {
@@ -170,12 +174,12 @@ public class CombatManager : MonoBehaviour
                 combatBuffer.Add( new Attack(
                                             attacker, 
                                             defender,
-                                            mainHandWeapon.bonusStatDictionary["Min Damage"], 
-                                            mainHandWeapon.bonusStatDictionary["Max Damage"], 
+                                            mainHandWeapon.bonusStatDictionary[StatType.MinDamage], 
+                                            mainHandWeapon.bonusStatDictionary[StatType.MaxDamage], 
                                             attackingCharacter.speed
                                             ));
 
-            }else if(mainHandWeapon is RangedWeapon rangedWeapon && mainHandWeapon.bonusStatDictionary["Range"] >= Vector3.Distance(defendingCharacter.transform.position, dum.hero.transform.position))
+            }else if(mainHandWeapon is RangedWeapon rangedWeapon && mainHandWeapon.bonusStatDictionary[StatType.Range] >= Vector3.Distance(defendingCharacter.transform.position, dum.hero.transform.position))
             {
                 
                 if(LineOfSight.HasLOS(dum.hero, defender))
@@ -185,8 +189,8 @@ public class CombatManager : MonoBehaviour
                     combatBuffer.Add( new Attack(
                                                 attacker, 
                                                 defender,
-                                                mainHandWeapon.bonusStatDictionary["Min Damage"], 
-                                                mainHandWeapon.bonusStatDictionary["Max Damage"], 
+                                                mainHandWeapon.bonusStatDictionary[StatType.MinDamage], 
+                                                mainHandWeapon.bonusStatDictionary[StatType.MaxDamage], 
                                                 attackingCharacter.speed,
                                                 rangedWeapon.projectile
                                                 ));
@@ -207,12 +211,12 @@ public class CombatManager : MonoBehaviour
                     combatBuffer.Add( new Attack(
                                                 attacker, 
                                                 defender,
-                                                offHandWeapon.bonusStatDictionary["Min Damage"], 
-                                                offHandWeapon.bonusStatDictionary["Max Damage"], 
+                                                offHandWeapon.bonusStatDictionary[StatType.MinDamage], 
+                                                offHandWeapon.bonusStatDictionary[StatType.MaxDamage], 
                                                 attackingCharacter.speed / 2
                                                 ));
 
-                }else if(offHandWeapon is RangedWeapon rangedWeapon && offHandWeapon.bonusStatDictionary["Range"] >= Vector3.Distance(defendingCharacter.transform.position, dum.hero.transform.position))
+                }else if(offHandWeapon is RangedWeapon rangedWeapon && offHandWeapon.bonusStatDictionary[StatType.Range] >= Vector3.Distance(defendingCharacter.transform.position, dum.hero.transform.position))
                 {
                     
                     if(LineOfSight.HasLOS(dum.hero, defender))
@@ -222,8 +226,8 @@ public class CombatManager : MonoBehaviour
                         combatBuffer.Add( new Attack(
                                                     attacker, 
                                                     defender,
-                                                    offHandWeapon.bonusStatDictionary["Min Damage"], 
-                                                    offHandWeapon.bonusStatDictionary["Max Damage"], 
+                                                    offHandWeapon.bonusStatDictionary[StatType.MinDamage], 
+                                                    offHandWeapon.bonusStatDictionary[StatType.MaxDamage], 
                                                     attackingCharacter.speed / 2,
                                                     rangedWeapon.projectile
                                                     ));

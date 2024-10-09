@@ -25,16 +25,18 @@ public class Teleport : Spell
     {
 
         float distance = Vector3.Distance(caster.transform.position, target.transform.position);
+        Tile targetTile = target.GetComponent<Tile>();
+        CharacterSheet casterCharacterSheet = caster.GetComponent<CharacterSheet>();
 
         if(distance <= range && target.GetComponent<Tile>())
         {
 
-            if(target.GetComponent<Tile>().traversable)
+            if(targetTile.IsActionable())
             {
 
-                Vector3 targetPos = new(target.GetComponent<Tile>().coord.x, 0, target.GetComponent<Tile>().coord.y);
+                Vector3 targetPos = new(targetTile.coord.x, 0, targetTile.coord.y);
 
-                if(!caster.GetComponent<CharacterSheet>().Teleport(targetPos, dum))
+                if(!casterCharacterSheet.Teleport(targetPos, dum))
                 {
 
                     return false;

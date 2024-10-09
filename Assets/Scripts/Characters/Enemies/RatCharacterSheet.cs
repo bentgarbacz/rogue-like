@@ -19,6 +19,7 @@ public class RatCharacterSheet : EnemyCharacterSheet
         evasion = 75;
 
         dropTable = "Rat";
+        title = "Rat";
 
         attackClip = Resources.Load<AudioClip>("Sounds/Rat");
     }

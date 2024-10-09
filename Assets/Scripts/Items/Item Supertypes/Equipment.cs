@@ -5,34 +5,34 @@ using UnityEngine;
 public class Equipment : Item
 {
 
-    public string equipmentType;
+    public EquipmentType type;
 
-    public Dictionary<string, int> bonusStatDictionary;
+    public Dictionary<StatType, int> bonusStatDictionary;
 
     public Equipment()
     {
 
-        bonusStatDictionary = new Dictionary<string, int>
+        bonusStatDictionary = new Dictionary<StatType, int>
         {
 
-            { "Strength", 0 },
-            { "Dexterity", 0 },
-            { "Intelligence", 0 },
-            { "Speed", 0 },
-            { "Crit Chance", 0 },
-            { "Armor", 0 },
-            { "Evasion", 0 },
-            { "Accuracy", 0 },
-            { "Min Damage", 0 },
-            { "Max Damage", 0 },
-            { "Max Health", 0 },
-            { "Max Mana", 0 },
-            { "Strength Requirement", 0 },
-            { "Dexterity Requirement", 0 },
-            { "Intelligence Requirement", 0 }
+            { StatType.Strength, 0 },
+            { StatType.Dexterity, 0 },
+            { StatType.Intelligence, 0 },
+            { StatType.Speed, 0 },
+            { StatType.CritChance, 0 },
+            { StatType.Armor, 0 },
+            { StatType.Evasion, 0 },
+            { StatType.Accuracy, 0 },
+            { StatType.MinDamage, 0 },
+            { StatType.MaxDamage, 0 },
+            { StatType.MaxHealth, 0 },
+            { StatType.MaxMana, 0 },
+            { StatType.StrengthRequirement, 0 },
+            { StatType.DexterityRequirement, 0 },
+            { StatType.IntelligenceRequirement, 0 }
         };
 
-        equipmentType = "N/A";
+        type = EquipmentType.None;
         contextText = "Equip";
     }
 }

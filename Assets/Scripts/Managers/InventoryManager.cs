@@ -7,7 +7,7 @@ public class InventoryManager : MonoBehaviour
 {
     public List<ItemSlot> inventorySlots = new();
     public List<ItemSlot> lootSlots = new();
-    public Dictionary<string, ItemSlot> equipmentSlotsDictionary = new();
+    public Dictionary<ItemSlotType, ItemSlot> equipmentSlotsDictionary = new();
     private UIActiveManager uiam;
     private EquipmentManager equm;
     private SpellCaster sc;
@@ -114,10 +114,10 @@ public class InventoryManager : MonoBehaviour
 
         sourceSlot.slot.GetComponent<MouseOverItemSlot>().MouseExit();    
 
-        if(sourceSlot.type != "Inventory" && sourceSlot.type != "Drop" && sourceSlot.type != "Destroy")
+        if(sourceSlot.type is not ItemSlotType.Inventory && sourceSlot.type is not ItemSlotType.Drop && sourceSlot.type is not ItemSlotType.Destroy)
         {
 
-            if(sourceSlot.type == "Loot")
+            if(sourceSlot.type is ItemSlotType.Loot)
             {  
                             
                 uiam.OpenLootPanel(holdItemList);
@@ -130,44 +130,76 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
-    //Given a piece of equipment, return a equipment slot meant for that equipment
+    //Given a piece of equipment, return an equipment slot meant for that equipment
     //Will return a deterministic equipment slot if there are multiple eligible slots
     public ItemSlot GetEquipmentSlot(Equipment equipItem)
     {
 
-        if(equipItem.equipmentType == "Ring")
+        if(equipItem.type is EquipmentType.Ring)
         {
 
-            if(equipmentSlotsDictionary["Ring 1"].item != null && equipmentSlotsDictionary["Ring 2"].item == null)
+            if(equipmentSlotsDictionary[ItemSlotType.RingPrimary].item != null && equipmentSlotsDictionary[ItemSlotType.RingSecondary].item == null)
             {
 
-                return equipmentSlotsDictionary["Ring 2"];
+                return equipmentSlotsDictionary[ItemSlotType.RingSecondary];
 
             }else
             {
                 
-                return equipmentSlotsDictionary["Ring 1"];
+                return equipmentSlotsDictionary[ItemSlotType.RingPrimary];
             }
         
-        }else if(equipItem.equipmentType == "Switch Hand")
+        }else if(equipItem.type == EquipmentType.SwitchHand)
         {
         
-            if(equipmentSlotsDictionary["Main Hand"].item != null && equipmentSlotsDictionary["Off Hand"].item == null)
+            if(equipmentSlotsDictionary[ItemSlotType.MainHand].item != null && equipmentSlotsDictionary[ItemSlotType.OffHand].item == null)
             {
 
-                return equipmentSlotsDictionary["Off Hand"];
+                return equipmentSlotsDictionary[ItemSlotType.OffHand];
 
             }else
             {
                 
-                return equipmentSlotsDictionary["Main Hand"];
+                return equipmentSlotsDictionary[ItemSlotType.MainHand];
             }
 
-        }else
+        }else if(equipItem.type is EquipmentType.Helmet)
         {
 
-            return equipmentSlotsDictionary[equipItem.equipmentType];
+            return equipmentSlotsDictionary[ItemSlotType.Helmet];
+
+        }else if(equipItem.type is EquipmentType.Amulet)
+        {
+
+            return equipmentSlotsDictionary[ItemSlotType.Amulet];
+
+        }else if(equipItem.type is EquipmentType.Chest)
+        {
+
+            return equipmentSlotsDictionary[ItemSlotType.Chest];
+
+        }else if(equipItem.type is EquipmentType.Glove)
+        {
+
+            return equipmentSlotsDictionary[ItemSlotType.Glove];
+
+        }else if(equipItem.type is EquipmentType.Boot)
+        {
+
+            return equipmentSlotsDictionary[ItemSlotType.Boot];
+
+        }else if(equipItem.type is EquipmentType.MainHand)
+        {
+
+            return equipmentSlotsDictionary[ItemSlotType.MainHand];
+
+        }else if(equipItem.type is EquipmentType.OffHand)
+        {
+
+            return equipmentSlotsDictionary[ItemSlotType.OffHand];
         }
+
+        return null;
     }
 
     public void UpdateStats()

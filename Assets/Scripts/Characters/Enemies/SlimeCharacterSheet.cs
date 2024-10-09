@@ -19,6 +19,7 @@ public class SlimeCharacterSheet : EnemyCharacterSheet
         evasion = 50;
 
         dropTable = "Slime";
+        title = "Slime";
 
         attackClip = Resources.Load<AudioClip>("Sounds/Slime");
     }

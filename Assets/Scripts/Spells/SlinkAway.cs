@@ -25,22 +25,25 @@ public class SlinkAway : Spell
     {
 
         float distance = Vector3.Distance(caster.transform.position, target.transform.position);
+        Tile targetTile = target.GetComponent<Tile>();
+        CharacterSheet casterCharacterSheet = caster.GetComponent<CharacterSheet>();
+        StatusEffectManager statusEffectManager = caster.GetComponent<StatusEffectManager>();
 
-        if(distance <= range && target.GetComponent<Tile>())
+        if(distance <= range && targetTile != null)
         {
 
-            if(target.GetComponent<Tile>().traversable)
+            if(targetTile.IsActionable())
             {
 
-                Vector3 targetPos = new Vector3(target.GetComponent<Tile>().coord.x, 0, target.GetComponent<Tile>().coord.y);
+                Vector3 targetPos = new Vector3(targetTile.coord.x, 0, targetTile.coord.y);
 
-                if(!caster.GetComponent<CharacterSheet>().Teleport(targetPos, dum))
+                if(!casterCharacterSheet.Teleport(targetPos, dum))
                 {
 
                     return false;
                 }
 
-                caster.GetComponent<StatusEffectManager>().statusEffects.Add(new Stealth(caster.GetComponent<CharacterSheet>(), duration, dum));
+                statusEffectManager.statusEffects.Add(new Stealth(casterCharacterSheet, duration, dum));
                 ResetCooldown(caster);
                 return true;
             }

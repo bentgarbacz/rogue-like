@@ -29,6 +29,8 @@ public class UIActiveManager : MonoBehaviour
     public bool itemDragContainerIsOpen = true;
     public GameObject assignSpellContainer;
     public bool assignSpellContainerIsOpen = true;
+    public GameObject nameplatePanel;
+    public bool nameplatePanelIsOpen = true;
     private InventoryManager im;
     public bool mouseOverUI = false;
 
@@ -48,6 +50,7 @@ public class UIActiveManager : MonoBehaviour
         CloseInventoryPanel();
         CloseCharacterPanel();
         CloseLootPanel();
+        CloseNameplatePanel();
 
         pausePanel.SetActive(false);
           
@@ -237,6 +240,44 @@ public class UIActiveManager : MonoBehaviour
         {
 
             OpenInfoAndControlyPanel();
+        }
+    }
+
+    public void OpenNameplatePanel()
+    {
+
+        if(nameplatePanelIsOpen == false)
+        {
+
+            nameplatePanelIsOpen = true;
+            nameplatePanel.SetActive(nameplatePanelIsOpen);
+        }
+    }
+
+    public void CloseNameplatePanel()
+    {   
+
+        if(nameplatePanelIsOpen == true)
+        {
+
+
+            nameplatePanelIsOpen = false;
+            nameplatePanel.SetActive(nameplatePanelIsOpen);
+        }
+    }
+
+    public void ToggleNameplatePanel()
+    {
+
+        if(nameplatePanelIsOpen)
+        {
+
+            CloseNameplatePanel();
+
+        }else if(!nameplatePanelIsOpen && !pauseIsOpen)
+        {
+
+            OpenNameplatePanel();
         }
     }
 

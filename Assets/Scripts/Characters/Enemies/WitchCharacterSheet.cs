@@ -25,6 +25,7 @@ public class WitchCharacterSheet : EnemyCharacterSheet
         evasion = 50;
 
         dropTable = "Witch";
+        title = "Witch";
 
         attackClip = Resources.Load<AudioClip>("Sounds/Mystical");
         teleportClip = Resources.Load<AudioClip>("Sounds/Teleport");

@@ -14,10 +14,10 @@ public class Amulet : Equipment
         this.sprite = Resources.Load<Sprite>("Pixel Art/Equipment/Amulet");
         this.contextClip = Resources.Load<AudioClip>("Sounds/Equip");
 
-        this.equipmentType = "Amulet";
+        this.type = EquipmentType.Amulet;
 
-        this.bonusStatDictionary["Crit Chance"] = 15;
-        this.bonusStatDictionary["Intelligence Requirement"] = 5;
+        this.bonusStatDictionary[StatType.CritChance] = 15;
+        this.bonusStatDictionary[StatType.IntelligenceRequirement] = 5;
 
         SetDropChance(dropChance);
     }

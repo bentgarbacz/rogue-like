@@ -5,8 +5,14 @@ using UnityEngine;
 public class Tile : MonoBehaviour
 {
     public Vector2Int coord;
-    public bool traversable = true; 
+    [SerializeField] private bool actionable = true; 
     
+    public bool IsActionable()
+    {
+
+        return actionable;
+    }
+
     public void SetCoord(Vector2Int coord){
         
         this.coord = coord;

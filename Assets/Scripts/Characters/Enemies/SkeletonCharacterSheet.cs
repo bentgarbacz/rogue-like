@@ -19,6 +19,7 @@ public class SkeletonCharacterSheet : EnemyCharacterSheet
         evasion = 50;
 
         dropTable = "Skeleton";
+        title = "Skeleton";
 
         attackClip = Resources.Load<AudioClip>("Sounds/Skeleton");
     }

@@ -13,12 +13,12 @@ public class DebugHelm : Equipment
         this.sprite = Resources.Load<Sprite>("Pixel Art/Equipment/Leather Helm");
         this.contextClip = Resources.Load<AudioClip>("Sounds/Equip");
 
-        this.equipmentType = "Helmet";
+        this.type = EquipmentType.Helmet;
 
-        this.bonusStatDictionary["Evasion"] = 10;
-        this.bonusStatDictionary["Strength"] = 99;
-        this.bonusStatDictionary["Dexterity"] = 99;
-        this.bonusStatDictionary["Intelligence"] = 99;
+        this.bonusStatDictionary[StatType.Evasion] = 10;
+        this.bonusStatDictionary[StatType.Strength] = 99;
+        this.bonusStatDictionary[StatType.Dexterity] = 99;
+        this.bonusStatDictionary[StatType.Intelligence] = 99;
 
         SetDropChance(dropChance);
     }

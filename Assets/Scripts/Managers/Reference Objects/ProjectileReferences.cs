@@ -27,12 +27,3 @@ public class ProjectileReferences : MonoBehaviour
         return Instantiate(projectileDict[projType], spawnPos, spawnRotation);
     }
 }
-
-public enum ProjectileType
-{
-
-    None,
-    Arrow,
-    Fireball,
-    MagicMissile
-}

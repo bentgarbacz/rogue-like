@@ -32,7 +32,7 @@ public class SavageLeap : Spell
         if(target.GetComponent<CharacterSheet>())
         {
 
-            Equipment mainHandWeapon = (Equipment)im.equipmentSlotsDictionary["Main Hand"].item;
+            Equipment mainHandWeapon = (Equipment)im.equipmentSlotsDictionary[ItemSlotType.MainHand].item;
             CharacterSheet attackingCharacter = caster.GetComponent<CharacterSheet>();
             CharacterSheet defendingCharacter = target.GetComponent<CharacterSheet>();
 
@@ -52,8 +52,8 @@ public class SavageLeap : Spell
                     cbm.combatBuffer.Add( new Attack(
                                                 caster, 
                                                 target,
-                                                mainHandWeapon.bonusStatDictionary["Min Damage"], 
-                                                mainHandWeapon.bonusStatDictionary["Max Damage"], 
+                                                mainHandWeapon.bonusStatDictionary[StatType.MinDamage], 
+                                                mainHandWeapon.bonusStatDictionary[StatType.MaxDamage], 
                                                 attackingCharacter.speed
                                                 ));
 

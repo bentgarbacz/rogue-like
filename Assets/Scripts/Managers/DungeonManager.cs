@@ -18,12 +18,14 @@ public class DungeonManager : MonoBehaviour
     public List<Vector2Int> bufferedPath = new();
     public Dictionary<string, List<Vector2Int>> cachedPathsDict = new();    
     private CombatManager cbm;
+    private TurnSequencer ts;
 
     void Start()
     {
 
         GameObject managers = GameObject.Find("System Managers");
         cbm = managers.GetComponent<CombatManager>();
+        ts = managers.GetComponent<TurnSequencer>();
 
         mainCamera.GetComponent<PlayerCamera>().SetFocalPoint(hero);
     }
@@ -64,10 +66,19 @@ public class DungeonManager : MonoBehaviour
         occupiedlist.Remove(targetPosition);
         enemies.Remove(target);
 
-        target.GetComponent<DropLoot>().Drop();
+        if(target.GetComponent<PlayerCharacterSheet>())
+        {
 
-        int gainedXP = target.GetComponent<CharacterSheet>().level * 5;
-        hero.GetComponent<PlayerCharacterSheet>().GainXP(gainedXP);
+            ts.gameplayHalted = true;
+
+        }else
+        {
+
+            target.GetComponent<DropLoot>().Drop();
+
+            int gainedXP = target.GetComponent<CharacterSheet>().level * 5;
+            hero.GetComponent<PlayerCharacterSheet>().GainXP(gainedXP);
+        }        
 
         Destroy(target);  
     }

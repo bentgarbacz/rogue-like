@@ -19,6 +19,7 @@ public class GoatmanCharacterSheet : EnemyCharacterSheet
         evasion = 50;
 
         dropTable = "Goatman";
+        title = "Goatman";
 
         attackClip = Resources.Load<AudioClip>("Sounds/Frog");
     }

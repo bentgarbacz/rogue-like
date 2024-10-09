@@ -58,18 +58,18 @@ public class EquipmentManager : MonoBehaviour
                 if(slot.item is Equipment equipment)
                 {
 
-                    playerCharacter.strengthBonus += equipment.bonusStatDictionary["Strength"];
-                    playerCharacter.dexterityBonus += equipment.bonusStatDictionary["Dexterity"];
-                    playerCharacter.intelligenceBonus += equipment.bonusStatDictionary["Intelligence"];
-                    playerCharacter.speedBonus += equipment.bonusStatDictionary["Speed"];
-                    playerCharacter.critChanceBonus += equipment.bonusStatDictionary["Crit Chance"];
-                    playerCharacter.armorBonus += equipment.bonusStatDictionary["Armor"];
-                    playerCharacter.evasionBonus += equipment.bonusStatDictionary["Evasion"];
-                    playerCharacter.accuracyBonus += equipment.bonusStatDictionary["Accuracy"];
-                    playerCharacter.minDamageBonus += equipment.bonusStatDictionary["Min Damage"];
-                    playerCharacter.maxDamageBonus += equipment.bonusStatDictionary["Max Damage"];
-                    playerCharacter.maxHealthBonus += equipment.bonusStatDictionary["Max Health"];
-                    playerCharacter.maxManaBonus += equipment.bonusStatDictionary["Max Mana"];
+                    playerCharacter.strengthBonus += equipment.bonusStatDictionary[StatType.Strength];
+                    playerCharacter.dexterityBonus += equipment.bonusStatDictionary[StatType.Dexterity];
+                    playerCharacter.intelligenceBonus += equipment.bonusStatDictionary[StatType.Intelligence];
+                    playerCharacter.speedBonus += equipment.bonusStatDictionary[StatType.Speed];
+                    playerCharacter.critChanceBonus += equipment.bonusStatDictionary[StatType.CritChance];
+                    playerCharacter.armorBonus += equipment.bonusStatDictionary[StatType.Armor];
+                    playerCharacter.evasionBonus += equipment.bonusStatDictionary[StatType.Evasion];
+                    playerCharacter.accuracyBonus += equipment.bonusStatDictionary[StatType.Accuracy];
+                    playerCharacter.minDamageBonus += equipment.bonusStatDictionary[StatType.MinDamage];
+                    playerCharacter.maxDamageBonus += equipment.bonusStatDictionary[StatType.MaxDamage];
+                    playerCharacter.maxHealthBonus += equipment.bonusStatDictionary[StatType.MaxHealth];
+                    playerCharacter.maxManaBonus += equipment.bonusStatDictionary[StatType.MaxMana];
                 }
             }
         }
@@ -109,9 +109,9 @@ public class EquipmentManager : MonoBehaviour
     public bool MeetsRequirements(Equipment equipment)
     {
 
-        if(playerCharacter.strength >= equipment.bonusStatDictionary["Strength Requirement"] && 
-           playerCharacter.dexterity >= equipment.bonusStatDictionary["Dexterity Requirement"] && 
-           playerCharacter.intelligence >= equipment.bonusStatDictionary["Intelligence Requirement"])
+        if(playerCharacter.strength >= equipment.bonusStatDictionary[StatType.StrengthRequirement] && 
+           playerCharacter.dexterity >= equipment.bonusStatDictionary[StatType.DexterityRequirement] && 
+           playerCharacter.intelligence >= equipment.bonusStatDictionary[StatType.IntelligenceRequirement])
         {
 
             return true;

@@ -10,7 +10,7 @@ public class ItemSlot : MonoBehaviour
     public Button slot;
     public List<Item> itemList;
     public int slotIndex;
-    public string type;
+    public ItemSlotType type;
     public Sprite defaultSprite;
    
     void Awake()
@@ -71,13 +71,13 @@ public class ItemSlot : MonoBehaviour
         if(item is Equipment equipment)
         {
 
-            foreach(string bonus in equipment.bonusStatDictionary.Keys)
+            foreach(StatType bonus in equipment.bonusStatDictionary.Keys)
             {
 
-                if(equipment.bonusStatDictionary[bonus] > 0)
+                if(equipment.bonusStatDictionary[bonus] != 0)
                 {
 
-                    summary += "\n" + bonus + ": " + equipment.bonusStatDictionary[bonus].ToString();
+                    summary += "\n" + bonus.ToString() + ": " + equipment.bonusStatDictionary[bonus].ToString();
                 }
             }
         }        

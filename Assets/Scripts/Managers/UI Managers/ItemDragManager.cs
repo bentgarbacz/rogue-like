@@ -78,7 +78,7 @@ public class ItemDragManager : MonoBehaviour
     public bool TransferToInventoryCheck(ItemSlot destinationItemSlot)
     {
 
-        if(destinationItemSlot.type == "Inventory" || destinationItemSlot.type == "Drop" || destinationItemSlot.type == "Destroy")
+        if(destinationItemSlot.type is ItemSlotType.Inventory || destinationItemSlot.type is ItemSlotType.Drop || destinationItemSlot.type is ItemSlotType.Destroy)
         {
 
             return true;
@@ -91,7 +91,7 @@ public class ItemDragManager : MonoBehaviour
     public bool ValidTransfertoDropOrDestroyCheck(ItemSlot destinationItemSlot)
     {
 
-        if((itemSlot.type == "Loot" || im.equipmentSlotsDictionary.Keys.Contains(itemSlot.type)) && (destinationItemSlot.type == "Drop" || destinationItemSlot.type == "Destroy"))
+        if((itemSlot.type is ItemSlotType.Loot || im.equipmentSlotsDictionary.Keys.Contains(itemSlot.type)) && (destinationItemSlot.type is ItemSlotType.Drop || destinationItemSlot.type is ItemSlotType.Destroy))
         {
 
             return false;

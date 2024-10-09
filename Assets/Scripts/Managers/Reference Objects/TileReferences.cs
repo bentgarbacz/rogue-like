@@ -48,9 +48,3 @@ public class TileReferences : MonoBehaviour
         dum.AddGameObject(newWallJoiner);
     }
 }
-
-public enum BiomeType
-{
-
-    Catacomb
-}

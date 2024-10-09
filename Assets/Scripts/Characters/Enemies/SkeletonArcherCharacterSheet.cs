@@ -23,6 +23,7 @@ public class SkeletonArcherCharacterSheet : EnemyCharacterSheet
         evasion = 50;
 
         dropTable = "Skeleton";
+        title = "Skeleton Archer";
 
         attackClip = Resources.Load<AudioClip>("Sounds/Skeleton");
     }

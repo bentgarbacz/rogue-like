@@ -14,11 +14,11 @@ public class Dagger : Equipment
         this.sprite = Resources.Load<Sprite>("Pixel Art/Equipment/Dagger");
         this.contextClip = Resources.Load<AudioClip>("Sounds/Equip");
 
-        this.equipmentType = "Switch Hand";
+        this.type = EquipmentType.SwitchHand;
 
-        this.bonusStatDictionary["Min Damage"] = 2;
-        this.bonusStatDictionary["Max Damage"] = 5;
-        this.bonusStatDictionary["Accuracy"] = 100;
+        this.bonusStatDictionary[StatType.MinDamage] = 2;
+        this.bonusStatDictionary[StatType.MaxDamage] = 5;
+        this.bonusStatDictionary[StatType.Accuracy] = 100;
 
         SetDropChance(dropChance);
     }
