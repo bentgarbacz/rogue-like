@@ -14,9 +14,9 @@ public class Ring : Equipment
         this.sprite = Resources.Load<Sprite>("Pixel Art/Equipment/Ring");
         this.contextClip = Resources.Load<AudioClip>("Sounds/Equip");
 
-        this.equipmentType = "Ring";
+        this.type = EquipmentType.Ring;
 
-        this.bonusStatDictionary["Accuracy"] = 100;
+        this.bonusStatDictionary[StatType.Accuracy] = 100;
 
         SetDropChance(dropChance);
     }

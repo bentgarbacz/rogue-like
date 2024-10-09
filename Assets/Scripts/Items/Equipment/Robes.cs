@@ -14,10 +14,10 @@ public class Robes : Equipment
         this.sprite = Resources.Load<Sprite>("Pixel Art/Equipment/Robes");
         this.contextClip = Resources.Load<AudioClip>("Sounds/Equip");
 
-        this.equipmentType = "Chest";
+        this.type = EquipmentType.Chest;
 
-        this.bonusStatDictionary["Evasion"] = 10;
-        this.bonusStatDictionary["Max Mana"] = 10;
+        this.bonusStatDictionary[StatType.Evasion] = 10;
+        this.bonusStatDictionary[StatType.MaxMana] = 10;
 
         SetDropChance(dropChance);
     }

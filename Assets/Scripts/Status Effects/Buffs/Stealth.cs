@@ -10,7 +10,7 @@ public class Stealth : StatusEffect
     public Stealth(CharacterSheet affectedCharacter, int duration, DungeonManager dum)
     {
 
-        this.type = "Buff";
+        this.type = EffectType.Buff;
         this.affectedCharacter = affectedCharacter;
         this.duration = duration;
         this.dum = dum;

@@ -10,7 +10,7 @@ public class StoneSkin : StatusEffect
     public StoneSkin(CharacterSheet affectedCharacter, int duration, int armorIncrease)
     {
 
-        this.type = "Buff";
+        this.type = EffectType.Buff;
         this.affectedCharacter = affectedCharacter;
         this.duration = duration;
         this.armorIncrease = armorIncrease;

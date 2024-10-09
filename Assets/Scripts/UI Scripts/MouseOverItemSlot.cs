@@ -58,7 +58,7 @@ public class MouseOverItemSlot : MonoBehaviour, IPointerEnterHandler, IPointerEx
                 dragCoroutine = null;
             }
 
-            if(idm.itemSlot != null && itemSlot.type != "Loot")
+            if(idm.itemSlot != null && itemSlot.type is not ItemSlotType.Loot)
             {
 
                 bool isToInventory = idm.TransferToInventoryCheck(itemSlot);

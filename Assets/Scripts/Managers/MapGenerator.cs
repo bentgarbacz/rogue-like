@@ -55,20 +55,20 @@ public class MapGenerator : MonoBehaviour
                     if(i == 0 && j == 0)
                     {
 
-                        tileRef.CreateEnteranceTile(spawnPos, position, dum);
+                        tileRef.CreateEntranceTile(BiomeType.Catacomb, spawnPos, position, dum);
 
                     //potentially spawn exit after a certain number of steps
                     }else if(i == repeatWalks - 1 && j > walkLength / 2 && exitSpawned == false)
                     {
 
-                        tileRef.CreateExitTile(spawnPos, position, path, dum);
+                        tileRef.CreateExitTile(BiomeType.Catacomb, spawnPos, position, path, dum);
                         exitSpawned = true;
                     
                     //Otherwise spawn a normal tile
                     }else
                     {
 
-                        tileRef.CreateTile(spawnPos, position, spawnRNG, dum);                        
+                        tileRef.CreateTile(BiomeType.Catacomb, spawnPos, position, spawnRNG, dum);                        
                     }
 
                     //move player to first tile generated
@@ -86,19 +86,18 @@ public class MapGenerator : MonoBehaviour
                     }else if(spawnRNG >= 3 && spawnRNG <= 4)
                     {
 
-                        npcGen.CreateNPC("slime", spawnPos, dum);
+                        npcGen.CreateNPC(NPCType.Slime, spawnPos, dum);
 
                     }else if(spawnRNG >= 5 && spawnRNG <= 6)
                     {
 
-                        npcGen.CreateNPC("witch", spawnPos, dum);
+                        npcGen.CreateNPC(NPCType.Witch, spawnPos, dum);
 
                     }else if(spawnRNG >= 7 && spawnRNG <= 8)
                     {
 
-                        npcGen.CreateNPC("goatman", spawnPos, dum);
+                        npcGen.CreateNPC(NPCType.GoatMan, spawnPos, dum);
                     }
-                    
                     
                     path.Add(position);
                 }
@@ -146,7 +145,7 @@ public class MapGenerator : MonoBehaviour
         foreach(Vector2Int coord in path)
         {
 
-            foreach(Vector2Int direction1 in Direction2D.intercardinalDirectionsList.Concat(Direction2D.cardinalDirectionsList))            
+            foreach(Vector2Int direction1 in Direction2D.DirectionsList())            
             {
 
                 Vector2Int checkCoord = coord + direction1;
@@ -154,10 +153,10 @@ public class MapGenerator : MonoBehaviour
                 if(!path.Contains(checkCoord) && !wallMap.Contains(checkCoord))
                 {
                     
-                    tileRef.CreateWallTile(new Vector3(checkCoord.x, 0, checkCoord.y), dum);
+                    tileRef.CreateWallTile(BiomeType.Catacomb, new Vector3(checkCoord.x, 0, checkCoord.y), dum);
                     wallMap.Add(checkCoord);
 
-                    foreach(Vector2Int direction2 in Direction2D.intercardinalDirectionsList.Concat(Direction2D.cardinalDirectionsList))
+                    foreach(Vector2Int direction2 in Direction2D.DirectionsList())
                     {
 
                         Vector2Int checkCoordWall = checkCoord + direction2;
@@ -197,6 +196,12 @@ public static class Direction2D
         new Vector2Int(-1, -1), //South West
         new Vector2Int(-1, 1) //North West
     };
+
+    public static List<Vector2Int> DirectionsList()
+    {
+
+        return intercardinalDirectionsList.Concat(cardinalDirectionsList).ToList();
+    }
 
     public static Vector2Int GetRandomDirection()
     {

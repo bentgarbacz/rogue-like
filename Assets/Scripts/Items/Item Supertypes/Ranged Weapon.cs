@@ -1,15 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class RangedWeapon : Equipment
 {
 
-    public string projectile = "";
+    public ProjectileType projectile = ProjectileType.None;
 
     public RangedWeapon() : base()
     {
 
-        bonusStatDictionary.Add("Range", 0);
+        bonusStatDictionary.Add(StatType.Range, 0);
     }
 }

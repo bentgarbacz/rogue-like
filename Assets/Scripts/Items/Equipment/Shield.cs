@@ -14,9 +14,9 @@ public class Shield : Equipment
         this.sprite = Resources.Load<Sprite>("Pixel Art/Equipment/Shield");
         this.contextClip = Resources.Load<AudioClip>("Sounds/Equip");
 
-        this.equipmentType = "Off Hand";
+        this.type = EquipmentType.OffHand;
 
-        this.bonusStatDictionary["Armor"] = 1;
+        this.bonusStatDictionary[StatType.Armor] = 1;
 
         SetDropChance(dropChance);
     }

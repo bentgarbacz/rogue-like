@@ -6,17 +6,17 @@ using UnityEngine;
 public class SpellReferences : MonoBehaviour
 {
 
-    public Dictionary<string, Spell> spellDictionary = new();
+    public Dictionary<SpellType, Spell> spellDictionary = new();
 
     void Awake()
     {
         
-        spellDictionary.Add("Heal", new Heal());
-        spellDictionary.Add("Fireball", new Fireball());
-        spellDictionary.Add("Teleport", new Teleport());
-        spellDictionary.Add("Poisonous Strike", new PoisonousStrike());
-        spellDictionary.Add("Fortify", new Fortify());
-        spellDictionary.Add("Savage Leap", new SavageLeap());
-        spellDictionary.Add("Slink Away", new SlinkAway());
+        spellDictionary.Add(SpellType.Heal, new Heal());
+        spellDictionary.Add(SpellType.Fireball, new Fireball());
+        spellDictionary.Add(SpellType.Teleport, new Teleport());
+        spellDictionary.Add(SpellType.PoisonousStrike, new PoisonousStrike());
+        spellDictionary.Add(SpellType.Fortify, new Fortify());
+        spellDictionary.Add(SpellType.SavageLeap, new SavageLeap());
+        spellDictionary.Add(SpellType.SlinkAway, new SlinkAway());
     }
 }

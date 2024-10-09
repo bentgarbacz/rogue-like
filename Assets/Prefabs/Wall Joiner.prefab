@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3986865846593892408}
   - component: {fileID: 7934405938448139091}
+  - component: {fileID: 4555173339810672860}
   m_Layer: 6
   m_Name: Wall Joiner
   m_TagString: Untagged
@@ -53,3 +54,17 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.5, y: 5.1, z: 0.5}
   m_Center: {x: -0.049999952, y: 2.55, z: -0.049999952}
+--- !u!114 &4555173339810672860
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1025472403522751266}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ac4587eee4b3bc4381bce15d0b02fc6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  coord: {x: 0, y: 0}
+  actionable: 0

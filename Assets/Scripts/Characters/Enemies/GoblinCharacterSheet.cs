@@ -19,6 +19,7 @@ public class GoblinCharacterSheet : EnemyCharacterSheet
         evasion = 50;
 
         dropTable = "Goblin";
+        title = "Goblin";
 
         attackClip = Resources.Load<AudioClip>("Sounds/Frog");
     }

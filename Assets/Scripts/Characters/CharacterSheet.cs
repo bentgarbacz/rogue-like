@@ -29,6 +29,7 @@ public class CharacterSheet : MonoBehaviour
     public AudioSource audioSource;
     public AudioClip attackClip;
     public AudioClip missClip;
+    public string title = "N/A";
 
     public virtual void Start()
     {
@@ -95,6 +96,12 @@ public class CharacterSheet : MonoBehaviour
         }
 
         return false;
+    }
+
+    public string GetName()
+    {
+
+        return title;
     }
 }
 

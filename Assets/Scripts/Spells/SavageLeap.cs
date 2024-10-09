@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class SavageLeap : Spell
@@ -12,7 +13,7 @@ public class SavageLeap : Spell
     public SavageLeap()
     {
         
-        this.spellName = "Savage Leap";
+        this.spellType = SpellType.SavageLeap;
         this.targeted = true;
         this.cooldown = 10;
         this.manaCost = 10;
@@ -31,7 +32,7 @@ public class SavageLeap : Spell
         if(target.GetComponent<CharacterSheet>())
         {
 
-            Equipment mainHandWeapon = (Equipment)im.equipmentSlotsDictionary["Main Hand"].item;
+            Equipment mainHandWeapon = (Equipment)im.equipmentSlotsDictionary[ItemSlotType.MainHand].item;
             CharacterSheet attackingCharacter = caster.GetComponent<CharacterSheet>();
             CharacterSheet defendingCharacter = target.GetComponent<CharacterSheet>();
 
@@ -51,8 +52,8 @@ public class SavageLeap : Spell
                     cbm.combatBuffer.Add( new Attack(
                                                 caster, 
                                                 target,
-                                                mainHandWeapon.bonusStatDictionary["Min Damage"], 
-                                                mainHandWeapon.bonusStatDictionary["Max Damage"], 
+                                                mainHandWeapon.bonusStatDictionary[StatType.MinDamage], 
+                                                mainHandWeapon.bonusStatDictionary[StatType.MaxDamage], 
                                                 attackingCharacter.speed
                                                 ));
 

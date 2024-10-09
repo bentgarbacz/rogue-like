@@ -7,7 +7,7 @@ public class SkeletonArcherCharacterSheet : EnemyCharacterSheet
 
     int attackCooldown = 0;
     int range = 5;
-    string projectile = "Arrow";
+    ProjectileType projectile = ProjectileType.Arrow;
 
     public override void Start()
     {
@@ -23,6 +23,7 @@ public class SkeletonArcherCharacterSheet : EnemyCharacterSheet
         evasion = 50;
 
         dropTable = "Skeleton";
+        title = "Skeleton Archer";
 
         attackClip = Resources.Load<AudioClip>("Sounds/Skeleton");
     }

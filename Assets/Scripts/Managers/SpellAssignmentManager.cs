@@ -28,9 +28,9 @@ public class SpellAssignmentManager : MonoBehaviour
         int rectDimensionY = 20 + 75 * ((iconCount + 2) / 3); //20 units for padding, 75 * number of rows
 
         GameObject clearSpellIcon = Instantiate(spellIconPrefab, spellIconGrid.transform);
-        clearSpellIcon.GetComponent<SpellSelector>().SetSpell("", currentSpellSlot, currentTooltip);
+        clearSpellIcon.GetComponent<SpellSelector>().SetSpell(SpellType.None, currentSpellSlot, currentTooltip);
 
-        foreach(string spell in pc.knownSpells.Keys)
+        foreach(SpellType spell in pc.knownSpells.Keys)
         {
 
             GameObject newSpellIcon = Instantiate(spellIconPrefab, spellIconGrid.transform);

@@ -29,7 +29,7 @@ public class PlayerCharacterSheet : CharacterSheet
     public int evasionBonus = 0;
     public int maxHealthBonus = 0;
     public int maxManaBonus = 0;
-    public Dictionary<string, int> knownSpells = new();
+    public Dictionary<SpellType, int> knownSpells = new();
     
 
     public override void Start()
@@ -144,13 +144,13 @@ public class PlayerCharacterSheet : CharacterSheet
     public void DecrementCooldowns()
     {
 
-        foreach(string spellName in knownSpells.Keys.ToList())
+        foreach(SpellType spellType in knownSpells.Keys.ToList())
         {
 
-            if(knownSpells[spellName] > 0)
+            if(knownSpells[spellType] > 0)
             {   
 
-                knownSpells[spellName] -= 1;
+                knownSpells[spellType] -= 1;
             }
         }
     }

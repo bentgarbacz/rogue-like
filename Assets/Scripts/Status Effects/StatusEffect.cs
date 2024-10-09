@@ -5,7 +5,7 @@ using UnityEngine;
 public class StatusEffect
 {
 
-    public string type = "None";
+    public EffectType type = EffectType.None;
     public int duration = 0;
     public CharacterSheet affectedCharacter;
 

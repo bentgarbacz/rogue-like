@@ -14,10 +14,10 @@ public class PlateBody : Equipment
         this.sprite = Resources.Load<Sprite>("Pixel Art/Equipment/Plate Body");
         this.contextClip = Resources.Load<AudioClip>("Sounds/Equip");
 
-        this.equipmentType = "Chest";
+        this.type = EquipmentType.Chest;
 
-        this.bonusStatDictionary["Armor"] = 2;
-        this.bonusStatDictionary["Strength Requirement"] = 10;
+        this.bonusStatDictionary[StatType.Armor] = 2;
+        this.bonusStatDictionary[StatType.StrengthRequirement] = 10;
 
         SetDropChance(dropChance);
     }

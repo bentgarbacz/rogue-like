@@ -11,7 +11,7 @@ public class FortifyScroll : Scroll
         this.strengthRequirement = 5;
         this.title = "Fortify Scroll";    
         this.description = "Read this incantation to cast a spell.\nMemorization requirement: " + this.strengthRequirement + " strength";
-        this.spellName = "Fortify";
+        this.spellType = SpellType.Fortify;
         SetDropChance(dropChance);
     }
 }

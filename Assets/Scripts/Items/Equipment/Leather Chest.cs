@@ -14,9 +14,9 @@ public class LeatherChest : Equipment
         this.sprite = Resources.Load<Sprite>("Pixel Art/Equipment/Leather Chest");
         this.contextClip = Resources.Load<AudioClip>("Sounds/Equip");
 
-        this.equipmentType = "Chest";
+        this.type = EquipmentType.Chest;
 
-        this.bonusStatDictionary["Evasion"] = 20;
+        this.bonusStatDictionary[StatType.Evasion] = 20;
 
         SetDropChance(dropChance);
     }

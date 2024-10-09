@@ -14,7 +14,7 @@ public class PoisonousStrike : Spell
     public PoisonousStrike()
     {
         
-        this.spellName = "Poisonous Strike";
+        this.spellType = SpellType.PoisonousStrike;
         this.targeted = true;
         this.cooldown = 10;
         this.manaCost = 10;
@@ -32,14 +32,14 @@ public class PoisonousStrike : Spell
         if(target.GetComponent<CharacterSheet>())
         {
 
-            Equipment mainHandWeapon = (Equipment)im.equipmentSlotsDictionary["Main Hand"].item;
+            Equipment mainHandWeapon = (Equipment)im.equipmentSlotsDictionary[ItemSlotType.MainHand].item;
             CharacterSheet attackingCharacter = caster.GetComponent<CharacterSheet>();
             CharacterSheet defendingCharacter = target.GetComponent<CharacterSheet>();
 
             if(mainHandWeapon != null)
             {
 
-                int damagePerTurn = (int)Math.Ceiling((double)(mainHandWeapon.bonusStatDictionary["Min Damage"] + mainHandWeapon.bonusStatDictionary["Max Damage"]) / 5);
+                int damagePerTurn = (int)Math.Ceiling((double)(mainHandWeapon.bonusStatDictionary[StatType.MinDamage] + mainHandWeapon.bonusStatDictionary[StatType.MaxDamage]) / 5);
                 
                 if(mainHandWeapon is not RangedWeapon && PathFinder.GetNeighbors(defendingCharacter.coord, dum.dungeonCoords).Contains(attackingCharacter.coord))
                 {
@@ -47,8 +47,8 @@ public class PoisonousStrike : Spell
                     cbm.combatBuffer.Add( new Attack(
                                                 caster, 
                                                 target,
-                                                mainHandWeapon.bonusStatDictionary["Min Damage"], 
-                                                mainHandWeapon.bonusStatDictionary["Max Damage"], 
+                                                mainHandWeapon.bonusStatDictionary[StatType.MinDamage], 
+                                                mainHandWeapon.bonusStatDictionary[StatType.MaxDamage], 
                                                 attackingCharacter.speed
                                                 ));
 
@@ -58,7 +58,7 @@ public class PoisonousStrike : Spell
                     ResetCooldown(caster);
                     return true;
 
-                }else if(mainHandWeapon is RangedWeapon rangedWeapon && mainHandWeapon.bonusStatDictionary["Range"] >= Vector3.Distance(defendingCharacter.transform.position, dum.hero.transform.position))
+                }else if(mainHandWeapon is RangedWeapon rangedWeapon && mainHandWeapon.bonusStatDictionary[StatType.Range] >= Vector3.Distance(defendingCharacter.transform.position, dum.hero.transform.position))
                 {
                     
                     if(LineOfSight.HasLOS(dum.hero, target))
@@ -67,8 +67,8 @@ public class PoisonousStrike : Spell
                         cbm.combatBuffer.Add( new Attack(
                                                     caster, 
                                                     target,
-                                                    mainHandWeapon.bonusStatDictionary["Min Damage"], 
-                                                    mainHandWeapon.bonusStatDictionary["Max Damage"], 
+                                                    mainHandWeapon.bonusStatDictionary[StatType.MinDamage], 
+                                                    mainHandWeapon.bonusStatDictionary[StatType.MaxDamage], 
                                                     attackingCharacter.speed,
                                                     rangedWeapon.projectile
                                                     ));

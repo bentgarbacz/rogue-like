@@ -8,7 +8,7 @@ public class WitchCharacterSheet : EnemyCharacterSheet
     private int attackCooldown = 0;
     private int teleportCooldown = 0;
     private int range = 5;
-    private string projectile = "Magic Missile";
+    private ProjectileType projectile = ProjectileType.MagicMissile;
     private AudioClip teleportClip;
 
     public override void Start()
@@ -25,6 +25,7 @@ public class WitchCharacterSheet : EnemyCharacterSheet
         evasion = 50;
 
         dropTable = "Witch";
+        title = "Witch";
 
         attackClip = Resources.Load<AudioClip>("Sounds/Mystical");
         teleportClip = Resources.Load<AudioClip>("Sounds/Teleport");

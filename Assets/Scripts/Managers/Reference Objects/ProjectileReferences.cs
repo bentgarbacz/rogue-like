@@ -5,22 +5,25 @@ using UnityEngine;
 public class ProjectileReferences : MonoBehaviour
 {
 
-    public Dictionary<string, GameObject> projectileDictionary = new();
-    public GameObject arrow;    
-    public GameObject fireball;
-    public GameObject magicMissile;
+    public Dictionary<ProjectileType, GameObject> projectileDict;
+    [SerializeField] private GameObject arrow;    
+    [SerializeField] private GameObject fireball;
+    [SerializeField] private GameObject magicMissile;
 
     void Start()
     {
 
-        projectileDictionary.Add("Arrow", arrow);
-        projectileDictionary.Add("Fireball", fireball);
-        projectileDictionary.Add("Magic Missile", magicMissile);
+        projectileDict = new()
+        {
+            {ProjectileType.Arrow, arrow},
+            {ProjectileType.Fireball, fireball},
+            {ProjectileType.MagicMissile, magicMissile}
+        };
     }
 
-    public GameObject CreateProjectile(string projectile, Vector3 spawnPos, Quaternion spawnRotation)
+    public GameObject CreateProjectile(ProjectileType projType, Vector3 spawnPos, Quaternion spawnRotation)
     {
 
-        return Instantiate(projectileDictionary[projectile], spawnPos, spawnRotation);
+        return Instantiate(projectileDict[projType], spawnPos, spawnRotation);
     }
 }
