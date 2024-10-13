@@ -14,8 +14,7 @@ public class MouseOverItemSlot : MonoBehaviour, IPointerEnterHandler, IPointerEx
     private ToolTipManager ttm;
     private ItemDragManager idm;
     private EquipmentManager equm;
-    private Coroutine dragCoroutine;
-    private const float dragDelay = 0.1f; // Delay in seconds before starting the drag
+    //private Coroutine dragCoroutine;
 
     void Awake()
     {
@@ -39,63 +38,45 @@ public class MouseOverItemSlot : MonoBehaviour, IPointerEnterHandler, IPointerEx
     void Update()
     {
         
-        if(mouseOver && itemSlot.item != null && Input.GetMouseButtonDown(0))
+        if(mouseOver && Input.GetMouseButtonUp(0))
         {
 
-            if(dragCoroutine == null)
+            if(!idm.isItemHeld && itemSlot.item != null)
             {
 
-                dragCoroutine = StartCoroutine(StartDragAfterDelay());
-            }
+                idm.DragItem(itemSlot);
 
-        }else if(mouseOver && Input.GetMouseButtonUp(0))
-        {
-
-            if(dragCoroutine != null)
+            }else if(idm.isItemHeld)
             {
 
-                StopCoroutine(dragCoroutine);
-                dragCoroutine = null;
-            }
-
-            if(idm.itemSlot != null && itemSlot.type is not ItemSlotType.Loot)
-            {
-
-                bool isToInventory = idm.TransferToInventoryCheck(itemSlot);
-                bool isValidDropOrDestroyTransfer = idm.ValidTransfertoDropOrDestroyCheck(itemSlot);
-                bool isValidEquip = equm.ValidEquip(itemSlot, idm.itemSlot);
-
-                if(isValidDropOrDestroyTransfer && isToInventory || isValidEquip)
+                if(idm.itemSlot != null && itemSlot.type is not ItemSlotType.Loot)
                 {
-                    idm.DropItem(itemSlot);
 
-                    if(isValidEquip)
+                    bool isToInventory = idm.TransferToInventoryCheck(itemSlot);
+                    bool isValidDropOrDestroyTransfer = idm.ValidTransfertoDropOrDestroyCheck(itemSlot);
+                    bool isValidEquip = equm.ValidEquip(itemSlot, idm.itemSlot);
+
+                    if(isValidDropOrDestroyTransfer && isToInventory || isValidEquip)
                     {
-                        equm.UpdateStats();
+                       
+                       idm.DropItem(itemSlot);
+
+                        if(isValidEquip)
+                        {
+                            equm.UpdateStats();
+                        }
+
+                        MouseExit();
+                        MouseEnter();
+                        idm.ForgetItem();
+                        return;
                     }
 
-                    MouseExit();
-                    MouseEnter();
-                    return;
+                    idm.ForgetItem();
+                    audioSource.PlayOneShot(errorClip);
                 }
-
-                audioSource.PlayOneShot(errorClip);
             }
         }
-    }
-
-    private IEnumerator StartDragAfterDelay()
-    {
-        
-        yield return new WaitForSeconds(dragDelay);
-
-        if(mouseOver && itemSlot.item != null && Input.GetMouseButton(0))
-        {
-
-            idm.DragItem(itemSlot);
-        }
-
-        dragCoroutine = null;
     }
 
     private void SetChildren(bool newState)

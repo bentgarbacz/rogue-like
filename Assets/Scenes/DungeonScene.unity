@@ -21989,6 +21989,8 @@ MonoBehaviour:
   itemDragContainerIsOpen: 1
   assignSpellContainer: {fileID: 1129266914}
   assignSpellContainerIsOpen: 1
+  nameplatePanel: {fileID: 1977274815}
+  nameplatePanelIsOpen: 1
   mouseOverUI: 0
   dropSlot: {fileID: 1447466446}
   destroySlot: {fileID: 880130609}
@@ -32006,6 +32008,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77e6eabf679e7c2439105dabb249f00c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bar: {fileID: 0}
+  text: {fileID: 0}
 --- !u!1 &1916274092
 GameObject:
   m_ObjectHideFlags: 0
@@ -33487,7 +33491,7 @@ GameObject:
   - component: {fileID: 1977274816}
   - component: {fileID: 1977274820}
   - component: {fileID: 1977274819}
-  - component: {fileID: 1977274817}
+  - component: {fileID: 1977274821}
   m_Layer: 5
   m_Name: NPC Name Panel
   m_TagString: Untagged
@@ -33516,18 +33520,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -10}
   m_SizeDelta: {x: 500, y: 60}
   m_Pivot: {x: 0.5, y: 1}
---- !u!114 &1977274817
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1977274815}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 847cea3048179964a9ae72349fcd64a9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1977274819
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -33566,6 +33558,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1977274815}
   m_CullTransparentMesh: 1
+--- !u!114 &1977274821
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1977274815}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77e6eabf679e7c2439105dabb249f00c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bar: {fileID: 1906340100}
+  text: {fileID: 293861288}
 --- !u!1 &1982741847
 GameObject:
   m_ObjectHideFlags: 0
@@ -36902,6 +36908,7 @@ MonoBehaviour:
   audioSource: {fileID: 0}
   attackClip: {fileID: 0}
   missClip: {fileID: 0}
+  title: N/A
   hunger: 1000
   maxHunger: 1000
   totalXP: 0

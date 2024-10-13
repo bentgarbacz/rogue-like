@@ -30,11 +30,6 @@ public class ObjectHighlighter : MonoBehaviour, IPointerEnterHandler, IPointerEx
         {
 
             ttm.SetTooltip(true, actionDescription);
-
-        }else
-        {
-
-            uiam.HideTooltip();
         }
 
         if(highlightedCharacter != null)

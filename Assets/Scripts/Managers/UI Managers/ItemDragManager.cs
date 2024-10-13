@@ -14,6 +14,7 @@ public class ItemDragManager : MonoBehaviour
     public AudioSource audioSource;
     private UIActiveManager uiam;
     private InventoryManager im;
+    public bool isItemHeld = false;
 
     void Awake()
     {
@@ -35,13 +36,6 @@ public class ItemDragManager : MonoBehaviour
                                                 Input.mousePosition.y - tooltipContainerRect.rect.height,
                                                 transform.position.z
                                             );
-            
-            if(Input.GetMouseButtonUp(0))
-            {
-                
-                this.itemSlot = null;
-                uiam.HideItemDrag();
-            }
         }
             
     }
@@ -54,6 +48,7 @@ public class ItemDragManager : MonoBehaviour
         
             this.itemSlot = itemSlot;
             itemDragImage.sprite = itemSlot.item.sprite;
+            isItemHeld = true;
             uiam.ShowItemDrag();
 
             audioSource.PlayOneShot(itemSlot.item.contextClip);
@@ -69,9 +64,16 @@ public class ItemDragManager : MonoBehaviour
             audioSource.PlayOneShot(itemSlot.item.contextClip);
             
             im.TransferToInventory(itemSlot, destinationItemSlot);
-            this.itemSlot = null;      
-            uiam.HideItemDrag();   
+            ForgetItem();  
         }    
+    }
+
+    public void ForgetItem()
+    {
+
+        this.itemSlot = null;
+        isItemHeld = false;  
+        uiam.HideItemDrag(); 
     }
 
     //Determines if a drag transfer has a destination at an inventory slot
@@ -98,5 +100,11 @@ public class ItemDragManager : MonoBehaviour
         }
 
         return true;
+    }
+
+    public void OnDisable()
+    {
+
+        ForgetItem();
     }
 }
