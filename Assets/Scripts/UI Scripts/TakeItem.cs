@@ -29,13 +29,13 @@ public class TakeItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         idm.paused = true;
     }
 
-     public void OnPointerEnter(PointerEventData eventData)
+    public void OnPointerEnter(PointerEventData eventData)
     {
 
         idm.paused = true;
     }
 
-     public void OnPointerExit(PointerEventData eventData)
+    public void OnPointerExit(PointerEventData eventData)
     {
 
         idm.paused = false;

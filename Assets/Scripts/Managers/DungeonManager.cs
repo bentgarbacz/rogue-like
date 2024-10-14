@@ -10,6 +10,7 @@ public class DungeonManager : MonoBehaviour
     public GameObject mainCamera;
     public bool enemiesOnLookout = true;
     public HashSet<Vector2Int> dungeonCoords;
+    public HashSet<Vector2Int> discoveredCoords;
     public HashSet<Vector3> occupiedlist = new();
     public HashSet<GameObject> dungeonSpecificGameObjects = new();
     public HashSet<GameObject> enemies = new();

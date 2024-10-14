@@ -128,7 +128,7 @@ public class InventoryManager : MonoBehaviour
 
                 }else if(equipmentSlotsDictionary[sourceSlot.type])
                 {
-
+                    Debug.Log("Updated Stats in inventory manager");
                     equm.UpdateStats();
                 }
             }
