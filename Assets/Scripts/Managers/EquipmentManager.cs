@@ -130,7 +130,7 @@ public class EquipmentManager : MonoBehaviour
 
             if(im.equipmentSlotsDictionary.ContainsKey(destinationSlot.type) && originSlot.item is Equipment equipment)
             {
-                Debug.Log("awfawf");
+
                 return MeetsRequirements(equipment);            
             }
         }

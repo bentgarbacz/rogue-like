@@ -28,7 +28,7 @@ public class MapGenerator : MonoBehaviour
     public void NewLevel()
     {
 
-        dum.dungeonCoords = new HashSet<Vector2Int>();
+        dum.dungeonCoords = new();
         LevelGen(startPosition, walkLength, 100, dum.dungeonCoords);    
         GenerateWalls(dum.dungeonCoords);
         //dum.cachedPathsDict = PrecacheMapPaths(path);

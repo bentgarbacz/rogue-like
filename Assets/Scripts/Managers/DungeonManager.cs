@@ -36,7 +36,7 @@ public class DungeonManager : MonoBehaviour
 
         hero.GetComponent<CharacterSheet>().GetComponent<StatusEffectManager>().ProcessStatusEffects();
 
-        foreach(GameObject enemy in new HashSet<GameObject>(enemies))
+        foreach(GameObject enemy in enemies)
         {
 
             enemy.GetComponent<CharacterSheet>().GetComponent<StatusEffectManager>().ProcessStatusEffects();

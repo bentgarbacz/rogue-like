@@ -16,6 +16,7 @@ public class Poison : StatusEffect
         this.duration = duration;
         this.damageOverTime = damageOverTime;
         this.dum = dum;
+        this.sprite = Resources.Load<Sprite>("Pixel Art/Spells/Poison");
     }
 
     public override int Effect()

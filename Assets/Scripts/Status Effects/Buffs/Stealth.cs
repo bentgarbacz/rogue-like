@@ -14,6 +14,7 @@ public class Stealth : StatusEffect
         this.affectedCharacter = affectedCharacter;
         this.duration = duration;
         this.dum = dum;
+        this.sprite = Resources.Load<Sprite>("Pixel Art/Spells/Fireball");
 
         dum.enemiesOnLookout = false;
         dum.ClearAggroBuffer();
