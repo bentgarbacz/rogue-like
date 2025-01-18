@@ -14,6 +14,7 @@ public class StoneSkin : StatusEffect
         this.affectedCharacter = affectedCharacter;
         this.duration = duration;
         this.armorIncrease = armorIncrease;
+        this.sprite = Resources.Load<Sprite>("Pixel Art/Spells/Fortify");
         
         affectedCharacter.armor += armorIncrease;
     }

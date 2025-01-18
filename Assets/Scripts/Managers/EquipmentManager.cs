@@ -123,9 +123,9 @@ public class EquipmentManager : MonoBehaviour
     //Checks to see if item in originSlot is permited to be placed in destinationSlot
     public bool ValidEquip(ItemSlot destinationSlot, ItemSlot originSlot)
     {
-
-        if((Rules.CheckValidEquipmentSlot(destinationSlot, originSlot.item) && Rules.CheckValidEquipmentSlot(originSlot, destinationSlot.item)) ||
-           (Rules.CheckValidEquipmentSlot(destinationSlot, originSlot.item) && destinationSlot.item == null))
+        
+        if(Rules.CheckValidEquipmentSlot(destinationSlot, originSlot.item) && (Rules.CheckValidEquipmentSlot(originSlot, destinationSlot.item) ||
+           destinationSlot.item == null))
         {
 
             if(im.equipmentSlotsDictionary.ContainsKey(destinationSlot.type) && originSlot.item is Equipment equipment)

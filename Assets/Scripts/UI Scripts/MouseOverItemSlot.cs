@@ -53,10 +53,17 @@ public class MouseOverItemSlot : MonoBehaviour, IPointerEnterHandler, IPointerEx
                 {
 
                     bool isToInventory = idm.TransferToInventoryCheck(itemSlot);
-                    bool isValidDropOrDestroyTransfer = idm.ValidTransfertoDropOrDestroyCheck(itemSlot);
+                    bool isValidDropOrDestroyTransfer = idm.ValidTransferToDropOrDestroyCheck(itemSlot);
                     bool isValidEquip = equm.ValidEquip(itemSlot, idm.itemSlot);
+                    bool isValidEquipInverse = equm.ValidEquip(idm.itemSlot, itemSlot);
 
-                    if(isValidDropOrDestroyTransfer && isToInventory || isValidEquip)
+                    if(!idm.IsInverseEquip(itemSlot))
+                    {
+
+                        isValidEquipInverse = true;
+                    }
+
+                    if(isValidDropOrDestroyTransfer && isToInventory && isValidEquipInverse|| isValidEquip)
                     {
                        
                        idm.DropItem(itemSlot);

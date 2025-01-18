@@ -90,7 +90,7 @@ public class ItemDragManager : MonoBehaviour
     }
 
     //Checks if a transfer to a drop or destroy slot does not come from an invalid start slot type
-    public bool ValidTransfertoDropOrDestroyCheck(ItemSlot destinationItemSlot)
+    public bool ValidTransferToDropOrDestroyCheck(ItemSlot destinationItemSlot)
     {
 
         if((itemSlot.type is ItemSlotType.Loot || im.equipmentSlotsDictionary.Keys.Contains(itemSlot.type)) && (destinationItemSlot.type is ItemSlotType.Drop || destinationItemSlot.type is ItemSlotType.Destroy))
@@ -100,6 +100,23 @@ public class ItemDragManager : MonoBehaviour
         }
 
         return true;
+    }
+
+    //Checks if items will be swapped between an equipment slot and an inventory slot
+    public bool IsInverseEquip(ItemSlot destinationSlot)
+    {
+        
+        bool destinationIsEmpty = destinationSlot.item == null;
+        bool destinationIsInInventoryPanel = destinationSlot.type is ItemSlotType.Inventory || destinationSlot.type is ItemSlotType.Drop || destinationSlot.type is ItemSlotType.Destroy;
+        bool dragSlotIsEquipment = im.equipmentSlotsDictionary.ContainsKey(itemSlot.type);
+
+        if(dragSlotIsEquipment && destinationIsInInventoryPanel && !destinationIsEmpty)
+        {
+
+            return true;
+        }
+
+        return false;
     }
 
     public void OnDisable()

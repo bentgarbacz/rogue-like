@@ -148,6 +148,7 @@ public class TurnSequencer : MonoBehaviour
 
                             targetExit.ExitLevel();                            
                             mapGen.GetComponent<MapGenerator>().NewLevel();
+                            return;
                             
                         }else //move towards exit
                         {
