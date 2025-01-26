@@ -28,12 +28,7 @@ public class GoatmanCharacterSheet : EnemyCharacterSheet
     {
 
         //enemy attacks player character if they are in a neighboring tile
-        if(PathFinder.GetNeighbors(playerCharacter.coord, dum.dungeonCoords).Contains(coord))
-        {
-            
-            cbm.AddToCombatBuffer(this.gameObject, dum.hero);
-
-        }else //enemy moves towards player or attack if they are in a neighboring tile                 
+        if(!cbm.AddMeleeAttack(this.gameObject, dum.hero, minDamage, maxDamage, speed))
         {
 
             List<Vector2Int> pathToPlayer = PathFinder.FindPath(coord, playerCharacter.coord, dum.dungeonCoords); 

@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerCharacterSheet : CharacterSheet
@@ -30,7 +32,9 @@ public class PlayerCharacterSheet : CharacterSheet
     public int maxHealthBonus = 0;
     public int maxManaBonus = 0;
     public Dictionary<SpellType, int> knownSpells = new();
-    
+    private DungeonManager dum;
+    private InventoryManager im;
+    private CombatManager cbm;
 
     public override void Start()
     {
@@ -53,6 +57,11 @@ public class PlayerCharacterSheet : CharacterSheet
         levelUpAudioClip = Resources.Load<AudioClip>("Sounds/LevelUp");
 
         GetComponent<MoveToTarget>().SetNoise(audioSource, stepAudioClip);
+
+        GameObject managers = GameObject.Find("System Managers");
+        dum = managers.GetComponent<DungeonManager>();
+        im = managers.GetComponent<InventoryManager>();
+        cbm = managers.GetComponent<CombatManager>();
     }
 
     public void GainXP(int XP)
@@ -153,5 +162,110 @@ public class PlayerCharacterSheet : CharacterSheet
                 knownSpells[spellType] -= 1;
             }
         }
+    }
+
+    public bool AttackCharacter(GameObject defender)
+    {
+
+        bool attackOccured = false;
+        bool attackResult;
+
+        CharacterSheet defendingCharacter = defender.GetComponent<CharacterSheet>();
+
+        Equipment mainHandWeapon = (Equipment)im.equipmentSlotsDictionary[ItemSlotType.MainHand].item;
+        Equipment offHandWeapon = (Equipment)im.equipmentSlotsDictionary[ItemSlotType.OffHand].item;
+
+        if(mainHandWeapon == null && (offHandWeapon == null || offHandWeapon is Shield))
+        {
+
+            attackResult = cbm.AddMeleeAttack(
+                                              this.gameObject,
+                                              defender,
+                                              minDamage, 
+                                              maxDamage,
+                                              speed
+                                             );
+
+            attackOccured = attackResult || attackOccured;
+  
+        }else 
+        {
+            
+            if(mainHandWeapon != null)
+            {
+                
+                if(mainHandWeapon is not RangedWeapon)
+                {
+                    
+                    attackResult = cbm.AddMeleeAttack(
+                                                      this.gameObject,
+                                                      defender,
+                                                      mainHandWeapon.bonusStatDictionary[StatType.MinDamage], 
+                                                      mainHandWeapon.bonusStatDictionary[StatType.MaxDamage],
+                                                      speed
+                                                     );
+
+                    attackOccured = attackResult || attackOccured; 
+
+                }else if(mainHandWeapon is RangedWeapon rangedWeapon)
+                {
+                    
+                    attackResult = cbm.AddProjectileAttack( 
+                                                            this.gameObject, 
+                                                            defender, 
+                                                            rangedWeapon.bonusStatDictionary[StatType.Range], 
+                                                            rangedWeapon.bonusStatDictionary[StatType.MinDamage], 
+                                                            rangedWeapon.bonusStatDictionary[StatType.MaxDamage],
+                                                            speed,
+                                                            rangedWeapon.projectile
+                                                           );   
+
+                    attackOccured = attackResult || attackOccured;                  
+                }
+            }
+            
+
+            if(offHandWeapon != null && offHandWeapon is not Shield)
+            {
+
+                if(offHandWeapon is not RangedWeapon)
+                {
+                    
+                    attackResult = cbm.AddMeleeAttack(
+                                                      this.gameObject,
+                                                      defender,
+                                                      offHandWeapon.bonusStatDictionary[StatType.MinDamage], 
+                                                      offHandWeapon.bonusStatDictionary[StatType.MaxDamage],
+                                                      speed / 2
+                                                     );
+
+                    attackOccured = attackResult || attackOccured;
+
+                }else if(offHandWeapon is RangedWeapon rangedWeapon)
+                {
+                                                
+                    attackResult = cbm.AddProjectileAttack( 
+                                                            this.gameObject, 
+                                                            defender, 
+                                                            rangedWeapon.bonusStatDictionary[StatType.Range], 
+                                                            rangedWeapon.bonusStatDictionary[StatType.MinDamage], 
+                                                            rangedWeapon.bonusStatDictionary[StatType.MaxDamage],
+                                                            speed / 2,
+                                                            rangedWeapon.projectile
+                                                          );       
+
+                    attackOccured = attackResult || attackOccured;             
+                }
+            }
+        }
+        
+        if(!attackOccured)//move towards defender
+        {
+
+            List<Vector2Int> pathToDestination = PathFinder.FindPath(coord, defendingCharacter.coord, dum.dungeonCoords);            
+            Move(new Vector3(pathToDestination[1].x, 0.1f, pathToDestination[1].y), dum.occupiedlist);
+        }
+
+        return attackOccured;
     }
 }

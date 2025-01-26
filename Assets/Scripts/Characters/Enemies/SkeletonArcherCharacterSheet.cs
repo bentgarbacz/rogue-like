@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class SkeletonArcherCharacterSheet : EnemyCharacterSheet
@@ -34,28 +35,16 @@ public class SkeletonArcherCharacterSheet : EnemyCharacterSheet
         if(attackCooldown == 0)
         {
 
-            float distance = Vector3.Distance(transform.position, dum.hero.transform.position);
-
-            //enemy attacks player character if they are in a neighboring tile
-            if(range >= distance && LineOfSight.HasLOS(this.gameObject, dum.hero))
+            //Ranged attack initates if target is within range
+            if(cbm.AddProjectileAttack(this.gameObject, dum.hero, range, minDamage, maxDamage, speed, projectile))
             {
-
-                cbm.combatBuffer.Add( new Attack(
-                                            this.gameObject, 
-                                            dum.hero,
-                                            minDamage, 
-                                            maxDamage, 
-                                            speed,
-                                            projectile
-                                            ));
 
                 attackCooldown = 3;
 
-            }else //enemy moves towards player character if player is not in range
+            }else //move towards target if not within range
             {
-
-                List<Vector2Int> pathToPlayer = PathFinder.FindPath(coord, playerCharacter.coord, dum.dungeonCoords); 
-                    
+                
+                List<Vector2Int> pathToPlayer = PathFinder.FindPath(coord, playerCharacter.coord, dum.dungeonCoords);                     
                 Move(new Vector3(pathToPlayer[1].x, 0.1f, pathToPlayer[1].y), dum.occupiedlist);
             }
 

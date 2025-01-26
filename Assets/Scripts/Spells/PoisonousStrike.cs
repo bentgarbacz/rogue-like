@@ -33,45 +33,36 @@ public class PoisonousStrike : Spell
         {
 
             Equipment mainHandWeapon = (Equipment)im.equipmentSlotsDictionary[ItemSlotType.MainHand].item;
+
             CharacterSheet attackingCharacter = caster.GetComponent<CharacterSheet>();
             CharacterSheet defendingCharacter = target.GetComponent<CharacterSheet>();
+            
+            int minDamage = mainHandWeapon.bonusStatDictionary[StatType.MinDamage];
+            int maxDamage = mainHandWeapon.bonusStatDictionary[StatType.MaxDamage];
 
             if(mainHandWeapon != null)
             {
 
-                int damagePerTurn = (int)Math.Ceiling((double)(mainHandWeapon.bonusStatDictionary[StatType.MinDamage] + mainHandWeapon.bonusStatDictionary[StatType.MaxDamage]) / 5);
+                int damagePerTurn = (int)Math.Ceiling((double)(minDamage + maxDamage) / 5);
                 
-                if(mainHandWeapon is not RangedWeapon && PathFinder.GetNeighbors(defendingCharacter.coord, dum.dungeonCoords).Contains(attackingCharacter.coord))
+                if(mainHandWeapon is not RangedWeapon)
                 {
                     
-                    cbm.combatBuffer.Add( new Attack(
-                                                caster, 
-                                                target,
-                                                mainHandWeapon.bonusStatDictionary[StatType.MinDamage], 
-                                                mainHandWeapon.bonusStatDictionary[StatType.MaxDamage], 
-                                                attackingCharacter.speed
-                                                ));
-
-                    //poison target
-                    target.GetComponent<StatusEffectManager>().statusEffects.Add(new Poison(defendingCharacter, duration, damagePerTurn, dum));
-
-                    ResetCooldown(caster);
-                    return true;
-
-                }else if(mainHandWeapon is RangedWeapon rangedWeapon && mainHandWeapon.bonusStatDictionary[StatType.Range] >= Vector3.Distance(defendingCharacter.transform.position, dum.hero.transform.position))
-                {
-                    
-                    if(LineOfSight.HasLOS(dum.hero, target))
+                    if(cbm.AddMeleeAttack(caster, target, minDamage, maxDamage, attackingCharacter.speed))
                     {
-                        
-                        cbm.combatBuffer.Add( new Attack(
-                                                    caster, 
-                                                    target,
-                                                    mainHandWeapon.bonusStatDictionary[StatType.MinDamage], 
-                                                    mainHandWeapon.bonusStatDictionary[StatType.MaxDamage], 
-                                                    attackingCharacter.speed,
-                                                    rangedWeapon.projectile
-                                                    ));
+
+                        //poison target
+                        target.GetComponent<StatusEffectManager>().statusEffects.Add(new Poison(defendingCharacter, duration, damagePerTurn, dum));
+
+                        ResetCooldown(caster);
+                        return true;
+                    }
+
+                }else if(mainHandWeapon is RangedWeapon rangedWeapon)
+                {
+                    
+                    if(cbm.AddProjectileAttack(caster, target, rangedWeapon.bonusStatDictionary[StatType.Range], minDamage, maxDamage, attackingCharacter.speed, rangedWeapon.projectile))
+                    {
 
                         //poison target
                         target.GetComponent<StatusEffectManager>().statusEffects.Add(new Poison(defendingCharacter, duration, damagePerTurn, dum));

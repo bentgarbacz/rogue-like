@@ -27,12 +27,9 @@ public class Fireball : Spell
         if(target.GetComponent<CharacterSheet>())
         {
 
-            float distance = Vector3.Distance(caster.transform.position, target.transform.position);
-
-            if(LineOfSight.HasLOS(caster, target) && distance <= range)
+            if(cbm.AddProjectileAttack(caster, target, range, minDamage, maxDamage, caster.GetComponent<CharacterSheet>().speed, projectileType))
             {
 
-                cbm.combatBuffer.Add(new Attack(caster, target, minDamage, maxDamage, caster.GetComponent<CharacterSheet>().speed, projectileType));
                 ResetCooldown(caster);
                 return true;
             }
