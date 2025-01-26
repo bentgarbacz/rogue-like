@@ -31,6 +31,8 @@ public class UIActiveManager : MonoBehaviour
     public bool assignSpellContainerIsOpen = true;
     public GameObject nameplatePanel;
     public bool nameplatePanelIsOpen = true;
+    public GameObject mapPanel;
+    public bool mapPanelIsOpen = true;
     private InventoryManager im;
     public bool mouseOverUI = false;
 
@@ -51,12 +53,13 @@ public class UIActiveManager : MonoBehaviour
         CloseCharacterPanel();
         CloseLootPanel();
         CloseNameplatePanel();
-
+        
         pausePanel.SetActive(false);
           
         HideTooltip();
         HideItemDrag();
         HideAssignSpell(); 
+        HideMap();
     }
 
     public bool IsPointerOverUI()
@@ -373,6 +376,25 @@ public class UIActiveManager : MonoBehaviour
 
             assignSpellContainerIsOpen = false;
             assignSpellContainer.SetActive(assignSpellContainerIsOpen);
+        }
+    }
+
+    public void ShowMap()
+    {
+
+        mapPanel.SetActive(false);
+        mapPanelIsOpen = true;
+        mapPanel.SetActive(mapPanelIsOpen);
+    }
+
+    public void HideMap()
+    {
+
+        if(mapPanelIsOpen == true)
+        {
+
+            mapPanelIsOpen = false;
+            mapPanel.SetActive(mapPanelIsOpen);
         }
     }
 }

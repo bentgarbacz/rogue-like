@@ -50,9 +50,7 @@ public class SpellCaster : MonoBehaviour
                     bool spellCastSuccessfully = currentSpell.Cast(this.gameObject, target);
 
                     if(spellCastSuccessfully)
-                    {
-
-                        ts.SignalAction();
+                    {                        
 
                         if(currentSpell.castSound != null)
                         {
@@ -75,6 +73,8 @@ public class SpellCaster : MonoBehaviour
                             currentItemSlot = null;
                             currentScroll = null;
                         }
+
+                        ts.SignalAction();
                     }
                 }
 

@@ -52,16 +52,7 @@ public class DungeonManager : MonoBehaviour
     public void Smite(GameObject target, Vector3 targetPosition)
     {
         //Attacks to and from dead combatants removed from combat buffer
-        for(int i = 1; i < cbm.combatBuffer.Count; i++ )
-        {
-
-            if(target == cbm.combatBuffer[i].defender || target == cbm.combatBuffer[i].attacker)
-            {
-                
-                cbm.combatBuffer.RemoveAt(i);
-                i--;
-            }
-        }
+        cbm.PruneCombatBuffer(target);
 
         aggroEnemies.Remove(target);
         occupiedlist.Remove(targetPosition);

@@ -35,10 +35,13 @@ public class SavageLeap : Spell
             Equipment mainHandWeapon = (Equipment)im.equipmentSlotsDictionary[ItemSlotType.MainHand].item;
             CharacterSheet attackingCharacter = caster.GetComponent<CharacterSheet>();
             CharacterSheet defendingCharacter = target.GetComponent<CharacterSheet>();
-
+            
             if(mainHandWeapon != null)
             {
                 float distance = Vector3.Distance(caster.transform.position, target.transform.position);
+
+                int minDamage = mainHandWeapon.bonusStatDictionary[StatType.MinDamage];
+                int maxDamage = mainHandWeapon.bonusStatDictionary[StatType.MaxDamage];
 
                 if(mainHandWeapon is not RangedWeapon && LineOfSight.HasLOS(caster, target) && distance <= range)
                 {
@@ -49,14 +52,7 @@ public class SavageLeap : Spell
                         return false;
                     }
 
-                    cbm.combatBuffer.Add( new Attack(
-                                                caster, 
-                                                target,
-                                                mainHandWeapon.bonusStatDictionary[StatType.MinDamage], 
-                                                mainHandWeapon.bonusStatDictionary[StatType.MaxDamage], 
-                                                attackingCharacter.speed
-                                                ));
-
+                    cbm.AddMeleeAttack(caster, target, minDamage, maxDamage, attackingCharacter.speed );
 
                     ResetCooldown(caster);
                     return true;

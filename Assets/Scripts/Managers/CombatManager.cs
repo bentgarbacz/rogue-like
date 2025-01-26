@@ -8,18 +8,16 @@ public class CombatManager : MonoBehaviour
     public bool fighting = false;
     public float attackTime = 0.5f;
     public float trimTime = 0.25f;
-    public List<Attack> combatBuffer= new();
+    private List<Attack> combatBuffer= new();
     private DungeonManager dum;
-    private InventoryManager im;
-    private ProjectileReferences pm;
+    private ProjectileReferences allProjectiles;
 
     void Start()
     {
 
         GameObject managers = GameObject.Find("System Managers");
         dum = managers.GetComponent<DungeonManager>();
-        im = managers.GetComponent<InventoryManager>();
-        pm = managers.GetComponent<ProjectileReferences>();
+        allProjectiles = managers.GetComponent<ProjectileReferences>();
     }
 
     public void CommenceCombat()
@@ -32,6 +30,22 @@ public class CombatManager : MonoBehaviour
             fighting = true;
             SortBuffer();
             StartCoroutine(CombatTurns());
+        }
+    }
+
+    //Removes target's attacks from combat buffer
+    public void PruneCombatBuffer(GameObject target)
+    {
+
+        for(int i = 1; i < combatBuffer.Count; i++ )
+        {
+
+            if(target == combatBuffer[i].defender || target == combatBuffer[i].attacker)
+            {
+                
+                combatBuffer.RemoveAt(i);
+                i--;
+            }
         }
     }
 
@@ -59,7 +73,7 @@ public class CombatManager : MonoBehaviour
             if(attack.projectileType is not ProjectileType.None)
             {
 
-                GameObject projectileObject = pm.CreateProjectile(attack.projectileType, attacker.transform.position, attacker.transform.rotation);
+                GameObject projectileObject = allProjectiles.CreateProjectile(attack.projectileType, attacker.transform.position, attacker.transform.rotation);
                 Projectile projectile = projectileObject.GetComponent<Projectile>();
 
                 float projectileTime = ProjectileAirTime(projectile.speed, attacker.coord, defender.coord);
@@ -139,111 +153,34 @@ public class CombatManager : MonoBehaviour
         fighting = false;
     }
 
-    public bool AddToCombatBuffer(GameObject attacker, GameObject defender)
+    public bool AddMeleeAttack(GameObject attacker, GameObject defender, int minDamage, int maxDamage, int speed)
     {
-        
-        bool attackOccured = false;
 
-        CharacterSheet attackingCharacter = attacker.GetComponent<CharacterSheet>();
-        CharacterSheet defendingCharacter = defender.GetComponent<CharacterSheet>();
-
-        Equipment mainHandWeapon = (Equipment)im.equipmentSlotsDictionary[ItemSlotType.MainHand].item;
-        Equipment offHandWeapon = (Equipment)im.equipmentSlotsDictionary[ItemSlotType.OffHand].item;
-
-        if(mainHandWeapon == null && PathFinder.GetNeighbors(defendingCharacter.coord, dum.dungeonCoords).Contains(attackingCharacter.coord) || attackingCharacter is not PlayerCharacterSheet)
+        //attack occurs only if defender in in a neighboring tile of the attacker
+        if(PathFinder.GetNeighbors(defender.GetComponent<CharacterSheet>().coord, dum.dungeonCoords).Contains(attacker.GetComponent<CharacterSheet>().coord))
         {
 
-            attackOccured = true;
-            combatBuffer.Add( new Attack(
-                                        attacker, 
-                                        defender,
-                                        attackingCharacter.minDamage, 
-                                        attackingCharacter.maxDamage, 
-                                        attackingCharacter.speed
-                                        ));
-
+            combatBuffer.Add( new Attack(attacker, defender, minDamage, maxDamage, speed));
+            return true;
         }
 
-        if(mainHandWeapon != null && attackingCharacter is PlayerCharacterSheet)
+        return false;
+    }
+
+    public bool AddProjectileAttack(GameObject attacker, GameObject defender, int range, int minDamage, int maxDamage, int speed, ProjectileType projectile)
+    {
+
+        float distance = Vector3.Distance(attacker.transform.position, defender.transform.position);
+
+        //attack occurs only if attacker has a line of sight on the target
+        if(range >= distance && LineOfSight.HasLOS(attacker, defender))
         {
             
-            if(mainHandWeapon is not RangedWeapon && PathFinder.GetNeighbors(defendingCharacter.coord, dum.dungeonCoords).Contains(attackingCharacter.coord))
-            {
-                
-                attackOccured = true;
-                combatBuffer.Add( new Attack(
-                                            attacker, 
-                                            defender,
-                                            mainHandWeapon.bonusStatDictionary[StatType.MinDamage], 
-                                            mainHandWeapon.bonusStatDictionary[StatType.MaxDamage], 
-                                            attackingCharacter.speed
-                                            ));
-
-            }else if(mainHandWeapon is RangedWeapon rangedWeapon && mainHandWeapon.bonusStatDictionary[StatType.Range] >= Vector3.Distance(defendingCharacter.transform.position, dum.hero.transform.position))
-            {
-                
-                if(LineOfSight.HasLOS(dum.hero, defender))
-                {
-                    
-                    attackOccured = true;
-                    combatBuffer.Add( new Attack(
-                                                attacker, 
-                                                defender,
-                                                mainHandWeapon.bonusStatDictionary[StatType.MinDamage], 
-                                                mainHandWeapon.bonusStatDictionary[StatType.MaxDamage], 
-                                                attackingCharacter.speed,
-                                                rangedWeapon.projectile
-                                                ));
-                }
-            }
-        }
-        
-
-        if(offHandWeapon != null && attackingCharacter is PlayerCharacterSheet)
-        {
-            if(offHandWeapon is not Shield)
-            {
-
-                if(offHandWeapon is not RangedWeapon && PathFinder.GetNeighbors(defendingCharacter.coord, dum.dungeonCoords).Contains(attackingCharacter.coord))
-                {
-                    
-                    attackOccured = true;
-                    combatBuffer.Add( new Attack(
-                                                attacker, 
-                                                defender,
-                                                offHandWeapon.bonusStatDictionary[StatType.MinDamage], 
-                                                offHandWeapon.bonusStatDictionary[StatType.MaxDamage], 
-                                                attackingCharacter.speed / 2
-                                                ));
-
-                }else if(offHandWeapon is RangedWeapon rangedWeapon && offHandWeapon.bonusStatDictionary[StatType.Range] >= Vector3.Distance(defendingCharacter.transform.position, dum.hero.transform.position))
-                {
-                    
-                    if(LineOfSight.HasLOS(dum.hero, defender))
-                    {
-                        
-                        attackOccured = true;
-                        combatBuffer.Add( new Attack(
-                                                    attacker, 
-                                                    defender,
-                                                    offHandWeapon.bonusStatDictionary[StatType.MinDamage], 
-                                                    offHandWeapon.bonusStatDictionary[StatType.MaxDamage], 
-                                                    attackingCharacter.speed / 2,
-                                                    rangedWeapon.projectile
-                                                    ));
-                    }
-                }
-            }
-        }
-        
-        if(!attackOccured)//move towards defender
-        {
-
-            List<Vector2Int> pathToDestination = PathFinder.FindPath(attackingCharacter.coord, defendingCharacter.coord, dum.dungeonCoords);            
-            attackingCharacter.Move(new Vector3(pathToDestination[1].x, 0.1f, pathToDestination[1].y), dum.occupiedlist);
+            combatBuffer.Add( new Attack(attacker, defender,minDamage, maxDamage, speed, projectile) );
+            return true;
         }
 
-        return attackOccured;
+        return false;
     }
 
     private void SortBuffer()

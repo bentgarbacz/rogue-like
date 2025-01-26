@@ -11,9 +11,12 @@ public class TurnSequencer : MonoBehaviour
     public bool gameplayHalted = false;
     private bool actionTaken = false;
     private PlayerCharacterSheet playerCharacter;
+    private MoveToTarget pcMovement;
+    private AttackAnimation pcAttackAnimation;
     private DungeonManager dum;
     private UIActiveManager uiam;
     private CombatManager cbm;
+    private ClickManager cm;
     private Mouse mouse;
 
     void Start()
@@ -24,7 +27,10 @@ public class TurnSequencer : MonoBehaviour
         dum = managers.GetComponent<DungeonManager>();
         uiam = managers.GetComponent<UIActiveManager>();
         cbm = managers.GetComponent<CombatManager>();
+        cm = GetComponent<ClickManager>();
         playerCharacter = dum.hero.GetComponent<PlayerCharacterSheet>();
+        pcMovement = playerCharacter.GetComponent<MoveToTarget>();
+        pcAttackAnimation = dum.hero.GetComponent<AttackAnimation>();
     }   
     
     void Update()
@@ -35,7 +41,7 @@ public class TurnSequencer : MonoBehaviour
         {
             //If you have not reached the last node of your path 
             //and you are not currently moving to a node, move to the next node
-            if(dum.bufferedPath.Count > 0 && !playerCharacter.GetComponent<MoveToTarget>().moving)
+            if(dum.bufferedPath.Count > 0 && !pcMovement.moving)
             {
                 
                 playerCharacter.Move(new Vector3(dum.bufferedPath[0].x, 0.1f, dum.bufferedPath[0].y), dum.occupiedlist);
@@ -48,10 +54,10 @@ public class TurnSequencer : MonoBehaviour
             //mouse is not over a blocking UI element
             //you are not in the middle of an attack animation
             //some other action has not paused regular gameplay by setting gameplayHalted to true
-            }else if(mouse.leftButton.wasPressedThisFrame && uiam.IsPointerOverUI() == false && !dum.hero.GetComponent<AttackAnimation>().IsAttacking() && !gameplayHalted)
+            }else if(mouse.leftButton.wasPressedThisFrame && uiam.IsPointerOverUI() == false && !pcAttackAnimation.IsAttacking() && !gameplayHalted)
             {
 
-                GameObject target = GetComponent<ClickManager>().GetObject();   
+                GameObject target = cm.GetObject();
 
                 //execute action if actionable object was clicked
                 if(target != null && uiam.IsPointerOverUI() == false)
@@ -117,7 +123,8 @@ public class TurnSequencer : MonoBehaviour
                         if(targetCharacter != playerCharacter)
                         {
 
-                            cbm.AddToCombatBuffer(dum.hero, target);
+                            //cbm.AddToCombatBuffer(dum.hero, target);
+                            playerCharacter.AttackCharacter(target);
                         }
                     }
 
@@ -148,7 +155,6 @@ public class TurnSequencer : MonoBehaviour
 
                             targetExit.ExitLevel();                            
                             mapGen.GetComponent<MapGenerator>().NewLevel();
-                            return;
                             
                         }else //move towards exit
                         {
