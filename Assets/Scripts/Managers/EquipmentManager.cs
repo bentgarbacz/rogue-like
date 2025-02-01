@@ -103,6 +103,8 @@ public class EquipmentManager : MonoBehaviour
         //Set health and mana values so that they do not exceed their maximum values after recalculating stats
         playerCharacter.health = Mathf.Min(playerCharacter.health, playerCharacter.maxHealth);
         playerCharacter.mana = Mathf.Min(playerCharacter.mana, playerCharacter.maxMana);
+
+        playerCharacter.UpdateUI();
     } 
 
     //Checks to see if given equipment can be equiped based on its stat requirements

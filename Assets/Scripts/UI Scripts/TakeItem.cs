@@ -15,7 +15,7 @@ public class TakeItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
 
         itemSlot = transform.parent.gameObject.GetComponent<ItemSlot>();
-
+        
         im = GameObject.Find("System Managers").GetComponent<InventoryManager>();
         audioSource = GameObject.Find("CanvasHUD").GetComponent<AudioSource>();
         idm = GameObject.Find("System Managers").GetComponent<UIActiveManager>().itemDragContainer.GetComponent<ItemDragManager>(); 

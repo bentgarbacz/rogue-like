@@ -35,6 +35,7 @@ public class PlayerCharacterSheet : CharacterSheet
     private DungeonManager dum;
     private InventoryManager im;
     private CombatManager cbm;
+    [SerializeField] private UpdateUIElements updateStats;
 
     public override void Start()
     {
@@ -61,7 +62,9 @@ public class PlayerCharacterSheet : CharacterSheet
         GameObject managers = GameObject.Find("System Managers");
         dum = managers.GetComponent<DungeonManager>();
         im = managers.GetComponent<InventoryManager>();
-        cbm = managers.GetComponent<CombatManager>();
+        cbm = managers.GetComponent<CombatManager>();        
+
+        updateStats.RefreshUI();
     }
 
     public void GainXP(int XP)
@@ -87,12 +90,16 @@ public class PlayerCharacterSheet : CharacterSheet
 
             GetComponent<TextNotificationManager>().CreateNotificationOrder(transform.position, 2f, XP.ToString() + " XP", Color.green);
         }
+
+        updateStats.RefreshUI();
     }
 
     public void RegainMana(int regainValue)
     {
 
         mana = System.Math.Min(maxMana, mana + regainValue);
+
+        updateStats.RefreshUI();
     }
 
     public void LevelUp()
@@ -104,6 +111,8 @@ public class PlayerCharacterSheet : CharacterSheet
         freeStatPoints += 5;
 
         level += 1;
+
+        updateStats.RefreshUI();
     }
 
     public int GetCurrentLevelUpBreakpoint()
@@ -116,6 +125,8 @@ public class PlayerCharacterSheet : CharacterSheet
     {
 
         hunger = System.Math.Min(maxHunger, hunger + hungerValue);
+
+        UpdateUI();
     }
 
     public void BecomeHungrier(int hungerValue = 1)
@@ -148,6 +159,8 @@ public class PlayerCharacterSheet : CharacterSheet
 
             hungerBuffer = 0;
         }
+
+        UpdateUI();
     }
 
     public void DecrementCooldowns()
@@ -267,5 +280,27 @@ public class PlayerCharacterSheet : CharacterSheet
         }
 
         return attackOccured;
+    }
+
+    public void UpdateUI()
+    {
+
+        updateStats.RefreshUI();
+    }
+
+    public override void Heal(int healValue)
+    {
+
+        base.Heal(healValue);
+        UpdateUI();
+    }
+
+    public override int TakeDamage(int damage)
+    {
+
+        int damageTaken = base.TakeDamage(damage);
+        UpdateUI();
+
+        return damageTaken;
     }
 }

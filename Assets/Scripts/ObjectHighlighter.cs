@@ -35,10 +35,10 @@ public class ObjectHighlighter : MonoBehaviour, IPointerEnterHandler, IPointerEx
         if(highlightedCharacter != null)
         {
             
-            if(highlightedCharacter is not PlayerCharacterSheet)
+            if(highlightedCharacter is EnemyCharacterSheet enemy)
             {
 
-                npm.SetCharacter(highlightedCharacter);
+                npm.SetCharacter(enemy);
 
             }else
             {

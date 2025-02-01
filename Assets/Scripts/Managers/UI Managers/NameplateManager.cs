@@ -9,7 +9,7 @@ public class NameplateManager : MonoBehaviour
 
     [SerializeField]private Image bar;
     [SerializeField]private TextMeshProUGUI text;
-    private CharacterSheet character;
+    private EnemyCharacterSheet character;
     private UIActiveManager uiam;
 
     void Start()
@@ -19,20 +19,27 @@ public class NameplateManager : MonoBehaviour
     }
 
 
-    void Update()
+    public void UpdateHealth()
     {
         
         if(character != null)
         {
 
             bar.fillAmount = (float)character.health / (float)character.maxHealth;
+
+        }else
+        {
+
+            bar.fillAmount = 0f;
         }
     }
 
-    public void SetCharacter(CharacterSheet character)
+    public void SetCharacter(EnemyCharacterSheet character)
     {
 
         this.character = character;
+        character.focused = true;
+        UpdateHealth();
         text.SetText(character.GetName());
         text.ForceMeshUpdate(true);
 
@@ -41,6 +48,12 @@ public class NameplateManager : MonoBehaviour
 
     public void ClearCharacter()
     {
+
+        if(this.character != null)
+        {
+
+            this.character.focused = false;
+        }
 
         this.character = null;
         text.SetText("N/A");

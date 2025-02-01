@@ -44,13 +44,13 @@ public class CharacterSheet : MonoBehaviour
         missClip = Resources.Load<AudioClip>("Sounds/Miss");
     }
 
-    public int TakeDamage(int damage)
+    public virtual int TakeDamage(int damage)
     {
 
         return health -= damage;
     }
 
-    public void Heal(int healValue)
+    public virtual void Heal(int healValue)
     {
 
         health = System.Math.Min(maxHealth, health + healValue);

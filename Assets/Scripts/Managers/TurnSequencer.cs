@@ -11,6 +11,7 @@ public class TurnSequencer : MonoBehaviour
     public bool gameplayHalted = false;
     private bool actionTaken = false;
     private PlayerCharacterSheet playerCharacter;
+    private SpellCaster sc;
     private MoveToTarget pcMovement;
     private AttackAnimation pcAttackAnimation;
     private DungeonManager dum;
@@ -29,6 +30,7 @@ public class TurnSequencer : MonoBehaviour
         cbm = managers.GetComponent<CombatManager>();
         cm = GetComponent<ClickManager>();
         playerCharacter = dum.hero.GetComponent<PlayerCharacterSheet>();
+        sc = dum.hero.GetComponent<SpellCaster>();
         pcMovement = playerCharacter.GetComponent<MoveToTarget>();
         pcAttackAnimation = dum.hero.GetComponent<AttackAnimation>();
     }   
@@ -136,7 +138,7 @@ public class TurnSequencer : MonoBehaviour
                         if(PathFinder.GetNeighbors(targetLoot.coord, dum.dungeonCoords).Contains(playerCharacter.coord) || targetLoot.coord == playerCharacter.coord )
                         {
                             
-                            targetLoot.OpenContainer(target);
+                            targetLoot.OpenContainer();
 
                         }else //move towards container
                         {
@@ -220,5 +222,6 @@ public class TurnSequencer : MonoBehaviour
         dum.TriggerStatusEffects();
         playerCharacter.BecomeHungrier();
         playerCharacter.DecrementCooldowns();
+        sc.UpdateSpellSlots();
     }
 }

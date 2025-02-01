@@ -14,7 +14,6 @@ public class MouseOverItemSlot : MonoBehaviour, IPointerEnterHandler, IPointerEx
     private ToolTipManager ttm;
     private ItemDragManager idm;
     private EquipmentManager equm;
-    //private Coroutine dragCoroutine;
 
     void Awake()
     {
@@ -38,7 +37,7 @@ public class MouseOverItemSlot : MonoBehaviour, IPointerEnterHandler, IPointerEx
     void Update()
     {
         
-        if(mouseOver && Input.GetMouseButtonUp(0))
+        if(mouseOver && Input.GetMouseButtonDown(0))
         {
 
             if(!idm.isItemHeld && itemSlot.item != null)
