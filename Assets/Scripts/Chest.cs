@@ -2,32 +2,40 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Chest : MonoBehaviour
+public class Chest : Loot
 {
-    public List<Item> dropTable = new();
     public Mesh openMesh;
     public string lootTable = "Chest";
-    private Loot loot;
-    private DungeonManager dum;
     
     void Start()
     {   
+        GameObject managers = GameObject.Find("System Managers");
 
-        dum = GameObject.Find("System Managers").GetComponent<DungeonManager>();
-        loot = GetComponent<Loot>();
+        uiam = managers.GetComponent<UIActiveManager>();
+        dum = managers.GetComponent<DungeonManager>();
 
-        loot.AddItems(LootTableReferences.CreateItems(lootTable));  
-        dum.itemContainers.Add(loot);
+        audioSource = GetComponent<AudioSource>();
+
+        
+        AddItems(LootTableReferences.CreateItems(lootTable));  
+        dum.itemContainers.Add(this);
     }
 
-    void Update()
+    public override void DiscardIfEmpty()
     {
-        
-        if(loot.ItemCount() == 0)
+
+        if(ItemCount() == 0)
         {
 
             GetComponent<MeshFilter>().mesh = openMesh;
             enabled = false; 
         }
+    }
+
+    public override void OpenContainer()
+    {
+
+        base.OpenContainer();
+        DiscardIfEmpty();
     }
 }

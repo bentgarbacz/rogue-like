@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -57,7 +58,7 @@ public class InventoryManager : MonoBehaviour
     {
         
         //Clear items held in loot slots
-        foreach(ItemSlot slot in lootSlots)
+        foreach(LootSlot slot in lootSlots.Cast<LootSlot>())
         {
 
             slot.ThrowAway();
@@ -65,22 +66,22 @@ public class InventoryManager : MonoBehaviour
     }
 
     //Puts list of items into loot slots
-    public void PopulateLootSlots(List<Item> items)
+    public void PopulateLootSlots(Loot newLoot)
     {
 
         ClearItemsLoot();
         
-        foreach(Item item in items)
+        foreach(Item item in newLoot.items)
         {
 
-            foreach(ItemSlot slot in lootSlots)
+            foreach(LootSlot slot in lootSlots)
             {
                 
                 if(slot.item == null)
                 {
 
                     slot.AddItem(item);
-                    slot.itemList = items;
+                    slot.parentLoot = newLoot;
                     break;
                 }
             }
@@ -111,9 +112,8 @@ public class InventoryManager : MonoBehaviour
         if(!(sourceSlot.type is ItemSlotType.Loot && targetSlot.item != null))
         {
 
-            //transfer item to inventory and handle UI logic
-            List<Item> holdItemList = sourceSlot.itemList;
-
+            //transfer item to inventory and handle UI logic         
+            
             sourceSlot.TransferItem(targetSlot);
 
             sourceSlot.slot.GetComponent<MouseOverItemSlot>().MouseExit();    
@@ -121,10 +121,10 @@ public class InventoryManager : MonoBehaviour
             if(sourceSlot.type is not ItemSlotType.Inventory && sourceSlot.type is not ItemSlotType.Drop && sourceSlot.type is not ItemSlotType.Destroy)
             {
 
-                if(sourceSlot.type is ItemSlotType.Loot)
+                if(sourceSlot is LootSlot ls)
                 {  
                                 
-                    uiam.OpenLootPanel(holdItemList);
+                    uiam.OpenLootPanel(ls.parentLoot);
 
                 }else if(equipmentSlotsDictionary[sourceSlot.type])
                 {

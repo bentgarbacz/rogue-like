@@ -28,18 +28,20 @@ public class UpdateUIElements : MonoBehaviour
     public TextMeshProUGUI accuracyStatus;
     public TextMeshProUGUI damageRangeStatus;
     public TextMeshProUGUI freeStatPointsStatus;
-
     public GameObject hero;
     private PlayerCharacterSheet playerCharacter;
+    private UIActiveManager uiam;
 
     void Start()
     {
 
         playerCharacter = hero.GetComponent<PlayerCharacterSheet>();
+        uiam = GameObject.Find("System Managers").GetComponent<UIActiveManager>();
     }
 
-    void Update()
+    public void RefreshUI()
     {
+
         if(playerCharacter)
         {
 
@@ -75,6 +77,22 @@ public class UpdateUIElements : MonoBehaviour
 
             healthStatus.SetText("0");
         }
+
+        SetLevelupNotification();
+    }
+
+    public void SetLevelupNotification()
+    {
         
+        if(playerCharacter.freeStatPoints > 0)
+        {
+
+            uiam.ShowLevelUpNotifications();
+
+        }else
+        {
+
+            uiam.HideLevelUpNotifications();
+        }
     }
 }

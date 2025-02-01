@@ -44,5 +44,6 @@ public class AllocateStats : MonoBehaviour
         }
 
         im.UpdateStats();
+        playerCharacter.UpdateUI();
     }
 }

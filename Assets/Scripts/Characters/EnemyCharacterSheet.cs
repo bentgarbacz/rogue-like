@@ -5,10 +5,15 @@ using UnityEngine;
 public class EnemyCharacterSheet : CharacterSheet
 {
 
+    public bool focused;
+    private NameplateManager npm;
+
     public override void Start()
     {
 
         base.Start();
+        npm = GameObject.Find("CanvasHUD").transform.GetChild(11).GetComponent<NameplateManager>();
+        focused = false;
     }
 
     //Custom rules that describe how each enemy reacts when they see the player character
@@ -16,5 +21,20 @@ public class EnemyCharacterSheet : CharacterSheet
     {
 
         return;
+    }
+    public override void Heal(int healValue)
+    {
+
+        base.Heal(healValue);
+        npm.UpdateHealth();
+    }
+
+    public override int TakeDamage(int damage)
+    {
+
+        int damageTaken = base.TakeDamage(damage);
+        npm.UpdateHealth();
+
+        return damageTaken;
     }
 }

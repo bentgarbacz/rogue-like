@@ -22,7 +22,7 @@ public class UIActiveManager : MonoBehaviour
     public GameObject addStrengthButton;
     public GameObject addDexterityButton;
     public GameObject addIntelligenceButton;
-    public bool levelUpNotificationIsValid = false; 
+    public bool levelUpNotificationIsValid = true; 
     public GameObject  toolTipContainer;
     public bool toolTipContainerIsOpen = true;
     public GameObject  itemDragContainer;
@@ -55,7 +55,8 @@ public class UIActiveManager : MonoBehaviour
         CloseNameplatePanel();
         
         pausePanel.SetActive(false);
-          
+        
+        HideLevelUpNotifications();
         HideTooltip();
         HideItemDrag();
         HideAssignSpell(); 
@@ -124,10 +125,10 @@ public class UIActiveManager : MonoBehaviour
     }
 
     //items - list of items that will be looted
-    public void OpenLootPanel(List<Item> items)
+    public void OpenLootPanel(Loot loot)
     {
         
-        im.PopulateLootSlots(items);
+        im.PopulateLootSlots(loot);
             
         if(lootIsOpen == false)
         {

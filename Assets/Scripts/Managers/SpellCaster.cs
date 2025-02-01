@@ -9,6 +9,7 @@ public class SpellCaster : MonoBehaviour
 
     public bool targeting = false;
     public bool selfCasting = false;
+    private List<SpellSlot> spellSlots = new();
     private Spell currentSpell;
     private ItemSlot currentItemSlot;
     private Scroll currentScroll;
@@ -125,6 +126,7 @@ public class SpellCaster : MonoBehaviour
 
         pc.knownSpells[spellType] = sm.spellDictionary[spellType].cooldown;
         pc.mana -= sm.spellDictionary[spellType].manaCost;
+        UpdateSpellSlots();
     }
 
     public void SelfCast(SpellType spellType)
@@ -157,6 +159,22 @@ public class SpellCaster : MonoBehaviour
 
             currentScroll = scroll;
             currentItemSlot = slot;
+        }
+    }
+
+    public void RegisterSpellSlot(SpellSlot newSpellSlot)
+    {
+
+        spellSlots.Add(newSpellSlot);
+    }
+
+    public void UpdateSpellSlots()
+    {
+
+        foreach(SpellSlot currentSpellSlot in spellSlots)
+        {
+
+            currentSpellSlot.UpdateCooldown();
         }
     }
 }

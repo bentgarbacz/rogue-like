@@ -27,32 +27,7 @@ public class SpellSlot : MonoBehaviour
         defaultSprite = Resources.Load<Sprite>("Pixel Art/UI/Inventory/emptySprite");
         slot.image.sprite = defaultSprite;
         cooldownMask.fillAmount = 0f;
-    }
-
-    void Update()
-    {
-
-        if(spell is not SpellType.None)
-        {
-
-            slot.image.sprite = sm.spellDictionary[spell].sprite;
-
-            if(pc.knownSpells[spell] == 0)
-            {
-
-                cooldownMask.fillAmount = 0f;
-
-            }else
-            {
-
-                cooldownMask.fillAmount = ((float)pc.knownSpells[spell] / (float)sm.spellDictionary[spell].cooldown);
-            }
-
-        }else
-        {
-
-            cooldownMask.fillAmount = 0f;
-        }
+        sc.RegisterSpellSlot(this);
     }
 
     public void SetSpell(SpellType spell)
@@ -70,6 +45,8 @@ public class SpellSlot : MonoBehaviour
             this.spell = SpellType.None;
             this.slot.image.sprite = defaultSprite;
         }
+
+        UpdateCooldown();
     }
 
     public void ClearSpell()
@@ -77,6 +54,22 @@ public class SpellSlot : MonoBehaviour
 
         this.spell = SpellType.None;
         this.slot.image.sprite = defaultSprite;
+        UpdateCooldown();
+    }
+
+    public void UpdateCooldown()
+    {
+        
+        if(spell is not SpellType.None)
+        {
+            
+            cooldownMask.fillAmount = ((float)pc.knownSpells[spell] / (float)sm.spellDictionary[spell].cooldown);
+
+        }else
+        {
+
+            cooldownMask.fillAmount = 0f;
+        }
     }
 
     public void Click()

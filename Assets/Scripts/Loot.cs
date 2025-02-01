@@ -6,13 +6,18 @@ public class Loot : MonoBehaviour
 {
     public Vector2Int coord;
     public List<Item> items;
-    private UIActiveManager uiam;
-    private AudioSource audioSource;
+    protected UIActiveManager uiam;
+    protected DungeonManager dum;
+    protected AudioSource audioSource;
 
     void Start()
     {
         
-        uiam = GameObject.Find("System Managers").GetComponent<UIActiveManager>();
+        GameObject managers = GameObject.Find("System Managers");
+
+        uiam = managers.GetComponent<UIActiveManager>();
+        dum = managers.GetComponent<DungeonManager>();
+
         audioSource = GetComponent<AudioSource>();
     }
 
@@ -22,12 +27,12 @@ public class Loot : MonoBehaviour
         items = newItems;
     }
 
-    public void OpenContainer(GameObject container)
+    public virtual void OpenContainer()
     {
 
         audioSource.Play();
 
-        uiam.OpenLootPanel(items);        
+        uiam.OpenLootPanel(this);        
         uiam.OpenInventoryPanel();
     }
 
@@ -35,5 +40,21 @@ public class Loot : MonoBehaviour
     {
 
         return items.Count;
+    }
+
+    public void Discard()
+    {
+
+        dum.TossContainer(gameObject);
+    }
+
+    public virtual void DiscardIfEmpty()
+    {
+
+        if(ItemCount() == 0)
+        {
+        
+            Discard();
+        }
     }
 }

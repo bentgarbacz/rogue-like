@@ -8,15 +8,16 @@ public class ItemSlot : MonoBehaviour
 
     public Item item = null;
     public Button slot;
-    public List<Item> itemList;
     public int slotIndex;
     public ItemSlotType type;
     public Sprite defaultSprite;
+    protected ItemDragManager idm;
    
     void Awake()
     {       
 
         slot.image.sprite = defaultSprite;
+        idm = GameObject.Find("System Managers").GetComponent<UIActiveManager>().itemDragContainer.GetComponent<ItemDragManager>();
     }
 
     public void AddItem(Item newItem)
@@ -31,24 +32,18 @@ public class ItemSlot : MonoBehaviour
 
         item = null;
         slot.image.sprite = defaultSprite;
-        itemList = null;
     }
 
-    public void TransferItem(ItemSlot destinationItemSlot)
+    public virtual void TransferItem(ItemSlot destinationItemSlot)
     {
 
         Item itemHold = destinationItemSlot.item;
+        idm.ForgetItem();
 
         if(item != null)
         {
 
             destinationItemSlot.AddItem(item);
-        }
-
-        if(itemList != null)
-        {
-            
-            itemList.RemoveAt(slotIndex);
         }
 
         if(itemHold == null)
