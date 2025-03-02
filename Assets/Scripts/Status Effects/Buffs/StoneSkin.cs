@@ -31,4 +31,10 @@ public class StoneSkin : StatusEffect
 
         affectedCharacter.armor -= armorIncrease;
     }
+
+    public override string GetDescription()
+    {
+
+        return "Increase armor by " + armorIncrease.ToString();
+    }
 }

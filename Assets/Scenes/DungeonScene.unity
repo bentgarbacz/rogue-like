@@ -13949,11 +13949,11 @@ RectTransform:
   - {fileID: 1018430768}
   - {fileID: 1288784405}
   - {fileID: 1129266915}
-  - {fileID: 1387385337}
   - {fileID: 1653126811}
   - {fileID: 1171624147}
   - {fileID: 313091424}
   - {fileID: 1977274816}
+  - {fileID: 1387385337}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -19255,6 +19255,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1171624147}
   - component: {fileID: 1171624148}
+  - component: {fileID: 1171624150}
+  - component: {fileID: 1171624149}
   m_Layer: 5
   m_Name: Status Effects Panel
   m_TagString: Untagged
@@ -19289,6 +19291,44 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1171624146}
   m_CullTransparentMesh: 1
+--- !u!114 &1171624149
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1171624146}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a8695521f0d02e499659fee002a26c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 0
+  m_StartCorner: 0
+  m_StartAxis: 0
+  m_CellSize: {x: 50, y: 75}
+  m_Spacing: {x: 15, y: 0}
+  m_Constraint: 0
+  m_ConstraintCount: 2
+--- !u!114 &1171624150
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1171624146}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11a4355fade4fda4da0c1454b39dce36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  statusEffectGrid: {fileID: 1171624149}
+  notificationPrefab: {fileID: 2532955743489736437, guid: fd3636fdf93c6bf44b19774c7fe5a0cc, type: 3}
 --- !u!1001 &1191892555
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -37334,7 +37374,6 @@ MonoBehaviour:
   armor: 0
   evasion: 0
   dropTable: 
-  sem: {fileID: 0}
   audioSource: {fileID: 0}
   attackClip: {fileID: 0}
   missClip: {fileID: 0}
@@ -37363,6 +37402,7 @@ MonoBehaviour:
   maxHealthBonus: 0
   maxManaBonus: 0
   updateStats: {fileID: 896522264}
+  snm: {fileID: 1171624150}
 --- !u!114 &6442338754152421643
 MonoBehaviour:
   m_ObjectHideFlags: 0

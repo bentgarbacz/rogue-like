@@ -25,7 +25,7 @@ public class CharacterSheet : MonoBehaviour
     public int armor = 0;
     public int evasion = 0;    
     public string dropTable;
-    public StatusEffectManager sem;
+    protected StatusEffectManager sem;
     public AudioSource audioSource;
     public AudioClip attackClip;
     public AudioClip missClip;
@@ -102,6 +102,12 @@ public class CharacterSheet : MonoBehaviour
     {
 
         return title;
+    }
+
+    public virtual void ProcessStatusEffects()
+    {
+
+        sem.ProcessStatusEffects();
     }
 }
 

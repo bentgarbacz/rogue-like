@@ -22,8 +22,17 @@ public class Fortify : Spell
     public override bool Cast(GameObject caster, GameObject target = null)
     {
 
-        caster.GetComponent<StatusEffectManager>().statusEffects.Add(new StoneSkin(caster.GetComponent<CharacterSheet>(), duration, armorIncrease));
+        CharacterSheet casterCharacter = caster.GetComponent<CharacterSheet>();
+
+        caster.GetComponent<StatusEffectManager>().AddEffect(new StoneSkin(casterCharacter, duration, armorIncrease));
         ResetCooldown(caster);
+
+        if(casterCharacter is PlayerCharacterSheet pc)
+        {
+
+            pc.UpdateUI();
+        }
+
         return true;
     }
 }

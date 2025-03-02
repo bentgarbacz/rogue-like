@@ -14,7 +14,7 @@ public class Stealth : StatusEffect
         this.affectedCharacter = affectedCharacter;
         this.duration = duration;
         this.dum = dum;
-        this.sprite = Resources.Load<Sprite>("Pixel Art/Spells/Fireball");
+        this.sprite = Resources.Load<Sprite>("Pixel Art/Spells/Slink Away");
 
         dum.enemiesOnLookout = false;
         dum.ClearAggroBuffer();
@@ -31,5 +31,11 @@ public class Stealth : StatusEffect
     {
         
         dum.enemiesOnLookout = true;
+    }
+
+    public override string GetDescription()
+    {
+
+        return "Unseen by enemies";
     }
 }

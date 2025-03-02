@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class DungeonManager : MonoBehaviour
@@ -20,6 +21,7 @@ public class DungeonManager : MonoBehaviour
     public Dictionary<string, List<Vector2Int>> cachedPathsDict = new();    
     private CombatManager cbm;
     private TurnSequencer ts;
+    private PlayerCharacterSheet playerCharacter;
 
     void Start()
     {
@@ -27,6 +29,7 @@ public class DungeonManager : MonoBehaviour
         GameObject managers = GameObject.Find("System Managers");
         cbm = managers.GetComponent<CombatManager>();
         ts = managers.GetComponent<TurnSequencer>();
+        playerCharacter = hero.GetComponent<PlayerCharacterSheet>();
 
         mainCamera.GetComponent<PlayerCamera>().SetFocalPoint(hero);
     }
@@ -34,12 +37,12 @@ public class DungeonManager : MonoBehaviour
     public void TriggerStatusEffects()
     {
 
-        hero.GetComponent<CharacterSheet>().GetComponent<StatusEffectManager>().ProcessStatusEffects();
+        playerCharacter.ProcessStatusEffects();
 
-        foreach(GameObject enemy in enemies)
+        foreach(GameObject enemy in enemies.ToList())
         {
 
-            enemy.GetComponent<CharacterSheet>().GetComponent<StatusEffectManager>().ProcessStatusEffects();
+            enemy.GetComponent<CharacterSheet>().ProcessStatusEffects();
         }
     }
 
@@ -69,7 +72,7 @@ public class DungeonManager : MonoBehaviour
             target.GetComponent<DropLoot>().Drop();
 
             int gainedXP = target.GetComponent<CharacterSheet>().level * 5;
-            hero.GetComponent<PlayerCharacterSheet>().GainXP(gainedXP);
+            playerCharacter.GainXP(gainedXP);
         }        
 
         Destroy(target);  
@@ -105,8 +108,7 @@ public class DungeonManager : MonoBehaviour
         aggroEnemies = new HashSet<GameObject>();
         bufferedPath = new List<Vector2Int>();
 
-        //This is weird
-        hero.GetComponent<CharacterSheet>().Teleport(new Vector3(0, 0, 0), gameObject.GetComponent<DungeonManager>());
+        playerCharacter.Teleport(new Vector3(0, 0, 0), this);
     }
 
     public bool CheckPosForOccupancy(Vector3 pos)

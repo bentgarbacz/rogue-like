@@ -5,7 +5,7 @@ using UnityEngine;
 public class StatusEffectManager : MonoBehaviour
 {
 
-    public List<StatusEffect> statusEffects = new();
+    private List<StatusEffect> statusEffects = new();
 
     public void ProcessStatusEffects()
     {
@@ -20,5 +20,27 @@ public class StatusEffectManager : MonoBehaviour
                 statusEffects.RemoveAt(i);
             }
         }
+    }
+
+    public void AddEffect(StatusEffect newEffect)
+    {
+
+        PlayerCharacterSheet pc = GetComponent<PlayerCharacterSheet>();
+
+        statusEffects.Add(newEffect);
+
+
+        if(pc)
+        {
+
+            pc.UpdateStatusNotifications();
+        }
+
+    }
+
+    public List<StatusEffect> GetStatusEffects()
+    {
+
+        return statusEffects;
     }
 }

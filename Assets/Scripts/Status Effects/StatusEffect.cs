@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -20,5 +21,11 @@ public class StatusEffect
     {
 
         return;
+    }
+
+    public virtual string GetDescription()
+    {
+
+        return type.ToString();
     }
 }

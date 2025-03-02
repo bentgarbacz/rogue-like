@@ -12,7 +12,7 @@ public class EnemyCharacterSheet : CharacterSheet
     {
 
         base.Start();
-        npm = GameObject.Find("CanvasHUD").transform.GetChild(11).GetComponent<NameplateManager>();
+        npm = GameObject.Find("CanvasHUD").transform.GetChild(10).GetComponent<NameplateManager>();
         focused = false;
     }
 

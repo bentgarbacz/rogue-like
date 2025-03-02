@@ -13,6 +13,7 @@ public class Exit : MonoBehaviour
 
         dum = GameObject.Find("System Managers").GetComponent<DungeonManager>();
     }
+    
     public void ExitLevel()
     {
 
