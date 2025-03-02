@@ -126,6 +126,7 @@ public class SpellCaster : MonoBehaviour
 
         pc.knownSpells[spellType] = sm.spellDictionary[spellType].cooldown;
         pc.mana -= sm.spellDictionary[spellType].manaCost;
+        pc.UpdateUI();
         UpdateSpellSlots();
     }
 

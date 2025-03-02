@@ -8,7 +8,7 @@ public class CombatManager : MonoBehaviour
     public bool fighting = false;
     public float attackTime = 0.5f;
     public float trimTime = 0.25f;
-    private List<Attack> combatBuffer= new();
+    private List<Attack> combatBuffer;
     private DungeonManager dum;
     private ProjectileReferences allProjectiles;
 
@@ -18,6 +18,7 @@ public class CombatManager : MonoBehaviour
         GameObject managers = GameObject.Find("System Managers");
         dum = managers.GetComponent<DungeonManager>();
         allProjectiles = managers.GetComponent<ProjectileReferences>();
+        combatBuffer = new();
     }
 
     public void CommenceCombat()
@@ -107,43 +108,50 @@ public class CombatManager : MonoBehaviour
             attackerAnimation.MeleeAttack();
 
             yield return new WaitForSeconds(waitTime - trimTime); //Trim some time here because it feels more responsive
+            //yield return new WaitForSeconds(waitTime);
 
-            //Calculate damage 
-            if(hitSuccessful)
+            if(defender != null)
             {
 
-                int damage = Random.Range(attack.minDamage, attack.maxDamage + 1);
-                
-
-                //Determine if attack was critical         
-                if(Random.Range(0, 100) < attacker.critChance)
+                //Calculate damage 
+                if(hitSuccessful)
                 {
 
-                    damage *= attacker.critMultiplier;
-                    defenderNotifier.CreateNotificationOrder(defender.transform.position, 2f, damage.ToString(), Color.yellow);
+                    int damage = Random.Range(attack.minDamage, attack.maxDamage + 1);
+                    
 
+                    //Determine if attack was critical         
+                    if(Random.Range(0, 100) < attacker.critChance)
+                    {
+
+                        damage *= attacker.critMultiplier;
+                        defenderNotifier.CreateNotificationOrder(defender.transform.position, 2f, damage.ToString(), Color.yellow);
+
+                    }else
+                    {
+
+                        defenderNotifier.CreateNotificationOrder(defender.transform.position, 2f, damage.ToString(), Color.red);
+                    }
+
+                    defender.TakeDamage(damage);
+                
                 }else
                 {
 
-                    defenderNotifier.CreateNotificationOrder(defender.transform.position, 2f, damage.ToString(), Color.red);
+                    //take 0 damage on miss
+                    defenderNotifier.CreateNotificationOrder(defender.transform.position, 2f, "Miss", Color.white);
                 }
 
-                defender.TakeDamage(damage);
-            
-            }else
-            {
+                yield return new WaitForSeconds(trimTime); //Wait out time trimmed from above
 
-                //take 0 damage on miss
-                defenderNotifier.CreateNotificationOrder(defender.transform.position, 2f, "Miss", Color.white);
-            }
-
-            yield return new WaitForSeconds(trimTime); //Wait out time trimmed from above
-
-            //kills defender of attack if it's health falls below 1
-            if(defender.health <= 0)
-            {
-                yield return new WaitForSeconds(0.05f); //Give the GameObject of dead character time to wrap up before it is destroyed
-                dum.Smite(combatBuffer[0].defender, defender.pos);                                                                    
+                //kills defender of attack if it's health falls below 1
+                if(defender.health <= 0)
+                {
+                    yield return new WaitForSeconds(0.05f); //Give the GameObject of dead character time to wrap up before it is destroyed
+                    dum.Smite(combatBuffer[0].defender, defender.pos);                                                                    
+                }
+            }else{
+                Debug.Log("Gotcha!");
             }
 
             combatBuffer.RemoveAt(0);            

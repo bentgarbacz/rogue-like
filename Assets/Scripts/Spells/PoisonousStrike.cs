@@ -52,7 +52,7 @@ public class PoisonousStrike : Spell
                     {
 
                         //poison target
-                        target.GetComponent<StatusEffectManager>().statusEffects.Add(new Poison(defendingCharacter, duration, damagePerTurn, dum));
+                        target.GetComponent<StatusEffectManager>().AddEffect(new Poison(defendingCharacter, duration, damagePerTurn, dum));
 
                         ResetCooldown(caster);
                         return true;
@@ -65,7 +65,7 @@ public class PoisonousStrike : Spell
                     {
 
                         //poison target
-                        target.GetComponent<StatusEffectManager>().statusEffects.Add(new Poison(defendingCharacter, duration, damagePerTurn, dum));
+                        target.GetComponent<StatusEffectManager>().AddEffect(new Poison(defendingCharacter, duration, damagePerTurn, dum));
                         
                         ResetCooldown(caster);
                         return true;

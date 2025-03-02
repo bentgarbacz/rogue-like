@@ -36,6 +36,7 @@ public class PlayerCharacterSheet : CharacterSheet
     private InventoryManager im;
     private CombatManager cbm;
     [SerializeField] private UpdateUIElements updateStats;
+    [SerializeField] private StatusNotificationManager snm;
 
     public override void Start()
     {
@@ -286,6 +287,19 @@ public class PlayerCharacterSheet : CharacterSheet
     {
 
         updateStats.RefreshUI();
+    }
+
+    public override void ProcessStatusEffects()
+    {
+
+        sem.ProcessStatusEffects();
+        UpdateStatusNotifications();
+    }
+
+    public void UpdateStatusNotifications()
+    {
+
+        snm.UpdateStatusNotifications(sem.GetStatusEffects());
     }
 
     public override void Heal(int healValue)

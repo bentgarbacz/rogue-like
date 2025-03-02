@@ -29,9 +29,16 @@ public class Poison : StatusEffect
         {
 
             dum.Smite(affectedCharacter.gameObject, affectedCharacter.pos);
+            //affectedCharacter
         }
 
         duration -= 1;
         return duration;
+    }
+
+    public override string GetDescription()
+    {
+
+        return "Take " + damageOverTime.ToString() + " damage each turn";
     }
 }

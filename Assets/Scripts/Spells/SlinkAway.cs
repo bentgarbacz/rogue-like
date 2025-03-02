@@ -43,7 +43,7 @@ public class SlinkAway : Spell
                     return false;
                 }
 
-                statusEffectManager.statusEffects.Add(new Stealth(casterCharacterSheet, duration, dum));
+                statusEffectManager.AddEffect(new Stealth(casterCharacterSheet, duration, dum));
                 ResetCooldown(caster);
                 return true;
             }
