@@ -9,7 +9,8 @@ public class Scroll : Item
     public int dexterityRequirement = 0;
     public int intelligenceRequirement = 0;
     public SpellType spellType;
-    public PlayerCharacterSheet playerCharacter = GameObject.Find("System Managers").GetComponent<DungeonManager>().hero.GetComponent<PlayerCharacterSheet>();
+    public PlayerCharacterSheet playerCharacter;
+    private readonly GameObject hero = GameObject.Find("System Managers").GetComponent<DungeonManager>().hero;
 
     public Scroll()
     {
@@ -17,14 +18,17 @@ public class Scroll : Item
         sprite = Resources.Load<Sprite>("Pixel Art/Items/Scroll");
         contextClip = Resources.Load<AudioClip>("Sounds/Scroll");
         contextText = "Cast";
+        playerCharacter = hero.GetComponent<PlayerCharacterSheet>();
     }
+
 
     public override void Use()
     {
 
         if(MeetsRequirements() && !playerCharacter.knownSpells.ContainsKey(spellType))
         {
-            
+
+            hero.GetComponent<TextNotificationManager>().CreateNotificationOrder(hero.transform.position, 3f, "Spell Memorized", Color.cyan, 1f);
             playerCharacter.knownSpells.Add(spellType, 0);
         }
     }

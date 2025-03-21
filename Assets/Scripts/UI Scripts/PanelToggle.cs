@@ -42,4 +42,11 @@ public class PanelToggle : MonoBehaviour
         audioSource.Play();
         uiam.HideAssignSpell();
     }
+
+    public void ClickMap()
+    {
+
+        audioSource.Play();
+        uiam.ToggleMap();
+    }
 }

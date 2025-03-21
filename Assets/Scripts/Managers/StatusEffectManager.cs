@@ -26,9 +26,35 @@ public class StatusEffectManager : MonoBehaviour
     {
 
         PlayerCharacterSheet pc = GetComponent<PlayerCharacterSheet>();
+        bool uniqueEffectFound = false;
 
-        statusEffects.Add(newEffect);
+        if(newEffect.isUnique)
+        {
+            
+            for(int i = 0; i < statusEffects.Count; i++)
+            {
 
+                if(newEffect.type == statusEffects[i].type)
+                {
+
+                    if(newEffect.duration > statusEffects[i].duration)
+                    {
+
+                        statusEffects.RemoveAt(i);
+                        break;
+                    }
+
+                    uniqueEffectFound = true;
+                    break;
+                }
+            }
+        }
+        
+        if(!uniqueEffectFound)
+        {
+
+            statusEffects.Add(newEffect);
+        }    
 
         if(pc)
         {

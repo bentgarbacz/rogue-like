@@ -18,6 +18,7 @@ public class TurnSequencer : MonoBehaviour
     private UIActiveManager uiam;
     private CombatManager cbm;
     private ClickManager cm;
+    [SerializeField] private MapManager mm;
     private Mouse mouse;
 
     void Start()
@@ -167,7 +168,6 @@ public class TurnSequencer : MonoBehaviour
                     }
 
                     actionTaken = true;
-                    UpkeepEffects();
                 }
             }
 
@@ -186,6 +186,9 @@ public class TurnSequencer : MonoBehaviour
 
                 //start combat for the turn
                 cbm.CommenceCombat();
+
+                //Perform upkeep effects for the turn
+                UpkeepEffects();
             }
             
 
@@ -223,5 +226,6 @@ public class TurnSequencer : MonoBehaviour
         playerCharacter.BecomeHungrier();
         playerCharacter.DecrementCooldowns();
         sc.UpdateSpellSlots();
+        mm.UpdateDynamicIcons();
     }
 }

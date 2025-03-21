@@ -8,12 +8,14 @@ public class DungeonManager : MonoBehaviour
 {
 
     public GameObject hero;
+    public PlayerCharacterSheet playerCharacter;
     public GameObject mainCamera;
     public bool enemiesOnLookout = true;
     public HashSet<Vector2Int> dungeonCoords;
     public HashSet<Vector2Int> discoveredCoords;
     public HashSet<Vector3> occupiedlist = new();
     public HashSet<GameObject> dungeonSpecificGameObjects = new();
+    public HashSet<GameObject> iconGameObjects = new();
     public HashSet<GameObject> enemies = new();
     public HashSet<GameObject> aggroEnemies = new();
     public HashSet<Loot> itemContainers = new();
@@ -21,7 +23,7 @@ public class DungeonManager : MonoBehaviour
     public Dictionary<string, List<Vector2Int>> cachedPathsDict = new();    
     private CombatManager cbm;
     private TurnSequencer ts;
-    private PlayerCharacterSheet playerCharacter;
+    private MapManager mm;
 
     void Start()
     {
@@ -29,6 +31,7 @@ public class DungeonManager : MonoBehaviour
         GameObject managers = GameObject.Find("System Managers");
         cbm = managers.GetComponent<CombatManager>();
         ts = managers.GetComponent<TurnSequencer>();
+        mm = GameObject.Find("CanvasHUD").GetComponentInChildren<MapManager>();
         playerCharacter = hero.GetComponent<PlayerCharacterSheet>();
 
         mainCamera.GetComponent<PlayerCamera>().SetFocalPoint(hero);
@@ -75,7 +78,8 @@ public class DungeonManager : MonoBehaviour
             playerCharacter.GainXP(gainedXP);
         }        
 
-        Destroy(target);  
+        Destroy(target);
+        mm.UpdateDynamicIcons();
     }
 
     public void TossContainer(GameObject trashContainer)
@@ -86,6 +90,7 @@ public class DungeonManager : MonoBehaviour
             
             dungeonSpecificGameObjects.Remove(trashContainer);
             Destroy(trashContainer);
+            mm.UpdateDynamicIcons();
         }
     }
 
@@ -117,7 +122,7 @@ public class DungeonManager : MonoBehaviour
         foreach(Vector3 checkPos in occupiedlist)
         {
             
-            if(Rules.PosToCoord(pos) == Rules.PosToCoord(checkPos))
+            if(GameFunctions.PosToCoord(pos) == GameFunctions.PosToCoord(checkPos))
             {
 
                 return true;

@@ -14,6 +14,7 @@ public class PlayerCamera : MonoBehaviour
     public float maxFov = 40f;
     public float zoomSensitivity = 20f;
     private float fov = 0;
+    [SerializeField] GameObject mapPanel;
 
     void Start()
     {
@@ -58,6 +59,7 @@ public class PlayerCamera : MonoBehaviour
 
         Quaternion QT = Quaternion.Euler(0f, localRotation.x, -localRotation.y);
         transform.rotation = QT;
+        mapPanel.transform.rotation = Quaternion.Euler(0f, 0f, localRotation.x - 90f);
     }
 
     void ZoomCamera()

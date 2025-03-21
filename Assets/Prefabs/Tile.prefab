@@ -120,6 +120,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   coord: {x: 0, y: 0}
+  iconType: 3
+  actionable: 1
 --- !u!114 &4772518569223424421
 MonoBehaviour:
   m_ObjectHideFlags: 0

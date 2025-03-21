@@ -30,6 +30,12 @@ public class HotKeys : MonoBehaviour
         {
 
             uiam.ToggleCharacter();
+
+        }
+        else if(Input.GetKeyDown(KeyCode.M) || Input.GetKeyDown(KeyCode.Tab))
+        {
+
+            uiam.ToggleMap();
         }
     }
     

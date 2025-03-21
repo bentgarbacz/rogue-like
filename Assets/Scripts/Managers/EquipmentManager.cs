@@ -126,7 +126,7 @@ public class EquipmentManager : MonoBehaviour
     public bool ValidEquip(ItemSlot destinationSlot, ItemSlot originSlot)
     {
         
-        if(Rules.CheckValidEquipmentSlot(destinationSlot, originSlot.item) && (Rules.CheckValidEquipmentSlot(originSlot, destinationSlot.item) ||
+        if(GameFunctions.CheckValidEquipmentSlot(destinationSlot, originSlot.item) && (GameFunctions.CheckValidEquipmentSlot(originSlot, destinationSlot.item) ||
            destinationSlot.item == null))
         {
 

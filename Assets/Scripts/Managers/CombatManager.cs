@@ -150,8 +150,6 @@ public class CombatManager : MonoBehaviour
                     yield return new WaitForSeconds(0.05f); //Give the GameObject of dead character time to wrap up before it is destroyed
                     dum.Smite(combatBuffer[0].defender, defender.pos);                                                                    
                 }
-            }else{
-                Debug.Log("Gotcha!");
             }
 
             combatBuffer.RemoveAt(0);            

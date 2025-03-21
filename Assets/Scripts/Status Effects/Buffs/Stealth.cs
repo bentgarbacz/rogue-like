@@ -15,6 +15,7 @@ public class Stealth : StatusEffect
         this.duration = duration;
         this.dum = dum;
         this.sprite = Resources.Load<Sprite>("Pixel Art/Spells/Slink Away");
+        this.isUnique = true;
 
         dum.enemiesOnLookout = false;
         dum.ClearAggroBuffer();

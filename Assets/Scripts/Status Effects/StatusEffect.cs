@@ -10,6 +10,7 @@ public class StatusEffect
     public int duration = 0;
     public CharacterSheet affectedCharacter;
     public Sprite sprite;
+    public bool isUnique = false;
 
     public virtual int Effect()
     {
