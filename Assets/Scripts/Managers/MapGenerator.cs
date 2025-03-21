@@ -12,6 +12,7 @@ public class MapGenerator : MonoBehaviour
 
     public int walkLength;
     private DungeonManager dum;
+    [SerializeField] private MapManager mapManager;
     private NPCGenerator npcGen;
     private TileReferences tileRef;
     private Vector2Int startPosition = new(0, 0);
@@ -32,6 +33,7 @@ public class MapGenerator : MonoBehaviour
         LevelGen(startPosition, walkLength, 100, dum.dungeonCoords);    
         GenerateWalls(dum.dungeonCoords);
         //dum.cachedPathsDict = PrecacheMapPaths(path);
+        mapManager.DrawIcons(dum.dungeonSpecificGameObjects);
     }
 
     private void LevelGen(Vector2Int position, int walkLength, int repeatWalks, HashSet<Vector2Int> path)
@@ -56,6 +58,7 @@ public class MapGenerator : MonoBehaviour
                     {
 
                         tileRef.CreateEntranceTile(BiomeType.Catacomb, spawnPos, position, dum);
+                        //break;
 
                     //potentially spawn exit after a certain number of steps
                     }else if(i == repeatWalks - 1 && j > walkLength / 2 && exitSpawned == false)
@@ -68,14 +71,16 @@ public class MapGenerator : MonoBehaviour
                     }else
                     {
 
-                        tileRef.CreateTile(BiomeType.Catacomb, spawnPos, position, spawnRNG, dum);                        
+                        tileRef.CreateTile(BiomeType.Catacomb, spawnPos, position, spawnRNG, dum);
+                        //break;                        
                     }
 
                     //move player to first tile generated
                     if(i == 0 && j == 1)
                     {
 
-                        dum.hero.GetComponent<CharacterSheet>().Move(spawnPos, dum.occupiedlist);                    
+                        dum.hero.GetComponent<CharacterSheet>().Move(spawnPos, dum.occupiedlist);
+                        //break;                
                     }
 
                     if(spawnRNG >= 0 && spawnRNG <= 2)
@@ -98,10 +103,9 @@ public class MapGenerator : MonoBehaviour
 
                         npcGen.CreateNPC(NPCType.GoatMan, spawnPos, dum);
                     }
-                    
-                    path.Add(position);
                 }
 
+                path.Add(position);
                 position += Direction2D.GetRandomDirection();
             }
         }

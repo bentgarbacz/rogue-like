@@ -71,7 +71,7 @@ public class CatacombBiome : Biome
             if(path.Contains(position + direction))
             {
                 
-                newCatacombExit.transform.rotation = Quaternion.Euler(0, Rules.DetermineRotation(newCatacombExit.transform.position, new Vector3(position.x + direction.x, 0, position.y + direction.y)), 0);
+                newCatacombExit.transform.rotation = Quaternion.Euler(0, GameFunctions.DetermineRotation(newCatacombExit.transform.position, new Vector3(position.x + direction.x, 0, position.y + direction.y)), 0);
                 break;
             }
         }
@@ -86,7 +86,7 @@ public class CatacombBiome : Biome
         GameObject newWall = Instantiate(catacombWallTile, spawnPos, catacombWallTile.transform.rotation);
         newWall.GetComponent<Tile>().SetCoord(new Vector2Int((int)spawnPos.x, (int)spawnPos.z));
         dum.AddGameObject(newWall);
-        newWall.GetComponent<Renderer>().material.color = Color.gray;
+        //newWall.GetComponent<Renderer>().material.color = Color.gray;
         
     }
 }

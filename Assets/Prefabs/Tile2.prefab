@@ -49,6 +49,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   coord: {x: 0, y: 0}
+  iconType: 3
+  actionable: 1
 --- !u!33 &2881980020966100247
 MeshFilter:
   m_ObjectHideFlags: 0

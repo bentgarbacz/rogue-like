@@ -33,6 +33,7 @@ public class UIActiveManager : MonoBehaviour
     public bool nameplatePanelIsOpen = true;
     public GameObject mapPanel;
     public bool mapPanelIsOpen = true;
+    private int mapState = 0;
     private InventoryManager im;
     public bool mouseOverUI = false;
 
@@ -396,6 +397,36 @@ public class UIActiveManager : MonoBehaviour
 
             mapPanelIsOpen = false;
             mapPanel.SetActive(mapPanelIsOpen);
+        }
+    }
+
+    public void ToggleMap()
+    {  
+
+        RectTransform mapRectTransform = mapPanel.GetComponent<RectTransform>();
+
+        if(mapState == 0)
+        {
+
+            ShowMap();
+            mapState = 1;
+
+        }else if(mapState == 1)
+        {
+
+            mapRectTransform.anchorMin = new Vector2(0.5f, 0.5f);
+            mapRectTransform.anchorMax = new Vector2(0.5f, 0.5f);
+            mapRectTransform.pivot = new Vector2(0.5f, 0.5f);
+            mapState = 2;
+
+        }else if(mapState == 2)
+        {
+
+            HideMap();
+            mapRectTransform.anchorMin = new Vector2(1, 1);  // Top right corner
+            mapRectTransform.anchorMax = new Vector2(1, 1);  // Top right corner
+            mapRectTransform.pivot = new Vector2(1, 1); 
+            mapState = 0;
         }
     }
 }

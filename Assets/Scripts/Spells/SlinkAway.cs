@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SlinkAway : Spell
 {
-    private readonly int duration = 3;
+    private readonly int duration = 15;
     private DungeonManager dum;
 
     public SlinkAway()

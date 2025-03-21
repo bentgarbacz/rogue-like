@@ -8,6 +8,7 @@ public class DestroyItem : MonoBehaviour
     private AudioSource audioSource;
     private AudioClip destroyClip;
     private ItemSlot itemSlot;
+    [SerializeField] ItemDragManager idm;
 
     void Start()
     {
@@ -24,5 +25,6 @@ public class DestroyItem : MonoBehaviour
         itemSlot.ThrowAway();
         GetComponentInParent<MouseOverItemSlot>().MouseExit();
         GetComponentInParent<MouseOverItemSlot>().MouseEnter();
+        idm.ForgetItem();
     }
 }

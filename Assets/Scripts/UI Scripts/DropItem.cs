@@ -7,9 +7,12 @@ public class DropItem : MonoBehaviour
 
     public GameObject container;
     private DungeonManager dum;
+    [SerializeField] private MapManager mm;
     private AudioSource audioSource;
     private AudioClip dropClip;
     private ItemSlot itemSlot;
+    [SerializeField] ItemDragManager idm;
+
 
     void Start()
     {
@@ -25,26 +28,12 @@ public class DropItem : MonoBehaviour
 
         audioSource.PlayOneShot(dropClip);
 
-        List<Item> droppedItems = new(){itemSlot.item};  
-
-        //Determine drop location and introduce randomness to make multiple loot instances clickable on a single tile
-        Vector3 dropPos = dum.hero.transform.position;
-        dropPos.x += (float)(Random.Range(-20, 20) * 0.01);
-        dropPos.z += (float)(Random.Range(-20, 20) * 0.01);
-
-        GameObject lootContainer = Instantiate(container, dropPos, transform.rotation);
-        Loot loot = lootContainer.GetComponent<Loot>();
-
-        //Sets the tile coordinate in which the loot resides
-        loot.coord = new Vector2Int((int)dum.hero.transform.position.x, (int)dum.hero.transform.position.z);       
-        loot.AddItems(droppedItems);  
-
-        dum.AddGameObject(lootContainer);
-        dum.itemContainers.Add(loot);
+        GameFunctions.DropLoot(dum.hero, container, new(){itemSlot.item}, dum, mm);
 
         itemSlot.ThrowAway();
 
         GetComponentInParent<MouseOverItemSlot>().MouseExit();
         GetComponentInParent<MouseOverItemSlot>().MouseEnter();
+        idm.ForgetItem();
     }
 }

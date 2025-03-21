@@ -52,6 +52,7 @@ public class PoisonousStrike : Spell
                     {
 
                         //poison target
+                        target.GetComponent<TextNotificationManager>().CreateNotificationOrder(target.transform.position, 3f, "Poisoned", Color.green, 1f);
                         target.GetComponent<StatusEffectManager>().AddEffect(new Poison(defendingCharacter, duration, damagePerTurn, dum));
 
                         ResetCooldown(caster);
@@ -65,6 +66,7 @@ public class PoisonousStrike : Spell
                     {
 
                         //poison target
+                        target.GetComponent<TextNotificationManager>().CreateNotificationOrder(target.transform.position, 3f, "Poisoned", Color.green, 1f);
                         target.GetComponent<StatusEffectManager>().AddEffect(new Poison(defendingCharacter, duration, damagePerTurn, dum));
                         
                         ResetCooldown(caster);

@@ -66,7 +66,7 @@ public class CharacterSheet : MonoBehaviour
             occupiedlist.Remove(pos);
 
             GetComponent<MoveToTarget>().SetTarget(newPos);
-            transform.rotation = Quaternion.Euler(0, Rules.DetermineRotation(pos, newPos), 0);
+            transform.rotation = Quaternion.Euler(0, GameFunctions.DetermineRotation(pos, newPos), 0);
 
             pos = newPos;
             coord = new Vector2Int((int)newPos.x, (int)newPos.z);

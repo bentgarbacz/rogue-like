@@ -6,7 +6,7 @@ public class Fortify : Spell
 {
 
     private readonly int armorIncrease = 5;
-    private readonly int duration = 10;
+    private readonly int duration = 25;
 
     public Fortify()
     {
