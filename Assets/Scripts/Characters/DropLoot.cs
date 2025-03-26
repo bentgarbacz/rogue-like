@@ -9,15 +9,15 @@ using Random = UnityEngine.Random;
 public class DropLoot : MonoBehaviour
 {
     public GameObject container;
-    [SerializeField] private DungeonManager dum;
-    [SerializeField] private MapManager mm;
+    private DungeonManager dum;
+    private MiniMapManager miniMapManager;
 
 
     void Start()
     {
         
         dum = GameObject.Find("System Managers").GetComponent<DungeonManager>();
-        mm = GameObject.Find("CanvasHUD").transform.Find("Map Panel").GetComponentInChildren<MapManager>();
+        miniMapManager = GameObject.Find("CanvasHUD").transform.Find("Map Panel").GetComponentInChildren<MiniMapManager>();
     }
 
     public void Drop()
@@ -28,7 +28,7 @@ public class DropLoot : MonoBehaviour
         if(droppedItems.Count > 0)
         {
 
-            GameFunctions.DropLoot(this.gameObject, container, droppedItems, dum, mm);
+            GameFunctions.DropLoot(this.gameObject, container, droppedItems, dum, miniMapManager);
         }
     }
 }

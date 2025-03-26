@@ -23,7 +23,7 @@ public class DungeonManager : MonoBehaviour
     public Dictionary<string, List<Vector2Int>> cachedPathsDict = new();    
     private CombatManager cbm;
     private TurnSequencer ts;
-    private MapManager mm;
+    private MiniMapManager miniMapManager;
 
     void Start()
     {
@@ -31,7 +31,7 @@ public class DungeonManager : MonoBehaviour
         GameObject managers = GameObject.Find("System Managers");
         cbm = managers.GetComponent<CombatManager>();
         ts = managers.GetComponent<TurnSequencer>();
-        mm = GameObject.Find("CanvasHUD").GetComponentInChildren<MapManager>();
+        miniMapManager = GameObject.Find("CanvasHUD").GetComponentInChildren<MiniMapManager>();
         playerCharacter = hero.GetComponent<PlayerCharacterSheet>();
 
         mainCamera.GetComponent<PlayerCamera>().SetFocalPoint(hero);
@@ -79,7 +79,7 @@ public class DungeonManager : MonoBehaviour
         }        
 
         Destroy(target);
-        mm.UpdateDynamicIcons();
+        miniMapManager.UpdateDynamicIcons();
     }
 
     public void TossContainer(GameObject trashContainer)
@@ -90,7 +90,7 @@ public class DungeonManager : MonoBehaviour
             
             dungeonSpecificGameObjects.Remove(trashContainer);
             Destroy(trashContainer);
-            mm.UpdateDynamicIcons();
+            miniMapManager.UpdateDynamicIcons();
         }
     }
 

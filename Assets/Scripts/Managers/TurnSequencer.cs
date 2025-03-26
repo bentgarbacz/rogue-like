@@ -18,7 +18,8 @@ public class TurnSequencer : MonoBehaviour
     private UIActiveManager uiam;
     private CombatManager cbm;
     private ClickManager cm;
-    [SerializeField] private MapManager mm;
+    [SerializeField] private NameplateManager npm;
+    [SerializeField] private MiniMapManager miniMapManager;
     private Mouse mouse;
 
     void Start()
@@ -157,7 +158,7 @@ public class TurnSequencer : MonoBehaviour
                         {
 
                             targetExit.ExitLevel();                            
-                            mapGen.GetComponent<MapGenerator>().NewLevel();
+                            mapGen.GetComponent<LevelGenerator>().NewLevel();
                             
                         }else //move towards exit
                         {
@@ -226,6 +227,7 @@ public class TurnSequencer : MonoBehaviour
         playerCharacter.BecomeHungrier();
         playerCharacter.DecrementCooldowns();
         sc.UpdateSpellSlots();
-        mm.UpdateDynamicIcons();
+        miniMapManager.UpdateDynamicIcons();
+        npm.IncrementDisplayTimer();
     }
 }

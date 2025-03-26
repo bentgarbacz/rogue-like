@@ -20,7 +20,7 @@ public class PlayerCamera : MonoBehaviour
     {
 
         fov = Camera.main.fieldOfView;
-        RotateCamera();
+        RotateCamera(Input.GetAxis("Mouse X") * panSpeed, Input.GetAxis("Mouse Y") * panSpeed);
     }
 
     void LateUpdate()
@@ -38,34 +38,33 @@ public class PlayerCamera : MonoBehaviour
             
             if (Input.GetMouseButton(1)) {
 
-                RotateCamera();
+                RotateCamera(Input.GetAxis("Mouse X") * panSpeed, Input.GetAxis("Mouse Y") * panSpeed);
             }
 
             if(Input.GetAxis("Mouse ScrollWheel") != 0)
             {
                 
-                ZoomCamera();
+                ZoomCamera(Input.GetAxis("Mouse ScrollWheel") * zoomSensitivity);
             }
         }
     }
 
-    void RotateCamera()
+    public void RotateCamera(float xChange, float yChange)
     {      
 
-        localRotation.x += Input.GetAxis("Mouse X") * panSpeed;
-        localRotation.y += Input.GetAxis("Mouse Y") * panSpeed;
+        localRotation.x += xChange;
+        localRotation.y += yChange;
 
         localRotation.y = Mathf.Clamp(localRotation.y, minYBound, maxYBound);
 
-        Quaternion QT = Quaternion.Euler(0f, localRotation.x, -localRotation.y);
-        transform.rotation = QT;
+        transform.rotation = Quaternion.Euler(0f, localRotation.x, -localRotation.y);;
         mapPanel.transform.rotation = Quaternion.Euler(0f, 0f, localRotation.x - 90f);
     }
 
-    void ZoomCamera()
+    public void ZoomCamera(float fovChange)
     {
 
-        fov -= Input.GetAxis("Mouse ScrollWheel") * zoomSensitivity;
+        fov -= fovChange;
         fov = Mathf.Clamp(fov, minFov, maxFov);
         Camera.main.fieldOfView = fov;
     }

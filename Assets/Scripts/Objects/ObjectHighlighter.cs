@@ -12,6 +12,7 @@ public class ObjectHighlighter : MonoBehaviour, IPointerEnterHandler, IPointerEx
     private NameplateManager npm;
     private UIActiveManager uiam;
     private CharacterSheet highlightedCharacter;
+    public bool highlighted = false;
 
     void Start()
     {
@@ -35,24 +36,16 @@ public class ObjectHighlighter : MonoBehaviour, IPointerEnterHandler, IPointerEx
         if(highlightedCharacter != null)
         {
             
-            if(highlightedCharacter is EnemyCharacterSheet enemy)
+            if(highlightedCharacter is EnemyCharacterSheet)
             {
 
-                npm.SetCharacter(enemy);
+                npm.SetCharacter(this.gameObject);
 
-            }else
-            {
-
-                npm.ClearCharacter();
             }
-
-        }else
-        {
-
-            npm.ClearCharacter();
         }
 
         GetComponent<Renderer>().material.color = highlightColor;
+        highlighted = true;
     }
 
     public void OnPointerExit(PointerEventData eventData)
@@ -60,5 +53,6 @@ public class ObjectHighlighter : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
         ttm.SetTooltip(false);
         GetComponent<Renderer>().material.color = startcolor;
+        highlighted = false;
     }
 }

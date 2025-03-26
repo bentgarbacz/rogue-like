@@ -7,12 +7,12 @@ using Unity.VisualScripting;
 using System.Linq;
 
 
-public class MapGenerator : MonoBehaviour
+public class LevelGenerator : MonoBehaviour
 {
 
     public int walkLength;
     private DungeonManager dum;
-    [SerializeField] private MapManager mapManager;
+    [SerializeField] private MiniMapManager miniMapManager;
     private NPCGenerator npcGen;
     private TileReferences tileRef;
     private Vector2Int startPosition = new(0, 0);
@@ -33,7 +33,7 @@ public class MapGenerator : MonoBehaviour
         LevelGen(startPosition, walkLength, 100, dum.dungeonCoords);    
         GenerateWalls(dum.dungeonCoords);
         //dum.cachedPathsDict = PrecacheMapPaths(path);
-        mapManager.DrawIcons(dum.dungeonSpecificGameObjects);
+        miniMapManager.DrawIcons(dum.dungeonSpecificGameObjects);
     }
 
     private void LevelGen(Vector2Int position, int walkLength, int repeatWalks, HashSet<Vector2Int> path)
@@ -108,6 +108,13 @@ public class MapGenerator : MonoBehaviour
                 path.Add(position);
                 position += Direction2D.GetRandomDirection();
             }
+        }
+
+        if(!exitSpawned)
+        {
+            Debug.Log("exit missed");
+            dum.CleanUp();
+            NewLevel();
         }
     }
 

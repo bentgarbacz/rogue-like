@@ -33,6 +33,18 @@ public class Tooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         ClearTooltip();
     }
 
+    public void OnDestroy()
+    {
+        
+        ClearTooltip();
+    }
+
+    public void OnDisable()
+    {
+
+        ClearTooltip();   
+    }
+
     public void ClearTooltip()
     {
 

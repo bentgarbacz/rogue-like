@@ -7,7 +7,7 @@ public class DropItem : MonoBehaviour
 
     public GameObject container;
     private DungeonManager dum;
-    [SerializeField] private MapManager mm;
+    [SerializeField] private MiniMapManager miniMapManager;
     private AudioSource audioSource;
     private AudioClip dropClip;
     private ItemSlot itemSlot;
@@ -28,7 +28,7 @@ public class DropItem : MonoBehaviour
 
         audioSource.PlayOneShot(dropClip);
 
-        GameFunctions.DropLoot(dum.hero, container, new(){itemSlot.item}, dum, mm);
+        GameFunctions.DropLoot(dum.hero, container, new(){itemSlot.item}, dum, miniMapManager);
 
         itemSlot.ThrowAway();
 
