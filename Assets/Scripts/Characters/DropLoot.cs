@@ -16,8 +16,10 @@ public class DropLoot : MonoBehaviour
     void Start()
     {
         
-        dum = GameObject.Find("System Managers").GetComponent<DungeonManager>();
-        miniMapManager = GameObject.Find("CanvasHUD").transform.Find("Map Panel").GetComponentInChildren<MiniMapManager>();
+        GameObject managers = GameObject.Find("System Managers");
+        
+        dum = managers.GetComponent<DungeonManager>();
+        miniMapManager = managers.GetComponent<UIActiveManager>().mapPanel.GetComponent<MiniMapManager>();
     }
 
     public void Drop()

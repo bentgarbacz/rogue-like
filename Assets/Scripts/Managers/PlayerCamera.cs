@@ -57,8 +57,12 @@ public class PlayerCamera : MonoBehaviour
 
         localRotation.y = Mathf.Clamp(localRotation.y, minYBound, maxYBound);
 
-        transform.rotation = Quaternion.Euler(0f, localRotation.x, -localRotation.y);;
+        transform.rotation = Quaternion.Euler(0f, localRotation.x, -localRotation.y);
         mapPanel.transform.rotation = Quaternion.Euler(0f, 0f, localRotation.x - 90f);
+        //mapPanel.transform.RotateAround(mapPanel.transform.position, Quaternion.Euler(0f, 0f, localRotation.x - 90f));
+        //Debug.Log(mapPanel.transform.position);
+        //mapPanel.transform.RotateAround(mapPanel.GetComponent<RectTransform>().anchoredPosition, Vector3.forward, (localRotation.x - 90f) * Time.deltaTime);
+
     }
 
     public void ZoomCamera(float fovChange)

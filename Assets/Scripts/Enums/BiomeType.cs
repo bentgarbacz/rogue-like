@@ -1,5 +1,6 @@
 public enum BiomeType
 {
 
-    Catacomb
+    Catacomb,
+    Cave
 }

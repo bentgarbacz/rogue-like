@@ -8,7 +8,7 @@ public class MapIconController : MonoBehaviour
 
     [SerializeField] private Image icon;
     private GameObject parentObject = null;
-    RectTransform iconRectTransform;
+    public RectTransform iconRectTransform;
 
     public void InitializeController(GameObject parentObject, Sprite sprite, Vector2Int coord, int sortingOrder, float scaleFactor = 1.0f)
     {
@@ -34,9 +34,7 @@ public class MapIconController : MonoBehaviour
     {
 
         icon.sprite = sprite;
-    }
-
-       
+    }       
 
     public Image Icon()
     {
@@ -80,5 +78,7 @@ public class MapIconController : MonoBehaviour
 
         iconRectTransform.anchoredPosition = coord;
         iconRectTransform.anchoredPosition *= 11;
-    } 
+    }
+
+    
 }

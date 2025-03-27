@@ -39,7 +39,6 @@ public class CharacterSheet : MonoBehaviour
         coord = new Vector2Int((int)pos.x, (int)pos.z);
 
         sem = gameObject.AddComponent<StatusEffectManager>();
-
         audioSource = gameObject.AddComponent<AudioSource>();
         missClip = Resources.Load<AudioClip>("Sounds/Miss");
     }
@@ -107,6 +106,12 @@ public class CharacterSheet : MonoBehaviour
     public virtual void ProcessStatusEffects()
     {
 
+        if(sem == null)
+        {
+
+            return;
+        }
+        
         sem.ProcessStatusEffects();
     }
 }

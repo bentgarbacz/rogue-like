@@ -109,6 +109,12 @@ public class DungeonManager : MonoBehaviour
             Destroy(trash);
         }
 
+        foreach(GameObject trash in iconGameObjects)
+        {
+
+            Destroy(trash);
+        }
+
         dungeonSpecificGameObjects = new HashSet<GameObject>();
         aggroEnemies = new HashSet<GameObject>();
         bufferedPath = new List<Vector2Int>();

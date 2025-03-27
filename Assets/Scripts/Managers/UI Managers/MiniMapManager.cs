@@ -5,7 +5,7 @@ using UnityEngine;
 public class MiniMapManager : MonoBehaviour
 {
 
-    [SerializeField] private Canvas mapCanvas;
+    [SerializeField] private GameObject map;
     [SerializeField] private GameObject iconPrefab;
     [SerializeField] private Sprite enemyIcon;
     [SerializeField] private Sprite pcIcon;
@@ -13,13 +13,16 @@ public class MiniMapManager : MonoBehaviour
     [SerializeField] private Sprite tileIcon;
     [SerializeField] private Sprite entranceIcon;
     [SerializeField] private Sprite exitIcon;
-    private List<MapIconController> dynamicObjectIcons = new();
+    private List<MapIconController> dynamicObjectIcons;
     private DungeonManager dum;
+    private MapIconController anchorIcon;
+    private RectTransform mapRectTransform;
 
     void Start()
     {
         
         dum = GameObject.Find("System Managers").GetComponent<DungeonManager>();
+        mapRectTransform = map.GetComponent<RectTransform>();
     }
 
     public void RevealTiles(Vector2Int coord)
@@ -31,10 +34,13 @@ public class MiniMapManager : MonoBehaviour
     public void DrawIcons(HashSet<GameObject> objects)
     {
 
+        dynamicObjectIcons = new();
+
         foreach(GameObject currentObject in objects)
         {
             if(currentObject.GetComponent<Tile>() is Tile currentTile)
             {
+
                 AddIcon(currentObject);
             }
         }
@@ -44,6 +50,7 @@ public class MiniMapManager : MonoBehaviour
 
             if(currentObject.GetComponent<Loot>() is Loot currentLoot)
             {
+
                 AddIcon(currentObject);
             }
         }
@@ -53,22 +60,24 @@ public class MiniMapManager : MonoBehaviour
 
             if(currentObject.GetComponent<CharacterSheet>() is CharacterSheet currentCharacter)
             {
+
                 AddIcon(currentObject);
             }
         }
 
-        GameObject newIconPC = Instantiate(iconPrefab, mapCanvas.transform);
-        MapIconController micPC = newIconPC.GetComponent<MapIconController>();
+        GameObject newIconPC = Instantiate(iconPrefab, map.transform);
+        dum.iconGameObjects.Add(newIconPC);
+        anchorIcon = newIconPC.GetComponent<MapIconController>();
 
-        dynamicObjectIcons.Add(micPC);
+        dynamicObjectIcons.Add(anchorIcon);
 
-        micPC.InitializeController(dum.hero, pcIcon, dum.playerCharacter.coord, 5, 0.66f);
+        anchorIcon.InitializeController(dum.hero, pcIcon, dum.playerCharacter.coord, 5, 0.66f);
     }
 
     public void AddIcon(GameObject newObject)
     {
 
-        GameObject newIcon = Instantiate(iconPrefab, mapCanvas.transform);
+        GameObject newIcon = Instantiate(iconPrefab, map.transform);
         MapIconController mic = newIcon.GetComponent<MapIconController>();
 
         if(newObject.GetComponent<Tile>() is Tile currentTile)
@@ -138,5 +147,7 @@ public class MiniMapManager : MonoBehaviour
                 dynamicObjectIcons.RemoveAt(i);
             }
         }
+
+        mapRectTransform.anchoredPosition = -anchorIcon.iconRectTransform.anchoredPosition;
     }
 }
