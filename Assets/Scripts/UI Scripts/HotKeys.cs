@@ -6,6 +6,7 @@ public class HotKeys : MonoBehaviour
 {
 
     private UIActiveManager uiam;
+    [SerializeField] private PlayerCamera playerCamera;
 
     void Start()
     {
@@ -36,6 +37,41 @@ public class HotKeys : MonoBehaviour
         {
 
             uiam.ToggleMap();
+            
+        }
+        
+        if(Input.GetKey(KeyCode.UpArrow))
+        {
+
+            playerCamera.RotateCamera(0f, -1f);
+
+        }else if(Input.GetKey(KeyCode.DownArrow))
+        {
+
+            playerCamera.RotateCamera(0f, +1f);
+            
+        }
+        
+        if(Input.GetKey(KeyCode.LeftArrow))
+        {
+
+            playerCamera.RotateCamera(1f, 0f);
+            
+        }else if(Input.GetKey(KeyCode.RightArrow))
+        {
+
+            playerCamera.RotateCamera(-1f, 0f);
+        }
+
+        if(Input.GetKey(KeyCode.Minus))
+        {
+
+            playerCamera.ZoomCamera(-0.25f);
+            
+        }else if(Input.GetKey(KeyCode.Equals))
+        {
+
+            playerCamera.ZoomCamera(0.25f);
         }
     }
     

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class UIActiveManager : MonoBehaviour
 {
@@ -32,6 +33,7 @@ public class UIActiveManager : MonoBehaviour
     public GameObject nameplatePanel;
     public bool nameplatePanelIsOpen = true;
     public GameObject mapPanel;
+    public GameObject mapIconPanel;
     public bool mapPanelIsOpen = true;
     private int mapState = 0;
     private InventoryManager im;
@@ -125,7 +127,6 @@ public class UIActiveManager : MonoBehaviour
         }
     }
 
-    //items - list of items that will be looted
     public void OpenLootPanel(Loot loot)
     {
         
@@ -403,7 +404,8 @@ public class UIActiveManager : MonoBehaviour
     public void ToggleMap()
     {  
 
-        RectTransform mapRectTransform = mapPanel.GetComponent<RectTransform>();
+        RectTransform mapRectTransform = mapIconPanel.GetComponent<RectTransform>();
+        RectMask2D mapMask = mapPanel.GetComponent<RectMask2D>();
 
         if(mapState == 0)
         {
@@ -414,18 +416,16 @@ public class UIActiveManager : MonoBehaviour
         }else if(mapState == 1)
         {
 
-            mapRectTransform.anchorMin = new Vector2(0.5f, 0.5f);
-            mapRectTransform.anchorMax = new Vector2(0.5f, 0.5f);
-            mapRectTransform.pivot = new Vector2(0.5f, 0.5f);
+            mapMask.enabled = false;
+            mapRectTransform.anchoredPosition = -new Vector2((Screen.width / 2) - 250, (Screen.height / 2) - 250);
             mapState = 2;
 
         }else if(mapState == 2)
         {
 
             HideMap();
-            mapRectTransform.anchorMin = new Vector2(1, 1);  // Top right corner
-            mapRectTransform.anchorMax = new Vector2(1, 1);  // Top right corner
-            mapRectTransform.pivot = new Vector2(1, 1); 
+            mapMask.enabled = true;
+            mapRectTransform.anchoredPosition = new Vector2(0, 0);
             mapState = 0;
         }
     }

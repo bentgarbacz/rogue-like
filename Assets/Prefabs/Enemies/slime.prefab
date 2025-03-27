@@ -186,7 +186,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   highlightColor: {r: 1, g: 0, b: 0, a: 1}
-  actionDescription: 
+  actionDescription: Attack
 --- !u!114 &4689085768974521071
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -242,7 +242,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   notificationPrefab: {fileID: 5558341210635837680, guid: 2b027f351ca2eb94d90ca350ef6ea2fa, type: 3}
-  speed: 2
   destroyAfterDistance: 0.75
   xMin: 0.5
   xBuffer: 0.1
@@ -277,7 +276,8 @@ MonoBehaviour:
   armor: 0
   evasion: 0
   dropTable: 
-  sem: {fileID: 0}
   audioSource: {fileID: 0}
   attackClip: {fileID: 0}
   missClip: {fileID: 0}
+  title: N/A
+  focused: 0

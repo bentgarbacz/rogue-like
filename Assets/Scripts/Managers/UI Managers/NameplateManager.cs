@@ -10,7 +10,9 @@ public class NameplateManager : MonoBehaviour
     [SerializeField]private Image bar;
     [SerializeField]private TextMeshProUGUI text;
     private EnemyCharacterSheet character;
+    private ObjectHighlighter characterHighlighter;
     private UIActiveManager uiam;
+    public int displayTime = 0;
 
     void Start()
     {
@@ -34,11 +36,12 @@ public class NameplateManager : MonoBehaviour
         }
     }
 
-    public void SetCharacter(EnemyCharacterSheet character)
+    public void SetCharacter(GameObject characterGameObject)
     {
 
-        this.character = character;
-        character.focused = true;
+        this.character = characterGameObject.GetComponent<EnemyCharacterSheet>();
+        this.characterHighlighter = characterGameObject.GetComponent<ObjectHighlighter>();
+        displayTime = 0;
         UpdateHealth();
         text.SetText(character.GetName());
         text.ForceMeshUpdate(true);
@@ -49,16 +52,32 @@ public class NameplateManager : MonoBehaviour
     public void ClearCharacter()
     {
 
-        if(this.character != null)
-        {
-
-            this.character.focused = false;
-        }
+        displayTime = 0;
 
         this.character = null;
         text.SetText("N/A");
         text.ForceMeshUpdate(true);
 
         uiam.CloseNameplatePanel();
+    }
+
+    public void IncrementDisplayTimer()
+    {
+
+        if(displayTime >= 10 && uiam.nameplatePanelIsOpen || character == null)
+        {
+
+            ClearCharacter();
+
+        }else if(characterHighlighter.highlighted)
+        {
+
+            displayTime = 0;
+
+        }else
+        {
+
+            displayTime += 1;
+        }
     }
 }

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7158853419632730920}
   - component: {fileID: 5240934542940786982}
   - component: {fileID: 5919311376170427098}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: MapIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -89,3 +89,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   icon: {fileID: 5240934542940786982}
+  iconRectTransform: {fileID: 0}

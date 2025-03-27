@@ -5,7 +5,6 @@ using UnityEngine;
 public class EnemyCharacterSheet : CharacterSheet
 {
 
-    public bool focused;
     private NameplateManager npm;
 
     public override void Start()
@@ -13,7 +12,6 @@ public class EnemyCharacterSheet : CharacterSheet
 
         base.Start();
         npm = GameObject.Find("CanvasHUD").transform.GetChild(10).GetComponent<NameplateManager>();
-        focused = false;
     }
 
     //Custom rules that describe how each enemy reacts when they see the player character
