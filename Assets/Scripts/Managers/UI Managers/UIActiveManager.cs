@@ -401,15 +401,23 @@ public class UIActiveManager : MonoBehaviour
         }
     }
 
-    public void ToggleMap()
+    public void ToggleMap(int? forcedState = null)
     {  
 
         RectTransform mapRectTransform = mapIconPanel.GetComponent<RectTransform>();
         RectMask2D mapMask = mapPanel.GetComponent<RectMask2D>();
 
+        if (forcedState.HasValue)
+        {
+
+            mapState = forcedState.Value;
+        }
+
         if(mapState == 0)
         {
 
+            mapMask.enabled = true;
+            mapRectTransform.anchoredPosition = new Vector2(0, 0);
             ShowMap();
             mapState = 1;
 
@@ -424,8 +432,6 @@ public class UIActiveManager : MonoBehaviour
         {
 
             HideMap();
-            mapMask.enabled = true;
-            mapRectTransform.anchoredPosition = new Vector2(0, 0);
             mapState = 0;
         }
     }

@@ -58,7 +58,6 @@ public class LevelGenerator : MonoBehaviour
                     {
 
                         tileRef.CreateEntranceTile(BiomeType.Catacomb, spawnPos, position, dum);
-                        //break;
 
                     //potentially spawn exit after a certain number of steps
                     }else if(i == repeatWalks - 1 && j > walkLength / 2 && exitSpawned == false)
@@ -71,16 +70,14 @@ public class LevelGenerator : MonoBehaviour
                     }else
                     {
 
-                        tileRef.CreateTile(BiomeType.Catacomb, spawnPos, position, spawnRNG, dum);
-                        //break;                        
+                        tileRef.CreateTile(BiomeType.Catacomb, spawnPos, position, spawnRNG, dum);                       
                     }
 
                     //move player to first tile generated
                     if(i == 0 && j == 1)
                     {
 
-                        dum.hero.GetComponent<CharacterSheet>().Move(spawnPos, dum.occupiedlist);
-                        //break;                
+                        dum.hero.GetComponent<CharacterSheet>().Move(spawnPos + new Vector3(0f, 0.1f, 0f), dum.occupiedlist);              
                     }
 
                     if(spawnRNG >= 0 && spawnRNG <= 2)
@@ -112,7 +109,7 @@ public class LevelGenerator : MonoBehaviour
 
         if(!exitSpawned)
         {
-            Debug.Log("exit missed");
+
             dum.CleanUp();
             NewLevel();
         }

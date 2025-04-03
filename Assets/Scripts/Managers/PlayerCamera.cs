@@ -14,7 +14,8 @@ public class PlayerCamera : MonoBehaviour
     public float maxFov = 40f;
     public float zoomSensitivity = 20f;
     private float fov = 0;
-    [SerializeField] GameObject mapPanel;
+    //[SerializeField] GameObject mapPanel;
+    [SerializeField] Camera MinimapCamera;
 
     void Start()
     {
@@ -58,7 +59,11 @@ public class PlayerCamera : MonoBehaviour
         localRotation.y = Mathf.Clamp(localRotation.y, minYBound, maxYBound);
 
         transform.rotation = Quaternion.Euler(0f, localRotation.x, -localRotation.y);
-        mapPanel.transform.rotation = Quaternion.Euler(0f, 0f, localRotation.x - 90f);
+        MinimapCamera.transform.rotation = Quaternion.Euler(270f, -(localRotation.x - 90f), 0f);
+        //mapPanel.transform.rotation = Quaternion.Euler(0f, 0f, localRotation.x - 90f);
+
+
+
         //mapPanel.transform.RotateAround(mapPanel.transform.position, Quaternion.Euler(0f, 0f, localRotation.x - 90f));
         //Debug.Log(mapPanel.transform.position);
         //mapPanel.transform.RotateAround(mapPanel.GetComponent<RectTransform>().anchoredPosition, Vector3.forward, (localRotation.x - 90f) * Time.deltaTime);

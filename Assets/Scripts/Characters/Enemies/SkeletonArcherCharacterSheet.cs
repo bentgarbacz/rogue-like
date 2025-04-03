@@ -29,7 +29,7 @@ public class SkeletonArcherCharacterSheet : EnemyCharacterSheet
         attackClip = Resources.Load<AudioClip>("Sounds/Skeleton");
     }
 
-    public override void AggroBehavior(PlayerCharacterSheet playerCharacter, DungeonManager dum, CombatManager cbm)
+    public override void AggroBehavior(PlayerCharacterSheet playerCharacter, DungeonManager dum, CombatManager cbm, float waitTime)
     {
 
         if(attackCooldown == 0)
@@ -45,7 +45,7 @@ public class SkeletonArcherCharacterSheet : EnemyCharacterSheet
             {
                 
                 List<Vector2Int> pathToPlayer = PathFinder.FindPath(coord, playerCharacter.coord, dum.dungeonCoords);                     
-                Move(new Vector3(pathToPlayer[1].x, 0.1f, pathToPlayer[1].y), dum.occupiedlist);
+                Move(new Vector3(pathToPlayer[1].x, 0.1f, pathToPlayer[1].y), dum.occupiedlist, waitTime);
             }
 
         }else
@@ -57,7 +57,7 @@ public class SkeletonArcherCharacterSheet : EnemyCharacterSheet
             if(dum.dungeonCoords.Contains(randomDirection))
             {
 
-                Move(new Vector3(randomDirection.x, 0.1f, randomDirection.y), dum.occupiedlist);
+                Move(new Vector3(randomDirection.x, 0.1f, randomDirection.y), dum.occupiedlist, waitTime);
             }
 
             attackCooldown -= 1;

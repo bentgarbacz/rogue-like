@@ -15,7 +15,7 @@ public class EnemyCharacterSheet : CharacterSheet
     }
 
     //Custom rules that describe how each enemy reacts when they see the player character
-    public virtual void AggroBehavior(PlayerCharacterSheet playerCharacter, DungeonManager dum, CombatManager cbm)
+    public virtual void AggroBehavior(PlayerCharacterSheet playerCharacter, DungeonManager dum, CombatManager cbm, float waitTime = 0f)
     {
 
         return;

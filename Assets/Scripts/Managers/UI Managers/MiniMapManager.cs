@@ -13,6 +13,7 @@ public class MiniMapManager : MonoBehaviour
     [SerializeField] private Sprite tileIcon;
     [SerializeField] private Sprite entranceIcon;
     [SerializeField] private Sprite exitIcon;
+    [SerializeField] private Camera mapCamera;
     private List<MapIconController> dynamicObjectIcons;
     private DungeonManager dum;
     private MapIconController anchorIcon;
@@ -38,7 +39,7 @@ public class MiniMapManager : MonoBehaviour
 
         foreach(GameObject currentObject in objects)
         {
-            if(currentObject.GetComponent<Tile>() is Tile currentTile)
+            if(currentObject.GetComponent<Tile>() is Tile currentTile || currentObject.GetComponent<Exit>() is Exit currentExit)
             {
 
                 AddIcon(currentObject);
@@ -86,7 +87,7 @@ public class MiniMapManager : MonoBehaviour
             if(currentTile.GetIconType() == IconType.Entrance)
             {
 
-                mic.InitializeController(newObject, entranceIcon, currentTile.coord, 0);
+                mic.InitializeController(newObject, entranceIcon, currentTile.coord, 0, 1.33f);
 
             }else if(currentTile.GetIconType() == IconType.Tile)
             {
@@ -122,8 +123,8 @@ public class MiniMapManager : MonoBehaviour
 
         }else if(newObject.GetComponent<Exit>() is Exit currentExit)
         {
-
-            mic.InitializeController(newObject, exitIcon, currentExit.coord, 2, 1.66f);
+            
+            mic.InitializeController(newObject, exitIcon, currentExit.coord, 0, 1.33f);
 
         }else
         {
@@ -148,6 +149,13 @@ public class MiniMapManager : MonoBehaviour
             }
         }
 
-        mapRectTransform.anchoredPosition = -anchorIcon.iconRectTransform.anchoredPosition;
+        // y value is constant to preserve camera height
+        // z value is negated because the camera and the map are facing eachother, like a mirror
+        mapCamera.transform.position = new Vector3(
+
+            anchorIcon.iconRectTransform.anchoredPosition.x, 
+            mapCamera.transform.position.y, 
+            -anchorIcon.iconRectTransform.anchoredPosition.y
+        );
     }
 }
