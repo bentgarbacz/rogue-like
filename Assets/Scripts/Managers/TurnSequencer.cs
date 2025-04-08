@@ -6,9 +6,11 @@ using UnityEngine.InputSystem;
 
 public class TurnSequencer : MonoBehaviour
 {
-    public GameObject mapGen;
+    
     public float aggroRange = 10;
     public bool gameplayHalted = false;
+    public float baseWaitTime = 0.05f;
+    public float incrementWaitTime = 0.05f;
     private bool actionTaken = false;
     private PlayerCharacterSheet playerCharacter;
     private SpellCaster sc;
@@ -18,6 +20,7 @@ public class TurnSequencer : MonoBehaviour
     private UIActiveManager uiam;
     private CombatManager cbm;
     private ClickManager cm;
+    [SerializeField] private LevelGenerator levelGenerator;
     [SerializeField] private NameplateManager npm;
     [SerializeField] private MiniMapManager miniMapManager;
     private Mouse mouse;
@@ -45,7 +48,7 @@ public class TurnSequencer : MonoBehaviour
         {
             //If you have not reached the last node of your path 
             //and you are not currently moving to a node, move to the next node
-            if(dum.bufferedPath.Count > 0 && !pcMovement.moving)
+            if(dum.bufferedPath.Count > 0 && !pcMovement.IsMoving())
             {
                 
                 playerCharacter.Move(new Vector3(dum.bufferedPath[0].x, 0.1f, dum.bufferedPath[0].y), dum.occupiedlist);
@@ -127,7 +130,6 @@ public class TurnSequencer : MonoBehaviour
                         if(targetCharacter != playerCharacter)
                         {
 
-                            //cbm.AddToCombatBuffer(dum.hero, target);
                             playerCharacter.AttackCharacter(target);
                         }
                     }
@@ -158,7 +160,7 @@ public class TurnSequencer : MonoBehaviour
                         {
 
                             targetExit.ExitLevel();                            
-                            mapGen.GetComponent<LevelGenerator>().NewLevel();
+                            levelGenerator.NewLevel(levelGenerator.biomeDict[BiomeType.Catacomb]);
                             
                         }else //move towards exit
                         {
@@ -176,13 +178,15 @@ public class TurnSequencer : MonoBehaviour
             if(actionTaken && !gameplayHalted)
             {
                 
+                float waitTime = baseWaitTime;
                 actionTaken = false;
 
                 //give a turn to each aggroed enemy
                 foreach(GameObject enemy in dum.aggroEnemies)
                 {
                     
-                    enemy.GetComponent<EnemyCharacterSheet>().AggroBehavior(playerCharacter, dum, cbm);
+                    enemy.GetComponent<EnemyCharacterSheet>().AggroBehavior(playerCharacter, dum, cbm, waitTime);
+                    waitTime += incrementWaitTime;
                 }
 
                 //start combat for the turn

@@ -28,4 +28,10 @@ public class Biome : MonoBehaviour
 
         return;
     }
+
+    public virtual bool GenerateLevel(Vector2Int position, HashSet<Vector2Int> path, DungeonManager dum, NPCGenerator npcGen)
+    {
+
+        return false;
+    }
 }

@@ -11,7 +11,7 @@ public class CombatManager : MonoBehaviour
     private List<Attack> combatBuffer;
     private DungeonManager dum;
     private ProjectileReferences allProjectiles;
-
+    
     void Start()
     {
 

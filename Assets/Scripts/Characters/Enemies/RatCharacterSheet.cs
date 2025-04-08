@@ -25,7 +25,7 @@ public class RatCharacterSheet : EnemyCharacterSheet
         attackClip = Resources.Load<AudioClip>("Sounds/Rat");
     }
 
-    public override void AggroBehavior(PlayerCharacterSheet playerCharacter, DungeonManager dum, CombatManager cbm)
+    public override void AggroBehavior(PlayerCharacterSheet playerCharacter, DungeonManager dum, CombatManager cbm, float waitTime)
     {
 
         //enemy attacks player character if they are in a neighboring tile
@@ -40,7 +40,7 @@ public class RatCharacterSheet : EnemyCharacterSheet
             {
                 
                 //...try to move towards player character...
-                if(!Move(new Vector3(pathToPlayer[1].x, 0.1f, pathToPlayer[1].y), dum.occupiedlist))
+                if(!Move(new Vector3(pathToPlayer[1].x, 0.1f, pathToPlayer[1].y), dum.occupiedlist, waitTime))
                 {                  
                     
                     //...if that spot is occupied then try to path to a tile adjacent to player character 
@@ -52,7 +52,7 @@ public class RatCharacterSheet : EnemyCharacterSheet
                         if(pathToPlayerPlusV != null)
                         {
 
-                            if(Move(new Vector3(pathToPlayerPlusV[1].x, 0.1f, pathToPlayerPlusV[1].y), dum.occupiedlist))
+                            if(Move(new Vector3(pathToPlayerPlusV[1].x, 0.1f, pathToPlayerPlusV[1].y), dum.occupiedlist, waitTime))
                             {
 
                                 break;

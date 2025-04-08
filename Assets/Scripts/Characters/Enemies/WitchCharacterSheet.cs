@@ -31,7 +31,7 @@ public class WitchCharacterSheet : EnemyCharacterSheet
         teleportClip = Resources.Load<AudioClip>("Sounds/Teleport");
     }
 
-    public override void AggroBehavior(PlayerCharacterSheet playerCharacter, DungeonManager dum, CombatManager cbm)
+    public override void AggroBehavior(PlayerCharacterSheet playerCharacter, DungeonManager dum, CombatManager cbm, float waitTime)
     {
 
         if(attackCooldown == 0)
@@ -47,7 +47,7 @@ public class WitchCharacterSheet : EnemyCharacterSheet
             {
                 
                 List<Vector2Int> pathToPlayer = PathFinder.FindPath(coord, playerCharacter.coord, dum.dungeonCoords);                     
-                Move(new Vector3(pathToPlayer[1].x, 0.1f, pathToPlayer[1].y), dum.occupiedlist);
+                Move(new Vector3(pathToPlayer[1].x, 0.1f, pathToPlayer[1].y), dum.occupiedlist, waitTime);
             }
 
         }else
@@ -56,20 +56,20 @@ public class WitchCharacterSheet : EnemyCharacterSheet
             {
 
                 audioSource.PlayOneShot(teleportClip);
-                teleportCooldown = 10;
+                teleportCooldown = 3;
 
             }else
             {
 
-                Flee(dum);
-                teleportCooldown -= 1;
+                Flee(dum, waitTime);
             }
 
             attackCooldown -= 1;
+            teleportCooldown -= 1;
         }
     }
 
-    public void Flee(DungeonManager dum)
+    public void Flee(DungeonManager dum, float waitTime)
     {
 
         //run away from player
@@ -89,7 +89,7 @@ public class WitchCharacterSheet : EnemyCharacterSheet
         if(dum.dungeonCoords.Contains(fleePath))
         {
 
-            Move(new Vector3(fleePath.x, 0.1f, fleePath.y), dum.occupiedlist);
+            Move(new Vector3(fleePath.x, 0.1f, fleePath.y), dum.occupiedlist, waitTime);
         }
     }
 }

@@ -38,7 +38,7 @@ public class NPCGenerator : MonoBehaviour
         
         spawnPos.y += spawnPosVertOffset;
 
-        GameObject newChest = Instantiate(chest, spawnPos, chest.transform.rotation);
+        GameObject newChest = Instantiate(chest, spawnPos, Quaternion.Euler(0, Random.Range(0, 8) * 45, 0));
         dum.AddGameObject(newChest);
         newChest.GetComponent<Loot>().coord = new Vector2Int((int)spawnPos.x, (int)spawnPos.z);
     }

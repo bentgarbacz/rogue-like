@@ -31,7 +31,7 @@ public class DungeonManager : MonoBehaviour
         GameObject managers = GameObject.Find("System Managers");
         cbm = managers.GetComponent<CombatManager>();
         ts = managers.GetComponent<TurnSequencer>();
-        miniMapManager = GameObject.Find("CanvasHUD").GetComponentInChildren<MiniMapManager>();
+        miniMapManager = managers.GetComponent<UIActiveManager>().mapPanel.GetComponent<MiniMapManager>();
         playerCharacter = hero.GetComponent<PlayerCharacterSheet>();
 
         mainCamera.GetComponent<PlayerCamera>().SetFocalPoint(hero);
@@ -148,5 +148,24 @@ public class DungeonManager : MonoBehaviour
         }
 
         aggroEnemies = new HashSet<GameObject>();
+    }
+
+    public void DeleteTile(Vector2Int coord)
+    {
+
+        foreach(GameObject checkObject in dungeonSpecificGameObjects)
+        {
+
+            if(checkObject.GetComponent<Tile>())
+            {
+
+                if(checkObject.GetComponent<Tile>().coord == coord)
+                {
+
+                    Destroy(checkObject);
+                    return;
+                }
+            }
+        }
     }
 }

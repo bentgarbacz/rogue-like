@@ -4,6 +4,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 
+
 public class MoveToTarget : MonoBehaviour
 {
     
@@ -11,10 +12,11 @@ public class MoveToTarget : MonoBehaviour
     public float speed = 5f;
     private float distance;
     private float arcPos;
-    public bool moving = false;
+    private bool moving = false;
     private bool makesNoise = false;
     public AudioSource audioSource;
     public AudioClip stepAudioClip;
+    public float waitTime = 0f;
 
     void Start()
     {
@@ -24,39 +26,53 @@ public class MoveToTarget : MonoBehaviour
 
     void Update()
     {
-        if(distance > 0)
+
+        if(waitTime > 0)
         {
 
-            distance = Vector3.Distance(new Vector3(target.x, 0 , target.z), new Vector3(transform.position.x, 0, transform.position.z));
+            waitTime -= Time.deltaTime;
 
-            arcPos = Mathf.Clamp(CalcArc(distance), 0f, 1f);
-
-
-            transform.position = Vector3.MoveTowards(
-                                                        transform.position, 
-                                                        target + new Vector3(0, arcPos, 0), 
-                                                        speed * Time.deltaTime
-                                                    );
-                                                    
-        }else if(moving && distance == 0)
+        }else
         {
 
-            if(makesNoise)
+            if(distance > 0)
             {
 
-                audioSource.PlayOneShot(stepAudioClip);
-            }
+                distance = Vector3.Distance(new Vector3(target.x, 0 , target.z), new Vector3(transform.position.x, 0, transform.position.z));
 
-            moving = false;
+                arcPos = Mathf.Clamp(CalcArc(distance), 0f, 1f);
+
+
+                transform.position = Vector3.MoveTowards(
+                                                            transform.position, 
+                                                            target + new Vector3(0, arcPos, 0), 
+                                                            speed * Time.deltaTime
+                                                        );
+                                                        
+            }else if(moving && distance == 0)
+            {
+
+                if(makesNoise)
+                {
+
+                    audioSource.PlayOneShot(stepAudioClip);
+                }
+
+                transform.position = new Vector3(transform.position.x, 0.1f, transform.position.z);
+                moving = false;
+            }
         }
     }
 
-    public void SetTarget(Vector3 target)
+    public void SetTarget(Vector3 target, float waitTime = 0f)
     {
-        moving = true;
+
+        this.waitTime = waitTime;
+
+        moving = true;        
         this.target = target;
         distance = Vector3.Distance(new Vector3(target.x, 0 , target.z), new Vector3(transform.position.x, 0, transform.position.z));
-        transform.position = new Vector3(transform.position.x, 0, transform.position.z);
+        //transform.position = new Vector3(transform.position.x, 0, transform.position.z);
     }
 
     private float CalcArc(float xVal)
@@ -77,5 +93,11 @@ public class MoveToTarget : MonoBehaviour
         makesNoise = true;
         this.audioSource = audioSource;
         this.stepAudioClip = audioClip;
+    }
+
+    public bool IsMoving()
+    {
+
+        return moving;
     }
 }

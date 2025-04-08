@@ -55,7 +55,7 @@ public class CharacterSheet : MonoBehaviour
         health = System.Math.Min(maxHealth, health + healValue);
     }
 
-    public virtual bool Move(Vector3 newPos, HashSet<Vector3> occupiedlist)
+    public virtual bool Move(Vector3 newPos, HashSet<Vector3> occupiedlist, float waitTime = 0f)
     {
 
         if(!occupiedlist.Contains(newPos))
@@ -64,7 +64,7 @@ public class CharacterSheet : MonoBehaviour
             occupiedlist.Add(newPos);
             occupiedlist.Remove(pos);
 
-            GetComponent<MoveToTarget>().SetTarget(newPos);
+            GetComponent<MoveToTarget>().SetTarget(newPos, waitTime);
             transform.rotation = Quaternion.Euler(0, GameFunctions.DetermineRotation(pos, newPos), 0);
 
             pos = newPos;
