@@ -56,16 +56,16 @@ public class WitchCharacterSheet : EnemyCharacterSheet
             {
 
                 audioSource.PlayOneShot(teleportClip);
-                teleportCooldown = 10;
+                teleportCooldown = 3;
 
             }else
             {
 
                 Flee(dum, waitTime);
-                teleportCooldown -= 1;
             }
 
             attackCooldown -= 1;
+            teleportCooldown -= 1;
         }
     }
 

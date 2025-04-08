@@ -58,6 +58,7 @@ public class MoveToTarget : MonoBehaviour
                     audioSource.PlayOneShot(stepAudioClip);
                 }
 
+                transform.position = new Vector3(transform.position.x, 0.1f, transform.position.z);
                 moving = false;
             }
         }

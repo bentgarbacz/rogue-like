@@ -13,106 +13,34 @@ public class LevelGenerator : MonoBehaviour
     public int walkLength;
     private DungeonManager dum;
     [SerializeField] private MiniMapManager miniMapManager;
+    [SerializeField] private GameObject wallJoiner;
     private NPCGenerator npcGen;
-    private TileReferences tileRef;
     private Vector2Int startPosition = new(0, 0);
+    public Dictionary<BiomeType, Biome> biomeDict;
     
     void Start()
     {
 
         dum = GameObject.Find("System Managers").GetComponent<DungeonManager>();
         npcGen = GetComponent<NPCGenerator>();
-        tileRef = GetComponent<TileReferences>();
-        NewLevel();        
+
+        biomeDict = new()
+        {
+            {BiomeType.Catacomb, GetComponent<CatacombBiome>()}
+        };
+        
+        NewLevel(biomeDict[BiomeType.Catacomb]);        
     }
 
-    public void NewLevel()
+    public void NewLevel(Biome biome)
     {
 
         dum.dungeonCoords = new();
-        LevelGen(startPosition, walkLength, 100, dum.dungeonCoords);    
-        GenerateWalls(dum.dungeonCoords);
+        //LevelGen(startPosition, walkLength, 100, dum.dungeonCoords);
+        biome.GenerateLevel(startPosition, dum.dungeonCoords, dum, npcGen);    
+        GenerateWalls(dum.dungeonCoords, biome);
         //dum.cachedPathsDict = PrecacheMapPaths(path);
         miniMapManager.DrawIcons(dum.dungeonSpecificGameObjects);
-    }
-
-    private void LevelGen(Vector2Int position, int walkLength, int repeatWalks, HashSet<Vector2Int> path)
-    {
-
-        bool exitSpawned = false;
-
-        for(int i = 0; i < repeatWalks; i++)
-        {
-
-            for(int j = 0; j < walkLength; j++)
-            {
-                
-                if( !path.Contains(position) )
-                {
-
-                    Vector3 spawnPos = new(position.x, 0, position.y);
-                    int spawnRNG = UnityEngine.Random.Range(0, 1000);
-
-                    //spawn enterance on first tile
-                    if(i == 0 && j == 0)
-                    {
-
-                        tileRef.CreateEntranceTile(BiomeType.Catacomb, spawnPos, position, dum);
-
-                    //potentially spawn exit after a certain number of steps
-                    }else if(i == repeatWalks - 1 && j > walkLength / 2 && exitSpawned == false)
-                    {
-
-                        tileRef.CreateExitTile(BiomeType.Catacomb, spawnPos, position, path, dum);
-                        exitSpawned = true;
-                    
-                    //Otherwise spawn a normal tile
-                    }else
-                    {
-
-                        tileRef.CreateTile(BiomeType.Catacomb, spawnPos, position, spawnRNG, dum);                       
-                    }
-
-                    //move player to first tile generated
-                    if(i == 0 && j == 1)
-                    {
-
-                        dum.hero.GetComponent<CharacterSheet>().Move(spawnPos + new Vector3(0f, 0.1f, 0f), dum.occupiedlist);              
-                    }
-
-                    if(spawnRNG >= 0 && spawnRNG <= 2)
-                    {
-
-                        npcGen.CreateChest(spawnPos, dum);
-
-                    }else if(spawnRNG >= 3 && spawnRNG <= 4)
-                    {
-
-                        npcGen.CreateNPC(NPCType.Slime, spawnPos, dum);
-
-                    }else if(spawnRNG >= 5 && spawnRNG <= 6)
-                    {
-
-                        npcGen.CreateNPC(NPCType.Witch, spawnPos, dum);
-
-                    }else if(spawnRNG >= 7 && spawnRNG <= 8)
-                    {
-
-                        npcGen.CreateNPC(NPCType.GoatMan, spawnPos, dum);
-                    }
-                }
-
-                path.Add(position);
-                position += Direction2D.GetRandomDirection();
-            }
-        }
-
-        if(!exitSpawned)
-        {
-
-            dum.CleanUp();
-            NewLevel();
-        }
     }
 
     public Dictionary<string, List<Vector2Int>> PrecacheMapPaths(HashSet<Vector2Int> p)
@@ -144,7 +72,8 @@ public class LevelGenerator : MonoBehaviour
         return pathsDictionary;
     }
 
-    private void GenerateWalls(HashSet<Vector2Int> path){
+    private void GenerateWalls(HashSet<Vector2Int> path, Biome biome)
+    {
 
         //finds border tiles and places walls adjacent to them
         HashSet<Vector2Int> wallMap = new();
@@ -161,7 +90,7 @@ public class LevelGenerator : MonoBehaviour
                 if(!path.Contains(checkCoord) && !wallMap.Contains(checkCoord))
                 {
                     
-                    tileRef.CreateWallTile(BiomeType.Catacomb, new Vector3(checkCoord.x, 0, checkCoord.y), dum);
+                    biome.CreateWallTile(new Vector3(checkCoord.x, 0, checkCoord.y), dum);
                     wallMap.Add(checkCoord);
 
                     foreach(Vector2Int direction2 in Direction2D.DirectionsList())
@@ -175,13 +104,20 @@ public class LevelGenerator : MonoBehaviour
                         if(wallMap.Contains(checkCoordWall) && !wallJoinerMap.Contains(checkCoordWallJoiner))
                         {
 
-                            tileRef.CreateWallJoiner(new Vector3(checkCoordWallJoiner.x, 0, checkCoordWallJoiner.y), dum);
+                            CreateWallJoiner(new Vector3(checkCoordWallJoiner.x, 0, checkCoordWallJoiner.y), dum);
                             wallJoinerMap.Add(checkCoordWallJoiner);
                         }
                     }
                 }
             }
         }
+    }
+
+    public void CreateWallJoiner(Vector3 spawnPos, DungeonManager dum)
+    {
+
+        GameObject newWallJoiner = Instantiate(wallJoiner, spawnPos, wallJoiner.transform.rotation);
+        dum.AddGameObject(newWallJoiner);
     }
 }
 

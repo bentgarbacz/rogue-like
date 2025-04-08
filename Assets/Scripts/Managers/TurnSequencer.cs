@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 
 public class TurnSequencer : MonoBehaviour
 {
-    public GameObject mapGen;
+    
     public float aggroRange = 10;
     public bool gameplayHalted = false;
     public float baseWaitTime = 0.05f;
@@ -20,6 +20,7 @@ public class TurnSequencer : MonoBehaviour
     private UIActiveManager uiam;
     private CombatManager cbm;
     private ClickManager cm;
+    [SerializeField] private LevelGenerator levelGenerator;
     [SerializeField] private NameplateManager npm;
     [SerializeField] private MiniMapManager miniMapManager;
     private Mouse mouse;
@@ -159,7 +160,7 @@ public class TurnSequencer : MonoBehaviour
                         {
 
                             targetExit.ExitLevel();                            
-                            mapGen.GetComponent<LevelGenerator>().NewLevel();
+                            levelGenerator.NewLevel(levelGenerator.biomeDict[BiomeType.Catacomb]);
                             
                         }else //move towards exit
                         {

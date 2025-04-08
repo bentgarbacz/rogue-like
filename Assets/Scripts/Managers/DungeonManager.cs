@@ -149,4 +149,23 @@ public class DungeonManager : MonoBehaviour
 
         aggroEnemies = new HashSet<GameObject>();
     }
+
+    public void DeleteTile(Vector2Int coord)
+    {
+
+        foreach(GameObject checkObject in dungeonSpecificGameObjects)
+        {
+
+            if(checkObject.GetComponent<Tile>())
+            {
+
+                if(checkObject.GetComponent<Tile>().coord == coord)
+                {
+
+                    Destroy(checkObject);
+                    return;
+                }
+            }
+        }
+    }
 }

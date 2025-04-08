@@ -8,7 +8,7 @@ public static class PathFinder
 {
 
     //returns a path from start to destination on a grid
-    public static List<Vector2Int> FindPath(Vector2Int start, Vector2Int destination, HashSet<Vector2Int> grid)
+    public static List<Vector2Int> FindPath(Vector2Int start, Vector2Int destination, HashSet<Vector2Int> grid, bool useIntercardinal = true)
     {
         
         //List<Vector2Int> path = new List<Vector2Int>();
@@ -37,7 +37,7 @@ public static class PathFinder
             openSet.Remove(currentPos);
             closedSet.Add(currentPos);
 
-            foreach(Vector2Int neighborPos in GetNeighbors(currentPos, grid))
+            foreach(Vector2Int neighborPos in GetNeighbors(currentPos, grid, useIntercardinal))
             {
                 if(closedSet.Contains(neighborPos))
                 {
@@ -65,12 +65,20 @@ public static class PathFinder
         return null;
     }
 
-    public static HashSet<Vector2Int> GetNeighbors(Vector2Int point, HashSet<Vector2Int> grid)
+    public static HashSet<Vector2Int> GetNeighbors(Vector2Int point, HashSet<Vector2Int> grid, bool useIntercardinal = true)
     {
 
         HashSet<Vector2Int> neighbors = new();
 
-        foreach(Vector2Int d in NeighborVals.allDirectionsList)
+        List<Vector2Int> directions = NeighborVals.allDirectionsList;
+
+        if(!useIntercardinal)
+        {
+
+            directions = NeighborVals.cardinalList;
+        }
+        
+        foreach(Vector2Int d in directions)
         {
 
             Vector2Int checkPoint = new(point.x + d.x, point.y + d.y);
@@ -159,6 +167,21 @@ public static class PathFinder
 
         return (float)Math.Sqrt(Math.Pow(x2 - x1, 2) + Math.Pow(y2 - y1, 2));
     }
+
+    public static HashSet<Vector2Int> GenerateBlankGrid(int width, int height)
+    {
+        HashSet<Vector2Int> grid = new HashSet<Vector2Int>();
+
+        for (int x = 0; x <= width; x++)
+        {
+            for (int y = 0; y <= height; y++)
+            {
+                grid.Add(new Vector2Int(x, y));
+            }
+        }
+
+        return grid;
+    }
 }
 
 public static class NeighborVals{
@@ -174,6 +197,15 @@ public static class NeighborVals{
         new Vector2Int(-1, 1), //up left
         new Vector2Int(1, -1), //down right
         new Vector2Int(-1, -1) //down left
+    };
+
+    public static List<Vector2Int> cardinalList = new()
+    {
+
+        new Vector2Int(0, 1), //up
+        new Vector2Int(1, 0), //right
+        new Vector2Int(0, -1), //down
+        new Vector2Int(-1, 0), //left
     };
 }
 

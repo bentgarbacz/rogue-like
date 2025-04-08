@@ -6230,8 +6230,8 @@ GameObject:
   - component: {fileID: 438385573}
   - component: {fileID: 438385574}
   - component: {fileID: 438385576}
-  - component: {fileID: 438385575}
   - component: {fileID: 438385577}
+  - component: {fileID: 438385578}
   m_Layer: 0
   m_Name: Map Generator
   m_TagString: Untagged
@@ -6268,18 +6268,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   walkLength: 100
   miniMapManager: {fileID: 313091427}
---- !u!114 &438385575
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 438385571}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bbaa33bd86f5ec640866d724735c97e2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
   wallJoiner: {fileID: 1025472403522751266, guid: 20f1a7c70bc0d8948ab390c0e7b73c5e, type: 3}
 --- !u!114 &438385576
 MonoBehaviour:
@@ -6321,6 +6309,26 @@ MonoBehaviour:
   catacombWallTile: {fileID: 2564236300543592276, guid: 341c12a892e0bfc4d989278622d531fb, type: 3}
   catacombEntrance: {fileID: 8240057085656814339, guid: f6b63ce657227bd4c9f0ea79119baacf, type: 3}
   catacombExit: {fileID: 2862989877608427773, guid: 57670d2158c8b544a9c7250631b130e5, type: 3}
+--- !u!114 &438385578
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 438385571}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69065a6ca42c06648b24c6dc06c12901, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  caveFloorTileAlt1: {fileID: 0}
+  caveFloorTileAlt2: {fileID: 0}
+  caveFloorTileAlt3: {fileID: 0}
+  caveFloorTileAlt4: {fileID: 0}
+  caveFloorTileAlt5: {fileID: 0}
+  caveWallTile: {fileID: 0}
+  caveEntrance: {fileID: 0}
+  caveExit: {fileID: 0}
 --- !u!1001 &444728522
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19737,7 +19745,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6493254730876405042, guid: 3d2a97183afeb6843a3d22f8ee50bf01, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7602760449659616811, guid: 3d2a97183afeb6843a3d22f8ee50bf01, type: 3}
       propertyPath: lootTable
@@ -22413,11 +22421,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0858690206951944bb4cefe5dfdae9de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mapGen: {fileID: 438385571}
   aggroRange: 10
   gameplayHalted: 0
   baseWaitTime: 0.05
   incrementWaitTime: 0.05
+  levelGenerator: {fileID: 438385574}
   npm: {fileID: 1977274821}
   miniMapManager: {fileID: 313091427}
 --- !u!4 &1314207892

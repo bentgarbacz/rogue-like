@@ -17,13 +17,11 @@ public class MiniMapManager : MonoBehaviour
     private List<MapIconController> dynamicObjectIcons;
     private DungeonManager dum;
     private MapIconController anchorIcon;
-    private RectTransform mapRectTransform;
 
     void Start()
     {
         
         dum = GameObject.Find("System Managers").GetComponent<DungeonManager>();
-        mapRectTransform = map.GetComponent<RectTransform>();
     }
 
     public void RevealTiles(Vector2Int coord)
@@ -39,6 +37,7 @@ public class MiniMapManager : MonoBehaviour
 
         foreach(GameObject currentObject in objects)
         {
+
             if(currentObject.GetComponent<Tile>() is Tile currentTile || currentObject.GetComponent<Exit>() is Exit currentExit)
             {
 
