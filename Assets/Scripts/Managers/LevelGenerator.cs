@@ -24,12 +24,14 @@ public class LevelGenerator : MonoBehaviour
         dum = GameObject.Find("System Managers").GetComponent<DungeonManager>();
         npcGen = GetComponent<NPCGenerator>();
 
-        biomeDict = new()
+        biomeDict = new Dictionary<BiomeType, Biome>
         {
-            {BiomeType.Catacomb, GetComponent<CatacombBiome>()}
+            
+            { BiomeType.Catacomb, GetComponent<CatacombBiome>() },
+            { BiomeType.Cave, GetComponent<CaveBiome>() }
         };
         
-        NewLevel(biomeDict[BiomeType.Catacomb]);        
+        NewLevel(biomeDict[BiomeType.Cave]);        
     }
 
     public void NewLevel(Biome biome)

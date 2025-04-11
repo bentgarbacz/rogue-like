@@ -4,17 +4,18 @@ using UnityEngine;
 
 public class Room
 {
-    public Vector2Int Position;
-    public int Width, Height;
+    public Vector2Int position;
+    public int width; 
+    public int height;
 
     private static System.Random rand = new System.Random();
 
     public Room(int x, int y, int width, int height)
     {
 
-        Position = new Vector2Int(x, y);
-        Width = width;
-        Height = height;
+        this.position = new Vector2Int(x, y);
+        this.width = width;
+        this.height = height;
     }
 
     public HashSet<Vector2Int> GetCoordinates()
@@ -22,13 +23,13 @@ public class Room
 
         HashSet<Vector2Int> coords = new();
         
-        for (int x = 0; x < Width; x++)
+        for (int x = 0; x < width; x++)
         {
 
-            for (int y = 0; y < Height; y++)
+            for (int y = 0; y < height; y++)
             {
 
-                coords.Add(new Vector2Int(Position.x + x, Position.y + y));
+                coords.Add(new Vector2Int(position.x + x, position.y + y));
             }
         }
         
@@ -37,57 +38,109 @@ public class Room
 
     public Vector2Int GetRandomCoordinate()
     {
-        int randomX = rand.Next(Position.x, Position.x + Width);
-        int randomY = rand.Next(Position.y, Position.y + Height);
+
+        int randomX = rand.Next(position.x, position.x + width);
+        int randomY = rand.Next(position.y, position.y + height);
+
         return new Vector2Int(randomX, randomY);
+    }
+
+    public HashSet<Vector2Int> GetPerimeterCoordinates()
+    {
+        HashSet<Vector2Int> perimeterCoords = new();
+
+        // Top and bottom edges
+        for (int x = position.x - 1; x <= position.x + width; x++)
+        {
+            perimeterCoords.Add(new Vector2Int(x, position.y - 1)); // Top edge
+            perimeterCoords.Add(new Vector2Int(x, position.y + height)); // Bottom edge
+        }
+
+        // Left and right edges
+        for (int y = position.y - 1; y <= position.y + height; y++)
+        {
+            perimeterCoords.Add(new Vector2Int(position.x - 1, y)); // Left edge
+            perimeterCoords.Add(new Vector2Int(position.x + width, y)); // Right edge
+        }
+
+        return perimeterCoords;
     }
 }
 
 public class BSPNode
 {
 
-    public Vector2Int Position;
-    public int Width, Height;
-    public BSPNode Left, Right;
-    public Room Room;
-
+    public Vector2Int position;
+    public int width;
+    public int height;
+    public BSPNode left;
+    public BSPNode right;
+    public Room room;
+    public bool IsLeaf => left == null && right == null;
     private static System.Random rand = new System.Random();
 
     public BSPNode(int x, int y, int width, int height)
     {
         
-        Position = new Vector2Int(x, y);
-        Width = width;
-        Height = height;
+        this.position = new Vector2Int(x, y);
+        this.width = width;
+        this.height = height;
     }
-
-    public bool IsLeaf => Left == null && Right == null;
 
     public bool Split(int minSize)
     {
-        if (!IsLeaf) return false;
+
+        if (!IsLeaf) 
+        {
+            
+            return false;
+        }
 
         bool splitH = rand.NextDouble() > 0.5;
-        if (Width > Height && Width / Height >= 1.25)
-            splitH = false;
-        else if (Height > Width && Height / Width >= 1.25)
-            splitH = true;
 
-        int max = (splitH ? Height : Width) - minSize;
+        if (width > height && width / height >= 1.25)
+        {
+
+            splitH = false;
+
+        }else if (height > width && height / width >= 1.25)
+        {
+
+            splitH = true;
+        }
+
+        int max = 0;
+
+        if (splitH)
+        {
+
+            max = height - minSize;
+        
+        }else
+        {
+
+            max = width - minSize;
+        }
+
         if (max <= minSize)
+        {
+
             return false;
+        }
 
         int split = rand.Next(minSize, max);
 
         if (splitH)
         {
-            Left = new BSPNode(Position.x, Position.y, Width, split);
-            Right = new BSPNode(Position.x, Position.y + split, Width, Height - split);
-        }
-        else
+
+            left = new BSPNode(position.x, position.y, width, split);
+            right = new BSPNode(position.x, position.y + split, width, height - split);
+
+        }else
         {
-            Left = new BSPNode(Position.x, Position.y, split, Height);
-            Right = new BSPNode(Position.x + split, Position.y, Width - split, Height);
+
+            left = new BSPNode(position.x, position.y, split, height);
+            right = new BSPNode(position.x + split, position.y, width - split, height);
         }
 
         return true;
@@ -95,49 +148,59 @@ public class BSPNode
 
     public void CreateRoom(int buffer = 1)
     {
-        int roomWidth = rand.Next(3, Width - 2 * buffer);
-        int roomHeight = rand.Next(3, Height - 2 * buffer);
 
-        int roomX = rand.Next(Position.x + buffer, Position.x + Width - roomWidth - buffer);
-        int roomY = rand.Next(Position.y + buffer, Position.y + Height - roomHeight - buffer);
+        int roomWidth = rand.Next(3, width - 2 * buffer);
+        int roomHeight = rand.Next(3, height - 2 * buffer);
 
-        Room = new Room(roomX, roomY, roomWidth, roomHeight);
+        int roomX = rand.Next(position.x + buffer, position.x + width - roomWidth - buffer);
+        int roomY = rand.Next(position.y + buffer, position.y + height - roomHeight - buffer);
+
+        room = new Room(roomX, roomY, roomWidth, roomHeight);
     }
 }
 
 public class BSPGenerator
 {
+
     public static List<Room> Generate(int width, int height, int maxDepth = 5, int minSize = 6)
     {
-        var root = new BSPNode(0, 0, width, height);
-        List<BSPNode> leaves = new List<BSPNode> { root };
+
+        List<BSPNode> leaves = new(){ new BSPNode(0, 0, width, height) };
 
         for (int i = 0; i < maxDepth; i++)
         {
-            List<BSPNode> newLeaves = new List<BSPNode>();
-            foreach (var leaf in leaves)
+
+            List<BSPNode> newLeaves = new();
+
+            foreach (BSPNode leaf in leaves)
             {
+
                 if (leaf.Split(minSize))
                 {
-                    newLeaves.Add(leaf.Left);
-                    newLeaves.Add(leaf.Right);
-                }
-                else
+
+                    newLeaves.Add(leaf.left);
+                    newLeaves.Add(leaf.right);
+
+                }else
                 {
+
                     newLeaves.Add(leaf);
                 }
             }
+
             leaves = newLeaves;
         }
 
         List<Room> placedRooms = new List<Room>();
 
-        foreach (var leaf in leaves)
+        foreach (BSPNode leaf in leaves)
         {
+
             if (leaf.IsLeaf)
             {
+
                 leaf.CreateRoom();
-                placedRooms.Add(leaf.Room);
+                placedRooms.Add(leaf.room);
             }
         }
 

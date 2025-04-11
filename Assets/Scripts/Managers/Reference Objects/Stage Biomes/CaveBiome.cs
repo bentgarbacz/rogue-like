@@ -10,7 +10,8 @@ public class CaveBiome : Biome
     [SerializeField] private GameObject caveFloorTileAlt3;
     [SerializeField] private GameObject caveFloorTileAlt4;
     [SerializeField] private GameObject caveFloorTileAlt5;
-    [SerializeField] private GameObject caveWallTile;
+    [SerializeField] private GameObject caveWallTile1;
+    [SerializeField] private GameObject caveWallTile2;
     [SerializeField] private GameObject caveEntrance;
     [SerializeField] private GameObject caveExit;
     private readonly float exitSpawnPosVertOffset = 0.88f;
@@ -85,7 +86,37 @@ public class CaveBiome : Biome
     public override void CreateWallTile(Vector3 spawnPos, DungeonManager dum)
     {
 
-        GameObject newWall = Instantiate(caveWallTile, spawnPos, caveWallTile.transform.rotation);
+        GameObject newWall;
+        int spawnRNG = Random.Range(1, 1001);
+
+
+
+        if(spawnRNG <= 1000 && spawnRNG >= 500)
+        {
+            
+            newWall = Instantiate(caveWallTile1, spawnPos, caveWallTile1.transform.rotation);
+
+        }else if(spawnRNG <= 500 && spawnRNG >= 0)
+        {
+
+            newWall = Instantiate(caveWallTile2, spawnPos, caveWallTile2.transform.rotation);
+
+        }else if(spawnRNG <= 600 && spawnRNG >= 400)
+        {
+
+            newWall = Instantiate(caveWallTile2, spawnPos, caveWallTile2.transform.rotation);
+
+        }else if(spawnRNG <= 400 && spawnRNG >= 200)
+        {
+
+            newWall = Instantiate(caveWallTile2, spawnPos, caveWallTile2.transform.rotation);
+
+        }else
+        {
+
+            newWall = Instantiate(caveWallTile2, spawnPos, caveWallTile2.transform.rotation);
+        }
+
         newWall.GetComponent<Tile>().SetCoord(new Vector2Int((int)spawnPos.x, (int)spawnPos.z));
         dum.AddGameObject(newWall);      
     }

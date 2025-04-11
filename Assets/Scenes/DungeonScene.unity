@@ -6321,14 +6321,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69065a6ca42c06648b24c6dc06c12901, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  caveFloorTileAlt1: {fileID: 0}
-  caveFloorTileAlt2: {fileID: 0}
-  caveFloorTileAlt3: {fileID: 0}
-  caveFloorTileAlt4: {fileID: 0}
-  caveFloorTileAlt5: {fileID: 0}
-  caveWallTile: {fileID: 0}
-  caveEntrance: {fileID: 0}
-  caveExit: {fileID: 0}
+  caveFloorTileAlt1: {fileID: 8206862141811745960, guid: 9345928340a4d654dab13b1256a95948, type: 3}
+  caveFloorTileAlt2: {fileID: 5859785116392968625, guid: 883e1beb6e9461e4d948775e3d5bb08c, type: 3}
+  caveFloorTileAlt3: {fileID: 8502035101222249981, guid: b0b44c261d3ec8f44862f4f7a55fee8a, type: 3}
+  caveFloorTileAlt4: {fileID: 196926816991586345, guid: 52be650d335424345b1c31d78e768a2c, type: 3}
+  caveFloorTileAlt5: {fileID: 6286329183678759311, guid: 0d2cc7a38ded1714cb6d304f5c7cbbb8, type: 3}
+  caveWallTile: {fileID: 4957196156471793962, guid: c6bc54a29a054ed4cbb51f41c1b4ec1f, type: 3}
+  caveEntrance: {fileID: 8240057085656814339, guid: f6b63ce657227bd4c9f0ea79119baacf, type: 3}
+  caveExit: {fileID: 2862989877608427773, guid: 57670d2158c8b544a9c7250631b130e5, type: 3}
 --- !u!1001 &444728522
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6337,6 +6337,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2468885874815086548, guid: 57670d2158c8b544a9c7250631b130e5, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
     - target: {fileID: 2862989877608427773, guid: 57670d2158c8b544a9c7250631b130e5, type: 3}
       propertyPath: m_Name
       value: Exit
@@ -6344,6 +6348,22 @@ PrefabInstance:
     - target: {fileID: 2862989877608427773, guid: 57670d2158c8b544a9c7250631b130e5, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3160447327852092079, guid: 57670d2158c8b544a9c7250631b130e5, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+    - target: {fileID: 3238284615572777543, guid: 57670d2158c8b544a9c7250631b130e5, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3238284615572777543, guid: 57670d2158c8b544a9c7250631b130e5, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3238284615572777543, guid: 57670d2158c8b544a9c7250631b130e5, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3238284615572777543, guid: 57670d2158c8b544a9c7250631b130e5, type: 3}
       propertyPath: m_LocalPosition.x
@@ -21661,7 +21681,7 @@ Transform:
   m_GameObject: {fileID: 1280773017}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.000061035156, y: 0.000015258789, z: 0}
+  m_LocalPosition: {x: 0.933, y: 0.000015258789, z: -0.469}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

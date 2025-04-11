@@ -14,28 +14,35 @@ public class CatacombBiome : Biome
     [SerializeField] private GameObject catacombEntrance;
     [SerializeField] private GameObject catacombExit;
     private readonly float exitSpawnPosVertOffset = 0.88f;
+    private readonly List<NPCType> possibleEnemyTypes = new()
+    {
+
+        NPCType.Skeleton,
+        NPCType.SkeletonArcher,
+        NPCType.Slime
+    };
 
     public override void CreateTile(Vector3 spawnPos, Vector2Int position, int spawnRNG, DungeonManager dum)
     {
 
         GameObject newTile;
 
-        if(spawnRNG <= 1000 && spawnRNG >= 997)
+        if(spawnRNG <= 1000 && spawnRNG >= 800)
         {
             
             newTile = Instantiate(catacombFloorTileAlt1, spawnPos, catacombFloorTileAlt1.transform.rotation);
 
-        }else if(spawnRNG <= 996 && spawnRNG >= 993)
+        }else if(spawnRNG <= 800 && spawnRNG >= 600)
         {
 
             newTile = Instantiate(catacombFloorTileAlt2, spawnPos, catacombFloorTileAlt2.transform.rotation);
 
-        }else if(spawnRNG <= 992 && spawnRNG >= 989)
+        }else if(spawnRNG <= 600 && spawnRNG >= 400)
         {
 
             newTile = Instantiate(catacombFloorTileAlt3, spawnPos, catacombFloorTileAlt3.transform.rotation);
 
-        }else if(spawnRNG <= 988 && spawnRNG >= 985)
+        }else if(spawnRNG <= 400 && spawnRNG >= 200)
         {
 
             newTile = Instantiate(catacombFloorTileAlt4, spawnPos, catacombFloorTileAlt4.transform.rotation);
@@ -93,55 +100,79 @@ public class CatacombBiome : Biome
     public override bool GenerateLevel(Vector2Int position, HashSet<Vector2Int> path, DungeonManager dum, NPCGenerator npcGen)
     {
 
-        List<Room> rooms = BSPGenerator.Generate(100, 100, 20, 15);
+        int width = 50;
+        int height = 50;
 
-        List<Vector2Int> points = new List<Vector2Int>();
+        HashSet<Vector2Int> grid = PathFinder.GenerateBlankGrid(width, height);
+        List<Room> rooms = BSPGenerator.Generate(width, height, 20, 15);
+
+        Dictionary<Vector2Int, float> costDict = new();
+
+        foreach(Vector2Int point in grid)
+        {
+
+            costDict.Add(point, 0f);
+        }
+
+        List<Vector2Int> roomPositions = new();
         
         foreach(Room room in rooms)
         {
 
-            points.Add(room.Position);
+            roomPositions.Add(room.position);
 
             foreach(Vector2Int coord in room.GetCoordinates())
             {
-
+                
+                //Add to set of navigable coordinates in the dungeon
                 path.Add(coord);
+
+                //Spawn a tile in the game world
                 Vector3 spawnPos = new(coord.x, 0, coord.y);
-                CreateTile(spawnPos, coord, 1, dum);
+                CreateTile(spawnPos, coord, Random.Range(0, 1001), dum);
+
+                //discourage room tiles for when we generate hallways
+                costDict[coord] = 5f;
+            }
+
+            foreach(Vector2Int coord in room.GetPerimeterCoordinates())
+            {
+
+                //REALLY discourage wall tiles of rooms for when we generate hallways
+                costDict[coord] = 10;
             }
         }
 
-        List<Triangle> triangles = DelaunayTriangulation.GenerateTriangulation(points);
+        List<Triangle> triangles = DelaunayTriangulation.GenerateTriangulation(roomPositions);
 
-        List<Edge> allEdges = DelaunayTriangulation.GetEdgesFromTriangles(triangles);
+        HashSet<Edge> allEdges = DelaunayTriangulation.GetEdgesFromTriangles(triangles);
 
-        List<Edge> edgesMST = MinimumSpanningTree.CreateMST(allEdges);
-
-        List<Edge> edges = MinimumSpanningTree.AddExtraEdges(edgesMST, allEdges, 0.125f);
+        HashSet<Edge> chosenEdges = MinimumSpanningTree.CreateMSTExtraEdges(allEdges, 0.125f);
 
 
-        foreach(Edge edge in edges)
+        foreach(Edge edge in chosenEdges)
         {
+
             Vector2Int navigateCoord1 = edge.coord1;
             Vector2Int navigateCoord2 = edge.coord2;
 
             foreach(Room room in rooms)
             {
 
-                if(room.Position == navigateCoord1)
+                if(room.position == navigateCoord1)
                 {
 
                     navigateCoord1 = room.GetRandomCoordinate();
 
-                }else if(room.Position == navigateCoord2)
+                }else if(room.position == navigateCoord2)
                 {
 
                     navigateCoord2 = room.GetRandomCoordinate();
 
                 }
-            }
+            }            
 
-            List<Vector2Int> hallwayCoords = PathFinder.FindPath(navigateCoord1, navigateCoord2, PathFinder.GenerateBlankGrid(100, 100), false);
+            List<Vector2Int> hallwayCoords = PathFinder.FindPath(navigateCoord1, navigateCoord2, grid, false, costDict);
 
             foreach(Vector2Int coord in hallwayCoords)
             {
@@ -149,15 +180,21 @@ public class CatacombBiome : Biome
                 if(!path.Contains(coord))
                 {
 
+                    //Add to set of navigable coordinates in the dungeon
                     path.Add(coord);
+
+                    //Spawn tile in the game world
                     Vector3 spawnPos = new(coord.x, 0, coord.y);
-                    CreateTile(spawnPos, coord, 1, dum);
+                    CreateTile(spawnPos, coord, Random.Range(0, 1001), dum);
+
+                    //encourage existing hallway tiles to be reused
+                    costDict[coord] = -5f;
                 }
             }
         }
 
         //Generate entrance and place dum.hero there
-        Room entranceRoom = rooms[0]; // Select the first room as the entrance room (or choose based on your logic)
+        Room entranceRoom = rooms[0]; // Select the first room as the entrance room
         Vector2Int entranceCoord = entranceRoom.GetRandomCoordinate();
         Vector3 entrancePos = new Vector3(entranceCoord.x, 0, entranceCoord.y);
         dum.DeleteTile(entranceCoord);
@@ -171,8 +208,7 @@ public class CatacombBiome : Biome
         {
 
             PlayerCharacterSheet pc = dum.hero.GetComponent<PlayerCharacterSheet>();
-            Vector3 movePos = new Vector3(coord.x, 0f, coord.y);
-
+            Vector3 movePos = new(coord.x, 0f, coord.y);
 
             if(pc.Move(movePos, dum.occupiedlist))
             {
@@ -182,9 +218,9 @@ public class CatacombBiome : Biome
         }
 
         //Generate exit in the last room in rooms
-        Room exitRoom = rooms[rooms.Count - 1]; // Select the last room as the exit room
+        Room exitRoom = rooms[^1];
         Vector2Int exitCoord = exitRoom.GetRandomCoordinate();
-        Vector3 exitPos = new Vector3(exitCoord.x, 0, exitCoord.y);
+        Vector3 exitPos = new(exitCoord.x, 0, exitCoord.y);
 
         dum.DeleteTile(exitCoord);
 
@@ -194,11 +230,13 @@ public class CatacombBiome : Biome
         //spawn 0 - 3 chests in every room
         foreach (Room room in rooms)
         {
+
             int chestCount = Random.Range(0, 4); // Randomly decide how many chests to spawn (0 to 3)
             HashSet<Vector2Int> usedChestCoords = new HashSet<Vector2Int>();
 
             for (int i = 0; i < chestCount; i++)
             {
+                
                 Vector2Int chestCoord;
 
                 // Find a valid coordinate that hasn't been used yet
@@ -236,20 +274,7 @@ public class CatacombBiome : Biome
                 Vector3 enemyPos = new Vector3(enemyCoord.x, 0, enemyCoord.y);
 
                 // Spawn the enemy at the chosen position
-                int randomChoice = Random.Range(0, 3); // Randomly choose 0, 1, or 2
-
-                switch (randomChoice)
-                {
-                    case 0:
-                        npcGen.CreateNPC(NPCType.Skeleton, enemyPos, dum);
-                        break;
-                    case 1:
-                        npcGen.CreateNPC(NPCType.SkeletonArcher, enemyPos, dum);
-                        break;
-                    case 2:
-                        npcGen.CreateNPC(NPCType.Slime, enemyPos, dum);
-                        break;
-                }
+                npcGen.CreateNPC(possibleEnemyTypes[ Random.Range(0, 3) ], enemyPos, dum);
             }
         }
 
