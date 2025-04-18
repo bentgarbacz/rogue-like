@@ -9,7 +9,7 @@ public class Dagger : Equipment
     {
 
         this.title = "Dagger";
-        this.description = "Easily concealed one handed weapon.";
+        this.description = "Short bladed weapon.";
 
         this.sprite = Resources.Load<Sprite>("Pixel Art/Equipment/Dagger");
         this.contextClip = Resources.Load<AudioClip>("Sounds/Equip");

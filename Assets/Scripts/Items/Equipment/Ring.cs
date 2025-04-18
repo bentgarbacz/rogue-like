@@ -9,7 +9,7 @@ public class Ring : Equipment
     {
 
         this.title = "Ring";
-        this.description = "Golden loop imbued with magical properties.";
+        this.description = "Golden ring imbued with magical properties.";
 
         this.sprite = Resources.Load<Sprite>("Pixel Art/Equipment/Ring");
         this.contextClip = Resources.Load<AudioClip>("Sounds/Equip");

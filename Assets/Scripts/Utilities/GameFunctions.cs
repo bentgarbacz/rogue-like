@@ -132,7 +132,7 @@ public static class GameFunctions
             dropPos.z += (float)(Random.Range(-20, 20) * 0.01);
         }
 
-        GameObject lootContainer = MonoBehaviour.Instantiate(container, dropPos, DroppingEntity.transform.rotation);
+        GameObject lootContainer = Object.Instantiate(container, dropPos, DroppingEntity.transform.rotation);
         Loot loot = lootContainer.GetComponent<Loot>();
 
         //Sets the tile coordinate in which the loot resides

@@ -23,6 +23,7 @@ public class Fortify : Spell
     {
 
         CharacterSheet casterCharacter = caster.GetComponent<CharacterSheet>();
+        StatusEffectManager statusEffectManager = caster.GetComponent<StatusEffectManager>();
 
         caster.GetComponent<StatusEffectManager>().AddEffect(new StoneSkin(casterCharacter, duration, armorIncrease));
         ResetCooldown(caster);

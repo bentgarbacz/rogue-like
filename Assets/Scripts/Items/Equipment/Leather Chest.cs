@@ -9,7 +9,7 @@ public class LeatherChest : Equipment
     {
 
         this.title = "Leather Body Armor";
-        this.description = "Will protect your vitals without sacrificing mobility.";
+        this.description = "Leather armor that protects your torso.";
 
         this.sprite = Resources.Load<Sprite>("Pixel Art/Equipment/Leather Chest");
         this.contextClip = Resources.Load<AudioClip>("Sounds/Equip");
