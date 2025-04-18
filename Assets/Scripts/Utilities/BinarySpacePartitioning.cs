@@ -191,7 +191,7 @@ public class BSPGenerator
             leaves = newLeaves;
         }
 
-        List<Room> placedRooms = new List<Room>();
+        List<Room> placedRooms = new();
 
         foreach (BSPNode leaf in leaves)
         {

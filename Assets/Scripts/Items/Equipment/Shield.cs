@@ -9,7 +9,7 @@ public class Shield : Equipment
     {
 
         this.title = "Wooden Shield";
-        this.description = "Will deflect a blow in a pinch.";
+        this.description = "Sturdy oak shield";
 
         this.sprite = Resources.Load<Sprite>("Pixel Art/Equipment/Shield");
         this.contextClip = Resources.Load<AudioClip>("Sounds/Equip");

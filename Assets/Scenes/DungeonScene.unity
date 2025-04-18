@@ -6149,6 +6149,7 @@ MonoBehaviour:
   catacombWallTile: {fileID: 2564236300543592276, guid: 341c12a892e0bfc4d989278622d531fb, type: 3}
   catacombEntrance: {fileID: 8240057085656814339, guid: f6b63ce657227bd4c9f0ea79119baacf, type: 3}
   catacombExit: {fileID: 2862989877608427773, guid: 57670d2158c8b544a9c7250631b130e5, type: 3}
+  possibleEnemyTypes: 010000000200000005000000
 --- !u!114 &438385578
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6166,10 +6167,14 @@ MonoBehaviour:
   caveFloorTileAlt3: {fileID: 8502035101222249981, guid: b0b44c261d3ec8f44862f4f7a55fee8a, type: 3}
   caveFloorTileAlt4: {fileID: 196926816991586345, guid: 52be650d335424345b1c31d78e768a2c, type: 3}
   caveFloorTileAlt5: {fileID: 6286329183678759311, guid: 0d2cc7a38ded1714cb6d304f5c7cbbb8, type: 3}
-  caveWallTile1: {fileID: 4957196156471793962, guid: c6bc54a29a054ed4cbb51f41c1b4ec1f, type: 3}
-  caveWallTile2: {fileID: 3291912736170558675, guid: 98d51e23a3fae0e40934253026fe9aa8, type: 3}
+  caveWallTile1: {fileID: 2382165418398810183, guid: 5c4ea71f3b46bee449535683c528d70d, type: 3}
+  caveWallTile2: {fileID: 8009905800977387018, guid: 4bd1ba88dce2bd741b54dbfd669a69bb, type: 3}
+  caveWallTile3: {fileID: 6794754070613120838, guid: cf6b53b2e283f974abe71a419dd7d785, type: 3}
+  caveWallTile4: {fileID: 1451028349190843145, guid: e7130494b967a174b8a78847160acfdc, type: 3}
+  caveWallTile5: {fileID: 257452301355771452, guid: 94a2974bb6f01604da9e183d7d3da716, type: 3}
   caveEntrance: {fileID: 8240057085656814339, guid: f6b63ce657227bd4c9f0ea79119baacf, type: 3}
-  caveExit: {fileID: 2862989877608427773, guid: 57670d2158c8b544a9c7250631b130e5, type: 3}
+  caveExit: {fileID: 2300535856699664948, guid: 7d6ae6087fa688e4581677d0383a4cb1, type: 3}
+  possibleEnemyTypes: 030000000400000006000000
 --- !u!1001 &444728522
 PrefabInstance:
   m_ObjectHideFlags: 0

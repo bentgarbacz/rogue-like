@@ -9,7 +9,7 @@ public class PlateBody : Equipment
     {
 
         this.title = "Plate Body Armor";
-        this.description = "Sturdy as it is heavy.";
+        this.description = "Steel body armor.";
 
         this.sprite = Resources.Load<Sprite>("Pixel Art/Equipment/Plate Body");
         this.contextClip = Resources.Load<AudioClip>("Sounds/Equip");

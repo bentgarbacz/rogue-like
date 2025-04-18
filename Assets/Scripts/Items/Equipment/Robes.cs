@@ -9,7 +9,7 @@ public class Robes : Equipment
     {
 
         this.title = "Robes";
-        this.description = "The wisdom of it's previous owner rubs off on you.";
+        this.description = "Magical body armor";
 
         this.sprite = Resources.Load<Sprite>("Pixel Art/Equipment/Robes");
         this.contextClip = Resources.Load<AudioClip>("Sounds/Equip");

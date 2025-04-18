@@ -9,7 +9,7 @@ public class LeatherBoots : Equipment
     {
 
         this.title = "Boots";
-        this.description = "Reliable leather boots, shows signs of many adventures.";
+        this.description = "Leather boots";
 
         this.sprite = Resources.Load<Sprite>("Pixel Art/Equipment/Leather Boots");
         this.contextClip = Resources.Load<AudioClip>("Sounds/Equip");

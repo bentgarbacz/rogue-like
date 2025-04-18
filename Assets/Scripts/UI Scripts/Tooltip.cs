@@ -8,8 +8,9 @@ public class Tooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     public string tooltip = "";
     private ToolTipManager ttm;
+    private bool currentToolTip = false;
 
-    void Start()
+    void Awake()
     {
         
         ttm = GameObject.Find("System Managers").GetComponent<UIActiveManager>().toolTipContainer.GetComponent<ToolTipManager>();
@@ -25,24 +26,38 @@ public class Tooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         
         ttm.SetTooltip(true, tooltip.Replace("\\n", "\n"));
+        currentToolTip = true;
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
 
         ClearTooltip();
+        currentToolTip = false;
     }
 
     public void OnDestroy()
     {
-        
-        ClearTooltip();
+
+        if(currentToolTip == true)
+        {
+            Debug.Log("Destroy");
+            Debug.Log(tooltip);
+
+            ClearTooltip();   
+        }
     }
 
     public void OnDisable()
     {
 
-        ClearTooltip();   
+        if(currentToolTip == true)
+        {
+
+            Debug.Log("disable");
+            Debug.Log(tooltip);
+            ClearTooltip();   
+        }
     }
 
     public void ClearTooltip()

@@ -9,7 +9,7 @@ public class Sword : Equipment
     {
 
         this.title = "Sword";
-        this.description = "It ain't pretty but it is pointy.";
+        this.description = "Long bladed weapon";
 
         this.sprite = Resources.Load<Sprite>("Pixel Art/Equipment/Sword");
         this.contextClip = Resources.Load<AudioClip>("Sounds/Equip");

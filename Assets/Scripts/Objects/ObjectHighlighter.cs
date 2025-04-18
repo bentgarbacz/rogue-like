@@ -55,4 +55,35 @@ public class ObjectHighlighter : MonoBehaviour, IPointerEnterHandler, IPointerEx
         GetComponent<Renderer>().material.color = startcolor;
         highlighted = false;
     }
+
+
+    public void OnDestroy()
+    {
+
+        if(highlighted == true)
+        {
+            Debug.Log("Destroy");
+            Debug.Log(actionDescription);
+
+            ClearTooltip();   
+        }
+    }
+
+    public void OnDisable()
+    {
+
+        if(highlighted == true)
+        {
+
+            Debug.Log("disable");
+            Debug.Log(actionDescription);
+            ClearTooltip();   
+        }
+    }
+
+    public void ClearTooltip()
+    {
+
+        ttm.SetTooltip(false);
+    }
 }

@@ -13,7 +13,7 @@ public class DelaunayTriangulation
         // Convert Vector2Int points to Triangle.NET's format
         List<Vertex> geometry = new();
         
-        foreach (var point in points)
+        foreach (Vector2Int point in points)
         {
 
             geometry.Add(new Vertex(point.x, point.y));
@@ -28,7 +28,7 @@ public class DelaunayTriangulation
         foreach (var triangle in mesh.Triangles)
         {
 
-            var vertices = new List<Vector2Int>
+            List<Vector2Int> vertices = new()
             {
                 
                 new((int)triangle.GetVertex(0).X, (int)triangle.GetVertex(0).Y),
