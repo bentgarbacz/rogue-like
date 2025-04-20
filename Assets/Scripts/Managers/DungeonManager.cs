@@ -67,7 +67,7 @@ public class DungeonManager : MonoBehaviour
         if(target.GetComponent<PlayerCharacterSheet>())
         {
 
-            ts.gameplayHalted = true;
+            HaltGameplay();
 
         }else
         {
@@ -167,5 +167,11 @@ public class DungeonManager : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void HaltGameplay(bool isHalted = true)
+    {
+
+        ts.gameplayHalted = isHalted;
     }
 }

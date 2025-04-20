@@ -189,6 +189,51 @@ public class CombatManager : MonoBehaviour
         return false;
     }
 
+    public void ExecuteAttack(GameObject attacker, GameObject defender, int minDamage, int maxDamage, int speed, ProjectileType projectileType = ProjectileType.None)
+    {
+        // Get the CharacterSheet components of the attacker and defender
+        CharacterSheet attackerSheet = attacker.GetComponent<CharacterSheet>();
+        CharacterSheet defenderSheet = defender.GetComponent<CharacterSheet>();
+        TextNotificationManager defenderNotifier = defender.GetComponent<TextNotificationManager>();
+
+        // Calculate hit chance
+        float hitChance = ((float)attackerSheet.accuracy - (float)defenderSheet.evasion) / (float)attackerSheet.accuracy * 100f;
+        bool hitSuccessful = Random.Range(0, 100) <= hitChance;
+
+        if (hitSuccessful)
+        {
+            // Calculate damage
+            int damage = Random.Range(minDamage, maxDamage + 1);
+
+            // Determine if the attack is critical
+            if (Random.Range(0, 100) < attackerSheet.critChance)
+            {
+                damage *= attackerSheet.critMultiplier;
+                defenderNotifier.CreateNotificationOrder(defender.transform.position, 2f, damage.ToString(), Color.yellow); // Critical hit notification
+            }
+            else
+            {
+                defenderNotifier.CreateNotificationOrder(defender.transform.position, 2f, damage.ToString(), Color.red); // Regular hit notification
+            }
+
+            // Apply damage to the defender
+            defenderSheet.TakeDamage(damage);
+        }
+        else
+        {
+            
+            // Miss notification
+            defenderNotifier.CreateNotificationOrder(defender.transform.position, 2f, "Miss", Color.white);
+        }
+
+        // Check if the defender is dead
+        if (defenderSheet.health <= 0)
+        {
+
+            dum.Smite(defender, defenderSheet.pos); // Remove the defender from the game
+        }
+    }
+
     private void SortBuffer()
     {
         //sort combat buffer so fastest characters attack first
