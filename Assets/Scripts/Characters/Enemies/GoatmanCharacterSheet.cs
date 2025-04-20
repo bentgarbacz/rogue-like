@@ -24,6 +24,8 @@ public class GoatmanCharacterSheet : EnemyCharacterSheet
         attackClip = Resources.Load<AudioClip>("Sounds/Frog");
     }
 
+
+
     public override void AggroBehavior(PlayerCharacterSheet playerCharacter, DungeonManager dum, CombatManager cbm, float waitTime)
     {
 

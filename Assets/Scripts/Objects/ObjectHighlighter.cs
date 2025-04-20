@@ -62,8 +62,6 @@ public class ObjectHighlighter : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
         if(highlighted == true)
         {
-            Debug.Log("Destroy");
-            Debug.Log(actionDescription);
 
             ClearTooltip();   
         }
@@ -75,8 +73,6 @@ public class ObjectHighlighter : MonoBehaviour, IPointerEnterHandler, IPointerEx
         if(highlighted == true)
         {
 
-            Debug.Log("disable");
-            Debug.Log(actionDescription);
             ClearTooltip();   
         }
     }

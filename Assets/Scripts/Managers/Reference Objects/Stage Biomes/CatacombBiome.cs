@@ -141,16 +141,15 @@ public class CatacombBiome : Biome
             {
 
                 //REALLY discourage wall tiles of rooms for when we generate hallways
-                costDict[coord] = 10;
+                costDict[coord] = 10f;
             }
         }
 
-        List<Triangle> triangles = DelaunayTriangulation.GenerateTriangulation(roomPositions);
+        List<Triangle> triangles = DelaunayTriangulation.BowyerWatson(roomPositions);
 
         HashSet<Edge> allEdges = DelaunayTriangulation.GetEdgesFromTriangles(triangles);
 
         HashSet<Edge> chosenEdges = MinimumSpanningTree.CreateMSTExtraEdges(allEdges, 0.125f);
-
 
         foreach(Edge edge in chosenEdges)
         {
@@ -198,8 +197,10 @@ public class CatacombBiome : Biome
         //Generate entrance and place dum.hero there
         Room entranceRoom = rooms[0]; // Select the first room as the entrance room
         Vector2Int entranceCoord = entranceRoom.GetRandomCoordinate();
-        Vector3 entrancePos = new Vector3(entranceCoord.x, 0, entranceCoord.y);
+        Vector3 entrancePos = new(entranceCoord.x, 0, entranceCoord.y);
+
         dum.DeleteTile(entranceCoord);
+        
         // Create the entrance tile
         CreateEntranceTile(entrancePos, entranceCoord, dum);
 

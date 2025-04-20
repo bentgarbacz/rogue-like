@@ -1,45 +1,99 @@
 using System.Collections.Generic;
 using UnityEngine;
-using TriangleNet.Geometry;
-using TriangleNet.Meshing;
 using System.Linq;
 
 public class DelaunayTriangulation
 {
 
-    public static List<Triangle> GenerateTriangulation(List<Vector2Int> points)
+    public static List<Triangle> BowyerWatson(List<Vector2Int> points)
     {
 
-        // Convert Vector2Int points to Triangle.NET's format
-        List<Vertex> geometry = new();
-        
+        List<Triangle> triangles = new();
+
+        // Step 1: Create a super triangle that encompasses all points
+        Vector2Int minPoint = new(points.Min(p => p.x), points.Min(p => p.y));
+        Vector2Int maxPoint = new(points.Max(p => p.x), points.Max(p => p.y));
+
+        int dx = maxPoint.x - minPoint.x;
+        int dy = maxPoint.y - minPoint.y;
+        int deltaMax = Mathf.Max(dx, dy) * 2;
+
+        Vector2Int p1 = new(minPoint.x - deltaMax, minPoint.y - deltaMax);
+        Vector2Int p2 = new(minPoint.x + 3 * deltaMax, minPoint.y - deltaMax);
+        Vector2Int p3 = new(minPoint.x - deltaMax, minPoint.y + 3 * deltaMax);
+
+        Triangle superTriangle = new(p1, p2, p3);
+        triangles.Add(superTriangle);
+
+        // Step 2: Add each point one at a time
         foreach (Vector2Int point in points)
         {
 
-            geometry.Add(new Vertex(point.x, point.y));
-        }
+            List<Triangle> badTriangles = new();
 
-        // Perform triangulation
-        IMesh mesh = new GenericMesher().Triangulate(geometry);
-
-        // Convert the result back to Unity-friendly format
-        List<Triangle> triangles = new();
-
-        foreach (var triangle in mesh.Triangles)
-        {
-
-            List<Vector2Int> vertices = new()
+            // Step 2.1: Find all triangles whose circumcircle contains the point
+            foreach (Triangle triangle in triangles)
             {
-                
-                new((int)triangle.GetVertex(0).X, (int)triangle.GetVertex(0).Y),
-                new((int)triangle.GetVertex(1).X, (int)triangle.GetVertex(1).Y),
-                new((int)triangle.GetVertex(2).X, (int)triangle.GetVertex(2).Y)
-            };
 
-            triangles.Add(new Triangle(vertices));
+                if (IsPointInCircumcircle(point, triangle))
+                {
+
+                    badTriangles.Add(triangle);
+                }
+            }
+
+            // Step 2.2: Find the boundary of the polygonal hole
+            HashSet<Edge> polygon = new();
+
+            foreach (Triangle badTriangle in badTriangles)
+            {
+
+                foreach (Edge edge in badTriangle.GetEdges())
+                {
+
+                    // If the edge is shared by only one bad triangle, it's part of the polygon
+                    if (!polygon.Add(edge))
+                    {
+
+                        polygon.Remove(edge);
+                    }
+                }
+            }
+
+            // Step 2.3: Remove bad triangles
+            triangles.RemoveAll(t => badTriangles.Contains(t));
+
+            // Step 2.4: Create new triangles from the point to the edges of the polygon
+            foreach (Edge edge in polygon)
+            {
+
+                triangles.Add(new Triangle(edge.coord1, edge.coord2, point));
+            }
         }
+
+        // Step 3: Remove triangles that share vertices with the super triangle
+        triangles.RemoveAll(t => t.vert1 == p1 || t.vert1 == p2 || t.vert1 == p3 ||
+                                t.vert2 == p1 || t.vert2 == p2 || t.vert2 == p3 ||
+                                t.vert3 == p1 || t.vert3 == p2 || t.vert3 == p3);
 
         return triangles;
+    }
+
+    private static bool IsPointInCircumcircle(Vector2Int point, Triangle triangle)
+    {
+
+        float ax = triangle.vert1.x - point.x;
+        float ay = triangle.vert1.y - point.y;
+        float bx = triangle.vert2.x - point.x;
+        float by = triangle.vert2.y - point.y;
+        float cx = triangle.vert3.x - point.x;
+        float cy = triangle.vert3.y - point.y;
+
+        float det = (ax * ax + ay * ay) * (bx * cy - cx * by) -
+                    (bx * bx + by * by) * (ax * cy - cx * ay) +
+                    (cx * cx + cy * cy) * (ax * by - bx * ay);
+
+        return det > 0;
     }
 
     public static HashSet<Edge> GetEdgesFromTriangles(List<Triangle> triangles)
@@ -50,9 +104,9 @@ public class DelaunayTriangulation
         foreach (Triangle triangle in triangles)
         {
 
-            edges.Add(new Edge(triangle.Vertices[0], triangle.Vertices[1]));
-            edges.Add(new Edge(triangle.Vertices[1], triangle.Vertices[2]));
-            edges.Add(new Edge(triangle.Vertices[2], triangle.Vertices[0]));
+            edges.Add(triangle.edge1);
+            edges.Add(triangle.edge1);
+            edges.Add(triangle.edge2);
         }
 
         return edges;
@@ -62,12 +116,34 @@ public class DelaunayTriangulation
 public class Triangle
 {
 
-    public List<Vector2Int> Vertices { get; private set; }
+    public Vector2Int vert1;
+    public Vector2Int vert2;
+    public Vector2Int vert3;
+    public Edge edge1;
+    public Edge edge2;
+    public Edge edge3;
 
-    public Triangle(List<Vector2Int> vertices)
+    public Triangle(Vector2Int vert1, Vector2Int vert2, Vector2Int vert3)
     {
         
-        Vertices = vertices;
+        this.vert1 = vert1;
+        this.vert2 = vert2;
+        this.vert3 = vert3;
+
+        edge1 = new Edge(vert1, vert2);
+        edge2 = new Edge(vert2, vert3);
+        edge3 = new Edge(vert3, vert1);
+    }
+
+    public HashSet<Edge> GetEdges()
+    {
+
+        return new HashSet<Edge>(){
+
+            edge1,
+            edge2,
+            edge3
+        };
     }
 }
 
@@ -101,95 +177,5 @@ public class Edge
     {
 
         return coord1.GetHashCode() ^ coord2.GetHashCode();
-    }
-}
-
-
-public class MinimumSpanningTree
-{
-
-    private static Vector2Int Find(Vector2Int vertex, Dictionary<Vector2Int, Vector2Int> parent)
-    {
-
-        if (!parent.ContainsKey(vertex))
-        {
-
-            parent[vertex] = vertex;        
-        }
-        
-        if (parent[vertex] != vertex)
-        {
-
-            parent[vertex] = Find(parent[vertex], parent);
-        }
-
-        return parent[vertex];
-    }
-    
-    private static void Union(Vector2Int vertex1, Vector2Int vertex2, Dictionary<Vector2Int, Vector2Int> parent)
-    {
-
-        Vector2Int root1 = Find(vertex1, parent);
-        Vector2Int root2 = Find(vertex2, parent);
-
-        if (root1 != root2)
-        {
-
-            parent[root2] = root1;
-        }
-    }
-
-    public static HashSet<Edge> CreateMST(HashSet<Edge> edges)
-    {
-        
-        // Sort edges by weight (distance between points)
-        List<Edge> sortedEdges = edges.OrderBy(edge => Vector2Int.Distance(edge.coord1, edge.coord2)).ToList();
-
-        // Initialize the result MST and a union-find structure
-        HashSet<Edge> mst = new();
-        Dictionary<Vector2Int, Vector2Int> parent = new Dictionary<Vector2Int, Vector2Int>();
-
-        // Process each edge in sorted order
-        foreach (Edge edge in sortedEdges)
-        {
-
-            Vector2Int root1 = Find(edge.coord1, parent);
-            Vector2Int root2 = Find(edge.coord2, parent);
-
-            // If the edge does not form a cycle, add it to the MST
-            if (root1 != root2)
-            {
-
-                mst.Add(edge);
-                Union(root1, root2, parent);
-            }
-        }
-
-        return mst;
-    }
-
-    public static HashSet<Edge> AddExtraEdges(HashSet<Edge> edgesMST, HashSet<Edge> edgesExtra, float addChance)
-    {
-
-        HashSet<Edge> resultEdges = new(edgesMST);
-
-        foreach (Edge edge in edgesExtra)
-        {
-
-            if (Random.value <= addChance)
-            {
-
-                //HashSet prevents duplicate edges from being added
-                resultEdges.Add(edge);
-            }
-        }
-
-        return resultEdges;
-    }
-
-    public static HashSet<Edge> CreateMSTExtraEdges(HashSet<Edge> edges, float addChance)
-    {
-
-        return AddExtraEdges(CreateMST(edges), edges, addChance);
     }
 }

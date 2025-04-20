@@ -207,11 +207,14 @@ public class TurnSequencer : MonoBehaviour
                     if(aggroRange > Vector3.Distance(enemy.transform.position, dum.hero.transform.position) && !dum.aggroEnemies.Contains(enemy) && LineOfSight.HasLOS(enemy, dum.hero))
                     {
 
-                        dum.aggroEnemies.Add(enemy);
-                        enemy.GetComponent<TextNotificationManager>().CreateNotificationOrder(enemy.transform.position, 2, "!", Color.red);
+                        if(enemy.GetComponent<EnemyCharacterSheet>().OnAggro(dum, cbm))
+                        {
 
-                        //automated walking via buffer is halted when an enemy sees you
-                        dum.bufferedPath.Clear();
+                            dum.aggroEnemies.Add(enemy);
+
+                            //automated walking via buffer is halted when an enemy sees you
+                            dum.bufferedPath.Clear();
+                        }
                     }
                 }
             }

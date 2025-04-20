@@ -23,7 +23,7 @@ public class SkeletonCharacterSheet : EnemyCharacterSheet
 
         attackClip = Resources.Load<AudioClip>("Sounds/Skeleton");
     }
-
+    
     public override void AggroBehavior(PlayerCharacterSheet playerCharacter, DungeonManager dum, CombatManager cbm, float waitTime)
     {
 

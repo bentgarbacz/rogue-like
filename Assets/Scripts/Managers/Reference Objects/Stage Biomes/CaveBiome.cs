@@ -182,12 +182,12 @@ public class CaveBiome : Biome
                     }else if(spawnRNG >= 5 && spawnRNG <= 6)
                     {
 
-                        npcGen.CreateNPC(NPCType.Witch, spawnPos, dum);
+                        npcGen.CreateNPC(NPCType.Slime, spawnPos, dum);
 
                     }else if(spawnRNG >= 7 && spawnRNG <= 8)
                     {
 
-                        npcGen.CreateNPC(NPCType.GoatMan, spawnPos, dum);
+                        npcGen.CreateNPC(NPCType.Slime, spawnPos, dum);
                     }
                 }
 
