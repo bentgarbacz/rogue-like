@@ -12,6 +12,8 @@ public class TurnSequencer : MonoBehaviour
     public float baseWaitTime = 0.05f;
     public float incrementWaitTime = 0.05f;
     private bool actionTaken = false;
+    private Queue<Vector3> playerMovementQueue = new();
+    private HashSet<GameObject> movingEnemies = new();
     private PlayerCharacterSheet playerCharacter;
     private SpellCaster sc;
     private MoveToTarget pcMovement;
@@ -48,11 +50,11 @@ public class TurnSequencer : MonoBehaviour
         {
             //If you have not reached the last node of your path 
             //and you are not currently moving to a node, move to the next node
-            if(dum.bufferedPath.Count > 0 && !pcMovement.IsMoving())
+            if(playerMovementQueue.Count > 0 && !pcMovement.IsMoving())
             {
                 
-                playerCharacter.Move(new Vector3(dum.bufferedPath[0].x, 0.1f, dum.bufferedPath[0].y), dum.occupiedlist);
-                dum.bufferedPath.RemoveAt(0);
+                Vector3 nextMove = playerMovementQueue.Dequeue();
+                playerCharacter.Move(nextMove, dum.occupiedlist);
 
                 UpkeepEffects();
 
@@ -89,36 +91,38 @@ public class TurnSequencer : MonoBehaviour
                             return;
                         }
 
-                        if(targetTile.coord != playerCharacter.coord)
+                        List<Vector2Int> pathToDestination = PathFinder.FindPath(playerCharacter.coord, targetTile.coord, dum.dungeonCoords, ignoredPoints: dum.GetOccupiedCoords());  
+            
+                        if(pathToDestination != null && pathToDestination.Count > 1)
                         {
 
-                            //Non-precached movement    
-                            List<Vector2Int> pathToDestination = PathFinder.FindPath(playerCharacter.coord, target.GetComponent<Tile>().coord, dum.dungeonCoords);  
-
-                            //Precached movement
-                            //PathKey pk = new PathKey(playerCharacter.coord, target.GetComponent<Tile>().coord);                                    
-                            //List<Vector2Int> pathToDestination = cachedPathsDict[pk.key];
-                
-                            if(pathToDestination != null)
+                            if(dum.aggroEnemies.Count > 0)
                             {
 
-                                playerCharacter.Move(new Vector3(pathToDestination[1].x, 0.1f, pathToDestination[1].y), dum.occupiedlist);                
-
-                                //If there are no enemies alerted to your presence, automatically walk entire path to destiniation
-                                if(dum.aggroEnemies.Count == 0)
+                                if(!pcMovement.IsMoving())
                                 {
-                                    dum.bufferedPath = new List<Vector2Int>(pathToDestination.Count);
+                                
+                                    playerCharacter.Move(new Vector3(pathToDestination[1].x, 0.1f, pathToDestination[1].y), dum.occupiedlist);
 
-                                    foreach(Vector2Int node in pathToDestination)
-                                    {
+                                }else
+                                {
 
-                                        dum.bufferedPath.Add(new Vector2Int(node.x, node.y));
-                                    }
+                                    return;
+                                }
 
-                                    dum.bufferedPath.RemoveRange(0, 2);
-                                }   
-                            }
-                        }         
+                            }else
+                            {
+                            
+                                playerMovementQueue.Clear();
+
+                                for (int i = 1; i < pathToDestination.Count; i++)
+                                {
+
+                                    Vector3 movePosition = new Vector3(pathToDestination[i].x, 0.1f, pathToDestination[i].y);
+                                    playerMovementQueue.Enqueue(movePosition);
+                                }
+                            } 
+                        }       
                     }
 
                     //initiate an attack on clicked enemy
@@ -158,7 +162,8 @@ public class TurnSequencer : MonoBehaviour
                         //erase current level and generate a new one
                         if(PathFinder.GetNeighbors(targetExit.coord, dum.dungeonCoords).Contains(playerCharacter.coord) || targetExit.coord == playerCharacter.coord )
                         {
-
+                            
+                            playerMovementQueue.Clear();
                             targetExit.ExitLevel();                            
                             levelGenerator.NewLevel(levelGenerator.biomeDict[BiomeType.Catacomb]);
                             
@@ -213,7 +218,7 @@ public class TurnSequencer : MonoBehaviour
                             dum.aggroEnemies.Add(enemy);
 
                             //automated walking via buffer is halted when an enemy sees you
-                            dum.bufferedPath.Clear();
+                            playerMovementQueue.Clear();
                         }
                     }
                 }

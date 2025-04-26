@@ -19,7 +19,6 @@ public class DungeonManager : MonoBehaviour
     public HashSet<GameObject> enemies = new();
     public HashSet<GameObject> aggroEnemies = new();
     public HashSet<Loot> itemContainers = new();
-    public List<Vector2Int> bufferedPath = new();
     public Dictionary<string, List<Vector2Int>> cachedPathsDict = new();    
     private CombatManager cbm;
     private TurnSequencer ts;
@@ -53,6 +52,21 @@ public class DungeonManager : MonoBehaviour
     {
 
         dungeonSpecificGameObjects.Add(newGameObject);
+    }
+
+    public HashSet<Vector2Int> GetOccupiedCoords()
+    {
+
+        HashSet<Vector2Int> occupiedCoords = new();
+
+        foreach (Vector3 occupiedPos in occupiedlist)
+        {
+            
+            Vector2Int coord = GameFunctions.PosToCoord(occupiedPos);
+            occupiedCoords.Add(coord);
+        }
+
+        return occupiedCoords;
     }
 
     public void Smite(GameObject target, Vector3 targetPosition)
@@ -117,7 +131,6 @@ public class DungeonManager : MonoBehaviour
 
         dungeonSpecificGameObjects = new HashSet<GameObject>();
         aggroEnemies = new HashSet<GameObject>();
-        bufferedPath = new List<Vector2Int>();
 
         playerCharacter.Teleport(new Vector3(0, 0, 0), this);
     }

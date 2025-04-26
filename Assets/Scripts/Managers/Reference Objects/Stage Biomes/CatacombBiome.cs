@@ -100,10 +100,10 @@ public class CatacombBiome : Biome
     public override bool GenerateLevel(Vector2Int position, HashSet<Vector2Int> path, DungeonManager dum, NPCGenerator npcGen)
     {
 
-        int width = 75;
-        int height = 75;
-        int maxDepth = 20;
-        int minSize = 15;
+        int width = 50;
+        int height = 50;
+        int maxDepth = 15;
+        int minSize = 10;
 
         HashSet<Vector2Int> grid = PathFinder.GenerateBlankGrid(width, height);
         List<Room> rooms = BSPGenerator.Generate(width, height, maxDepth, minSize);

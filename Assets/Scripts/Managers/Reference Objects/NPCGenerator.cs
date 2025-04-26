@@ -14,6 +14,7 @@ public class NPCGenerator : MonoBehaviour
     [SerializeField] private GameObject slime;
     [SerializeField] private GameObject witch;
     [SerializeField] private GameObject goatMan;
+    [SerializeField] private GameObject spider;
     private readonly float spawnPosVertOffset = 0.1f;
 
     void Start()
@@ -29,7 +30,8 @@ public class NPCGenerator : MonoBehaviour
             {NPCType.Rat, rat},
             {NPCType.Slime, slime},
             {NPCType.Witch, witch},
-            {NPCType.GoatMan, goatMan}
+            {NPCType.GoatMan, goatMan},
+            {NPCType.Spider, spider}
         };
     }
 
