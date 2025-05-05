@@ -13,13 +13,12 @@ public class DungeonManager : MonoBehaviour
     public bool enemiesOnLookout = true;
     public HashSet<Vector2Int> dungeonCoords;
     public HashSet<Vector2Int> discoveredCoords;
-    public HashSet<Vector3> occupiedlist = new();
+    public HashSet<Vector2Int> occupiedlist = new();
     public HashSet<GameObject> dungeonSpecificGameObjects = new();
     public HashSet<GameObject> iconGameObjects = new();
     public HashSet<GameObject> enemies = new();
     public HashSet<GameObject> aggroEnemies = new();
     public HashSet<Loot> itemContainers = new();
-    public List<Vector2Int> bufferedPath = new();
     public Dictionary<string, List<Vector2Int>> cachedPathsDict = new();    
     private CombatManager cbm;
     private TurnSequencer ts;
@@ -55,13 +54,28 @@ public class DungeonManager : MonoBehaviour
         dungeonSpecificGameObjects.Add(newGameObject);
     }
 
-    public void Smite(GameObject target, Vector3 targetPosition)
+    /*public HashSet<Vector2Int> GetOccupiedCoords()
+    {
+
+        HashSet<Vector2Int> occupiedCoords = new();
+
+        foreach (Vector3 occupiedPos in occupiedlist)
+        {
+            
+            Vector2Int coord = GameFunctions.PosToCoord(occupiedPos);
+            occupiedCoords.Add(coord);
+        }
+
+        return occupiedCoords;
+    }*/
+
+    public void Smite(GameObject target, Vector2Int targetCoord)
     {
         //Attacks to and from dead combatants removed from combat buffer
         cbm.PruneCombatBuffer(target);
 
         aggroEnemies.Remove(target);
-        occupiedlist.Remove(targetPosition);
+        occupiedlist.Remove(targetCoord);
         enemies.Remove(target);
 
         if(target.GetComponent<PlayerCharacterSheet>())
@@ -100,7 +114,7 @@ public class DungeonManager : MonoBehaviour
         enemiesOnLookout = true;
         cachedPathsDict = new Dictionary<string, List<Vector2Int>>();
         enemies = new HashSet<GameObject>();
-        occupiedlist = new HashSet<Vector3>();
+        occupiedlist = new HashSet<Vector2Int>();
         itemContainers = new HashSet<Loot>();
 
         foreach(GameObject trash in dungeonSpecificGameObjects)
@@ -117,12 +131,11 @@ public class DungeonManager : MonoBehaviour
 
         dungeonSpecificGameObjects = new HashSet<GameObject>();
         aggroEnemies = new HashSet<GameObject>();
-        bufferedPath = new List<Vector2Int>();
 
-        playerCharacter.Teleport(new Vector3(0, 0, 0), this);
+        playerCharacter.Teleport(new Vector2Int(0, 0), this);
     }
 
-    public bool CheckPosForOccupancy(Vector3 pos)
+    /*public bool CheckPosForOccupancy(Vector3 pos)
     {
 
         foreach(Vector3 checkPos in occupiedlist)
@@ -136,7 +149,7 @@ public class DungeonManager : MonoBehaviour
         }
 
         return false;
-    }
+    }*/
 
     public void ClearAggroBuffer()
     {

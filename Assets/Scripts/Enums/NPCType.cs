@@ -8,5 +8,6 @@ public enum NPCType
     Rat,
     Slime,
     Witch,
-    GoatMan
+    GoatMan,
+    Spider
 }

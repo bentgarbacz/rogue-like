@@ -28,7 +28,7 @@ public class Poison : StatusEffect
         if(affectedCharacter.health <= 0)
         {
 
-            dum.Smite(affectedCharacter.gameObject, affectedCharacter.pos);
+            dum.Smite(affectedCharacter.gameObject, affectedCharacter.coord);
             //affectedCharacter
         }
 

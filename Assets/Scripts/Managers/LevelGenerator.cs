@@ -10,10 +10,10 @@ using System.Linq;
 public class LevelGenerator : MonoBehaviour
 {
 
-    public int walkLength;
     private DungeonManager dum;
     [SerializeField] private MiniMapManager miniMapManager;
     [SerializeField] private GameObject wallJoiner;
+    [SerializeField] private List<GameObject> debugObjects = new();
     private NPCGenerator npcGen;
     private Vector2Int startPosition = new(0, 0);
     public Dictionary<BiomeType, Biome> biomeDict;
@@ -38,40 +38,11 @@ public class LevelGenerator : MonoBehaviour
     {
 
         dum.dungeonCoords = new();
-        //LevelGen(startPosition, walkLength, 100, dum.dungeonCoords);
         biome.GenerateLevel(startPosition, dum.dungeonCoords, dum, npcGen);    
         GenerateWalls(dum.dungeonCoords, biome);
-        //dum.cachedPathsDict = PrecacheMapPaths(path);
         miniMapManager.DrawIcons(dum.dungeonSpecificGameObjects);
-    }
-
-    public Dictionary<string, List<Vector2Int>> PrecacheMapPaths(HashSet<Vector2Int> p)
-    {
-
-        Dictionary<string, List<Vector2Int>> pathsDictionary = new();
-
-        foreach(Vector2Int node1 in dum.dungeonCoords)
-        {   
-
-            foreach(Vector2Int node2 in dum.dungeonCoords)
-            {
-                                
-                if(node1 != node2)
-                {
-
-                    double distance = Math.Sqrt(Math.Pow((node2.x - node1.x), 2) + Math.Pow((node2.y - node1.y), 2));
-
-                    if(distance > 3){
-
-                        continue;
-                    }
-
-                    PathFinder.PrecachePath(node1, node2, dum.dungeonCoords, pathsDictionary);
-                }
-            }
-        }
-
-        return pathsDictionary;
+        miniMapManager.UpdateDynamicIcons();
+        MoveDebugObjects();
     }
 
     private void GenerateWalls(HashSet<Vector2Int> path, Biome biome)
@@ -120,6 +91,29 @@ public class LevelGenerator : MonoBehaviour
 
         GameObject newWallJoiner = Instantiate(wallJoiner, spawnPos, wallJoiner.transform.rotation);
         dum.AddGameObject(newWallJoiner);
+    }
+
+    private void MoveDebugObjects()
+    {
+
+        foreach(GameObject debugObject in debugObjects)
+        {
+            Chest chest = debugObject.GetComponent<Chest>();
+            Exit exit = debugObject.GetComponent<Exit>();
+
+            if(chest != null)
+            {
+
+                debugObject.transform.position = new Vector3(dum.hero.transform.position.x - 3, debugObject.transform.position.y, dum.hero.transform.position.z);
+                chest.coord = dum.playerCharacter.coord;
+
+            }else if(exit != null)
+            {
+
+                debugObject.transform.position = new Vector3(dum.hero.transform.position.x + 3, debugObject.transform.position.y, dum.hero.transform.position.z);
+                exit.coord = dum.playerCharacter.coord;
+            }
+        }
     }
 }
 

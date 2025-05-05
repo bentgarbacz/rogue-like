@@ -4777,6 +4777,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 353210204}
   m_CullTransparentMesh: 1
+--- !u!1 &357321811 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6493254730876405042, guid: 3d2a97183afeb6843a3d22f8ee50bf01, type: 3}
+  m_PrefabInstance: {fileID: 1191892555}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &358369264
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6106,9 +6111,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a04310f158603604aa4128b2fa05efba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  walkLength: 100
   miniMapManager: {fileID: 313091427}
   wallJoiner: {fileID: 1025472403522751266, guid: 20f1a7c70bc0d8948ab390c0e7b73c5e, type: 3}
+  debugObjects:
+  - {fileID: 357321811}
+  - {fileID: 1937730749}
 --- !u!114 &438385576
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6129,6 +6136,7 @@ MonoBehaviour:
   slime: {fileID: 1896811922957596743, guid: f7c9141ada6af9c479bddefc6b348ccd, type: 3}
   witch: {fileID: 1209241037779243595, guid: e82ad701c0f11ad4fa3ebe2e09d151d7, type: 3}
   goatMan: {fileID: 126544009712155564, guid: 32b73e10b7875634c966bc0ac94d5771, type: 3}
+  spider: {fileID: 6401718211484601336, guid: 75a7d931c5552d749861a653e15f377a, type: 3}
 --- !u!114 &438385577
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6173,7 +6181,7 @@ MonoBehaviour:
   caveWallTile4: {fileID: 1451028349190843145, guid: e7130494b967a174b8a78847160acfdc, type: 3}
   caveWallTile5: {fileID: 257452301355771452, guid: 94a2974bb6f01604da9e183d7d3da716, type: 3}
   caveEntrance: {fileID: 8240057085656814339, guid: f6b63ce657227bd4c9f0ea79119baacf, type: 3}
-  caveExit: {fileID: 2300535856699664948, guid: 7d6ae6087fa688e4581677d0383a4cb1, type: 3}
+  caveExit: {fileID: 7533698930346909114, guid: 32b17f08694da2b4595049cc376fa085, type: 3}
   possibleEnemyTypes: 030000000400000006000000
 --- !u!1001 &444728522
 PrefabInstance:
@@ -6252,7 +6260,9 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 1587241673768364898, guid: 57670d2158c8b544a9c7250631b130e5, type: 3}
+    - {fileID: 9170875677439951552, guid: 57670d2158c8b544a9c7250631b130e5, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 57670d2158c8b544a9c7250631b130e5, type: 3}
@@ -22497,7 +22507,6 @@ MonoBehaviour:
   playerCharacter: {fileID: 0}
   mainCamera: {fileID: 2103700155}
   enemiesOnLookout: 1
-  bufferedPath: []
 --- !u!114 &1314207895
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -33335,6 +33344,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1935344260}
   m_CullTransparentMesh: 1
+--- !u!1 &1937730749 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2862989877608427773, guid: 57670d2158c8b544a9c7250631b130e5, type: 3}
+  m_PrefabInstance: {fileID: 444728522}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1940858193
 GameObject:
   m_ObjectHideFlags: 0

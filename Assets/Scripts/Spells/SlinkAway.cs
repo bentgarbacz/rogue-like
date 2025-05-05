@@ -35,9 +35,7 @@ public class SlinkAway : Spell
             if(targetTile.IsActionable())
             {
 
-                Vector3 targetPos = new Vector3(targetTile.coord.x, 0, targetTile.coord.y);
-
-                if(!casterCharacterSheet.Teleport(targetPos, dum))
+                if(!casterCharacterSheet.Teleport(targetTile.coord, dum))
                 {
 
                     return false;

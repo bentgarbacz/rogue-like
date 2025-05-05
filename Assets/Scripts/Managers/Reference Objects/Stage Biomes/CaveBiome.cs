@@ -17,8 +17,7 @@ public class CaveBiome : Biome
     [SerializeField] private GameObject caveWallTile5;
     [SerializeField] private GameObject caveEntrance;
     [SerializeField] private GameObject caveExit;
-    private readonly float exitSpawnPosVertOffset = 0.88f;
-    private int walkLength = 100;
+    private int walkLength = 50;
     private int repeatWalks = 100;
     public List<NPCType> possibleEnemyTypes = new();
 
@@ -69,9 +68,8 @@ public class CaveBiome : Biome
     public override void CreateExitTile(Vector3 spawnPos, Vector2Int position, HashSet<Vector2Int> path, DungeonManager dum)
     {
 
-        spawnPos.y -= exitSpawnPosVertOffset;
         GameObject newCatacombExit = Instantiate(caveExit, spawnPos, caveExit.transform.rotation);
-
+        
         foreach(Vector2Int direction in Direction2D.cardinalDirectionsList)
         {
 
@@ -166,28 +164,30 @@ public class CaveBiome : Biome
                     if(i == 0 && j == 1)
                     {
 
-                        dum.hero.GetComponent<CharacterSheet>().Move(spawnPos + new Vector3(0f, 0.1f, 0f), dum.occupiedlist);              
-                    }
+                        dum.hero.GetComponent<CharacterSheet>().Move(position, dum.occupiedlist);   
 
-                    if(spawnRNG >= 0 && spawnRNG <= 2)
-                    {
+                    }else if(Mathf.Abs(position.x) > 5 || Mathf.Abs(position.y) > 5){
 
-                        npcGen.CreateChest(spawnPos, dum);
+                        if(spawnRNG >= 0 && spawnRNG <= 2)
+                        {
+                            
+                            npcGen.CreateChest(spawnPos, dum);
 
-                    }else if(spawnRNG >= 3 && spawnRNG <= 4)
-                    {
+                        }else if(spawnRNG >= 3 && spawnRNG <= 4)
+                        {
 
-                        npcGen.CreateNPC(NPCType.Slime, spawnPos, dum);
+                            npcGen.CreateNPC(NPCType.Slime, spawnPos, dum);
 
-                    }else if(spawnRNG >= 5 && spawnRNG <= 6)
-                    {
+                        }else if(spawnRNG >= 5 && spawnRNG <= 6)
+                        {
 
-                        npcGen.CreateNPC(NPCType.Slime, spawnPos, dum);
+                            npcGen.CreateNPC(NPCType.Spider, spawnPos, dum);
 
-                    }else if(spawnRNG >= 7 && spawnRNG <= 8)
-                    {
+                        }else if(spawnRNG >= 7 && spawnRNG <= 8)
+                        {
 
-                        npcGen.CreateNPC(NPCType.Slime, spawnPos, dum);
+                            npcGen.CreateNPC(NPCType.Spider, spawnPos, dum);
+                        }
                     }
                 }
 

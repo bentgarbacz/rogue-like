@@ -47,7 +47,7 @@ public class WitchCharacterSheet : EnemyCharacterSheet
             {
                 
                 List<Vector2Int> pathToPlayer = PathFinder.FindPath(coord, playerCharacter.coord, dum.dungeonCoords);                     
-                Move(new Vector3(pathToPlayer[1].x, 0.1f, pathToPlayer[1].y), dum.occupiedlist, waitTime);
+                Move(pathToPlayer[1], dum.occupiedlist, waitTime);
             }
 
         }else
@@ -66,30 +66,6 @@ public class WitchCharacterSheet : EnemyCharacterSheet
 
             attackCooldown -= 1;
             teleportCooldown -= 1;
-        }
-    }
-
-    public void Flee(DungeonManager dum, float waitTime)
-    {
-
-        //run away from player
-        Vector2Int playerCoord = dum.hero.GetComponent<PlayerCharacterSheet>().coord;
-        Vector2Int fleePath  = coord;
-
-        foreach(Vector2Int p in PathFinder.GetNeighbors(coord, dum.dungeonCoords))
-        {
-
-            if(PathFinder.CalculateDistance(p, playerCoord) > PathFinder.CalculateDistance(fleePath, playerCoord))
-            {
-
-                fleePath = p;
-            }
-        }
-
-        if(dum.dungeonCoords.Contains(fleePath))
-        {
-
-            Move(new Vector3(fleePath.x, 0.1f, fleePath.y), dum.occupiedlist, waitTime);
         }
     }
 }

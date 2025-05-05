@@ -12,6 +12,8 @@ public class TurnSequencer : MonoBehaviour
     public float baseWaitTime = 0.05f;
     public float incrementWaitTime = 0.05f;
     private bool actionTaken = false;
+    private Queue<Vector2Int> playerMovementQueue = new();
+    private HashSet<GameObject> movingEnemies = new();
     private PlayerCharacterSheet playerCharacter;
     private SpellCaster sc;
     private MoveToTarget pcMovement;
@@ -48,12 +50,10 @@ public class TurnSequencer : MonoBehaviour
         {
             //If you have not reached the last node of your path 
             //and you are not currently moving to a node, move to the next node
-            if(dum.bufferedPath.Count > 0 && !pcMovement.IsMoving())
+            if(playerMovementQueue.Count > 0 && !pcMovement.IsMoving())
             {
                 
-                playerCharacter.Move(new Vector3(dum.bufferedPath[0].x, 0.1f, dum.bufferedPath[0].y), dum.occupiedlist);
-                dum.bufferedPath.RemoveAt(0);
-
+                playerCharacter.Move(playerMovementQueue.Dequeue(), dum.occupiedlist);
                 UpkeepEffects();
 
             //Process a turn if:
@@ -72,53 +72,48 @@ public class TurnSequencer : MonoBehaviour
 
                     Tile targetTile = target.GetComponent<Tile>();
                     CharacterSheet targetCharacter = target.GetComponent<CharacterSheet>();
-                    Loot targetLoot = target.GetComponent<Loot>();
-                    Exit targetExit = target.GetComponent<Exit>();
+                    Interactable targetInteractable = target.GetComponent<Interactable>();
 
                     uiam.CloseInventoryPanel();
                     uiam.CloseLootPanel();
                     uiam.CloseCharacterPanel();
                     uiam.HideAssignSpell();
 
+                    playerMovementQueue.Clear();
+
                     if(targetTile != null)
                     {
 
-                        if(!targetTile.IsActionable() || targetTile.coord == playerCharacter.coord)
+                        if(!targetTile.IsActionable() || 
+                            targetTile.coord == playerCharacter.coord || 
+                            dum.occupiedlist.Contains(targetTile.coord))
                         {
 
                             return;
                         }
 
-                        if(targetTile.coord != playerCharacter.coord)
+                        List<Vector2Int> pathToDestination = PathFinder.FindPath(playerCharacter.coord, targetTile.coord, dum.dungeonCoords, ignoredPoints: dum.occupiedlist);  
+            
+                        if(pathToDestination != null && pathToDestination.Count > 1)
                         {
 
-                            //Non-precached movement    
-                            List<Vector2Int> pathToDestination = PathFinder.FindPath(playerCharacter.coord, target.GetComponent<Tile>().coord, dum.dungeonCoords);  
-
-                            //Precached movement
-                            //PathKey pk = new PathKey(playerCharacter.coord, target.GetComponent<Tile>().coord);                                    
-                            //List<Vector2Int> pathToDestination = cachedPathsDict[pk.key];
-                
-                            if(pathToDestination != null)
+                            if(dum.aggroEnemies.Count > 0)
                             {
 
-                                playerCharacter.Move(new Vector3(pathToDestination[1].x, 0.1f, pathToDestination[1].y), dum.occupiedlist);                
+                                MoveOneSpace(pathToDestination);
 
-                                //If there are no enemies alerted to your presence, automatically walk entire path to destiniation
-                                if(dum.aggroEnemies.Count == 0)
+                            }else
+                            {
+                            
+                                playerMovementQueue.Clear();
+
+                                for (int i = 1; i < pathToDestination.Count; i++)
                                 {
-                                    dum.bufferedPath = new List<Vector2Int>(pathToDestination.Count);
 
-                                    foreach(Vector2Int node in pathToDestination)
-                                    {
-
-                                        dum.bufferedPath.Add(new Vector2Int(node.x, node.y));
-                                    }
-
-                                    dum.bufferedPath.RemoveRange(0, 2);
-                                }   
-                            }
-                        }         
+                                    playerMovementQueue.Enqueue(pathToDestination[i]);
+                                }
+                            } 
+                        }       
                     }
 
                     //initiate an attack on clicked enemy
@@ -134,39 +129,20 @@ public class TurnSequencer : MonoBehaviour
                         }
                     }
 
-                    //open container and examine loot
-                    if(targetLoot != null)
+                    if(targetInteractable != null)
                     {
 
-                        //open loot container if it is a neighbor of player character or it is on top of player character
-                        if(PathFinder.GetNeighbors(targetLoot.coord, dum.dungeonCoords).Contains(playerCharacter.coord) || targetLoot.coord == playerCharacter.coord )
+                        //interact with interactable object
+                        if(PathFinder.GetNeighbors(targetInteractable.coord, dum.dungeonCoords).Contains(playerCharacter.coord) || targetInteractable.coord == playerCharacter.coord )
                         {
                             
-                            targetLoot.OpenContainer();
-
-                        }else //move towards container
-                        {
-
-                            List<Vector2Int> pathToDestination = PathFinder.FindPath(playerCharacter.coord, targetLoot.coord, dum.dungeonCoords);            
-                            playerCharacter.Move(new Vector3(pathToDestination[1].x, 0.1f, pathToDestination[1].y), dum.occupiedlist); 
-                        }
-                    }
-
-                    if(targetExit != null)
-                    {
-
-                        //erase current level and generate a new one
-                        if(PathFinder.GetNeighbors(targetExit.coord, dum.dungeonCoords).Contains(playerCharacter.coord) || targetExit.coord == playerCharacter.coord )
-                        {
-
-                            targetExit.ExitLevel();                            
-                            levelGenerator.NewLevel(levelGenerator.biomeDict[BiomeType.Catacomb]);
+                            targetInteractable.Interact();                            
                             
-                        }else //move towards exit
+                        }else //move towards interactable
                         {
 
-                            List<Vector2Int> pathToDestination = PathFinder.FindPath(playerCharacter.coord, targetExit.coord, dum.dungeonCoords);            
-                            playerCharacter.Move(new Vector3(pathToDestination[1].x, 0.1f, pathToDestination[1].y), dum.occupiedlist); 
+                            List<Vector2Int> pathToDestination = PathFinder.FindPath(playerCharacter.coord, targetInteractable.coord, dum.dungeonCoords);            
+                            MoveOneSpace(pathToDestination); 
                         }   
                     }
 
@@ -213,7 +189,7 @@ public class TurnSequencer : MonoBehaviour
                             dum.aggroEnemies.Add(enemy);
 
                             //automated walking via buffer is halted when an enemy sees you
-                            dum.bufferedPath.Clear();
+                            playerMovementQueue.Clear();
                         }
                     }
                 }
@@ -236,5 +212,20 @@ public class TurnSequencer : MonoBehaviour
         sc.UpdateSpellSlots();
         miniMapManager.UpdateDynamicIcons();
         npm.IncrementDisplayTimer();
+    }
+
+    private void MoveOneSpace(List<Vector2Int> pathToDestination)
+    {
+
+        if(!pcMovement.IsMoving())
+        {
+        
+            playerCharacter.Move(pathToDestination[1], dum.occupiedlist);
+
+        }else
+        {
+
+            return;
+        }
     }
 }

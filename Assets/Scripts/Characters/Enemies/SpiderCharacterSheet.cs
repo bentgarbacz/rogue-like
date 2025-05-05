@@ -1,30 +1,29 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
-public class GoatmanCharacterSheet : EnemyCharacterSheet
+public class SpiderCharacterSheet : EnemyCharacterSheet
 {
 
     public override void Start()
     {
         
         base.Start();
-        maxHealth = 10;
+        maxHealth = 15;
         health = maxHealth;
-        accuracy = 66;
+        accuracy = 100;
         minDamage = 1;
-        maxDamage = 4;
-        level = 4;
-        speed = 8;
-        evasion = 50;
+        maxDamage = 3;
+        level = 3;
+        speed = 15;
+        evasion = 75;
 
-        dropTable = "Goatman";
-        title = "Goatman";
+        dropTable = "Spider";
+        title = "Spider";
 
-        attackClip = Resources.Load<AudioClip>("Sounds/Frog");
+        attackClip = Resources.Load<AudioClip>("Sounds/Spider");
     }
-
-
 
     public override void AggroBehavior(PlayerCharacterSheet playerCharacter, DungeonManager dum, CombatManager cbm, float waitTime)
     {

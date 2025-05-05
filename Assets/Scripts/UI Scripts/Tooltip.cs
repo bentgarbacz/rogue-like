@@ -41,8 +41,6 @@ public class Tooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
         if(currentToolTip == true)
         {
-            Debug.Log("Destroy");
-            Debug.Log(tooltip);
 
             ClearTooltip();   
         }
@@ -54,8 +52,6 @@ public class Tooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         if(currentToolTip == true)
         {
 
-            Debug.Log("disable");
-            Debug.Log(tooltip);
             ClearTooltip();   
         }
     }

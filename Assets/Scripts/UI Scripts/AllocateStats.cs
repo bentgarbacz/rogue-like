@@ -11,10 +11,15 @@ public class AllocateStats : MonoBehaviour
     private PlayerCharacterSheet playerCharacter;
     private InventoryManager im;
 
-    void Start()
+    void Awake()
     {
-        
-        playerCharacter = hero.GetComponent<PlayerCharacterSheet>();
+
+        if(hero)
+        {
+            
+            playerCharacter = hero.GetComponent<PlayerCharacterSheet>();
+        }
+
         im = GameObject.Find("System Managers").GetComponent<InventoryManager>();
         audioSource = GameObject.Find("CanvasHUD").GetComponent<AudioSource>();
     }
@@ -22,28 +27,32 @@ public class AllocateStats : MonoBehaviour
     public void Click()
     {
 
-        audioSource.Play();
-
-        if(statType == "Strength")
+        if(playerCharacter)
         {
+            
+            audioSource.Play();
 
-            playerCharacter.freeStatPoints -= 1;
-            playerCharacter.strength += 1;
+            if(statType == "Strength")
+            {
 
-        }else if(statType == "Dexterity")
-        {
+                playerCharacter.freeStatPoints -= 1;
+                playerCharacter.strength += 1;
 
-            playerCharacter.freeStatPoints -= 1;
-            playerCharacter.dexterity += 1;
+            }else if(statType == "Dexterity")
+            {
 
-        }else if(statType == "Intelligence")
-        {
+                playerCharacter.freeStatPoints -= 1;
+                playerCharacter.dexterity += 1;
 
-            playerCharacter.freeStatPoints -= 1;
-            playerCharacter.intelligence += 1;
+            }else if(statType == "Intelligence")
+            {
+
+                playerCharacter.freeStatPoints -= 1;
+                playerCharacter.intelligence += 1;
+            }
+
+            im.UpdateStats();
+            playerCharacter.UpdateUI();
         }
-
-        im.UpdateStats();
-        playerCharacter.UpdateUI();
     }
 }

@@ -8,13 +8,21 @@
         {
 
             //returns a path from start to destination on a grid
-            public static List<Vector2Int> FindPath(Vector2Int start, Vector2Int destination, HashSet<Vector2Int> grid, bool useIntercardinal = true, Dictionary<Vector2Int, float> costDict = null)
+            public static List<Vector2Int> FindPath(Vector2Int start, Vector2Int destination, HashSet<Vector2Int> grid, bool useIntercardinal = true, Dictionary<Vector2Int, float> costDict = null, HashSet<Vector2Int> ignoredPoints = null)
             {
                 
                 //List<Vector2Int> path = new List<Vector2Int>();
 
                 HashSet<Vector2Int> closedSet = new();
                 HashSet<Vector2Int> openSet = new();
+
+                if(ignoredPoints != null)
+                {
+
+                    closedSet.UnionWith(ignoredPoints);
+                    closedSet.Remove(start);
+                    closedSet.Remove(destination);
+                }
 
                 Dictionary<Vector2Int, AStarNode> nodeMap = new();
 

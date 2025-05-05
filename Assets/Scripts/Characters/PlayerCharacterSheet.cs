@@ -277,7 +277,7 @@ public class PlayerCharacterSheet : CharacterSheet
         {
 
             List<Vector2Int> pathToDestination = PathFinder.FindPath(coord, defendingCharacter.coord, dum.dungeonCoords);            
-            Move(new Vector3(pathToDestination[1].x, 0.1f, pathToDestination[1].y), dum.occupiedlist);
+            Move(pathToDestination[1], dum.occupiedlist);
         }
 
         return attackOccured;
