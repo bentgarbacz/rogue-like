@@ -148,7 +148,7 @@ public class CombatManager : MonoBehaviour
                 if(defender.health <= 0)
                 {
                     yield return new WaitForSeconds(0.05f); //Give the GameObject of dead character time to wrap up before it is destroyed
-                    dum.Smite(combatBuffer[0].defender, defender.pos);                                                                    
+                    dum.Smite(combatBuffer[0].defender, defender.coord);                                                                    
                 }
             }
 
@@ -230,7 +230,7 @@ public class CombatManager : MonoBehaviour
         if (defenderSheet.health <= 0)
         {
 
-            dum.Smite(defender, defenderSheet.pos); // Remove the defender from the game
+            dum.Smite(defender, defenderSheet.coord); // Remove the defender from the game
         }
     }
 

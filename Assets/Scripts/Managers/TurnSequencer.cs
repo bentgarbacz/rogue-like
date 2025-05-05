@@ -12,7 +12,7 @@ public class TurnSequencer : MonoBehaviour
     public float baseWaitTime = 0.05f;
     public float incrementWaitTime = 0.05f;
     private bool actionTaken = false;
-    private Queue<Vector3> playerMovementQueue = new();
+    private Queue<Vector2Int> playerMovementQueue = new();
     private HashSet<GameObject> movingEnemies = new();
     private PlayerCharacterSheet playerCharacter;
     private SpellCaster sc;
@@ -53,9 +53,7 @@ public class TurnSequencer : MonoBehaviour
             if(playerMovementQueue.Count > 0 && !pcMovement.IsMoving())
             {
                 
-                Vector3 nextMove = playerMovementQueue.Dequeue();
-                playerCharacter.Move(nextMove, dum.occupiedlist);
-
+                playerCharacter.Move(playerMovementQueue.Dequeue(), dum.occupiedlist);
                 UpkeepEffects();
 
             //Process a turn if:
@@ -88,13 +86,13 @@ public class TurnSequencer : MonoBehaviour
 
                         if(!targetTile.IsActionable() || 
                             targetTile.coord == playerCharacter.coord || 
-                            dum.occupiedlist.Contains(GameFunctions.CoordToPos(targetTile.coord)))
+                            dum.occupiedlist.Contains(targetTile.coord))
                         {
 
                             return;
                         }
 
-                        List<Vector2Int> pathToDestination = PathFinder.FindPath(playerCharacter.coord, targetTile.coord, dum.dungeonCoords, ignoredPoints: dum.GetOccupiedCoords());  
+                        List<Vector2Int> pathToDestination = PathFinder.FindPath(playerCharacter.coord, targetTile.coord, dum.dungeonCoords, ignoredPoints: dum.occupiedlist);  
             
                         if(pathToDestination != null && pathToDestination.Count > 1)
                         {
@@ -112,8 +110,7 @@ public class TurnSequencer : MonoBehaviour
                                 for (int i = 1; i < pathToDestination.Count; i++)
                                 {
 
-                                    Vector3 movePosition = new(pathToDestination[i].x, 0.1f, pathToDestination[i].y);
-                                    playerMovementQueue.Enqueue(movePosition);
+                                    playerMovementQueue.Enqueue(pathToDestination[i]);
                                 }
                             } 
                         }       
@@ -223,7 +220,7 @@ public class TurnSequencer : MonoBehaviour
         if(!pcMovement.IsMoving())
         {
         
-            playerCharacter.Move(new Vector3(pathToDestination[1].x, 0.1f, pathToDestination[1].y), dum.occupiedlist);
+            playerCharacter.Move(pathToDestination[1], dum.occupiedlist);
 
         }else
         {

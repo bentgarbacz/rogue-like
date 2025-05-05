@@ -8,7 +8,7 @@ public class SlimeCharacterSheet : EnemyCharacterSheet
     private bool hasDropped = false;
     private bool falling = false;
     private float fallSpeed = 30f;
-    private Vector3 landingPos;
+    private Vector2Int landingCoord;
     private bool landingFound = false;
     private DungeonManager dum;
     private CombatManager cbm;
@@ -58,8 +58,8 @@ public class SlimeCharacterSheet : EnemyCharacterSheet
                 falling = false;
                 audioSource.PlayOneShot(attackClip);
                 cbm.ExecuteAttack(this.gameObject, dum.hero, minDamage, maxDamage, speed);
-                dum.occupiedlist.Remove(landingPos);
-                Move(landingPos, dum.occupiedlist);
+                dum.occupiedlist.Remove(landingCoord);
+                Move(landingCoord, dum.occupiedlist);
                 dum.HaltGameplay(false);
             }
         }
@@ -75,15 +75,12 @@ public class SlimeCharacterSheet : EnemyCharacterSheet
 
             foreach(Vector2Int possibleCoord in landingCoords)
             {
-
-                Vector3 possiblePos = new(possibleCoord.x, 0.1f, possibleCoord.y);
-
                 
-                if(dum.occupiedlist.Add(possiblePos))
+                if(dum.occupiedlist.Add(possibleCoord))
                 {
 
                     landingFound = true;
-                    landingPos = possiblePos;
+                    landingCoord = possibleCoord;
                     break;
                 }
             }

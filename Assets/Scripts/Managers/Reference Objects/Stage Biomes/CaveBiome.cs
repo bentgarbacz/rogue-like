@@ -164,7 +164,7 @@ public class CaveBiome : Biome
                     if(i == 0 && j == 1)
                     {
 
-                        dum.hero.GetComponent<CharacterSheet>().Move(spawnPos + new Vector3(0f, 0.1f, 0f), dum.occupiedlist);   
+                        dum.hero.GetComponent<CharacterSheet>().Move(position, dum.occupiedlist);   
 
                     }else if(Mathf.Abs(position.x) > 5 || Mathf.Abs(position.y) > 5){
 

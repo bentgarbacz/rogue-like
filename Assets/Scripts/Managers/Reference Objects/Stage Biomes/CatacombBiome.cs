@@ -218,9 +218,8 @@ public class CatacombBiome : Biome
         {
 
             PlayerCharacterSheet pc = dum.hero.GetComponent<PlayerCharacterSheet>();
-            Vector3 movePos = new(coord.x, 0f, coord.y);
 
-            if(pc.Move(movePos, dum.occupiedlist))
+            if(pc.Move(coord, dum.occupiedlist))
             {
 
                 break;

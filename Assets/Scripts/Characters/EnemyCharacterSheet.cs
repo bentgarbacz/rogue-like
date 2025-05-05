@@ -23,7 +23,7 @@ public class EnemyCharacterSheet : CharacterSheet
         if(!cbm.AddMeleeAttack(this.gameObject, dum.hero, minDamage, maxDamage, speed))
         {
 
-            List<Vector2Int> pathToPlayer = PathFinder.FindPath(coord, playerCharacter.coord, dum.dungeonCoords, ignoredPoints: dum.GetOccupiedCoords());
+            List<Vector2Int> pathToPlayer = PathFinder.FindPath(coord, playerCharacter.coord, dum.dungeonCoords, ignoredPoints: dum.occupiedlist);
             
             if(pathToPlayer == null)
             {
@@ -31,7 +31,7 @@ public class EnemyCharacterSheet : CharacterSheet
                 pathToPlayer = PathFinder.FindPath(coord, playerCharacter.coord, dum.dungeonCoords);
             }
 
-            Move(new Vector3(pathToPlayer[1].x, 0.1f, pathToPlayer[1].y), dum.occupiedlist, waitTime);
+            Move(pathToPlayer[1], dum.occupiedlist, waitTime);
         }
     }
 
@@ -55,7 +55,7 @@ public class EnemyCharacterSheet : CharacterSheet
         if(dum.dungeonCoords.Contains(fleePath))
         {
 
-            Move(new Vector3(fleePath.x, 0.1f, fleePath.y), dum.occupiedlist, waitTime);
+            Move(fleePath, dum.occupiedlist, waitTime);
         }
     }
 

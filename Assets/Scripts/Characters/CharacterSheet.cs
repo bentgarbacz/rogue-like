@@ -55,20 +55,23 @@ public class CharacterSheet : MonoBehaviour
         health = System.Math.Min(maxHealth, health + healValue);
     }
 
-    public virtual bool Move(Vector3 newPos, HashSet<Vector3> occupiedlist, float waitTime = 0f)
+    public virtual bool Move(Vector2Int newCoord, HashSet<Vector2Int> occupiedlist, float waitTime = 0f)
     {
 
-        if(!occupiedlist.Contains(newPos))
+        if(!occupiedlist.Contains(newCoord))
         {
 
-            occupiedlist.Add(newPos);
-            occupiedlist.Remove(pos);
+            Vector3 newPos = new((float)newCoord.x, 0.1f, (float)newCoord.y); 
+
+            occupiedlist.Add(newCoord);
+            occupiedlist.Remove(coord);
 
             GetComponent<MoveToTarget>().SetTarget(newPos, waitTime);
             transform.rotation = Quaternion.Euler(0, GameFunctions.DetermineRotation(pos, newPos), 0);
 
             pos = newPos;
             coord = new Vector2Int((int)newPos.x, (int)newPos.z);
+            coord = newCoord;
 
             return true;
         }
@@ -76,19 +79,21 @@ public class CharacterSheet : MonoBehaviour
         return false;             
     }
 
-    public bool Teleport(Vector3 newPos, DungeonManager dum)
+    public bool Teleport(Vector2Int newCoord, DungeonManager dum)
     {
 
-        if(!dum.CheckPosForOccupancy(newPos))
+        if(!dum.occupiedlist.Contains(newCoord))
         {
 
-            dum.occupiedlist.Add(newPos);
-            dum.occupiedlist.Remove(pos);
+            Vector3 newPos = new((float)newCoord.x, 0.1f, (float)newCoord.y); 
+
+            dum.occupiedlist.Add(newCoord);
+            dum.occupiedlist.Remove(coord);
             
             transform.position = newPos;
 
             pos = newPos;
-            coord = new Vector2Int((int)newPos.x, (int)newPos.z);
+            coord = newCoord;
 
             return true;
 

@@ -15,7 +15,7 @@ public class NPCGenerator : MonoBehaviour
     [SerializeField] private GameObject witch;
     [SerializeField] private GameObject goatMan;
     [SerializeField] private GameObject spider;
-    private readonly float spawnPosVertOffset = 0.1f;
+    private readonly Vector3 spawnPosOffset = new(0, 0.1f, 0);
 
     void Start()
     {
@@ -37,10 +37,8 @@ public class NPCGenerator : MonoBehaviour
 
     public void CreateChest(Vector3 spawnPos, DungeonManager dum)
     {
-        
-        spawnPos.y += spawnPosVertOffset;
 
-        GameObject newChest = Instantiate(chest, spawnPos, Quaternion.Euler(0, Random.Range(0, 8) * 45, 0));
+        GameObject newChest = Instantiate(chest, spawnPos + spawnPosOffset, Quaternion.Euler(0, Random.Range(0, 8) * 45, 0));
         dum.AddGameObject(newChest);
         newChest.GetComponent<Loot>().coord = new Vector2Int((int)spawnPos.x, (int)spawnPos.z);
     }
@@ -48,14 +46,14 @@ public class NPCGenerator : MonoBehaviour
     public void CreateNPC(NPCType npcType, Vector3 spawnPos, DungeonManager dum)
     {
 
-        spawnPos.y += spawnPosVertOffset;
-        GameObject enemy = GetPrefab(npcType, spawnPos);     
+        GameObject enemy = GetPrefab(npcType, spawnPos + spawnPosOffset);
+        Vector2Int spawnCoord = new((int)spawnPos.x, (int)spawnPos.z); 
         
         if(enemy != null)
         { 
 
             dum.AddGameObject(enemy);
-            enemy.GetComponent<CharacterSheet>().Move(spawnPos, dum.occupiedlist);
+            enemy.GetComponent<CharacterSheet>().Move(spawnCoord, dum.occupiedlist);
             dum.enemies.Add(enemy);
 
         }

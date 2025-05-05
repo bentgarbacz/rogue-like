@@ -56,20 +56,20 @@ public class Door : Interactable
         audioSource.Play();
         isOpen = true;
         transform.Rotate(0f, 90f, 0f);
-        dum.occupiedlist.Remove(pos); 
+        dum.occupiedlist.Remove(coord); 
     }
 
     private void CloseDoor()
     {
 
-        if(!dum.occupiedlist.Contains(pos))
+        if(!dum.occupiedlist.Contains(coord))
         {
             
             objectHighlighter.actionDescription = "Open";
             audioSource.Play();
             isOpen = false;
             transform.Rotate(0f, -90f, 0f);
-            dum.occupiedlist.Add(pos); 
+            dum.occupiedlist.Add(coord); 
         }
     }
 

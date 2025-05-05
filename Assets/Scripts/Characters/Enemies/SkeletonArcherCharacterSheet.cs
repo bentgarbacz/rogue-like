@@ -45,7 +45,7 @@ public class SkeletonArcherCharacterSheet : EnemyCharacterSheet
             {
                 
                 List<Vector2Int> pathToPlayer = PathFinder.FindPath(coord, playerCharacter.coord, dum.dungeonCoords);                     
-                Move(new Vector3(pathToPlayer[1].x, 0.1f, pathToPlayer[1].y), dum.occupiedlist, waitTime);
+                Move(pathToPlayer[1], dum.occupiedlist, waitTime);
             }
 
         }else
@@ -57,7 +57,7 @@ public class SkeletonArcherCharacterSheet : EnemyCharacterSheet
             if(dum.dungeonCoords.Contains(randomDirection))
             {
 
-                Move(new Vector3(randomDirection.x, 0.1f, randomDirection.y), dum.occupiedlist, waitTime);
+                Move(randomDirection, dum.occupiedlist, waitTime);
             }
 
             attackCooldown -= 1;
