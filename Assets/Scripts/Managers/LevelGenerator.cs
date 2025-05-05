@@ -10,7 +10,6 @@ using System.Linq;
 public class LevelGenerator : MonoBehaviour
 {
 
-    public int walkLength;
     private DungeonManager dum;
     [SerializeField] private MiniMapManager miniMapManager;
     [SerializeField] private GameObject wallJoiner;
@@ -41,39 +40,9 @@ public class LevelGenerator : MonoBehaviour
         dum.dungeonCoords = new();
         biome.GenerateLevel(startPosition, dum.dungeonCoords, dum, npcGen);    
         GenerateWalls(dum.dungeonCoords, biome);
-        //dum.cachedPathsDict = PrecacheMapPaths(path);
         miniMapManager.DrawIcons(dum.dungeonSpecificGameObjects);
         miniMapManager.UpdateDynamicIcons();
         MoveDebugObjects();
-    }
-
-    public Dictionary<string, List<Vector2Int>> PrecacheMapPaths(HashSet<Vector2Int> p)
-    {
-
-        Dictionary<string, List<Vector2Int>> pathsDictionary = new();
-
-        foreach(Vector2Int node1 in dum.dungeonCoords)
-        {   
-
-            foreach(Vector2Int node2 in dum.dungeonCoords)
-            {
-                                
-                if(node1 != node2)
-                {
-
-                    double distance = Math.Sqrt(Math.Pow((node2.x - node1.x), 2) + Math.Pow((node2.y - node1.y), 2));
-
-                    if(distance > 3){
-
-                        continue;
-                    }
-
-                    PathFinder.PrecachePath(node1, node2, dum.dungeonCoords, pathsDictionary);
-                }
-            }
-        }
-
-        return pathsDictionary;
     }
 
     private void GenerateWalls(HashSet<Vector2Int> path, Biome biome)

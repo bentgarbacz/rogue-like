@@ -143,6 +143,13 @@ public class CatacombBiome : Biome
                 //REALLY discourage wall tiles of rooms for when we generate hallways
                 costDict[coord] = 10f;
             }
+
+            foreach(Vector2Int coord in room.GetCornerCoordinates())
+            {
+
+                //REEEEEALLY discourage corner wall tiles for when we generate hallways
+                costDict[coord] = 999f;
+            }
         }
 
         List<Triangle> triangles = DelaunayTriangulation.BowyerWatson(roomPositions);
@@ -235,7 +242,7 @@ public class CatacombBiome : Biome
         {
 
             int chestCount = Random.Range(0, 4); // Randomly decide how many chests to spawn (0 to 3)
-            HashSet<Vector2Int> usedChestCoords = new HashSet<Vector2Int>();
+            HashSet<Vector2Int> usedChestCoords = new();
 
             for (int i = 0; i < chestCount; i++)
             {
@@ -249,7 +256,7 @@ public class CatacombBiome : Biome
                 } while (usedChestCoords.Contains(chestCoord));
 
                 usedChestCoords.Add(chestCoord); // Mark the coordinate as used
-                Vector3 chestPos = new Vector3(chestCoord.x, 0, chestCoord.y);
+                Vector3 chestPos = new(chestCoord.x, 0, chestCoord.y);
 
                 // Spawn the chest at the chosen position
                 npcGen.CreateChest(chestPos, dum);
@@ -259,9 +266,10 @@ public class CatacombBiome : Biome
         //spawn 0 - 3 enemies in each room
         for (int roomIndex = 1; roomIndex < rooms.Count; roomIndex++) // Start from room[1] to exclude room[0]
         {
+            
             Room room = rooms[roomIndex];
             int enemyCount = Random.Range(0, 4); // Randomly decide how many enemies to spawn (0 to 3)
-            HashSet<Vector2Int> usedEnemyCoords = new HashSet<Vector2Int>(); // Track used coordinates for enemies
+            HashSet<Vector2Int> usedEnemyCoords = new(); // Track used coordinates for enemies
 
             for (int i = 0; i < enemyCount; i++)
             {

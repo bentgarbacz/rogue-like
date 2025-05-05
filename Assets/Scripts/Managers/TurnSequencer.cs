@@ -74,18 +74,21 @@ public class TurnSequencer : MonoBehaviour
 
                     Tile targetTile = target.GetComponent<Tile>();
                     CharacterSheet targetCharacter = target.GetComponent<CharacterSheet>();
-                    Loot targetLoot = target.GetComponent<Loot>();
-                    Exit targetExit = target.GetComponent<Exit>();
+                    Interactable targetInteractable = target.GetComponent<Interactable>();
 
                     uiam.CloseInventoryPanel();
                     uiam.CloseLootPanel();
                     uiam.CloseCharacterPanel();
                     uiam.HideAssignSpell();
 
+                    playerMovementQueue.Clear();
+
                     if(targetTile != null)
                     {
 
-                        if(!targetTile.IsActionable() || targetTile.coord == playerCharacter.coord)
+                        if(!targetTile.IsActionable() || 
+                            targetTile.coord == playerCharacter.coord || 
+                            dum.occupiedlist.Contains(GameFunctions.CoordToPos(targetTile.coord)))
                         {
 
                             return;
@@ -99,16 +102,7 @@ public class TurnSequencer : MonoBehaviour
                             if(dum.aggroEnemies.Count > 0)
                             {
 
-                                if(!pcMovement.IsMoving())
-                                {
-                                
-                                    playerCharacter.Move(new Vector3(pathToDestination[1].x, 0.1f, pathToDestination[1].y), dum.occupiedlist);
-
-                                }else
-                                {
-
-                                    return;
-                                }
+                                MoveOneSpace(pathToDestination);
 
                             }else
                             {
@@ -118,7 +112,7 @@ public class TurnSequencer : MonoBehaviour
                                 for (int i = 1; i < pathToDestination.Count; i++)
                                 {
 
-                                    Vector3 movePosition = new Vector3(pathToDestination[i].x, 0.1f, pathToDestination[i].y);
+                                    Vector3 movePosition = new(pathToDestination[i].x, 0.1f, pathToDestination[i].y);
                                     playerMovementQueue.Enqueue(movePosition);
                                 }
                             } 
@@ -138,40 +132,20 @@ public class TurnSequencer : MonoBehaviour
                         }
                     }
 
-                    //open container and examine loot
-                    if(targetLoot != null)
+                    if(targetInteractable != null)
                     {
 
-                        //open loot container if it is a neighbor of player character or it is on top of player character
-                        if(PathFinder.GetNeighbors(targetLoot.coord, dum.dungeonCoords).Contains(playerCharacter.coord) || targetLoot.coord == playerCharacter.coord )
+                        //interact with interactable object
+                        if(PathFinder.GetNeighbors(targetInteractable.coord, dum.dungeonCoords).Contains(playerCharacter.coord) || targetInteractable.coord == playerCharacter.coord )
                         {
                             
-                            targetLoot.OpenContainer();
-
-                        }else //move towards container
-                        {
-
-                            List<Vector2Int> pathToDestination = PathFinder.FindPath(playerCharacter.coord, targetLoot.coord, dum.dungeonCoords);            
-                            playerCharacter.Move(new Vector3(pathToDestination[1].x, 0.1f, pathToDestination[1].y), dum.occupiedlist); 
-                        }
-                    }
-
-                    if(targetExit != null)
-                    {
-
-                        //erase current level and generate a new one
-                        if(PathFinder.GetNeighbors(targetExit.coord, dum.dungeonCoords).Contains(playerCharacter.coord) || targetExit.coord == playerCharacter.coord )
-                        {
+                            targetInteractable.Interact();                            
                             
-                            playerMovementQueue.Clear();
-                            targetExit.ExitLevel();                            
-                            levelGenerator.NewLevel(levelGenerator.biomeDict[BiomeType.Catacomb]);
-                            
-                        }else //move towards exit
+                        }else //move towards interactable
                         {
 
-                            List<Vector2Int> pathToDestination = PathFinder.FindPath(playerCharacter.coord, targetExit.coord, dum.dungeonCoords);            
-                            playerCharacter.Move(new Vector3(pathToDestination[1].x, 0.1f, pathToDestination[1].y), dum.occupiedlist); 
+                            List<Vector2Int> pathToDestination = PathFinder.FindPath(playerCharacter.coord, targetInteractable.coord, dum.dungeonCoords);            
+                            MoveOneSpace(pathToDestination); 
                         }   
                     }
 
@@ -241,5 +215,20 @@ public class TurnSequencer : MonoBehaviour
         sc.UpdateSpellSlots();
         miniMapManager.UpdateDynamicIcons();
         npm.IncrementDisplayTimer();
+    }
+
+    private void MoveOneSpace(List<Vector2Int> pathToDestination)
+    {
+
+        if(!pcMovement.IsMoving())
+        {
+        
+            playerCharacter.Move(new Vector3(pathToDestination[1].x, 0.1f, pathToDestination[1].y), dum.occupiedlist);
+
+        }else
+        {
+
+            return;
+        }
     }
 }

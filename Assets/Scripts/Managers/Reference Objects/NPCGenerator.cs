@@ -58,9 +58,6 @@ public class NPCGenerator : MonoBehaviour
             enemy.GetComponent<CharacterSheet>().Move(spawnPos, dum.occupiedlist);
             dum.enemies.Add(enemy);
 
-        }else{
-
-            Debug.LogWarning("NPC of type " + npcType.ToString() + " not found.");
         }
     }
 

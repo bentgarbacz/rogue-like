@@ -17,8 +17,7 @@ public class CaveBiome : Biome
     [SerializeField] private GameObject caveWallTile5;
     [SerializeField] private GameObject caveEntrance;
     [SerializeField] private GameObject caveExit;
-    private readonly float exitSpawnPosVertOffset = 0.88f;
-    private int walkLength = 100;
+    private int walkLength = 50;
     private int repeatWalks = 100;
     public List<NPCType> possibleEnemyTypes = new();
 
@@ -171,13 +170,13 @@ public class CaveBiome : Biome
 
                         if(spawnRNG >= 0 && spawnRNG <= 2)
                         {
-
+                            
                             npcGen.CreateChest(spawnPos, dum);
 
                         }else if(spawnRNG >= 3 && spawnRNG <= 4)
                         {
 
-                            npcGen.CreateNPC(NPCType.Spider, spawnPos, dum);
+                            npcGen.CreateNPC(NPCType.Slime, spawnPos, dum);
 
                         }else if(spawnRNG >= 5 && spawnRNG <= 6)
                         {

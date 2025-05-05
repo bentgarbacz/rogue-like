@@ -2,21 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Exit : MonoBehaviour
+public class Exit : Interactable
 {
 
-    public Vector2Int coord;
     private DungeonManager dum;
+    private LevelGenerator lg;
 
     void Start()
     {
 
         dum = GameObject.Find("System Managers").GetComponent<DungeonManager>();
+        lg = GameObject.Find("Map Generator").GetComponent<LevelGenerator>();
     }
-    
-    public void ExitLevel()
-    {
 
-        dum.CleanUp();
+    public override void Interact()
+    {
+        
+        dum.CleanUp();                          
+        lg.NewLevel(lg.biomeDict[BiomeType.Catacomb]);
     }
 }

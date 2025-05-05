@@ -65,6 +65,21 @@ public class Room
 
         return perimeterCoords;
     }
+
+    public HashSet<Vector2Int> GetCornerCoordinates()
+    {
+        
+        HashSet<Vector2Int> cornerCoords = new()
+        {
+
+            new Vector2Int(position.x - 1, position.y - 1),
+            new Vector2Int(position.x + width, position.y - 1),
+            new Vector2Int(position.x - 1, position.y + height),
+            new Vector2Int(position.x + width, position.y + height)
+        };
+
+        return cornerCoords;
+    }
 }
 
 public class BSPNode

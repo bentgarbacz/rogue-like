@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Loot : MonoBehaviour
+public class Loot : Interactable
 {
-    public Vector2Int coord;
+
     public List<Item> items;
     protected UIActiveManager uiam;
     protected DungeonManager dum;
@@ -34,6 +34,12 @@ public class Loot : MonoBehaviour
 
         uiam.OpenLootPanel(this);        
         uiam.OpenInventoryPanel();
+    }
+
+    public override void Interact()
+    {
+
+        OpenContainer();
     }
 
     public int ItemCount()
