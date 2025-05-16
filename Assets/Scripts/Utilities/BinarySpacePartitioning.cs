@@ -5,7 +5,7 @@ using UnityEngine;
 public class Room
 {
     public Vector2Int position;
-    public int width; 
+    public int width;
     public int height;
 
     private static System.Random rand = new System.Random();
@@ -22,7 +22,7 @@ public class Room
     {
 
         HashSet<Vector2Int> coords = new();
-        
+
         for (int x = 0; x < width; x++)
         {
 
@@ -32,7 +32,7 @@ public class Room
                 coords.Add(new Vector2Int(position.x + x, position.y + y));
             }
         }
-        
+
         return coords;
     }
 
@@ -68,7 +68,7 @@ public class Room
 
     public HashSet<Vector2Int> GetCornerCoordinates()
     {
-        
+
         HashSet<Vector2Int> cornerCoords = new()
         {
 
@@ -80,6 +80,27 @@ public class Room
 
         return cornerCoords;
     }
+    
+    public Vector2Int GetDirectionFromRoom(Vector2Int coord)
+{
+    // Determine the bounds of the room
+    int left = position.x;
+    int right = position.x + width - 1;
+    int top = position.y + height - 1;
+    int bottom = position.y;
+
+    // Determine the direction
+    int xDirection = 0;
+    int yDirection = 0;
+
+    if (coord.x < left) xDirection = -1; // West
+    else if (coord.x > right) xDirection = 1; // East
+
+    if (coord.y < bottom) yDirection = -1; // South
+    else if (coord.y > top) yDirection = 1; // North
+
+    return new Vector2Int(xDirection, yDirection);
+}
 }
 
 public class BSPNode

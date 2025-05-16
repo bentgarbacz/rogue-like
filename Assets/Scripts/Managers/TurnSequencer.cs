@@ -13,7 +13,6 @@ public class TurnSequencer : MonoBehaviour
     public float incrementWaitTime = 0.05f;
     private bool actionTaken = false;
     private Queue<Vector2Int> playerMovementQueue = new();
-    private HashSet<GameObject> movingEnemies = new();
     private PlayerCharacterSheet playerCharacter;
     private SpellCaster sc;
     private MoveToTarget pcMovement;
@@ -55,6 +54,7 @@ public class TurnSequencer : MonoBehaviour
                 
                 playerCharacter.Move(playerMovementQueue.Dequeue(), dum.occupiedlist);
                 UpkeepEffects();
+                actionTaken = true;
 
             //Process a turn if:
             //left mouse was pressed
@@ -112,8 +112,10 @@ public class TurnSequencer : MonoBehaviour
 
                                     playerMovementQueue.Enqueue(pathToDestination[i]);
                                 }
-                            } 
-                        }       
+                            }
+
+                            return;
+                        }   
                     }
 
                     //initiate an attack on clicked enemy
@@ -136,13 +138,18 @@ public class TurnSequencer : MonoBehaviour
                         if(PathFinder.GetNeighbors(targetInteractable.coord, dum.dungeonCoords).Contains(playerCharacter.coord) || targetInteractable.coord == playerCharacter.coord )
                         {
                             
-                            targetInteractable.Interact();                            
+                            if(!targetInteractable.Interact())
+                            {
+
+                                return;
+                            }                        
                             
                         }else //move towards interactable
                         {
 
                             List<Vector2Int> pathToDestination = PathFinder.FindPath(playerCharacter.coord, targetInteractable.coord, dum.dungeonCoords);            
-                            MoveOneSpace(pathToDestination); 
+                            MoveOneSpace(pathToDestination);
+                            return;
                         }   
                     }
 
@@ -180,7 +187,7 @@ public class TurnSequencer : MonoBehaviour
                 foreach(GameObject enemy in dum.enemies)
                 {
 
-                    if(aggroRange > Vector3.Distance(enemy.transform.position, dum.hero.transform.position) && !dum.aggroEnemies.Contains(enemy) && LineOfSight.HasLOS(enemy, dum.hero))
+                    if(ShouldAggro(enemy))
                     {
 
                         if(enemy.GetComponent<EnemyCharacterSheet>().OnAggro(dum, cbm))
@@ -217,15 +224,25 @@ public class TurnSequencer : MonoBehaviour
     private void MoveOneSpace(List<Vector2Int> pathToDestination)
     {
 
-        if(!pcMovement.IsMoving())
+        playerMovementQueue.Clear();
+        
+        if(!pcMovement.IsMoving() && pathToDestination != null)
         {
         
-            playerCharacter.Move(pathToDestination[1], dum.occupiedlist);
+            playerMovementQueue.Enqueue(pathToDestination[1]);
 
         }else
         {
 
             return;
         }
+    }
+
+    private bool ShouldAggro(GameObject enemy)
+    {
+
+        return aggroRange > Vector3.Distance(enemy.transform.position, dum.hero.transform.position) &&
+            !dum.aggroEnemies.Contains(enemy) &&
+            LineOfSight.HasLOS(enemy, dum.hero);
     }
 }

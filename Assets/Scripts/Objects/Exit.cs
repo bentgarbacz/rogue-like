@@ -15,10 +15,12 @@ public class Exit : Interactable
         lg = GameObject.Find("Map Generator").GetComponent<LevelGenerator>();
     }
 
-    public override void Interact()
+    public override bool Interact()
     {
         
         dum.CleanUp();                          
         lg.NewLevel(lg.biomeDict[BiomeType.Catacomb]);
+        
+        return true;
     }
 }

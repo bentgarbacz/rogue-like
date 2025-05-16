@@ -6157,6 +6157,7 @@ MonoBehaviour:
   catacombWallTile: {fileID: 2564236300543592276, guid: 341c12a892e0bfc4d989278622d531fb, type: 3}
   catacombEntrance: {fileID: 8240057085656814339, guid: f6b63ce657227bd4c9f0ea79119baacf, type: 3}
   catacombExit: {fileID: 2862989877608427773, guid: 57670d2158c8b544a9c7250631b130e5, type: 3}
+  catacombDoor: {fileID: 5245498800819785574, guid: c4b3e4b4019ff174daac85013a1d921a, type: 3}
   possibleEnemyTypes: 010000000200000005000000
 --- !u!114 &438385578
 MonoBehaviour:
@@ -22505,7 +22506,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hero: {fileID: 869517488}
   playerCharacter: {fileID: 0}
-  mainCamera: {fileID: 2103700155}
   enemiesOnLookout: 1
 --- !u!114 &1314207895
 MonoBehaviour:
@@ -36688,6 +36688,7 @@ MonoBehaviour:
   minFov: 5
   maxFov: 30
   zoomSensitivity: 10
+  hero: {fileID: 869517488}
   MinimapCamera: {fileID: 242446416}
 --- !u!1 &2105365319
 GameObject:
