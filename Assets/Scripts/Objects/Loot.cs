@@ -36,10 +36,12 @@ public class Loot : Interactable
         uiam.OpenInventoryPanel();
     }
 
-    public override void Interact()
+    public override bool Interact()
     {
 
         OpenContainer();
+        
+        return true;
     }
 
     public int ItemCount()

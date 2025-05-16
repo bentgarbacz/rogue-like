@@ -14,7 +14,7 @@ public class PlayerCamera : MonoBehaviour
     public float maxFov = 40f;
     public float zoomSensitivity = 20f;
     private float fov = 0;
-    //[SerializeField] GameObject mapPanel;
+    [SerializeField] GameObject hero;
     [SerializeField] Camera MinimapCamera;
 
     void Start()
@@ -22,6 +22,7 @@ public class PlayerCamera : MonoBehaviour
 
         fov = Camera.main.fieldOfView;
         RotateCamera(Input.GetAxis("Mouse X") * panSpeed, Input.GetAxis("Mouse Y") * panSpeed);
+        SetFocalPoint(hero);
     }
 
     void LateUpdate()

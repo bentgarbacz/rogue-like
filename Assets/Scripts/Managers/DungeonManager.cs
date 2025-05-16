@@ -9,7 +9,7 @@ public class DungeonManager : MonoBehaviour
 
     public GameObject hero;
     public PlayerCharacterSheet playerCharacter;
-    public GameObject mainCamera;
+    //public GameObject mainCamera;
     public bool enemiesOnLookout = true;
     public HashSet<Vector2Int> dungeonCoords;
     public HashSet<Vector2Int> discoveredCoords;
@@ -33,7 +33,7 @@ public class DungeonManager : MonoBehaviour
         miniMapManager = managers.GetComponent<UIActiveManager>().mapPanel.GetComponent<MiniMapManager>();
         playerCharacter = hero.GetComponent<PlayerCharacterSheet>();
 
-        mainCamera.GetComponent<PlayerCamera>().SetFocalPoint(hero);
+        //mainCamera.GetComponent<PlayerCamera>().SetFocalPoint(hero);
     }
 
     public void TriggerStatusEffects()
@@ -53,21 +53,6 @@ public class DungeonManager : MonoBehaviour
 
         dungeonSpecificGameObjects.Add(newGameObject);
     }
-
-    /*public HashSet<Vector2Int> GetOccupiedCoords()
-    {
-
-        HashSet<Vector2Int> occupiedCoords = new();
-
-        foreach (Vector3 occupiedPos in occupiedlist)
-        {
-            
-            Vector2Int coord = GameFunctions.PosToCoord(occupiedPos);
-            occupiedCoords.Add(coord);
-        }
-
-        return occupiedCoords;
-    }*/
 
     public void Smite(GameObject target, Vector2Int targetCoord)
     {
@@ -134,22 +119,6 @@ public class DungeonManager : MonoBehaviour
 
         playerCharacter.Teleport(new Vector2Int(0, 0), this);
     }
-
-    /*public bool CheckPosForOccupancy(Vector3 pos)
-    {
-
-        foreach(Vector3 checkPos in occupiedlist)
-        {
-            
-            if(GameFunctions.PosToCoord(pos) == GameFunctions.PosToCoord(checkPos))
-            {
-
-                return true;
-            }
-        }
-
-        return false;
-    }*/
 
     public void ClearAggroBuffer()
     {

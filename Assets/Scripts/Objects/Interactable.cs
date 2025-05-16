@@ -6,9 +6,9 @@ public class Interactable : MonoBehaviour
 {
     public Vector2Int coord;
 
-    public virtual void Interact()
+    public virtual bool Interact()
     {
 
-        return;
+        return true;
     }
 }

@@ -12,7 +12,7 @@ public class Door : Interactable
     private bool toggleable = true;
     private ObjectHighlighter objectHighlighter;
 
-    void Start()
+    void Awake()
     {
         
         dum = GameObject.Find("System Managers").GetComponent<DungeonManager>();
@@ -22,13 +22,54 @@ public class Door : Interactable
         objectHighlighter.actionDescription = "Open";
     }
 
-    public override void Interact()
+    public override bool Interact()
     {
 
-        ToggleDoor();
+        if(ToggleDoor())
+        {
+
+            return true;
+        }
+
+        return false;
     }
 
-    public void ToggleDoor()
+    public void InitDoor(Vector2Int coord, Vector2Int orientation)
+    {
+
+        float angle = 0f;
+
+        if (orientation.x == 1)
+        {
+
+            angle = 270f; // East facing door
+            transform.position = new Vector3(transform.position.x + 0f, transform.position.y, transform.position.z + 0f);
+        }
+        else if (orientation.x == -1)
+        {
+
+            angle = 90f; // West facing door
+            transform.position = new Vector3(transform.position.x + 0.95f, transform.position.y, transform.position.z + 0.95f);
+        }
+        else if (orientation.y == 1)
+        {
+
+            angle = 180f; // North facing door
+            transform.position = new Vector3(transform.position.x + 0.95f, transform.position.y, transform.position.z + 0f);
+        }
+        else if (orientation.y == -1)
+        {
+
+            angle = 0f; // South facing door
+            transform.position = new Vector3(transform.position.x + 0f, transform.position.y, transform.position.z + 0.95f);
+        }
+
+        transform.Rotate(0f, angle, 0f);
+        this.coord = coord;
+        dum.occupiedlist.Add(coord);
+    }
+
+    public bool ToggleDoor()
     {
 
         if(toggleable)
@@ -39,27 +80,31 @@ public class Door : Interactable
             if (isOpen)
             {
 
-                CloseDoor();
+                return CloseDoor();
 
             }else
             {
 
-                OpenDoor();
+                return OpenDoor();
             }
         }
+
+        return false;
     }
 
-    private void OpenDoor()
+    private bool OpenDoor()
     {
 
         objectHighlighter.actionDescription = "Close";
         audioSource.Play();
         isOpen = true;
         transform.Rotate(0f, 90f, 0f);
-        dum.occupiedlist.Remove(coord); 
+        dum.occupiedlist.Remove(coord);
+
+        return true;
     }
 
-    private void CloseDoor()
+    private bool CloseDoor()
     {
 
         if(!dum.occupiedlist.Contains(coord))
@@ -70,7 +115,11 @@ public class Door : Interactable
             isOpen = false;
             transform.Rotate(0f, -90f, 0f);
             dum.occupiedlist.Add(coord); 
+
+            return true;
         }
+
+        return false;
     }
 
     private IEnumerator ToggleDelay()

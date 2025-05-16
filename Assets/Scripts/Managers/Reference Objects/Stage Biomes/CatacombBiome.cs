@@ -13,6 +13,7 @@ public class CatacombBiome : Biome
     [SerializeField] private GameObject catacombWallTile;
     [SerializeField] private GameObject catacombEntrance;
     [SerializeField] private GameObject catacombExit;
+    [SerializeField] private GameObject catacombDoor;
     private readonly float exitSpawnPosVertOffset = 0.88f;
     public List<NPCType> possibleEnemyTypes = new()
     {
@@ -259,6 +260,19 @@ public class CatacombBiome : Biome
 
                 // Spawn the chest at the chosen position
                 npcGen.CreateChest(chestPos, dum);
+            }
+
+            foreach(Vector2Int perimeterCoord in room.GetPerimeterCoordinates())
+            {
+
+                if(path.Contains(perimeterCoord))
+                {
+
+                    Vector3 doorPos = new(perimeterCoord.x-0.5f, 0, perimeterCoord.y-0.5f);
+                    GameObject newDoor = Instantiate(catacombDoor, doorPos, catacombDoor.transform.rotation);
+                    dum.AddGameObject(newDoor);
+                    newDoor.GetComponent<Door>().InitDoor(perimeterCoord, room.GetDirectionFromRoom(perimeterCoord));
+                }
             }
         }
 
