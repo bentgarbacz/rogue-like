@@ -4,39 +4,44 @@ using UnityEngine;
 
 public static class GameFunctions
 {
-    
+
     public static float DetermineRotation(Vector3 start, Vector3 end)
     {
-        
-        if(start.x == end.x && start.z < end.z)
+
+        if (start.x == end.x && start.z < end.z)
         {
             return 0f; //north
         }
-        else if(start.x < end.x && start.z < end.z)
+        else if (start.x < end.x && start.z < end.z)
         {
             return 45f; //north east
         }
-        else if(start.x < end.x && start.z == end.z)
+        else if (start.x < end.x && start.z == end.z)
         {
             return 90f; // east
 
-        }else if(start.x < end.x && start.z > end.z)
+        }
+        else if (start.x < end.x && start.z > end.z)
         {
             return 135f; //south east
 
-        }else if(start.x == end.x && start.z > end.z)
+        }
+        else if (start.x == end.x && start.z > end.z)
         {
             return 180f; // south
 
-        }else if(start.x > end.x && start.z > end.z)
+        }
+        else if (start.x > end.x && start.z > end.z)
         {
             return 225f; //south west
 
-        }else if(start.x > end.x && start.z == end.z)
+        }
+        else if (start.x > end.x && start.z == end.z)
         {
             return 270f; // west
-            
-        }else if(start.x > end.x && start.z < end.z)
+
+        }
+        else if (start.x > end.x && start.z < end.z)
         {
             return 315f; //north west
         }
@@ -47,56 +52,65 @@ public static class GameFunctions
     public static bool CheckValidEquipmentSlot(ItemSlot equipmentSlot, Item item)
     {
 
-        if(equipmentSlot.type is ItemSlotType.Inventory)
+        if (equipmentSlot.type is ItemSlotType.Inventory)
         {
 
             return true;
-            
-        }else if(item is Equipment equipItem)
+
+        }
+        else if (item is Equipment equipItem)
         {
-            
-            if(equipItem.type is EquipmentType.Helmet && equipmentSlot.type is ItemSlotType.Helmet)
+
+            if (equipItem.type is EquipmentType.Helmet && equipmentSlot.type is ItemSlotType.Helmet)
             {
 
                 return true;
 
-            }else if(equipItem.type is EquipmentType.Amulet && equipmentSlot.type is ItemSlotType.Amulet)
+            }
+            else if (equipItem.type is EquipmentType.Amulet && equipmentSlot.type is ItemSlotType.Amulet)
             {
 
                 return true;
 
-            }else if(equipItem.type is EquipmentType.Chest && equipmentSlot.type is ItemSlotType.Chest)
+            }
+            else if (equipItem.type is EquipmentType.Chest && equipmentSlot.type is ItemSlotType.Chest)
             {
 
                 return true;
 
-            }else if(equipItem.type is EquipmentType.Glove && equipmentSlot.type is ItemSlotType.Glove)
+            }
+            else if (equipItem.type is EquipmentType.Glove && equipmentSlot.type is ItemSlotType.Glove)
             {
 
                 return true;
 
-            }else if(equipItem.type is EquipmentType.Boot && equipmentSlot.type is ItemSlotType.Boot)
+            }
+            else if (equipItem.type is EquipmentType.Boot && equipmentSlot.type is ItemSlotType.Boot)
             {
 
                 return true;
 
-            }else if(equipItem.type is EquipmentType.MainHand && equipmentSlot.type is ItemSlotType.MainHand)
+            }
+            else if (equipItem.type is EquipmentType.MainHand && equipmentSlot.type is ItemSlotType.MainHand)
             {
 
                 return true;
 
-            }else if(equipItem.type is EquipmentType.OffHand && equipmentSlot.type is ItemSlotType.OffHand)
+            }
+            else if (equipItem.type is EquipmentType.OffHand && equipmentSlot.type is ItemSlotType.OffHand)
             {
 
                 return true;
 
-            }else if(equipItem.type is EquipmentType.Ring && equipmentSlot.type is ItemSlotType.RingPrimary || 
+            }
+            else if (equipItem.type is EquipmentType.Ring && equipmentSlot.type is ItemSlotType.RingPrimary ||
                      equipItem.type is EquipmentType.Ring && equipmentSlot.type is ItemSlotType.RingSecondary)
             {
 
                 return true;
 
-            }else if(equipItem.type is EquipmentType.SwitchHand && equipmentSlot.type is ItemSlotType.MainHand || 
+            }
+            else if (equipItem.type is EquipmentType.SwitchHand && equipmentSlot.type is ItemSlotType.MainHand ||
                      equipItem.type is EquipmentType.SwitchHand && equipmentSlot.type is ItemSlotType.OffHand)
             {
 
@@ -119,13 +133,13 @@ public static class GameFunctions
         return new Vector2Int((int)pos.x, (int)pos.z);
     }
 
-    public static void DropLoot(GameObject DroppingEntity, GameObject container, List<Item> droppedItems, DungeonManager dum, MiniMapManager miniMapManager, bool randomizePos=true)
+    public static void DropLoot(GameObject DroppingEntity, GameObject container, List<Item> droppedItems, DungeonManager dum, MiniMapManager miniMapManager, bool randomizePos = true)
     {
 
         //Determine drop location and introduce randomness to make multiple loot instances clickable on a single tile
         Vector3 dropPos = DroppingEntity.transform.position;
 
-        if(randomizePos)
+        if (randomizePos)
         {
 
             dropPos.x += (float)(Random.Range(-20, 20) * 0.01);
@@ -136,12 +150,53 @@ public static class GameFunctions
         Loot loot = lootContainer.GetComponent<Loot>();
 
         //Sets the tile coordinate in which the loot resides
-        loot.coord = new Vector2Int((int)DroppingEntity.transform.position.x, (int)DroppingEntity.transform.position.z);       
-        loot.AddItems(droppedItems);  
+        loot.coord = new Vector2Int((int)DroppingEntity.transform.position.x, (int)DroppingEntity.transform.position.z);
+        loot.AddItems(droppedItems);
 
         dum.AddGameObject(lootContainer);
         dum.itemContainers.Add(loot);
 
         miniMapManager.AddIcon(lootContainer);
     }
+
+    public static HashSet<Vector2Int> GetCircleCoords(Vector2Int center, int radius, bool perimeterOnly = false)
+    {
+
+        HashSet<Vector2Int> points = new();
+        int rSquared = radius * radius;
+
+        for (int x = center.x - radius; x <= center.x + radius; x++)
+        {
+            
+            for (int y = center.y - radius; y <= center.y + radius; y++)
+            {
+
+                int dx = x - center.x;
+                int dy = y - center.y;
+                int distSquared = dx * dx + dy * dy;
+
+                if (perimeterOnly)
+                {
+
+                    if (Mathf.Abs(distSquared - rSquared) <= radius)
+                    {
+
+                        points.Add(new Vector2Int(x, y));
+                    }
+                }
+                else
+                {
+
+                    if (distSquared <= rSquared + 1)
+                    {
+
+                        points.Add(new Vector2Int(x, y));
+                    }
+                }
+            }
+        }
+        
+        return points;
+    }
+
 }

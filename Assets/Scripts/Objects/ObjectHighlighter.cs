@@ -26,17 +26,23 @@ public class ObjectHighlighter : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-               
-        if(actionDescription != "")
+
+        EnterBehavior();
+    }
+
+    private void EnterBehavior()
+    {
+
+        if (actionDescription != "")
         {
 
             ttm.SetTooltip(true, actionDescription);
         }
 
-        if(highlightedCharacter != null)
+        if (highlightedCharacter != null)
         {
-            
-            if(highlightedCharacter is EnemyCharacterSheet)
+
+            if (highlightedCharacter is EnemyCharacterSheet)
             {
 
                 npm.SetCharacter(this.gameObject);
@@ -60,20 +66,20 @@ public class ObjectHighlighter : MonoBehaviour, IPointerEnterHandler, IPointerEx
     public void OnDestroy()
     {
 
-        if(highlighted == true)
+        if (highlighted == true)
         {
 
-            ClearTooltip();   
+            ClearTooltip();
         }
     }
 
     public void OnDisable()
     {
 
-        if(highlighted == true)
+        if (highlighted == true)
         {
 
-            ClearTooltip();   
+            ClearTooltip();
         }
     }
 
@@ -81,5 +87,17 @@ public class ObjectHighlighter : MonoBehaviour, IPointerEnterHandler, IPointerEx
     {
 
         ttm.SetTooltip(false);
+    }
+
+    public void SetActionText(string text)
+    {
+
+        actionDescription = text;
+
+        if (highlighted)
+        {
+
+            EnterBehavior();
+        }
     }
 }

@@ -18,10 +18,13 @@ public class ClickManager : MonoBehaviour
     public GameObject GetObject()
     {
 
-        Ray ray = Camera.main.ScreenPointToRay( Input.mousePosition );
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        
+        int ignoreLayer = 8;
+        int layerMask = ~(1 << ignoreLayer);
     
-        if (Physics.Raycast(ray, out RaycastHit hit, 100))
-        {   
+        if (Physics.Raycast(ray, out RaycastHit hit, 100, layerMask))
+        {
 
             return hit.transform.gameObject;
         }

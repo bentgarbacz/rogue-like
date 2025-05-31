@@ -7,13 +7,13 @@ using UnityEngine.UIElements;
 
 public class MoveToTarget : MonoBehaviour
 {
-    
+
     public Vector3 target;
     public float speed = 5f;
-    private float distance;
+    protected float distance;
     private float arcPos;
-    private bool moving = false;
-    private bool makesNoise = false;
+    protected bool moving = false;
+    protected bool makesNoise = false;
     public AudioSource audioSource;
     public AudioClip stepAudioClip;
     public float waitTime = 0f;
@@ -27,39 +27,32 @@ public class MoveToTarget : MonoBehaviour
     void Update()
     {
 
-        if(waitTime > 0)
+        if (waitTime > 0)
         {
 
             waitTime -= Time.deltaTime;
 
-        }else
+        }
+        else
         {
 
-            if(distance > 0)
+            if (distance > 0)
             {
 
-                distance = Vector3.Distance(new Vector3(target.x, 0 , target.z), new Vector3(transform.position.x, 0, transform.position.z));
+                distance = Vector3.Distance(new Vector3(target.x, 0, target.z), new Vector3(transform.position.x, 0, transform.position.z));
 
                 arcPos = Mathf.Clamp(CalcArc(distance), 0f, 1f);
 
-
                 transform.position = Vector3.MoveTowards(
-                                                            transform.position, 
-                                                            target + new Vector3(0, arcPos, 0), 
+                                                            transform.position,
+                                                            target + new Vector3(0, arcPos, 0),
                                                             speed * Time.deltaTime
                                                         );
-                                                        
-            }else if(moving && distance == 0)
+
+            }else if (moving && distance == 0)
             {
 
-                if(makesNoise)
-                {
-
-                    audioSource.PlayOneShot(stepAudioClip);
-                }
-
-                transform.position = new Vector3(transform.position.x, 0.1f, transform.position.z);
-                moving = false;
+                OnArrive();
             }
         }
     }
@@ -69,16 +62,15 @@ public class MoveToTarget : MonoBehaviour
 
         this.waitTime = waitTime;
 
-        moving = true;        
+        moving = true;
         this.target = target;
-        distance = Vector3.Distance(new Vector3(target.x, 0 , target.z), new Vector3(transform.position.x, 0, transform.position.z));
-        //transform.position = new Vector3(transform.position.x, 0, transform.position.z);
+        distance = Vector3.Distance(new Vector3(target.x, 0, target.z), new Vector3(transform.position.x, 0, transform.position.z));
     }
 
     private float CalcArc(float xVal)
     {
 
-        return -Mathf.Pow(xVal,2) + Mathf.Sqrt(2) * xVal;
+        return -Mathf.Pow(xVal, 2) + Mathf.Sqrt(2) * xVal;
     }
 
     public float GetRemainingDistance()
@@ -99,5 +91,18 @@ public class MoveToTarget : MonoBehaviour
     {
 
         return moving;
+    }
+
+    protected virtual void OnArrive()
+    {
+
+        if (makesNoise)
+        {
+
+            audioSource.PlayOneShot(stepAudioClip);
+        }
+
+        transform.position = new Vector3(transform.position.x, 0.1f, transform.position.z);
+        moving = false;
     }
 }

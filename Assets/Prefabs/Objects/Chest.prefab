@@ -109,6 +109,8 @@ GameObject:
   - component: {fileID: 7865473162580240948}
   - component: {fileID: 7602760449659616811}
   - component: {fileID: 2921102596435833029}
+  - component: {fileID: 8168649644023386049}
+  - component: {fileID: 4035718498325069953}
   m_Layer: 3
   m_Name: Chest
   m_TagString: Untagged
@@ -217,6 +219,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   highlightColor: {r: 0.109994836, g: 1, b: 0.015686275, a: 1}
   actionDescription: Open
+  highlighted: 0
 --- !u!114 &7602760449659616811
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -328,3 +331,29 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &8168649644023386049
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6493254730876405042}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8e059b1ece22d344a577955585925b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isActive: 1
+--- !u!114 &4035718498325069953
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6493254730876405042}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8e059b1ece22d344a577955585925b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isActive: 1

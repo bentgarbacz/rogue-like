@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2644169660081251172}
   - component: {fileID: 3692756337339047272}
   - component: {fileID: 5395946379749708703}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: CaveWalltest2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -98,6 +98,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   coord: {x: 0, y: 0}
+  state: 1
   iconType: 4
   actionable: 0
 --- !u!65 &5395946379749708703

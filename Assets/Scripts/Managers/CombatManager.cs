@@ -85,7 +85,7 @@ public class CombatManager : MonoBehaviour
                     waitTime = projectileTime;
                 }
 
-                projectile.Shoot(defender.pos, attacker.audioSource);
+                projectile.Shoot(defender.transform.position, attacker.audioSource);
             } 
 
             //Play combat noises

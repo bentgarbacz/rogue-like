@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 
 public class TurnSequencer : MonoBehaviour
 {
-    
+
     public float aggroRange = 10;
     public bool gameplayHalted = false;
     public float baseWaitTime = 0.05f;
@@ -24,11 +24,13 @@ public class TurnSequencer : MonoBehaviour
     [SerializeField] private LevelGenerator levelGenerator;
     [SerializeField] private NameplateManager npm;
     [SerializeField] private MiniMapManager miniMapManager;
+    [SerializeField] private TileManager tileManager;
+    [SerializeField] private VisibilityManager visibilityManager;
     private Mouse mouse;
 
     void Start()
     {
- 
+
         mouse = Mouse.current;
         GameObject managers = GameObject.Find("System Managers");
         dum = managers.GetComponent<DungeonManager>();
@@ -39,35 +41,36 @@ public class TurnSequencer : MonoBehaviour
         sc = dum.hero.GetComponent<SpellCaster>();
         pcMovement = playerCharacter.GetComponent<MoveToTarget>();
         pcAttackAnimation = dum.hero.GetComponent<AttackAnimation>();
-    }   
-    
+    }
+
     void Update()
-    {         
+    {
 
         //Halt game logic if combat is taking place
-        if(!cbm.fighting && !gameplayHalted)
+        if (!cbm.fighting && !gameplayHalted)
         {
             //If you have not reached the last node of your path 
             //and you are not currently moving to a node, move to the next node
-            if(playerMovementQueue.Count > 0 && !pcMovement.IsMoving())
+            if (playerMovementQueue.Count > 0 && !pcMovement.IsMoving())
             {
-                
+
                 playerCharacter.Move(playerMovementQueue.Dequeue(), dum.occupiedlist);
                 UpkeepEffects();
                 actionTaken = true;
 
-            //Process a turn if:
-            //left mouse was pressed
-            //mouse is not over a blocking UI element
-            //you are not in the middle of an attack animation
-            //some other action has not paused regular gameplay by setting gameplayHalted to true
-            }else if(mouse.leftButton.wasPressedThisFrame && uiam.IsPointerOverUI() == false && !pcAttackAnimation.IsAttacking() && !gameplayHalted)
+                //Process a turn if:
+                //left mouse was pressed
+                //mouse is not over a blocking UI element
+                //you are not in the middle of an attack animation
+                //some other action has not paused regular gameplay by setting gameplayHalted to true
+            }
+            else if (mouse.leftButton.wasPressedThisFrame && uiam.IsPointerOverUI() == false && !pcAttackAnimation.IsAttacking() && !gameplayHalted)
             {
 
                 GameObject target = cm.GetObject();
 
                 //execute action if actionable object was clicked
-                if(target != null && uiam.IsPointerOverUI() == false)
+                if (target != null && uiam.IsPointerOverUI() == false)
                 {
 
                     Tile targetTile = target.GetComponent<Tile>();
@@ -81,30 +84,31 @@ public class TurnSequencer : MonoBehaviour
 
                     playerMovementQueue.Clear();
 
-                    if(targetTile != null)
+                    if (targetTile != null)
                     {
 
-                        if(!targetTile.IsActionable() || 
-                            targetTile.coord == playerCharacter.coord || 
+                        if (!targetTile.IsActionable() ||
+                            targetTile.coord == playerCharacter.coord ||
                             dum.occupiedlist.Contains(targetTile.coord))
                         {
 
                             return;
                         }
 
-                        List<Vector2Int> pathToDestination = PathFinder.FindPath(playerCharacter.coord, targetTile.coord, dum.dungeonCoords, ignoredPoints: dum.occupiedlist);  
-            
-                        if(pathToDestination != null && pathToDestination.Count > 1)
+                        List<Vector2Int> pathToDestination = PathFinder.FindPath(playerCharacter.coord, targetTile.coord, dum.dungeonCoords, ignoredPoints: dum.occupiedlist);
+
+                        if (pathToDestination != null && pathToDestination.Count > 1)
                         {
 
-                            if(dum.aggroEnemies.Count > 0)
+                            if (dum.aggroEnemies.Count > 0)
                             {
 
                                 MoveOneSpace(pathToDestination);
 
-                            }else
+                            }
+                            else
                             {
-                            
+
                                 playerMovementQueue.Clear();
 
                                 for (int i = 1; i < pathToDestination.Count; i++)
@@ -115,42 +119,43 @@ public class TurnSequencer : MonoBehaviour
                             }
 
                             return;
-                        }   
+                        }
                     }
 
                     //initiate an attack on clicked enemy
                     //attack if adjacent to enemy
                     //move towards enemy if not adjacent
-                    if(targetCharacter != null)
+                    if (targetCharacter != null)
                     {
-                        
-                        if(targetCharacter != playerCharacter)
+
+                        if (targetCharacter != playerCharacter)
                         {
 
                             playerCharacter.AttackCharacter(target);
                         }
                     }
 
-                    if(targetInteractable != null)
+                    if (targetInteractable != null)
                     {
 
                         //interact with interactable object
-                        if(PathFinder.GetNeighbors(targetInteractable.coord, dum.dungeonCoords).Contains(playerCharacter.coord) || targetInteractable.coord == playerCharacter.coord )
+                        if (PathFinder.GetNeighbors(targetInteractable.coord, dum.dungeonCoords).Contains(playerCharacter.coord) || targetInteractable.coord == playerCharacter.coord)
                         {
-                            
-                            if(!targetInteractable.Interact())
+
+                            if (!targetInteractable.Interact())
                             {
 
                                 return;
-                            }                        
-                            
-                        }else //move towards interactable
+                            }
+
+                        }
+                        else //move towards interactable
                         {
 
-                            List<Vector2Int> pathToDestination = PathFinder.FindPath(playerCharacter.coord, targetInteractable.coord, dum.dungeonCoords);            
+                            List<Vector2Int> pathToDestination = PathFinder.FindPath(playerCharacter.coord, targetInteractable.coord, dum.dungeonCoords);
                             MoveOneSpace(pathToDestination);
                             return;
-                        }   
+                        }
                     }
 
                     actionTaken = true;
@@ -158,16 +163,15 @@ public class TurnSequencer : MonoBehaviour
             }
 
             //If the player has taken an action, give enemies a turn
-            if(actionTaken && !gameplayHalted)
+            if (actionTaken && !gameplayHalted)
             {
-                
+
                 float waitTime = baseWaitTime;
                 actionTaken = false;
-
                 //give a turn to each aggroed enemy
-                foreach(GameObject enemy in dum.aggroEnemies)
+                foreach (GameObject enemy in dum.aggroEnemies)
                 {
-                    
+
                     enemy.GetComponent<EnemyCharacterSheet>().AggroBehavior(playerCharacter, dum, cbm, waitTime);
                     waitTime += incrementWaitTime;
                 }
@@ -178,19 +182,19 @@ public class TurnSequencer : MonoBehaviour
                 //Perform upkeep effects for the turn
                 UpkeepEffects();
             }
-            
+
 
             //aggro enemies within aggroRange units 
-            if(dum.enemiesOnLookout)
+            if (dum.enemiesOnLookout)
             {
-        
-                foreach(GameObject enemy in dum.enemies)
+
+                foreach (GameObject enemy in dum.enemies)
                 {
 
-                    if(ShouldAggro(enemy))
+                    if (ShouldAggro(enemy))
                     {
 
-                        if(enemy.GetComponent<EnemyCharacterSheet>().OnAggro(dum, cbm))
+                        if (enemy.GetComponent<EnemyCharacterSheet>().OnAggro(dum, cbm))
                         {
 
                             dum.aggroEnemies.Add(enemy);
@@ -219,19 +223,21 @@ public class TurnSequencer : MonoBehaviour
         sc.UpdateSpellSlots();
         miniMapManager.UpdateDynamicIcons();
         npm.IncrementDisplayTimer();
+        visibilityManager.UpdateVisibilities();
     }
 
     private void MoveOneSpace(List<Vector2Int> pathToDestination)
     {
 
         playerMovementQueue.Clear();
-        
-        if(!pcMovement.IsMoving() && pathToDestination != null)
+
+        if (!pcMovement.IsMoving() && pathToDestination != null)
         {
-        
+
             playerMovementQueue.Enqueue(pathToDestination[1]);
 
-        }else
+        }
+        else
         {
 
             return;
