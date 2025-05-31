@@ -17,8 +17,7 @@ public class Exit : Interactable
 
     public override bool Interact()
     {
-        
-        dum.CleanUp();                          
+                             
         lg.NewLevel(lg.biomeDict[BiomeType.Catacomb]);
         
         return true;

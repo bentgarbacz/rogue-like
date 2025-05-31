@@ -5,19 +5,17 @@ using UnityEngine;
 public class SlimeCharacterSheet : EnemyCharacterSheet
 {
    
-    private bool hasDropped = false;
     private bool falling = false;
     private float fallSpeed = 30f;
     private Vector2Int landingCoord;
     private bool landingFound = false;
     private DungeonManager dum;
     private CombatManager cbm;
-    private MeshRenderer meshRenderer;
-    private BoxCollider boxCollider;
+    private ObjectVisibility objectVisibility;
 
     public override void Start()
     {
-        
+
         base.Start();
         maxHealth = 10;
         health = maxHealth;
@@ -33,11 +31,8 @@ public class SlimeCharacterSheet : EnemyCharacterSheet
 
         attackClip = Resources.Load<AudioClip>("Sounds/Slime");
 
-        meshRenderer = GetComponent<MeshRenderer>();
-        boxCollider = GetComponent<BoxCollider>();
-
-        meshRenderer.enabled = false;
-        boxCollider.enabled = false;
+        objectVisibility = GetComponent<ObjectVisibility>();
+        objectVisibility.isActive = false;
     }
 
     void Update()
@@ -48,11 +43,11 @@ public class SlimeCharacterSheet : EnemyCharacterSheet
 
             transform.position = Vector3.MoveTowards(
                                                         transform.position, 
-                                                        dum.playerCharacter.pos, 
+                                                        dum.playerCharacter.transform.position, 
                                                         fallSpeed * Time.deltaTime
                                                     );
 
-            if(transform.position == dum.playerCharacter.pos)
+            if(transform.position == dum.playerCharacter.transform.position)
             {
 
                 falling = false;
@@ -70,7 +65,7 @@ public class SlimeCharacterSheet : EnemyCharacterSheet
 
         HashSet<Vector2Int> landingCoords = PathFinder.GetNeighbors(dum.playerCharacter.coord, dum.dungeonCoords);
 
-        if(!hasDropped)
+        if(!objectVisibility.isActive)
         {
 
             foreach(Vector2Int possibleCoord in landingCoords)
@@ -90,11 +85,10 @@ public class SlimeCharacterSheet : EnemyCharacterSheet
 
                 this.dum = dum;
                 this.cbm = cbm;
-                hasDropped = true;
+                objectVisibility.isActive = true;
 
                 transform.position = dum.hero.transform.position + new Vector3(0, 10f, 0);
-                meshRenderer.enabled = true;
-                boxCollider.enabled = true;
+                objectVisibility.SetVisibility(true);
                 falling = true;
                 dum.HaltGameplay();
 

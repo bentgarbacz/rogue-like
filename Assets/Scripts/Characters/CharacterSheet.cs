@@ -5,9 +5,6 @@ using UnityEngine;
 public class CharacterSheet : MonoBehaviour
 {
 
-    //pos is a position in 3d space
-    public Vector3 pos;
-    //coord is a position in 2d space from a top down perspective
     public Vector2Int coord;
     public int maxHealth = 1;
     public int health = 1;
@@ -34,9 +31,8 @@ public class CharacterSheet : MonoBehaviour
     public virtual void Start()
     {
         
-        transform.position = pos;
-        GetComponent<MoveToTarget>().target = pos;
-        coord = new Vector2Int((int)pos.x, (int)pos.z);
+        GetComponent<MoveToTarget>().target = transform.position;
+        coord = new Vector2Int((int)transform.position.x, (int)transform.position.z);
 
         sem = gameObject.AddComponent<StatusEffectManager>();
         audioSource = gameObject.AddComponent<AudioSource>();
@@ -67,10 +63,8 @@ public class CharacterSheet : MonoBehaviour
             occupiedlist.Remove(coord);
 
             GetComponent<MoveToTarget>().SetTarget(newPos, waitTime);
-            transform.rotation = Quaternion.Euler(0, GameFunctions.DetermineRotation(pos, newPos), 0);
+            transform.rotation = Quaternion.Euler(0, GameFunctions.DetermineRotation(transform.position, newPos), 0);
 
-            pos = newPos;
-            coord = new Vector2Int((int)newPos.x, (int)newPos.z);
             coord = newCoord;
 
             return true;
@@ -92,7 +86,6 @@ public class CharacterSheet : MonoBehaviour
             
             transform.position = newPos;
 
-            pos = newPos;
             coord = newCoord;
 
             return true;

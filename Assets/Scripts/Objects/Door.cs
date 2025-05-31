@@ -7,19 +7,24 @@ public class Door : Interactable
 
     private DungeonManager dum;
     private bool isOpen = false;
-    private Vector3 pos;
     private AudioSource audioSource;
     private bool toggleable = true;
     private ObjectHighlighter objectHighlighter;
+    private BoxCollider doorBox;
+    private BoxCollider visionBlockBox;
 
     void Awake()
     {
-        
+
         dum = GameObject.Find("System Managers").GetComponent<DungeonManager>();
         audioSource = GetComponent<AudioSource>();
         objectHighlighter = GetComponent<ObjectHighlighter>();
 
-        objectHighlighter.actionDescription = "Open";
+        objectHighlighter.SetActionText("Open");
+        
+        BoxCollider[] colliders = GetComponents<BoxCollider>();
+        doorBox = colliders[0];
+        visionBlockBox = colliders[1];
     }
 
     public override bool Interact()
@@ -95,11 +100,16 @@ public class Door : Interactable
     private bool OpenDoor()
     {
 
-        objectHighlighter.actionDescription = "Close";
+        objectHighlighter.SetActionText("Close");
         audioSource.Play();
         isOpen = true;
         transform.Rotate(0f, 90f, 0f);
         dum.occupiedlist.Remove(coord);
+
+        visionBlockBox.enabled = false;
+        Physics.SyncTransforms();
+
+        dum.playerCharacter.RevealAroundPC();
 
         return true;
     }
@@ -110,11 +120,13 @@ public class Door : Interactable
         if(!dum.occupiedlist.Contains(coord))
         {
             
-            objectHighlighter.actionDescription = "Open";
+            objectHighlighter.SetActionText("Open");
             audioSource.Play();
             isOpen = false;
             transform.Rotate(0f, -90f, 0f);
             dum.occupiedlist.Add(coord); 
+
+            visionBlockBox.enabled = true;
 
             return true;
         }

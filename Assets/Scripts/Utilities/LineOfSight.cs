@@ -6,7 +6,7 @@ using UnityEngine;
 public static class LineOfSight
 {
 
-    private static readonly LayerMask layerMask =  1 << LayerMask.NameToLayer("Line of Sight Targets"); // Line of Sight targets is a layer that contains every object involved with calculating line of sight
+    private static readonly LayerMask layerMask =  1 << LayerMask.NameToLayer("Line of Sight Targets") | (1 << 8); // Line of Sight targets is a layer that contains every object involved with calculating line of sight
 
     public static bool HasLOS(GameObject startObject, GameObject targetObject)
     {

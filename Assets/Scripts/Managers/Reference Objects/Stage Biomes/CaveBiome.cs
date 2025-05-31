@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditorInternal;
 using UnityEngine;
 
 public class CaveBiome : Biome
@@ -21,7 +22,7 @@ public class CaveBiome : Biome
     private int repeatWalks = 100;
     public List<NPCType> possibleEnemyTypes = new();
 
-    public override void CreateTile(Vector3 spawnPos, Vector2Int position, int spawnRNG, DungeonManager dum)
+    public override void CreateTile(Vector3 spawnPos, Vector2Int position, int spawnRNG)
     {
 
         GameObject newTile;
@@ -52,20 +53,19 @@ public class CaveBiome : Biome
             newTile = Instantiate(caveFloorTileAlt5, spawnPos, caveFloorTileAlt5.transform.rotation);
         }
         
-        dum.AddGameObject(newTile);
         newTile.GetComponent<Tile>().SetCoord(position);
-
+        dum.AddGameObject(newTile);
     }
 
-    public override void CreateEntranceTile(Vector3 spawnPos, Vector2Int position, DungeonManager dum)
+    public override void CreateEntranceTile(Vector3 spawnPos, Vector2Int position)
     {
 
         GameObject newCatacombEntrance = Instantiate(caveEntrance, spawnPos, caveEntrance.transform.rotation);
-        dum.AddGameObject(newCatacombEntrance);
         newCatacombEntrance.GetComponent<Tile>().SetCoord(position);
+        dum.AddGameObject(newCatacombEntrance);
     }
 
-    public override void CreateExitTile(Vector3 spawnPos, Vector2Int position, HashSet<Vector2Int> path, DungeonManager dum)
+    public override void CreateExitTile(Vector3 spawnPos, Vector2Int position, HashSet<Vector2Int> dungeonCoords)
     {
 
         GameObject newCatacombExit = Instantiate(caveExit, spawnPos, caveExit.transform.rotation);
@@ -73,7 +73,7 @@ public class CaveBiome : Biome
         foreach(Vector2Int direction in Direction2D.cardinalDirectionsList)
         {
 
-            if(path.Contains(position + direction))
+            if(dungeonCoords.Contains(position + direction))
             {
                 
                 newCatacombExit.transform.rotation = Quaternion.Euler(0, GameFunctions.DetermineRotation(newCatacombExit.transform.position, new Vector3(position.x + direction.x, 0, position.y + direction.y)), 0);
@@ -81,11 +81,11 @@ public class CaveBiome : Biome
             }
         }
 
-        dum.AddGameObject(newCatacombExit);
         newCatacombExit.GetComponent<Exit>().coord = position;
+        dum.AddGameObject(newCatacombExit);
     }
 
-    public override void CreateWallTile(Vector3 spawnPos, DungeonManager dum)
+    public override GameObject CreateWallTile(Vector3 spawnPos)
     {
 
         GameObject newWall;
@@ -93,40 +93,48 @@ public class CaveBiome : Biome
 
 
 
-        if(spawnRNG <= 1000 && spawnRNG >= 800)
+        if (spawnRNG <= 1000 && spawnRNG >= 800)
         {
-            
+
             newWall = Instantiate(caveWallTile1, spawnPos, caveWallTile1.transform.rotation);
 
-        }else if(spawnRNG <= 800 && spawnRNG >= 600)
+        }
+        else if (spawnRNG <= 800 && spawnRNG >= 600)
         {
 
             newWall = Instantiate(caveWallTile2, spawnPos, caveWallTile2.transform.rotation);
 
-        }else if(spawnRNG <= 600 && spawnRNG >= 400)
+        }
+        else if (spawnRNG <= 600 && spawnRNG >= 400)
         {
 
             newWall = Instantiate(caveWallTile3, spawnPos, caveWallTile3.transform.rotation);
 
-        }else if(spawnRNG <= 400 && spawnRNG >= 200)
+        }
+        else if (spawnRNG <= 400 && spawnRNG >= 200)
         {
 
             newWall = Instantiate(caveWallTile4, spawnPos, caveWallTile4.transform.rotation);
 
-        }else
+        }
+        else
         {
 
             newWall = Instantiate(caveWallTile5, spawnPos, caveWallTile5.transform.rotation);
         }
 
         newWall.GetComponent<Tile>().SetCoord(new Vector2Int((int)spawnPos.x, (int)spawnPos.z));
-        dum.AddGameObject(newWall);      
+        dum.AddGameObject(newWall);
+
+        return newWall;   
     }
 
-    public override bool GenerateLevel(Vector2Int position, HashSet<Vector2Int> path, DungeonManager dum, NPCGenerator npcGen)
+    public override bool GenerateLevel( HashSet<Vector2Int> dungeonCoords)
     {
-       
-       bool exitSpawned = false;
+
+        Vector2Int position = new(0, 0);
+        Vector2Int firstTileCoord = new();
+        bool exitSpawned = false;
 
         for(int i = 0; i < repeatWalks; i++)
         {
@@ -134,7 +142,7 @@ public class CaveBiome : Biome
             for(int j = 0; j < walkLength; j++)
             {
                 
-                if( !path.Contains(position) )
+                if( !dungeonCoords.Contains(position) )
                 {
 
                     Vector3 spawnPos = new(position.x, 0, position.y);
@@ -144,27 +152,27 @@ public class CaveBiome : Biome
                     if(i == 0 && j == 0)
                     {
 
-                        CreateEntranceTile(spawnPos, position, dum);
+                        CreateEntranceTile(spawnPos, position);
 
                     //potentially spawn exit after a certain number of steps
                     }else if(i == repeatWalks - 1 && j > walkLength / 2 && exitSpawned == false)
                     {
 
-                        CreateExitTile(spawnPos, position, path, dum);
+                        CreateExitTile(spawnPos, position, dungeonCoords);
                         exitSpawned = true;
                     
                     //Otherwise spawn a normal tile
                     }else
                     {
 
-                        CreateTile(spawnPos, position, spawnRNG, dum);                       
+                        CreateTile(spawnPos, position, spawnRNG);                       
                     }
 
                     //move player to first tile generated
                     if(i == 0 && j == 1)
                     {
 
-                        dum.hero.GetComponent<CharacterSheet>().Move(position, dum.occupiedlist);   
+                        firstTileCoord = position;   
 
                     }else if(Mathf.Abs(position.x) > 5 || Mathf.Abs(position.y) > 5){
 
@@ -176,22 +184,22 @@ public class CaveBiome : Biome
                         }else if(spawnRNG >= 3 && spawnRNG <= 4)
                         {
 
-                            npcGen.CreateNPC(NPCType.Slime, spawnPos, dum);
+                            npcGen.CreateNPC(NPCType.Goblin, spawnPos, dum);
 
                         }else if(spawnRNG >= 5 && spawnRNG <= 6)
                         {
 
-                            npcGen.CreateNPC(NPCType.Spider, spawnPos, dum);
+                            npcGen.CreateNPC(NPCType.Goblin, spawnPos, dum);
 
-                        }else if(spawnRNG >= 7 && spawnRNG <= 8)
+                        }else if(spawnRNG >= 7 && spawnRNG <= 20)
                         {
 
-                            npcGen.CreateNPC(NPCType.Spider, spawnPos, dum);
+                            npcGen.CreateNPC(NPCType.Goblin, spawnPos, dum);
                         }
                     }
                 }
 
-                path.Add(position);
+                dungeonCoords.Add(position);
                 position += Direction2D.GetRandomDirection();
             }
         }
@@ -199,8 +207,14 @@ public class CaveBiome : Biome
         if(!exitSpawned)
         {
 
+            dum.CleanUp();
+            GenerateLevel(dum.dungeonCoords);
             return false;
         }
+
+        GenerateWalls(dungeonCoords);
+
+        dum.hero.GetComponent<CharacterSheet>().Move(firstTileCoord, dum.occupiedlist); 
 
         return true;
     }

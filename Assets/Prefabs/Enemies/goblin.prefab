@@ -18,6 +18,8 @@ GameObject:
   - component: {fileID: 4758171911530530936}
   - component: {fileID: 3233290293381044806}
   - component: {fileID: 6388881990920002779}
+  - component: {fileID: 5579392547519543851}
+  - component: {fileID: -6296368201906470156}
   m_Layer: 6
   m_Name: goblin
   m_TagString: Untagged
@@ -54,6 +56,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   highlightColor: {r: 1, g: 0, b: 0, a: 1}
   actionDescription: Attack
+  highlighted: 0
 --- !u!114 &-3064192173896359118
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -68,9 +71,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {x: 0, y: 0, z: 0}
   speed: 5
-  moving: 0
   audioSource: {fileID: 0}
   stepAudioClip: {fileID: 0}
+  waitTime: 0
 --- !u!65 &5334651313001522859
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -167,7 +170,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25a4dcb85c8567045bff4c542f778f4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pos: {x: 0, y: 0, z: 0}
   coord: {x: 0, y: 0}
   maxHealth: 1
   health: 1
@@ -188,6 +190,7 @@ MonoBehaviour:
   audioSource: {fileID: 0}
   attackClip: {fileID: 0}
   missClip: {fileID: 0}
+  title: N/A
 --- !u!114 &3233290293381044806
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -213,8 +216,33 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   notificationPrefab: {fileID: 5558341210635837680, guid: 2b027f351ca2eb94d90ca350ef6ea2fa, type: 3}
-  speed: 2
   destroyAfterDistance: 0.75
   xMin: 0.5
   xBuffer: 0.1
   yBuffer: 0.1
+--- !u!114 &5579392547519543851
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6521998039571531690}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8e059b1ece22d344a577955585925b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isActive: 1
+--- !u!114 &-6296368201906470156
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6521998039571531690}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8e059b1ece22d344a577955585925b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isActive: 1

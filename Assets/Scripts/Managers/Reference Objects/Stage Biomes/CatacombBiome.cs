@@ -23,7 +23,7 @@ public class CatacombBiome : Biome
         NPCType.Slime
     };
 
-    public override void CreateTile(Vector3 spawnPos, Vector2Int position, int spawnRNG, DungeonManager dum)
+    public override void CreateTile(Vector3 spawnPos, Vector2Int position, int spawnRNG)
     {
 
         GameObject newTile;
@@ -54,20 +54,19 @@ public class CatacombBiome : Biome
             newTile = Instantiate(catacombFloorTile, spawnPos, catacombFloorTile.transform.rotation);
         }
         
-        dum.AddGameObject(newTile);
         newTile.GetComponent<Tile>().SetCoord(position);
-
+        dum.AddGameObject(newTile);
     }
 
-    public override void CreateEntranceTile(Vector3 spawnPos, Vector2Int position, DungeonManager dum)
+    public override void CreateEntranceTile(Vector3 spawnPos, Vector2Int position)
     {
 
         GameObject newCatacombEntrance = Instantiate(catacombEntrance, spawnPos, catacombEntrance.transform.rotation);
-        dum.AddGameObject(newCatacombEntrance);
         newCatacombEntrance.GetComponent<Tile>().SetCoord(position);
+        dum.AddGameObject(newCatacombEntrance);        
     }
 
-    public override void CreateExitTile(Vector3 spawnPos, Vector2Int position, HashSet<Vector2Int> path, DungeonManager dum)
+    public override void CreateExitTile(Vector3 spawnPos, Vector2Int position, HashSet<Vector2Int> dungeonCoords)
     {
 
         spawnPos.y -= exitSpawnPosVertOffset;
@@ -76,7 +75,7 @@ public class CatacombBiome : Biome
         foreach(Vector2Int direction in Direction2D.cardinalDirectionsList)
         {
 
-            if(path.Contains(position + direction))
+            if(dungeonCoords.Contains(position + direction))
             {
                 
                 newCatacombExit.transform.rotation = Quaternion.Euler(0, GameFunctions.DetermineRotation(newCatacombExit.transform.position, new Vector3(position.x + direction.x, 0, position.y + direction.y)), 0);
@@ -84,21 +83,22 @@ public class CatacombBiome : Biome
             }
         }
 
-        dum.AddGameObject(newCatacombExit);
         newCatacombExit.GetComponent<Exit>().coord = position;
+        dum.AddGameObject(newCatacombExit);
     }
 
-    public override void CreateWallTile(Vector3 spawnPos, DungeonManager dum)
+    public override GameObject CreateWallTile(Vector3 spawnPos)
     {
 
         GameObject newWall = Instantiate(catacombWallTile, spawnPos, catacombWallTile.transform.rotation);
         newWall.GetComponent<Tile>().SetCoord(new Vector2Int((int)spawnPos.x, (int)spawnPos.z));
         dum.AddGameObject(newWall);
         //newWall.GetComponent<Renderer>().material.color = Color.gray;
-        
+
+        return newWall;
     }
 
-    public override bool GenerateLevel(Vector2Int position, HashSet<Vector2Int> path, DungeonManager dum, NPCGenerator npcGen)
+    public override bool GenerateLevel(HashSet<Vector2Int> dungeonCoords)
     {
 
         int width = 50;
@@ -128,11 +128,11 @@ public class CatacombBiome : Biome
             {
                 
                 //Add to set of navigable coordinates in the dungeon
-                path.Add(coord);
+                dungeonCoords.Add(coord);
 
                 //Spawn a tile in the game world
                 Vector3 spawnPos = new(coord.x, 0, coord.y);
-                CreateTile(spawnPos, coord, Random.Range(0, 1001), dum);
+                CreateTile(spawnPos, coord, Random.Range(0, 1001));
 
                 //discourage room tiles for when we generate hallways
                 costDict[coord] = 5f;
@@ -186,15 +186,15 @@ public class CatacombBiome : Biome
             foreach(Vector2Int coord in hallwayCoords)
             {
 
-                if(!path.Contains(coord))
+                if(!dungeonCoords.Contains(coord))
                 {
 
                     //Add to set of navigable coordinates in the dungeon
-                    path.Add(coord);
+                    dungeonCoords.Add(coord);
 
                     //Spawn tile in the game world
                     Vector3 spawnPos = new(coord.x, 0, coord.y);
-                    CreateTile(spawnPos, coord, Random.Range(0, 1001), dum);
+                    CreateTile(spawnPos, coord, Random.Range(0, 1001));
 
                     //encourage existing hallway tiles to be reused
                     costDict[coord] = -5f;
@@ -207,35 +207,23 @@ public class CatacombBiome : Biome
         Vector2Int entranceCoord = entranceRoom.GetRandomCoordinate();
         Vector3 entrancePos = new(entranceCoord.x, 0, entranceCoord.y);
 
-        dum.DeleteTile(entranceCoord);
+        tileManager.DeleteTile(entranceCoord);
         
         // Create the entrance tile
-        CreateEntranceTile(entrancePos, entranceCoord, dum);
+        CreateEntranceTile(entrancePos, entranceCoord);
 
         // Place the hero at the entrance
         dum.hero.transform.position = entrancePos;
-
-        foreach(Vector2Int coord in PathFinder.GetNeighbors(entranceCoord, path))
-        {
-
-            PlayerCharacterSheet pc = dum.hero.GetComponent<PlayerCharacterSheet>();
-
-            if(pc.Move(coord, dum.occupiedlist))
-            {
-
-                break;
-            }
-        }
 
         //Generate exit in the last room in rooms
         Room exitRoom = rooms[^1];
         Vector2Int exitCoord = exitRoom.GetRandomCoordinate();
         Vector3 exitPos = new(exitCoord.x, 0, exitCoord.y);
 
-        dum.DeleteTile(exitCoord);
+        tileManager.DeleteTile(exitCoord);
 
         // Create the exit tile
-        CreateExitTile(exitPos, exitCoord, path, dum);
+        CreateExitTile(exitPos, exitCoord, dungeonCoords);
 
         //spawn 0 - 3 chests in every room
         foreach (Room room in rooms)
@@ -265,7 +253,7 @@ public class CatacombBiome : Biome
             foreach(Vector2Int perimeterCoord in room.GetPerimeterCoordinates())
             {
 
-                if(path.Contains(perimeterCoord))
+                if(dungeonCoords.Contains(perimeterCoord))
                 {
 
                     Vector3 doorPos = new(perimeterCoord.x-0.5f, 0, perimeterCoord.y-0.5f);
@@ -299,6 +287,20 @@ public class CatacombBiome : Biome
 
                 // Spawn the enemy at the chosen position
                 npcGen.CreateNPC(possibleEnemyTypes[ Random.Range(0, 3) ], enemyPos, dum);
+            }
+        }
+
+        GenerateWalls(dungeonCoords);
+
+        foreach (Vector2Int coord in PathFinder.GetNeighbors(entranceCoord, dungeonCoords))
+        {
+
+            PlayerCharacterSheet pc = dum.hero.GetComponent<PlayerCharacterSheet>();
+
+            if (pc.Move(coord, dum.occupiedlist))
+            {
+
+                break;
             }
         }
 

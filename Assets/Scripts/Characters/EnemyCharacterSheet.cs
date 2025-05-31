@@ -12,20 +12,22 @@ public class EnemyCharacterSheet : CharacterSheet
 
         base.Start();
         npm = GameObject.Find("CanvasHUD").transform.GetChild(10).GetComponent<NameplateManager>();
+
+
     }
 
     //Custom rules that describe how each enemy reacts when they see the player character
     //Default behavior is running at the player then melee attacking them
     public virtual void AggroBehavior(PlayerCharacterSheet playerCharacter, DungeonManager dum, CombatManager cbm, float waitTime = 0f)
     {
-        
+
         //enemy attacks player character if they are in a neighboring tile
-        if(!cbm.AddMeleeAttack(this.gameObject, dum.hero, minDamage, maxDamage, speed))
+        if (!cbm.AddMeleeAttack(this.gameObject, dum.hero, minDamage, maxDamage, speed))
         {
 
             List<Vector2Int> pathToPlayer = PathFinder.FindPath(coord, playerCharacter.coord, dum.dungeonCoords, ignoredPoints: dum.occupiedlist);
-            
-            if(pathToPlayer == null)
+
+            if (pathToPlayer == null)
             {
 
                 pathToPlayer = PathFinder.FindPath(coord, playerCharacter.coord, dum.dungeonCoords);
@@ -40,26 +42,26 @@ public class EnemyCharacterSheet : CharacterSheet
 
         //run away from player
         Vector2Int playerCoord = dum.hero.GetComponent<PlayerCharacterSheet>().coord;
-        Vector2Int fleePath  = coord;
+        Vector2Int fleePath = coord;
 
-        foreach(Vector2Int p in PathFinder.GetNeighbors(coord, dum.dungeonCoords))
+        foreach (Vector2Int p in PathFinder.GetNeighbors(coord, dum.dungeonCoords))
         {
 
-            if(PathFinder.CalculateDistance(p, playerCoord) > PathFinder.CalculateDistance(fleePath, playerCoord))
+            if (PathFinder.CalculateDistance(p, playerCoord) > PathFinder.CalculateDistance(fleePath, playerCoord))
             {
 
                 fleePath = p;
             }
         }
 
-        if(dum.dungeonCoords.Contains(fleePath))
+        if (dum.dungeonCoords.Contains(fleePath))
         {
 
             Move(fleePath, dum.occupiedlist, waitTime);
         }
     }
 
-    
+
     public virtual bool OnAggro(DungeonManager dum, CombatManager cbm)
     {
 

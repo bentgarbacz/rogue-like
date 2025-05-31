@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.023308935, g: 0.02200726, b: 0.004960102, a: 1}
+  m_IndirectSpecularColor: {r: 0.014037964, g: 0.01303684, b: 0.0020357498, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -6111,6 +6111,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a04310f158603604aa4128b2fa05efba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dum: {fileID: 1314207894}
   miniMapManager: {fileID: 313091427}
   wallJoiner: {fileID: 1025472403522751266, guid: 20f1a7c70bc0d8948ab390c0e7b73c5e, type: 3}
   debugObjects:
@@ -6149,6 +6150,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b92bc9dc0914404498936f9c6707470b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dum: {fileID: 1314207894}
+  npcGen: {fileID: 438385576}
+  wallJoiner: {fileID: 1025472403522751266, guid: 20f1a7c70bc0d8948ab390c0e7b73c5e, type: 3}
+  tileManager: {fileID: 1314207901}
   catacombFloorTile: {fileID: 105230754911932028, guid: 8d4f13fce8820d04ab675de69b3d5d10, type: 3}
   catacombFloorTileAlt1: {fileID: 1039253894988395355, guid: 47ecf65409af0d146976083feaa53f96, type: 3}
   catacombFloorTileAlt2: {fileID: 105230754911932028, guid: 8d4f13fce8820d04ab675de69b3d5d10, type: 3}
@@ -6171,6 +6176,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69065a6ca42c06648b24c6dc06c12901, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dum: {fileID: 1314207894}
+  npcGen: {fileID: 438385576}
+  wallJoiner: {fileID: 1025472403522751266, guid: 20f1a7c70bc0d8948ab390c0e7b73c5e, type: 3}
+  tileManager: {fileID: 1314207901}
   caveFloorTileAlt1: {fileID: 8206862141811745960, guid: 9345928340a4d654dab13b1256a95948, type: 3}
   caveFloorTileAlt2: {fileID: 5859785116392968625, guid: 883e1beb6e9461e4d948775e3d5bb08c, type: 3}
   caveFloorTileAlt3: {fileID: 8502035101222249981, guid: b0b44c261d3ec8f44862f4f7a55fee8a, type: 3}
@@ -10388,13 +10397,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 705507993}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.36599812, y: 0.45315403, z: -0.21130916, w: 0.7848855}
-  m_LocalPosition: {x: 0, y: 4.54, z: 1.91}
+  m_LocalRotation: {x: 0.2588191, y: 0, z: 0, w: 0.9659258}
+  m_LocalPosition: {x: 0, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6442338754152421631}
-  m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+  m_LocalEulerAnglesHint: {x: 30, y: 0, z: 0}
 --- !u!1 &706681745
 GameObject:
   m_ObjectHideFlags: 0
@@ -13351,15 +13360,15 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6442338754152421631}
-  - component: {fileID: 6442338754152421639}
   - component: {fileID: 6442338754152421642}
+  - component: {fileID: 6442338754152421647}
   - component: {fileID: 6442338754152421643}
   - component: {fileID: 6442338754152421644}
   - component: {fileID: 6442338754152421645}
+  - component: {fileID: 6442338754152421646}
   - component: {fileID: 6442338754152421635}
   - component: {fileID: 6442338754152421634}
   - component: {fileID: 6442338754152421633}
-  - component: {fileID: 6442338754152421646}
   m_Layer: 6
   m_Name: Hero
   m_TagString: Untagged
@@ -22439,6 +22448,8 @@ GameObject:
   - component: {fileID: 1314207898}
   - component: {fileID: 1314207899}
   - component: {fileID: 1314207900}
+  - component: {fileID: 1314207902}
+  - component: {fileID: 1314207901}
   m_Layer: 0
   m_Name: System Managers
   m_TagString: Untagged
@@ -22465,6 +22476,8 @@ MonoBehaviour:
   levelGenerator: {fileID: 438385574}
   npm: {fileID: 1977274821}
   miniMapManager: {fileID: 313091427}
+  tileManager: {fileID: 1314207901}
+  visibilityManager: {fileID: 1314207902}
 --- !u!4 &1314207892
 Transform:
   m_ObjectHideFlags: 0
@@ -22507,6 +22520,8 @@ MonoBehaviour:
   hero: {fileID: 869517488}
   playerCharacter: {fileID: 0}
   enemiesOnLookout: 1
+  tileManager: {fileID: 1314207901}
+  visibilityManager: {fileID: 1314207902}
 --- !u!114 &1314207895
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22618,6 +22633,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fff3875b10b3e98448f329499dbe0fcf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1314207901
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1314207890}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3432990a7822741459cb228db32bbf19, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dum: {fileID: 1314207894}
+  visibilityManager: {fileID: 1314207902}
+--- !u!114 &1314207902
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1314207890}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61f976bb8feec094e82e511b25223626, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileManager: {fileID: 1314207901}
 --- !u!1 &1338763342
 GameObject:
   m_ObjectHideFlags: 0
@@ -37683,23 +37725,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 869517488}
   m_Mesh: {fileID: -2432090755550338912, guid: d1d615874e8eef44587864100e97b3fd, type: 3}
---- !u!114 &6442338754152421639
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 869517488}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7645eca2a5a695248b82a2d4b54fe6fe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {x: 0, y: 0, z: 0}
-  speed: 5
-  audioSource: {fileID: 0}
-  stepAudioClip: {fileID: 0}
-  waitTime: 0
 --- !u!114 &6442338754152421642
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -37712,7 +37737,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ebd51f1070e61c4eba459cc2c2cbc62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pos: {x: 0, y: 0, z: 0}
   coord: {x: 0, y: 0}
   maxHealth: 1
   health: 1
@@ -37757,8 +37781,10 @@ MonoBehaviour:
   evasionBonus: 0
   maxHealthBonus: 0
   maxManaBonus: 0
+  visibilityRadius: 5
   updateStats: {fileID: 896522264}
   snm: {fileID: 1171624150}
+  tileManager: {fileID: 1314207901}
 --- !u!114 &6442338754152421643
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -37818,6 +37844,23 @@ MonoBehaviour:
   targeting: 0
   selfCasting: 0
   pc: {fileID: 6442338754152421642}
+--- !u!114 &6442338754152421647
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 869517488}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 231058b48f0773448a87da84449ff142, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {x: 0, y: 0, z: 0}
+  speed: 5
+  audioSource: {fileID: 0}
+  stepAudioClip: {fileID: 0}
+  waitTime: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

@@ -31,16 +31,18 @@ public class PlayerCharacterSheet : CharacterSheet
     public int evasionBonus = 0;
     public int maxHealthBonus = 0;
     public int maxManaBonus = 0;
+    public int visibilityRadius = 5;
     public Dictionary<SpellType, int> knownSpells = new();
     private DungeonManager dum;
     private InventoryManager im;
     private CombatManager cbm;
     [SerializeField] private UpdateUIElements updateStats;
     [SerializeField] private StatusNotificationManager snm;
+    [SerializeField] private TileManager tileManager;
 
     public override void Start()
     {
-        
+
         base.Start();
         maxHealth = 20;
         health = maxHealth;
@@ -53,7 +55,7 @@ public class PlayerCharacterSheet : CharacterSheet
         mana = maxMana;
         armor = 0;
         evasion = 50;
-        
+
         attackClip = Resources.Load<AudioClip>("Sounds/Strike");
         stepAudioClip = Resources.Load<AudioClip>("Sounds/Step");
         levelUpAudioClip = Resources.Load<AudioClip>("Sounds/LevelUp");
@@ -63,7 +65,7 @@ public class PlayerCharacterSheet : CharacterSheet
         GameObject managers = GameObject.Find("System Managers");
         dum = managers.GetComponent<DungeonManager>();
         im = managers.GetComponent<InventoryManager>();
-        cbm = managers.GetComponent<CombatManager>();        
+        cbm = managers.GetComponent<CombatManager>();
 
         updateStats.RefreshUI();
     }
@@ -73,12 +75,12 @@ public class PlayerCharacterSheet : CharacterSheet
 
         totalXP += XP;
 
-        if(totalXP >= levelUpBreakpoint)
+        if (totalXP >= levelUpBreakpoint)
         {
 
             GetComponent<TextNotificationManager>().CreateNotificationOrder(transform.position, 3f, "Level Up!", Color.yellow);
 
-            while(totalXP >= levelUpBreakpoint)
+            while (totalXP >= levelUpBreakpoint)
             {
 
                 LevelUp();
@@ -86,7 +88,8 @@ public class PlayerCharacterSheet : CharacterSheet
                 levelUpBreakpoint += ((2 * levelUpBreakpoint) / 3);
             }
 
-        }else
+        }
+        else
         {
 
             GetComponent<TextNotificationManager>().CreateNotificationOrder(transform.position, 2f, XP.ToString() + " XP", Color.green);
@@ -105,7 +108,7 @@ public class PlayerCharacterSheet : CharacterSheet
 
     public void LevelUp()
     {
-        
+
         audioSource.PlayOneShot(levelUpAudioClip);
 
         Heal(maxHealth / 4);
@@ -136,21 +139,22 @@ public class PlayerCharacterSheet : CharacterSheet
         hunger -= hungerValue;
         hungerBuffer += 1;
 
-        if(hungerBuffer >= 10)
+        if (hungerBuffer >= 10)
         {
-            if(hunger > 0)
+            if (hunger > 0)
             {
 
                 Heal(1);
                 int regainManaCheck = UnityEngine.Random.Range(0, 2);
-                
-                if(regainManaCheck == 1)
+
+                if (regainManaCheck == 1)
                 {
 
                     RegainMana(1);
                 }
 
-            }else
+            }
+            else
             {
 
                 hunger = 0;
@@ -167,11 +171,11 @@ public class PlayerCharacterSheet : CharacterSheet
     public void DecrementCooldowns()
     {
 
-        foreach(SpellType spellType in knownSpells.Keys.ToList())
+        foreach (SpellType spellType in knownSpells.Keys.ToList())
         {
 
-            if(knownSpells[spellType] > 0)
-            {   
+            if (knownSpells[spellType] > 0)
+            {
 
                 knownSpells[spellType] -= 1;
             }
@@ -189,94 +193,97 @@ public class PlayerCharacterSheet : CharacterSheet
         Equipment mainHandWeapon = (Equipment)im.equipmentSlotsDictionary[ItemSlotType.MainHand].item;
         Equipment offHandWeapon = (Equipment)im.equipmentSlotsDictionary[ItemSlotType.OffHand].item;
 
-        if(mainHandWeapon == null && (offHandWeapon == null || offHandWeapon is Shield))
+        if (mainHandWeapon == null && (offHandWeapon == null || offHandWeapon is Shield))
         {
 
             attackResult = cbm.AddMeleeAttack(
                                               this.gameObject,
                                               defender,
-                                              minDamage, 
+                                              minDamage,
                                               maxDamage,
                                               speed
                                              );
 
             attackOccured = attackResult || attackOccured;
-  
-        }else 
+
+        }
+        else
         {
-            
-            if(mainHandWeapon != null)
+
+            if (mainHandWeapon != null)
             {
-                
-                if(mainHandWeapon is not RangedWeapon)
+
+                if (mainHandWeapon is not RangedWeapon)
                 {
-                    
+
                     attackResult = cbm.AddMeleeAttack(
                                                       this.gameObject,
                                                       defender,
-                                                      mainHandWeapon.bonusStatDictionary[StatType.MinDamage], 
+                                                      mainHandWeapon.bonusStatDictionary[StatType.MinDamage],
                                                       mainHandWeapon.bonusStatDictionary[StatType.MaxDamage],
                                                       speed
                                                      );
 
-                    attackOccured = attackResult || attackOccured; 
+                    attackOccured = attackResult || attackOccured;
 
-                }else if(mainHandWeapon is RangedWeapon rangedWeapon)
+                }
+                else if (mainHandWeapon is RangedWeapon rangedWeapon)
                 {
-                    
-                    attackResult = cbm.AddProjectileAttack( 
-                                                            this.gameObject, 
-                                                            defender, 
-                                                            rangedWeapon.bonusStatDictionary[StatType.Range], 
-                                                            rangedWeapon.bonusStatDictionary[StatType.MinDamage], 
+
+                    attackResult = cbm.AddProjectileAttack(
+                                                            this.gameObject,
+                                                            defender,
+                                                            rangedWeapon.bonusStatDictionary[StatType.Range],
+                                                            rangedWeapon.bonusStatDictionary[StatType.MinDamage],
                                                             rangedWeapon.bonusStatDictionary[StatType.MaxDamage],
                                                             speed,
                                                             rangedWeapon.projectile
-                                                           );   
+                                                           );
 
-                    attackOccured = attackResult || attackOccured;                  
+                    attackOccured = attackResult || attackOccured;
                 }
             }
-            
 
-            if(offHandWeapon != null && offHandWeapon is not Shield)
+
+            if (offHandWeapon != null && offHandWeapon is not Shield)
             {
 
-                if(offHandWeapon is not RangedWeapon)
+                if (offHandWeapon is not RangedWeapon)
                 {
-                    
+
                     attackResult = cbm.AddMeleeAttack(
                                                       this.gameObject,
                                                       defender,
-                                                      offHandWeapon.bonusStatDictionary[StatType.MinDamage], 
+                                                      offHandWeapon.bonusStatDictionary[StatType.MinDamage],
                                                       offHandWeapon.bonusStatDictionary[StatType.MaxDamage],
                                                       speed / 2
                                                      );
 
                     attackOccured = attackResult || attackOccured;
 
-                }else if(offHandWeapon is RangedWeapon rangedWeapon)
+                }
+                else if (offHandWeapon is RangedWeapon rangedWeapon)
                 {
-                                                
-                    attackResult = cbm.AddProjectileAttack( 
-                                                            this.gameObject, 
-                                                            defender, 
-                                                            rangedWeapon.bonusStatDictionary[StatType.Range], 
-                                                            rangedWeapon.bonusStatDictionary[StatType.MinDamage], 
+
+                    attackResult = cbm.AddProjectileAttack(
+                                                            this.gameObject,
+                                                            defender,
+                                                            rangedWeapon.bonusStatDictionary[StatType.Range],
+                                                            rangedWeapon.bonusStatDictionary[StatType.MinDamage],
                                                             rangedWeapon.bonusStatDictionary[StatType.MaxDamage],
                                                             speed / 2,
                                                             rangedWeapon.projectile
-                                                          );       
+                                                          );
 
-                    attackOccured = attackResult || attackOccured;             
+                    attackOccured = attackResult || attackOccured;
                 }
             }
         }
-        
-        if(!attackOccured)//move towards defender
+
+        if (!attackOccured)//move towards defender
         {
 
-            List<Vector2Int> pathToDestination = PathFinder.FindPath(coord, defendingCharacter.coord, dum.dungeonCoords);            
+            List<Vector2Int> pathToDestination = PathFinder.FindPath(coord, defendingCharacter.coord, dum.dungeonCoords);
             Move(pathToDestination[1], dum.occupiedlist);
         }
 
@@ -316,5 +323,24 @@ public class PlayerCharacterSheet : CharacterSheet
         UpdateUI();
 
         return damageTaken;
+    }
+
+    public override bool Move(Vector2Int newCoord, HashSet<Vector2Int> occupiedlist, float waitTime = 0f)
+    {
+
+        if (base.Move(newCoord, occupiedlist, waitTime))
+        {
+
+            RevealAroundPC();
+            return true;
+        }
+
+        return false;
+    }
+
+    public void RevealAroundPC()
+    {
+        
+        tileManager.RevealTiles(GameFunctions.GetCircleCoords(coord, visibilityRadius));
     }
 }

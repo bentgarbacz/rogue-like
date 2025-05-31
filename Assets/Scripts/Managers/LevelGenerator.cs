@@ -10,19 +10,14 @@ using System.Linq;
 public class LevelGenerator : MonoBehaviour
 {
 
-    private DungeonManager dum;
+    [SerializeField] private DungeonManager dum;
     [SerializeField] private MiniMapManager miniMapManager;
     [SerializeField] private GameObject wallJoiner;
     [SerializeField] private List<GameObject> debugObjects = new();
-    private NPCGenerator npcGen;
-    private Vector2Int startPosition = new(0, 0);
     public Dictionary<BiomeType, Biome> biomeDict;
     
     void Start()
     {
-
-        dum = GameObject.Find("System Managers").GetComponent<DungeonManager>();
-        npcGen = GetComponent<NPCGenerator>();
 
         biomeDict = new Dictionary<BiomeType, Biome>
         {
@@ -37,60 +32,11 @@ public class LevelGenerator : MonoBehaviour
     public void NewLevel(Biome biome)
     {
 
-        dum.dungeonCoords = new();
-        biome.GenerateLevel(startPosition, dum.dungeonCoords, dum, npcGen);    
-        GenerateWalls(dum.dungeonCoords, biome);
+        dum.CleanUp();
+        biome.GenerateLevel(dum.dungeonCoords);    
         miniMapManager.DrawIcons(dum.dungeonSpecificGameObjects);
         miniMapManager.UpdateDynamicIcons();
         MoveDebugObjects();
-    }
-
-    private void GenerateWalls(HashSet<Vector2Int> path, Biome biome)
-    {
-
-        //finds border tiles and places walls adjacent to them
-        HashSet<Vector2Int> wallMap = new();
-        HashSet<Vector2> wallJoinerMap = new();
-
-        foreach(Vector2Int coord in path)
-        {
-
-            foreach(Vector2Int direction1 in Direction2D.DirectionsList())            
-            {
-
-                Vector2Int checkCoord = coord + direction1;
-
-                if(!path.Contains(checkCoord) && !wallMap.Contains(checkCoord))
-                {
-                    
-                    biome.CreateWallTile(new Vector3(checkCoord.x, 0, checkCoord.y), dum);
-                    wallMap.Add(checkCoord);
-
-                    foreach(Vector2Int direction2 in Direction2D.DirectionsList())
-                    {
-
-                        Vector2Int checkCoordWall = checkCoord + direction2;
-                        Vector2 checkCoordWallJoiner = checkCoordWall;
-                        checkCoordWallJoiner.x -= (float) direction2.x / 2;
-                        checkCoordWallJoiner.y -= (float) direction2.y / 2;
-
-                        if(wallMap.Contains(checkCoordWall) && !wallJoinerMap.Contains(checkCoordWallJoiner))
-                        {
-
-                            CreateWallJoiner(new Vector3(checkCoordWallJoiner.x, 0, checkCoordWallJoiner.y), dum);
-                            wallJoinerMap.Add(checkCoordWallJoiner);
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    public void CreateWallJoiner(Vector3 spawnPos, DungeonManager dum)
-    {
-
-        GameObject newWallJoiner = Instantiate(wallJoiner, spawnPos, wallJoiner.transform.rotation);
-        dum.AddGameObject(newWallJoiner);
     }
 
     private void MoveDebugObjects()
@@ -148,4 +94,10 @@ public static class Direction2D
 
         return cardinalDirectionsList[UnityEngine.Random.Range(0, cardinalDirectionsList.Count)];
     }
+}
+
+public static class LevelGenFuncs
+{
+
+    
 }

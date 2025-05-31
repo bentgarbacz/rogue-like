@@ -9,20 +9,19 @@ public class DungeonManager : MonoBehaviour
 
     public GameObject hero;
     public PlayerCharacterSheet playerCharacter;
-    //public GameObject mainCamera;
     public bool enemiesOnLookout = true;
     public HashSet<Vector2Int> dungeonCoords;
-    public HashSet<Vector2Int> discoveredCoords;
     public HashSet<Vector2Int> occupiedlist = new();
     public HashSet<GameObject> dungeonSpecificGameObjects = new();
     public HashSet<GameObject> iconGameObjects = new();
     public HashSet<GameObject> enemies = new();
     public HashSet<GameObject> aggroEnemies = new();
     public HashSet<Loot> itemContainers = new();
-    public Dictionary<string, List<Vector2Int>> cachedPathsDict = new();    
     private CombatManager cbm;
     private TurnSequencer ts;
     private MiniMapManager miniMapManager;
+    [SerializeField] private TileManager tileManager;
+    [SerializeField] private VisibilityManager visibilityManager;
 
     void Start()
     {
@@ -32,8 +31,6 @@ public class DungeonManager : MonoBehaviour
         ts = managers.GetComponent<TurnSequencer>();
         miniMapManager = managers.GetComponent<UIActiveManager>().mapPanel.GetComponent<MiniMapManager>();
         playerCharacter = hero.GetComponent<PlayerCharacterSheet>();
-
-        //mainCamera.GetComponent<PlayerCamera>().SetFocalPoint(hero);
     }
 
     public void TriggerStatusEffects()
@@ -41,7 +38,7 @@ public class DungeonManager : MonoBehaviour
 
         playerCharacter.ProcessStatusEffects();
 
-        foreach(GameObject enemy in enemies.ToList())
+        foreach (GameObject enemy in enemies.ToList())
         {
 
             enemy.GetComponent<CharacterSheet>().ProcessStatusEffects();
@@ -52,6 +49,8 @@ public class DungeonManager : MonoBehaviour
     {
 
         dungeonSpecificGameObjects.Add(newGameObject);
+        tileManager.AddTile(newGameObject.GetComponent<Tile>());
+        visibilityManager.AddObject(newGameObject);
     }
 
     public void Smite(GameObject target, Vector2Int targetCoord)
@@ -62,20 +61,22 @@ public class DungeonManager : MonoBehaviour
         aggroEnemies.Remove(target);
         occupiedlist.Remove(targetCoord);
         enemies.Remove(target);
+        visibilityManager.objects.Remove(target);
 
-        if(target.GetComponent<PlayerCharacterSheet>())
+        if (target.GetComponent<PlayerCharacterSheet>())
         {
 
             HaltGameplay();
 
-        }else
+        }
+        else
         {
 
             target.GetComponent<DropLoot>().Drop();
 
             int gainedXP = target.GetComponent<CharacterSheet>().level * 5;
             playerCharacter.GainXP(gainedXP);
-        }        
+        }
 
         Destroy(target);
         miniMapManager.UpdateDynamicIcons();
@@ -83,10 +84,10 @@ public class DungeonManager : MonoBehaviour
 
     public void TossContainer(GameObject trashContainer)
     {
-        
-        if(!trashContainer.GetComponent<Chest>())
+
+        if (!trashContainer.GetComponent<Chest>())
         {
-            
+
             dungeonSpecificGameObjects.Remove(trashContainer);
             Destroy(trashContainer);
             miniMapManager.UpdateDynamicIcons();
@@ -95,27 +96,30 @@ public class DungeonManager : MonoBehaviour
 
     public void CleanUp()
     {
-        
+
         enemiesOnLookout = true;
-        cachedPathsDict = new Dictionary<string, List<Vector2Int>>();
-        enemies = new HashSet<GameObject>();
-        occupiedlist = new HashSet<Vector2Int>();
-        itemContainers = new HashSet<Loot>();
+        dungeonCoords = new();
+        enemies = new();
+        occupiedlist = new();
+        itemContainers = new();
 
-        foreach(GameObject trash in dungeonSpecificGameObjects)
+        foreach (GameObject trash in dungeonSpecificGameObjects)
         {
 
             Destroy(trash);
         }
 
-        foreach(GameObject trash in iconGameObjects)
+        foreach (GameObject trash in iconGameObjects)
         {
 
             Destroy(trash);
         }
 
-        dungeonSpecificGameObjects = new HashSet<GameObject>();
-        aggroEnemies = new HashSet<GameObject>();
+        dungeonSpecificGameObjects = new();
+        aggroEnemies = new();
+
+        tileManager.RefreshLayout();
+        visibilityManager.Refresh();
 
         playerCharacter.Teleport(new Vector2Int(0, 0), this);
     }
@@ -123,32 +127,13 @@ public class DungeonManager : MonoBehaviour
     public void ClearAggroBuffer()
     {
 
-        foreach(GameObject enemy in aggroEnemies)
+        foreach (GameObject enemy in aggroEnemies)
         {
 
             enemy.GetComponent<TextNotificationManager>().CreateNotificationOrder(enemy.transform.position, 2, "?", Color.red);
         }
 
         aggroEnemies = new HashSet<GameObject>();
-    }
-
-    public void DeleteTile(Vector2Int coord)
-    {
-
-        foreach(GameObject checkObject in dungeonSpecificGameObjects)
-        {
-
-            if(checkObject.GetComponent<Tile>())
-            {
-
-                if(checkObject.GetComponent<Tile>().coord == coord)
-                {
-
-                    Destroy(checkObject);
-                    return;
-                }
-            }
-        }
     }
 
     public void HaltGameplay(bool isHalted = true)
