@@ -5,7 +5,7 @@ using UnityEngine;
 public class VisibilityManager : MonoBehaviour
 {
 
-    public HashSet<GameObject> objects = new();
+    private Dictionary<GameObject, (ObjectLocation location, ObjectVisibility visibility)> objects = new();
     [SerializeField] private TileManager tileManager;
 
     public void AddObject(GameObject newObject)
@@ -14,8 +14,14 @@ public class VisibilityManager : MonoBehaviour
         if (newObject.GetComponent<ObjectVisibility>())
         {
 
-            objects.Add(newObject);
+            objects[newObject] = (newObject.GetComponent<ObjectLocation>(), newObject.GetComponent<ObjectVisibility>());
         }
+    }
+
+    public void RemoveObject(GameObject trashObject)
+    {
+
+        objects.Remove(trashObject);
     }
 
     public void Refresh()
@@ -27,10 +33,10 @@ public class VisibilityManager : MonoBehaviour
     public void UpdateVisibilities()
     {
 
-        foreach (GameObject currentObject in objects)
+        foreach (GameObject currentObject in objects.Keys)
         {
 
-            ObjectVisibility vis = currentObject.GetComponent<ObjectVisibility>();
+            ObjectVisibility vis = objects[currentObject].visibility;
 
             if (!vis.isActive)
             {
@@ -38,27 +44,7 @@ public class VisibilityManager : MonoBehaviour
                 continue;
             }
 
-            EnemyCharacterSheet npc = currentObject.GetComponent<EnemyCharacterSheet>();
-            Interactable interactable = currentObject.GetComponent<Interactable>();
-
-            Vector2Int currentCoord;
-
-            if (npc != null)
-            {
-
-                currentCoord = npc.coord;
-            }
-            else if (interactable != null)
-            {
-
-                currentCoord = interactable.coord;
-
-            }
-            else
-            {
-
-                continue;
-            }
+            Vector2Int currentCoord = objects[currentObject].location.coord;
             
             if (tileManager.revealedTiles.Contains(currentCoord))
             {

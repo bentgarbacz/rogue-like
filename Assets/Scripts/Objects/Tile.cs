@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Tile : MonoBehaviour
 {
-    public Vector2Int coord;
+    //public Vector2Int coord;
+    public ObjectLocation loc;
     public bool state = true;
     [SerializeField] private IconType iconType = IconType.None;
     [SerializeField] private bool actionable = true;
@@ -35,7 +36,7 @@ public class Tile : MonoBehaviour
     public void SetCoord(Vector2Int coord)
     {
 
-        this.coord = coord;
+        this.loc.coord = coord;
     }
 
     public void SetState(bool state)

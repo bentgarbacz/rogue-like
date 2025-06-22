@@ -32,10 +32,13 @@ public class LevelGenerator : MonoBehaviour
     public void NewLevel(Biome biome)
     {
 
+        Vector2Int firstTileCoord;
+
         dum.CleanUp();
-        biome.GenerateLevel(dum.dungeonCoords);    
+        firstTileCoord = biome.GenerateLevel(dum.dungeonCoords);    
         miniMapManager.DrawIcons(dum.dungeonSpecificGameObjects);
         miniMapManager.UpdateDynamicIcons();
+        dum.hero.GetComponent<CharacterSheet>().Move(firstTileCoord, dum.occupiedlist); 
         MoveDebugObjects();
     }
 
@@ -51,13 +54,14 @@ public class LevelGenerator : MonoBehaviour
             {
 
                 debugObject.transform.position = new Vector3(dum.hero.transform.position.x - 3, debugObject.transform.position.y, dum.hero.transform.position.z);
-                chest.coord = dum.playerCharacter.coord;
+                chest.loc.coord = dum.playerCharacter.loc.coord;
 
             }else if(exit != null)
             {
 
                 debugObject.transform.position = new Vector3(dum.hero.transform.position.x + 3, debugObject.transform.position.y, dum.hero.transform.position.z);
-                exit.coord = dum.playerCharacter.coord;
+                debugObject.GetComponent<ObjectVisibility>().Initialize(true);
+                exit.loc.coord = dum.playerCharacter.loc.coord;
             }
         }
     }

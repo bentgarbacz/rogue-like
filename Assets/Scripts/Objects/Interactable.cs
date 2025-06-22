@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Interactable : MonoBehaviour
 {
-    public Vector2Int coord;
+    //public Vector2Int coord;
+    public ObjectLocation loc;
 
     public virtual bool Interact()
     {

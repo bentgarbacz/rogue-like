@@ -5,11 +5,12 @@ using UnityEngine;
 public class Projectile : MonoBehaviour
 {
     public float speed = 8f;
-    private Vector3 target;
+    private GameObject target;
     private bool shooting = false;
     private AudioSource projectileAudioSource;
     [SerializeField] private AudioClip shot;
     [SerializeField] private AudioClip hit;
+    [SerializeField] private bool curvesTowardsTarget = true;
 
     void Awake()
     {
@@ -26,17 +27,23 @@ public class Projectile : MonoBehaviour
             //move to target from start position
             transform.position = Vector3.MoveTowards(
                                                         transform.position, 
-                                                        target, 
+                                                        target.transform.position, 
                                                         speed * Time.deltaTime
                                                     );
 
-            //Destroy self after reaching target
-            if(transform.position == target)
+            if (curvesTowardsTarget)
             {
                 
-                shooting = false;
-                StartCoroutine(HitTarget());
+                transform.LookAt(target.transform.position);
             }
+            
+            //Destroy self after reaching target
+                if (transform.position == target.transform.position)
+                {
+
+                    shooting = false;
+                    StartCoroutine(HitTarget());
+                }
         }
     }
 
@@ -60,7 +67,7 @@ public class Projectile : MonoBehaviour
         Destroy(gameObject);
     }
 
-    public void Shoot(Vector3 target, AudioSource originAudioSource, float speed = 15f)
+    public void Shoot(GameObject target, AudioSource originAudioSource, float speed = 15f)
     {
 
         this.speed = speed;

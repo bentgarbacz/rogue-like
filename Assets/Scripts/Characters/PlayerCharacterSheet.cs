@@ -283,7 +283,7 @@ public class PlayerCharacterSheet : CharacterSheet
         if (!attackOccured)//move towards defender
         {
 
-            List<Vector2Int> pathToDestination = PathFinder.FindPath(coord, defendingCharacter.coord, dum.dungeonCoords);
+            List<Vector2Int> pathToDestination = PathFinder.FindPath(loc.coord, defendingCharacter.loc.coord, dum.dungeonCoords);
             Move(pathToDestination[1], dum.occupiedlist);
         }
 
@@ -341,6 +341,6 @@ public class PlayerCharacterSheet : CharacterSheet
     public void RevealAroundPC()
     {
         
-        tileManager.RevealTiles(GameFunctions.GetCircleCoords(coord, visibilityRadius));
+        tileManager.RevealTiles(GameFunctions.GetCircleCoords(loc.coord, visibilityRadius));
     }
 }

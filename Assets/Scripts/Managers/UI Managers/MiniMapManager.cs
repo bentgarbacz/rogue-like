@@ -14,51 +14,56 @@ public class MiniMapManager : MonoBehaviour
     [SerializeField] private Sprite entranceIcon;
     [SerializeField] private Sprite exitIcon;
     [SerializeField] private Camera mapCamera;
+    public HashSet<GameObject> iconGameObjects = new();
     private List<MapIconController> dynamicObjectIcons;
+    private Dictionary<Vector2Int, MapIconController> tileIcons;
     private DungeonManager dum;
     private MapIconController anchorIcon;
 
     void Start()
-    {
-        
-        dum = GameObject.Find("System Managers").GetComponent<DungeonManager>();
+    {  
+
+        GameObject managers = GameObject.Find("System Managers");
+
+        dum = managers.GetComponent<DungeonManager>();
     }
 
-    public void RevealTiles(Vector2Int coord)
+    public void RevealTile(Vector2Int coord)
     {
 
-
+        tileIcons[coord].SetVisibility(true);
     }
 
     public void DrawIcons(HashSet<GameObject> objects)
     {
 
         dynamicObjectIcons = new();
+        tileIcons = new();
 
-        foreach(GameObject currentObject in objects)
+        foreach (GameObject currentObject in objects)
         {
 
-            if(currentObject.GetComponent<Tile>() is Tile currentTile || currentObject.GetComponent<Exit>() is Exit currentExit)
+            if (currentObject.GetComponent<Tile>() is Tile t)
             {
 
                 AddIcon(currentObject);
             }
         }
 
-        foreach(GameObject currentObject in objects)
+        foreach (GameObject currentObject in objects)
         {
 
-            if(currentObject.GetComponent<Loot>() is Loot currentLoot)
+            if (currentObject.GetComponent<Loot>() is Loot l)
             {
 
                 AddIcon(currentObject);
             }
         }
 
-        foreach(GameObject currentObject in objects)
+        foreach (GameObject currentObject in objects)
         {
 
-            if(currentObject.GetComponent<CharacterSheet>() is CharacterSheet currentCharacter)
+            if (currentObject.GetComponent<CharacterSheet>() is CharacterSheet cs)
             {
 
                 AddIcon(currentObject);
@@ -66,12 +71,12 @@ public class MiniMapManager : MonoBehaviour
         }
 
         GameObject newIconPC = Instantiate(iconPrefab, map.transform);
-        dum.iconGameObjects.Add(newIconPC);
+        iconGameObjects.Add(newIconPC);
         anchorIcon = newIconPC.GetComponent<MapIconController>();
 
         dynamicObjectIcons.Add(anchorIcon);
 
-        anchorIcon.InitializeController(dum.hero, pcIcon, dum.playerCharacter.coord, 5, 0.66f);
+        anchorIcon.InitializeController(dum.hero, pcIcon, dum.playerCharacter.loc.coord, 5, 0.66f);
     }
 
     public void AddIcon(GameObject newObject)
@@ -80,59 +85,74 @@ public class MiniMapManager : MonoBehaviour
         GameObject newIcon = Instantiate(iconPrefab, map.transform);
         MapIconController mic = newIcon.GetComponent<MapIconController>();
 
-        if(newObject.GetComponent<Tile>() is Tile currentTile)
+        if (newObject.GetComponent<Tile>() is Tile currentTile)
         {
-            
-            if(currentTile.GetIconType() == IconType.Entrance)
+
+            if (currentTile.GetIconType() == IconType.Entrance)
             {
 
-                mic.InitializeController(newObject, entranceIcon, currentTile.coord, 0, 1.33f);
+                mic.InitializeController(newObject, entranceIcon, currentTile.loc.coord, 0, 1.33f);
 
-            }else if(currentTile.GetIconType() == IconType.Tile)
+            }
+            else if (currentTile.GetIconType() == IconType.Tile)
             {
 
-                mic.InitializeController(newObject, tileIcon, currentTile.coord, 0);
+                mic.InitializeController(newObject, tileIcon, currentTile.loc.coord, 0);
 
-            }else if(currentTile.GetIconType() == IconType.Wall)
+            }
+            else if (currentTile.GetIconType() == IconType.Wall)
             {
 
-                mic.InitializeController(newObject, tileIcon, currentTile.coord, 0);
+                mic.InitializeController(newObject, tileIcon, currentTile.loc.coord, 0);
                 Color currentColor = mic.Icon().color;
                 mic.Icon().color = new Color(currentColor.r * 0.5f, currentColor.g * 0.5f, currentColor.b * 0.5f, currentColor.a);
 
             }
+            else if (currentTile.GetIconType() == IconType.Exit)
+            {
 
-        }else if(newObject.GetComponent<Loot>() is Loot currentLoot)
+                mic.InitializeController(newObject, exitIcon, currentTile.loc.coord, 0, 1.33f);
+            }
+
+            tileIcons.Add(currentTile.loc.coord, mic);          
+
+        }
+        else if (newObject.GetComponent<Loot>() is Loot currentLoot)
         {
 
-            mic.InitializeController(newObject, objectIcon, currentLoot.coord, 3, 0.66f);
+            mic.InitializeController(newObject, objectIcon, currentLoot.loc.coord, 3, 0.66f);
             dynamicObjectIcons.Add(mic);
 
-        }else if(newObject.GetComponent<CharacterSheet>() is CharacterSheet currentCharacter)
+        }
+        else if (newObject.GetComponent<CharacterSheet>() is CharacterSheet currentCharacter)
         {
 
-            if(currentCharacter is EnemyCharacterSheet ec)
+            if (currentCharacter is EnemyCharacterSheet ec)
             {
 
                 mic.SetIcon(enemyIcon);
-                mic.InitializeController(newObject, enemyIcon, currentCharacter.coord, 4, 0.66f);
+                mic.InitializeController(newObject, enemyIcon, currentCharacter.loc.coord, 4, 0.66f);
             }
 
             dynamicObjectIcons.Add(mic);
 
-        }else if(newObject.GetComponent<Exit>() is Exit currentExit)
-        {
-            
-            mic.InitializeController(newObject, exitIcon, currentExit.coord, 0, 1.33f);
-
-        }else
+        }
+        else
         {
 
             Destroy(newIcon);
             return;
         }
 
-        dum.iconGameObjects.Add(newIcon);
+        iconGameObjects.Add(newIcon);
+
+        if (newObject.GetComponent<ObjectVisibility>() is ObjectVisibility ov)
+        {
+
+            ov.SetIcon(mic);
+        }
+
+        mic.SetVisibility(false);
     }
 
     public void UpdateDynamicIcons()

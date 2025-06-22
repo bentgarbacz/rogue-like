@@ -11,15 +11,17 @@ public class DropLoot : MonoBehaviour
     public GameObject container;
     private DungeonManager dum;
     private MiniMapManager miniMapManager;
+    private VisibilityManager visibilityManager;
 
 
     void Start()
     {
-        
+
         GameObject managers = GameObject.Find("System Managers");
-        
+
         dum = managers.GetComponent<DungeonManager>();
         miniMapManager = managers.GetComponent<UIActiveManager>().mapPanel.GetComponent<MiniMapManager>();
+        visibilityManager = managers.GetComponent<VisibilityManager>();
     }
 
     public void Drop()
@@ -30,7 +32,7 @@ public class DropLoot : MonoBehaviour
         if(droppedItems.Count > 0)
         {
 
-            GameFunctions.DropLoot(this.gameObject, container, droppedItems, dum, miniMapManager);
+            GameFunctions.DropLoot(this.gameObject, container, droppedItems, dum, miniMapManager, visibilityManager);
         }
     }
 }

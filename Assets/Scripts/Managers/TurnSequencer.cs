@@ -6,8 +6,6 @@ using UnityEngine.InputSystem;
 
 public class TurnSequencer : MonoBehaviour
 {
-
-    public float aggroRange = 10;
     public bool gameplayHalted = false;
     public float baseWaitTime = 0.05f;
     public float incrementWaitTime = 0.05f;
@@ -84,18 +82,41 @@ public class TurnSequencer : MonoBehaviour
 
                     playerMovementQueue.Clear();
 
+                    if (targetInteractable != null)
+                    {
+
+                        //interact with interactable object
+                        if (PathFinder.GetNeighbors(targetInteractable.loc.coord, dum.dungeonCoords).Contains(playerCharacter.loc.coord) || targetInteractable.loc.coord == playerCharacter.loc.coord)
+                        {
+
+                            if (!targetInteractable.Interact())
+                            {
+
+                                return;
+                            }
+
+                        }
+                        else //move towards interactable
+                        {
+
+                            List<Vector2Int> pathToDestination = PathFinder.FindPath(playerCharacter.loc.coord, targetInteractable.loc.coord, dum.dungeonCoords);
+                            MoveOneSpace(pathToDestination);
+                            return;
+                        }
+                    }
+
                     if (targetTile != null)
                     {
 
                         if (!targetTile.IsActionable() ||
-                            targetTile.coord == playerCharacter.coord ||
-                            dum.occupiedlist.Contains(targetTile.coord))
+                            targetTile.loc.coord == playerCharacter.loc.coord ||
+                            dum.occupiedlist.Contains(targetTile.loc.coord))
                         {
 
                             return;
                         }
 
-                        List<Vector2Int> pathToDestination = PathFinder.FindPath(playerCharacter.coord, targetTile.coord, dum.dungeonCoords, ignoredPoints: dum.occupiedlist);
+                        List<Vector2Int> pathToDestination = PathFinder.FindPath(playerCharacter.loc.coord, targetTile.loc.coord, dum.dungeonCoords, ignoredPoints: dum.occupiedlist);
 
                         if (pathToDestination != null && pathToDestination.Count > 1)
                         {
@@ -135,29 +156,6 @@ public class TurnSequencer : MonoBehaviour
                         }
                     }
 
-                    if (targetInteractable != null)
-                    {
-
-                        //interact with interactable object
-                        if (PathFinder.GetNeighbors(targetInteractable.coord, dum.dungeonCoords).Contains(playerCharacter.coord) || targetInteractable.coord == playerCharacter.coord)
-                        {
-
-                            if (!targetInteractable.Interact())
-                            {
-
-                                return;
-                            }
-
-                        }
-                        else //move towards interactable
-                        {
-
-                            List<Vector2Int> pathToDestination = PathFinder.FindPath(playerCharacter.coord, targetInteractable.coord, dum.dungeonCoords);
-                            MoveOneSpace(pathToDestination);
-                            return;
-                        }
-                    }
-
                     actionTaken = true;
                 }
             }
@@ -191,10 +189,12 @@ public class TurnSequencer : MonoBehaviour
                 foreach (GameObject enemy in dum.enemies)
                 {
 
-                    if (ShouldAggro(enemy))
+                    EnemyCharacterSheet ecs = enemy.GetComponent<EnemyCharacterSheet>();
+
+                    if (ShouldAggro(enemy, ecs))
                     {
 
-                        if (enemy.GetComponent<EnemyCharacterSheet>().OnAggro(dum, cbm))
+                        if (ecs.OnAggro(dum, cbm))
                         {
 
                             dum.aggroEnemies.Add(enemy);
@@ -235,19 +235,13 @@ public class TurnSequencer : MonoBehaviour
         {
 
             playerMovementQueue.Enqueue(pathToDestination[1]);
-
-        }
-        else
-        {
-
-            return;
         }
     }
 
-    private bool ShouldAggro(GameObject enemy)
+    private bool ShouldAggro(GameObject enemy, EnemyCharacterSheet ecs)
     {
-
-        return aggroRange > Vector3.Distance(enemy.transform.position, dum.hero.transform.position) &&
+        
+        return ecs.aggroRange > Vector3.Distance(enemy.transform.position, dum.hero.transform.position) &&
             !dum.aggroEnemies.Contains(enemy) &&
             LineOfSight.HasLOS(enemy, dum.hero);
     }

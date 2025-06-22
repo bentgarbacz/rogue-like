@@ -19,9 +19,6 @@ public class MapIconController : MonoBehaviour
         SetIcon(sprite);
         SetCoord(coord);
         ScaleIcon(scaleFactor);
-        //iconRectTransform.SetSiblingIndex(sortingOrder);
-        //iconRectTransform.localScale = Vector3.one;
-        
     }
 
     public void SetParentObject(GameObject parentObject)
@@ -34,7 +31,7 @@ public class MapIconController : MonoBehaviour
     {
 
         icon.sprite = sprite;
-    }       
+    }
 
     public Image Icon()
     {
@@ -51,27 +48,27 @@ public class MapIconController : MonoBehaviour
     public bool UpdateIcon()
     {
 
-        if(parentObject == null)
+        if (parentObject == null)
         {
 
             Destroy(gameObject);
             return false;
         }
 
-        if(parentObject.GetComponent<Loot>() is Loot loot)
+        if (parentObject.GetComponent<Loot>() is Loot loot)
         {
 
-            SetCoord(loot.coord);
+            SetCoord(loot.loc.coord);
 
-        }else if(parentObject.GetComponent<CharacterSheet>() is CharacterSheet character)
+        } else if (parentObject.GetComponent<CharacterSheet>() is CharacterSheet character)
         {
 
-            SetCoord(character.coord);
+            SetCoord(character.loc.coord);
 
         }
 
         return true;
-    }    
+    }
 
     public void SetCoord(Vector2Int coord)
     {
@@ -80,5 +77,9 @@ public class MapIconController : MonoBehaviour
         iconRectTransform.anchoredPosition *= 11;
     }
 
-    
+    public void SetVisibility(bool state)
+    {
+        
+        gameObject.SetActive(state);
+    }
 }

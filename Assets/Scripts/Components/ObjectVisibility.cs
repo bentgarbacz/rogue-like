@@ -7,27 +7,33 @@ public class ObjectVisibility : MonoBehaviour
     public bool isActive = true;
     protected MeshRenderer meshRenderer;
     protected BoxCollider boxCollider;
+    protected MapIconController mic = null;
 
-    void Awake()
+    public void Initialize(bool initialState = false)
     {
 
         meshRenderer = GetComponent<MeshRenderer>();
         boxCollider = GetComponent<BoxCollider>();
 
-        SetVisibility(false);
+        SetVisibility(initialState);
+    }
+
+    public void SetIcon(MapIconController mic)
+    {
+
+        this.mic = mic;
     }
 
     public void SetVisibility(bool state)
     {
 
-        if (meshRenderer == null || boxCollider == null)
-        {
-            
-            meshRenderer = GetComponent<MeshRenderer>();
-            boxCollider = GetComponent<BoxCollider>();
-        }
-
         meshRenderer.enabled = state;
         boxCollider.enabled = state;
+
+        if (mic != null)
+        {
+
+            mic.SetVisibility(state);
+        }
     }
 }

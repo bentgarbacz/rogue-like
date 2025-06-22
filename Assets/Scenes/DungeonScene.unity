@@ -6201,6 +6201,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -7697470389743743724, guid: 57670d2158c8b544a9c7250631b130e5, type: 3}
+      propertyPath: actionable
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -323566026013006342, guid: 57670d2158c8b544a9c7250631b130e5, type: 3}
+      propertyPath: iconType
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2468885874815086548, guid: 57670d2158c8b544a9c7250631b130e5, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -6268,6 +6276,34 @@ PrefabInstance:
     - target: {fileID: 3238284615572777543, guid: 57670d2158c8b544a9c7250631b130e5, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3525938628705364916, guid: 57670d2158c8b544a9c7250631b130e5, type: 3}
+      propertyPath: m_Size.x
+      value: 0.8558563
+      objectReference: {fileID: 0}
+    - target: {fileID: 3525938628705364916, guid: 57670d2158c8b544a9c7250631b130e5, type: 3}
+      propertyPath: m_Size.y
+      value: 0.7340945
+      objectReference: {fileID: 0}
+    - target: {fileID: 3525938628705364916, guid: 57670d2158c8b544a9c7250631b130e5, type: 3}
+      propertyPath: m_Size.z
+      value: 0.63174933
+      objectReference: {fileID: 0}
+    - target: {fileID: 3525938628705364916, guid: 57670d2158c8b544a9c7250631b130e5, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3525938628705364916, guid: 57670d2158c8b544a9c7250631b130e5, type: 3}
+      propertyPath: m_Center.x
+      value: 0.01433596
+      objectReference: {fileID: 0}
+    - target: {fileID: 3525938628705364916, guid: 57670d2158c8b544a9c7250631b130e5, type: 3}
+      propertyPath: m_Center.y
+      value: -0.0046722293
+      objectReference: {fileID: 0}
+    - target: {fileID: 3525938628705364916, guid: 57670d2158c8b544a9c7250631b130e5, type: 3}
+      propertyPath: m_Center.z
+      value: -0.010515109
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
@@ -13369,6 +13405,7 @@ GameObject:
   - component: {fileID: 6442338754152421635}
   - component: {fileID: 6442338754152421634}
   - component: {fileID: 6442338754152421633}
+  - component: {fileID: 6442338754152421648}
   m_Layer: 6
   m_Name: Hero
   m_TagString: Untagged
@@ -19801,7 +19838,9 @@ PrefabInstance:
       propertyPath: actionDescription
       value: Debug Chest
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8168649644023386049, guid: 3d2a97183afeb6843a3d22f8ee50bf01, type: 3}
+    - {fileID: 0}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -22469,7 +22508,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0858690206951944bb4cefe5dfdae9de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  aggroRange: 10
   gameplayHalted: 0
   baseWaitTime: 0.05
   incrementWaitTime: 0.05
@@ -37737,7 +37775,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ebd51f1070e61c4eba459cc2c2cbc62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  coord: {x: 0, y: 0}
+  loc: {fileID: 6442338754152421648}
   maxHealth: 1
   health: 1
   accuracy: 1000
@@ -37861,6 +37899,19 @@ MonoBehaviour:
   audioSource: {fileID: 0}
   stepAudioClip: {fileID: 0}
   waitTime: 0
+--- !u!114 &6442338754152421648
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 869517488}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1fd26484d3cf76a408c14eabfbca9561, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  coord: {x: 0, y: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

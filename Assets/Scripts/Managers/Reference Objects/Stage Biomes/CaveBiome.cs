@@ -68,21 +68,22 @@ public class CaveBiome : Biome
     public override void CreateExitTile(Vector3 spawnPos, Vector2Int position, HashSet<Vector2Int> dungeonCoords)
     {
 
-        GameObject newCatacombExit = Instantiate(caveExit, spawnPos, caveExit.transform.rotation);
+        GameObject newExit = Instantiate(caveExit, spawnPos, caveExit.transform.rotation);
+        newExit.GetComponent<ObjectVisibility>().Initialize();
         
-        foreach(Vector2Int direction in Direction2D.cardinalDirectionsList)
+        foreach (Vector2Int direction in Direction2D.cardinalDirectionsList)
         {
 
-            if(dungeonCoords.Contains(position + direction))
+            if (dungeonCoords.Contains(position + direction))
             {
-                
-                newCatacombExit.transform.rotation = Quaternion.Euler(0, GameFunctions.DetermineRotation(newCatacombExit.transform.position, new Vector3(position.x + direction.x, 0, position.y + direction.y)), 0);
+
+                newExit.transform.rotation = Quaternion.Euler(0, GameFunctions.DetermineRotation(newExit.transform.position, new Vector3(position.x + direction.x, 0, position.y + direction.y)), 0);
                 break;
             }
         }
 
-        newCatacombExit.GetComponent<Exit>().coord = position;
-        dum.AddGameObject(newCatacombExit);
+        newExit.GetComponent<Exit>().loc.coord = position;
+        dum.AddGameObject(newExit);
     }
 
     public override GameObject CreateWallTile(Vector3 spawnPos)
@@ -129,7 +130,7 @@ public class CaveBiome : Biome
         return newWall;   
     }
 
-    public override bool GenerateLevel( HashSet<Vector2Int> dungeonCoords)
+    public override Vector2Int GenerateLevel( HashSet<Vector2Int> dungeonCoords)
     {
 
         Vector2Int position = new(0, 0);
@@ -184,17 +185,17 @@ public class CaveBiome : Biome
                         }else if(spawnRNG >= 3 && spawnRNG <= 4)
                         {
 
-                            npcGen.CreateNPC(NPCType.Goblin, spawnPos, dum);
+                            npcGen.CreateNPC(NPCType.Witch, spawnPos, dum);
 
                         }else if(spawnRNG >= 5 && spawnRNG <= 6)
                         {
 
-                            npcGen.CreateNPC(NPCType.Goblin, spawnPos, dum);
+                            npcGen.CreateNPC(NPCType.Witch, spawnPos, dum);
 
                         }else if(spawnRNG >= 7 && spawnRNG <= 20)
                         {
 
-                            npcGen.CreateNPC(NPCType.Goblin, spawnPos, dum);
+                            npcGen.CreateNPC(NPCType.Witch, spawnPos, dum);
                         }
                     }
                 }
@@ -208,14 +209,14 @@ public class CaveBiome : Biome
         {
 
             dum.CleanUp();
-            GenerateLevel(dum.dungeonCoords);
-            return false;
+            firstTileCoord = GenerateLevel(dum.dungeonCoords);
+            return firstTileCoord;
         }
 
         GenerateWalls(dungeonCoords);
 
-        dum.hero.GetComponent<CharacterSheet>().Move(firstTileCoord, dum.occupiedlist); 
+        //dum.hero.GetComponent<CharacterSheet>().Move(firstTileCoord, dum.occupiedlist); 
 
-        return true;
+        return firstTileCoord;
     }
 }

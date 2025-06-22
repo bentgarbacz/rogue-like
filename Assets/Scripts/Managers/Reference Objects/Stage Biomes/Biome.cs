@@ -34,10 +34,10 @@ public class Biome : MonoBehaviour
         return null;
     }
 
-    public virtual bool GenerateLevel(HashSet<Vector2Int> dungeonCoords)
+    public virtual Vector2Int GenerateLevel(HashSet<Vector2Int> dungeonCoords)
     {
 
-        return false;
+        return new Vector2Int(0,0);
     }
     
     public virtual void GenerateWalls(HashSet<Vector2Int> dungeonCoords)
@@ -55,22 +55,28 @@ public class Biome : MonoBehaviour
 
                 Vector2Int checkCoord = coord + direction1;
 
-                if(!dungeonCoords.Contains(checkCoord) && !wallMap.Contains(checkCoord))
+                if (!dungeonCoords.Contains(checkCoord) && !wallMap.Contains(checkCoord))
                 {
-                    
+
                     GameObject newWallTile = CreateWallTile(new Vector3(checkCoord.x, 0, checkCoord.y));
                     wallMap.Add(checkCoord);
 
-                    foreach(Vector2Int direction2 in Direction2D.cardinalDirectionsList)
+                    foreach (Vector2Int direction2 in Direction2D.cardinalDirectionsList)
                     {
 
                         Vector2Int checkCoordWall = checkCoord + direction2;
                         Vector2 checkCoordWallJoiner = checkCoordWall;
-                        checkCoordWallJoiner.x -= (float) direction2.x / 2;
-                        checkCoordWallJoiner.y -= (float) direction2.y / 2;
+                        checkCoordWallJoiner.x -= (float)direction2.x / 2;
+                        checkCoordWallJoiner.y -= (float)direction2.y / 2;
 
-                        if(wallMap.Contains(checkCoordWall) && !wallJoinerMap.Contains(checkCoordWallJoiner))
+                        if (wallMap.Contains(checkCoordWall) && !wallJoinerMap.Contains(checkCoordWallJoiner))
                         {
+
+                            if (Direction2D.intercardinalDirectionsList.Contains(direction2))
+                            {
+                                
+                                //!!!!!!!!!!!!!!!!!!!!
+                            }
 
                             CreateWallJoiner(new Vector3(checkCoordWallJoiner.x, 0, checkCoordWallJoiner.y), newWallTile);
                             wallJoinerMap.Add(checkCoordWallJoiner);

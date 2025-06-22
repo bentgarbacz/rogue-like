@@ -44,7 +44,7 @@ public class SkeletonArcherCharacterSheet : EnemyCharacterSheet
             }else //move towards target if not within range
             {
                 
-                List<Vector2Int> pathToPlayer = PathFinder.FindPath(coord, playerCharacter.coord, dum.dungeonCoords);                     
+                List<Vector2Int> pathToPlayer = PathFinder.FindPath(loc.coord, playerCharacter.loc.coord, dum.dungeonCoords);                     
                 Move(pathToPlayer[1], dum.occupiedlist, waitTime);
             }
 
@@ -52,7 +52,7 @@ public class SkeletonArcherCharacterSheet : EnemyCharacterSheet
         {
 
             //randomly walk while reloading ranged attack
-            Vector2Int randomDirection = new(coord.x + Direction2D.GetRandomDirection().x, coord.y + Direction2D.GetRandomDirection().y);
+            Vector2Int randomDirection = new(loc.coord.x + Direction2D.GetRandomDirection().x, loc.coord.y + Direction2D.GetRandomDirection().y);
 
             if(dum.dungeonCoords.Contains(randomDirection))
             {
