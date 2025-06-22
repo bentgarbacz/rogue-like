@@ -7,8 +7,10 @@ public class TileManager : MonoBehaviour
 
     public Dictionary<Vector2Int, Tile> tileDict = new();
     public HashSet<Vector2Int> revealedTiles = new();
+    public HashSet<Vector2Int> doorCoords = new();
     [SerializeField] DungeonManager dum;
     [SerializeField] VisibilityManager visibilityManager;
+    [SerializeField] MiniMapManager mm;
 
     public void AddTile(Tile newTile)
     {
@@ -16,11 +18,21 @@ public class TileManager : MonoBehaviour
         if (newTile != null)
         {
 
-            if (!tileDict.ContainsKey(newTile.coord))
+            if (!tileDict.ContainsKey(newTile.loc.coord))
             {
 
-                tileDict.Add(newTile.coord, newTile);
+                tileDict.Add(newTile.loc.coord, newTile);
             }
+        }
+    }
+
+    public void AddDoor(Door door)
+    {
+
+        if (door != null)
+        {
+
+            doorCoords.Add(door.loc.coord);
         }
     }
 
@@ -29,6 +41,7 @@ public class TileManager : MonoBehaviour
 
         tileDict = new();
         revealedTiles = new();
+        doorCoords = new();
     }
 
     public void DeleteTile(Vector2Int coord)
@@ -60,6 +73,8 @@ public class TileManager : MonoBehaviour
 
                 RevealTile(tileCoord);
 
+                RevealNeighboringDoors(tileCoord);
+
                 if (!tileDict[tileCoord].IsActionable())
                 {
 
@@ -75,9 +90,10 @@ public class TileManager : MonoBehaviour
 
     public void RevealTile(Vector2Int tileCoord)
     {
-        
+
         tileDict[tileCoord].SetState(true);
-        revealedTiles.Add(tileDict[tileCoord].coord);
+        mm.RevealTile(tileCoord);
+        revealedTiles.Add(tileCoord);
     }
 
     public void RevealNeighboringWalls(Vector2Int tileCoord)
@@ -100,6 +116,25 @@ public class TileManager : MonoBehaviour
             {
 
                 tileDict[checkCoord].SetState(true);
+                mm.RevealTile(checkCoord);
+            }
+        }
+    }
+
+    public void RevealNeighboringDoors(Vector2Int tileCoord)
+    {
+
+        List<Vector2Int> directions = NeighborVals.cardinalList;
+
+        foreach (Vector2Int d in directions)
+        {
+
+            Vector2Int checkCoord = new(tileCoord.x + d.x, tileCoord.y + d.y);
+
+            if (doorCoords.Contains(checkCoord) && !revealedTiles.Contains(checkCoord))
+            {
+
+                RevealTile(checkCoord);
             }
         }
     }

@@ -5,7 +5,8 @@ using UnityEngine;
 public class CharacterSheet : MonoBehaviour
 {
 
-    public Vector2Int coord;
+    //public Vector2Int coord;
+    public ObjectLocation loc;
     public int maxHealth = 1;
     public int health = 1;
     public int accuracy = 100;
@@ -32,7 +33,8 @@ public class CharacterSheet : MonoBehaviour
     {
         
         GetComponent<MoveToTarget>().target = transform.position;
-        coord = new Vector2Int((int)transform.position.x, (int)transform.position.z);
+        //loc = GetComponent<ObjectLocation>();
+        loc.coord = new Vector2Int((int)transform.position.x, (int)transform.position.z);
 
         sem = gameObject.AddComponent<StatusEffectManager>();
         audioSource = gameObject.AddComponent<AudioSource>();
@@ -60,12 +62,11 @@ public class CharacterSheet : MonoBehaviour
             Vector3 newPos = new((float)newCoord.x, 0.1f, (float)newCoord.y); 
 
             occupiedlist.Add(newCoord);
-            occupiedlist.Remove(coord);
-
+            occupiedlist.Remove(loc.coord);
+            loc.coord = newCoord;
+            
             GetComponent<MoveToTarget>().SetTarget(newPos, waitTime);
             transform.rotation = Quaternion.Euler(0, GameFunctions.DetermineRotation(transform.position, newPos), 0);
-
-            coord = newCoord;
 
             return true;
         }
@@ -82,11 +83,11 @@ public class CharacterSheet : MonoBehaviour
             Vector3 newPos = new((float)newCoord.x, 0.1f, (float)newCoord.y); 
 
             dum.occupiedlist.Add(newCoord);
-            dum.occupiedlist.Remove(coord);
+            dum.occupiedlist.Remove(loc.coord);
             
             transform.position = newPos;
 
-            coord = newCoord;
+            loc.coord = newCoord;
 
             return true;
 

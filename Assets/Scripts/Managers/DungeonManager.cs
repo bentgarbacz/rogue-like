@@ -13,7 +13,7 @@ public class DungeonManager : MonoBehaviour
     public HashSet<Vector2Int> dungeonCoords;
     public HashSet<Vector2Int> occupiedlist = new();
     public HashSet<GameObject> dungeonSpecificGameObjects = new();
-    public HashSet<GameObject> iconGameObjects = new();
+    //public HashSet<GameObject> iconGameObjects = new();
     public HashSet<GameObject> enemies = new();
     public HashSet<GameObject> aggroEnemies = new();
     public HashSet<Loot> itemContainers = new();
@@ -50,6 +50,7 @@ public class DungeonManager : MonoBehaviour
 
         dungeonSpecificGameObjects.Add(newGameObject);
         tileManager.AddTile(newGameObject.GetComponent<Tile>());
+        tileManager.AddDoor(newGameObject.GetComponent<Door>());
         visibilityManager.AddObject(newGameObject);
     }
 
@@ -61,7 +62,7 @@ public class DungeonManager : MonoBehaviour
         aggroEnemies.Remove(target);
         occupiedlist.Remove(targetCoord);
         enemies.Remove(target);
-        visibilityManager.objects.Remove(target);
+        visibilityManager.RemoveObject(target);
 
         if (target.GetComponent<PlayerCharacterSheet>())
         {
@@ -88,6 +89,7 @@ public class DungeonManager : MonoBehaviour
         if (!trashContainer.GetComponent<Chest>())
         {
 
+            visibilityManager.RemoveObject(trashContainer);
             dungeonSpecificGameObjects.Remove(trashContainer);
             Destroy(trashContainer);
             miniMapManager.UpdateDynamicIcons();
@@ -109,7 +111,7 @@ public class DungeonManager : MonoBehaviour
             Destroy(trash);
         }
 
-        foreach (GameObject trash in iconGameObjects)
+        foreach (GameObject trash in miniMapManager.iconGameObjects)
         {
 
             Destroy(trash);

@@ -77,7 +77,7 @@ public class CombatManager : MonoBehaviour
                 GameObject projectileObject = allProjectiles.CreateProjectile(attack.projectileType, attacker.transform.position, attacker.transform.rotation);
                 Projectile projectile = projectileObject.GetComponent<Projectile>();
 
-                float projectileTime = ProjectileAirTime(projectile.speed, attacker.coord, defender.coord);
+                float projectileTime = ProjectileAirTime(projectile.speed, attacker.loc.coord, defender.loc.coord);
 
                 if(projectileTime > waitTime)
                 {
@@ -85,7 +85,7 @@ public class CombatManager : MonoBehaviour
                     waitTime = projectileTime;
                 }
 
-                projectile.Shoot(defender.transform.position, attacker.audioSource);
+                projectile.Shoot(defender.gameObject, attacker.audioSource);
             } 
 
             //Play combat noises
@@ -148,7 +148,7 @@ public class CombatManager : MonoBehaviour
                 if(defender.health <= 0)
                 {
                     yield return new WaitForSeconds(0.05f); //Give the GameObject of dead character time to wrap up before it is destroyed
-                    dum.Smite(combatBuffer[0].defender, defender.coord);                                                                    
+                    dum.Smite(combatBuffer[0].defender, defender.loc.coord);                                                                    
                 }
             }
 
@@ -163,7 +163,7 @@ public class CombatManager : MonoBehaviour
     {
 
         //attack occurs only if defender in in a neighboring tile of the attacker
-        if(PathFinder.GetNeighbors(defender.GetComponent<CharacterSheet>().coord, dum.dungeonCoords).Contains(attacker.GetComponent<CharacterSheet>().coord))
+        if(PathFinder.GetNeighbors(defender.GetComponent<CharacterSheet>().loc.coord, dum.dungeonCoords).Contains(attacker.GetComponent<CharacterSheet>().loc.coord))
         {
 
             combatBuffer.Add( new Attack(attacker, defender, minDamage, maxDamage, speed));
@@ -230,7 +230,7 @@ public class CombatManager : MonoBehaviour
         if (defenderSheet.health <= 0)
         {
 
-            dum.Smite(defender, defenderSheet.coord); // Remove the defender from the game
+            dum.Smite(defender, defenderSheet.loc.coord); // Remove the defender from the game
         }
     }
 

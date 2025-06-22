@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 2782528973162512877}
   - component: {fileID: 4569797462516387657}
   - component: {fileID: 6532653044936531204}
+  - component: {fileID: 6175935057504639698}
   m_Layer: 3
   m_Name: CaveTile5
   m_TagString: Untagged
@@ -48,7 +49,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ac4587eee4b3bc4381bce15d0b02fc6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  coord: {x: 0, y: 0}
+  loc: {fileID: 6175935057504639698}
+  state: 1
   iconType: 3
   actionable: 1
 --- !u!33 &7837294224608317383
@@ -137,3 +139,16 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 2.3000002, y: 0.2, z: 2.3000002}
   m_Center: {x: -0.050000012, y: 0.1, z: -0.050000012}
+--- !u!114 &6175935057504639698
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6286329183678759311}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1fd26484d3cf76a408c14eabfbca9561, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  coord: {x: 0, y: 0}

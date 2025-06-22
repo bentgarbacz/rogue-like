@@ -39,14 +39,16 @@ public class NPCGenerator : MonoBehaviour
     {
 
         GameObject newChest = Instantiate(chest, spawnPos + spawnPosOffset, Quaternion.Euler(0, Random.Range(0, 8) * 45, 0));
+        newChest.GetComponent<ObjectVisibility>().Initialize();
         dum.AddGameObject(newChest);
-        newChest.GetComponent<Loot>().coord = new Vector2Int((int)spawnPos.x, (int)spawnPos.z);
+        newChest.GetComponent<Loot>().loc.coord = new Vector2Int((int)spawnPos.x, (int)spawnPos.z);
     }
 
     public void CreateNPC(NPCType npcType, Vector3 spawnPos, DungeonManager dum)
     {
 
         GameObject enemy = GetPrefab(npcType, spawnPos + spawnPosOffset);
+        enemy.GetComponent<ObjectVisibility>().Initialize();
         Vector2Int spawnCoord = new((int)spawnPos.x, (int)spawnPos.z); 
         
         if(enemy != null)

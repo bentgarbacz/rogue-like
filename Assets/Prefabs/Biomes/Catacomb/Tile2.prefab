@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 2203503320197660670}
   - component: {fileID: -4466122755756851597}
   - component: {fileID: -6557106185311415689}
+  - component: {fileID: -821751648905247816}
   m_Layer: 3
   m_Name: Tile2
   m_TagString: Untagged
@@ -48,7 +49,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ac4587eee4b3bc4381bce15d0b02fc6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  coord: {x: 0, y: 0}
+  loc: {fileID: -821751648905247816}
+  state: 1
   iconType: 3
   actionable: 1
 --- !u!33 &2881980020966100247
@@ -115,6 +117,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   highlightColor: {r: 0.5943396, g: 0.5914356, b: 0.55789423, a: 1}
   actionDescription: 
+  highlighted: 0
 --- !u!65 &-6557106185311415689
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -136,3 +139,16 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 2.3000002, y: 0.2, z: 2.3000002}
   m_Center: {x: -0.050000012, y: 0.1, z: -0.050000012}
+--- !u!114 &-821751648905247816
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 528344045854216182}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1fd26484d3cf76a408c14eabfbca9561, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  coord: {x: 0, y: 0}

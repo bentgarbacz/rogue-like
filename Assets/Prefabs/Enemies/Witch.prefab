@@ -19,7 +19,7 @@ GameObject:
   - component: {fileID: 3742507896232058788}
   - component: {fileID: 4793746717230120371}
   - component: {fileID: -3471939831133976243}
-  - component: {fileID: -7436756974925007480}
+  - component: {fileID: -4638706645687807641}
   m_Layer: 0
   m_Name: Witch
   m_TagString: Untagged
@@ -199,7 +199,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e28e58700de99445829d03c30c3dcd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  coord: {x: 0, y: 0}
+  loc: {fileID: -4638706645687807641}
   maxHealth: 1
   health: 1
   accuracy: 100
@@ -220,6 +220,7 @@ MonoBehaviour:
   attackClip: {fileID: 0}
   missClip: {fileID: 0}
   title: N/A
+  aggroNoise: {fileID: 0}
 --- !u!114 &-3471939831133976243
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -233,7 +234,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isActive: 1
---- !u!114 &-7436756974925007480
+--- !u!114 &-4638706645687807641
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -242,7 +243,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1209241037779243595}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8e059b1ece22d344a577955585925b1, type: 3}
+  m_Script: {fileID: 11500000, guid: 1fd26484d3cf76a408c14eabfbca9561, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isActive: 1
+  coord: {x: 0, y: 0}

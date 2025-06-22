@@ -19,7 +19,7 @@ GameObject:
   - component: {fileID: 1987386116940320477}
   - component: {fileID: 6285372883834492794}
   - component: {fileID: -4550968541817060802}
-  - component: {fileID: 1862947827395877442}
+  - component: {fileID: 621349534230966677}
   m_Layer: 6
   m_Name: skeleton archer
   m_TagString: Untagged
@@ -199,7 +199,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ec9413be0a00a849ad6ab5e543ca9b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  coord: {x: 0, y: 0}
+  loc: {fileID: 621349534230966677}
   maxHealth: 1
   health: 1
   accuracy: 100
@@ -220,6 +220,7 @@ MonoBehaviour:
   attackClip: {fileID: 0}
   missClip: {fileID: 0}
   title: N/A
+  aggroNoise: {fileID: 0}
 --- !u!114 &-4550968541817060802
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -233,7 +234,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isActive: 1
---- !u!114 &1862947827395877442
+--- !u!114 &621349534230966677
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -242,7 +243,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3972246722018788467}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8e059b1ece22d344a577955585925b1, type: 3}
+  m_Script: {fileID: 11500000, guid: 1fd26484d3cf76a408c14eabfbca9561, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isActive: 1
+  coord: {x: 0, y: 0}

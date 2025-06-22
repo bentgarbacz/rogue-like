@@ -70,7 +70,7 @@ public class Door : Interactable
         }
 
         transform.Rotate(0f, angle, 0f);
-        this.coord = coord;
+        this.loc.coord = coord;
         dum.occupiedlist.Add(coord);
     }
 
@@ -104,7 +104,7 @@ public class Door : Interactable
         audioSource.Play();
         isOpen = true;
         transform.Rotate(0f, 90f, 0f);
-        dum.occupiedlist.Remove(coord);
+        dum.occupiedlist.Remove(loc.coord);
 
         visionBlockBox.enabled = false;
         Physics.SyncTransforms();
@@ -117,14 +117,14 @@ public class Door : Interactable
     private bool CloseDoor()
     {
 
-        if(!dum.occupiedlist.Contains(coord))
+        if(!dum.occupiedlist.Contains(loc.coord))
         {
             
             objectHighlighter.SetActionText("Open");
             audioSource.Play();
             isOpen = false;
             transform.Rotate(0f, -90f, 0f);
-            dum.occupiedlist.Add(coord); 
+            dum.occupiedlist.Add(loc.coord); 
 
             visionBlockBox.enabled = true;
 

@@ -149,8 +149,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3d587f9b4ad1974888f707e9600063d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speed: 8
   shot: {fileID: 8300000, guid: ac7903de7a9510949bddcffcf844d3e9, type: 3}
   hit: {fileID: 8300000, guid: b97c14d2a3c7f1b41be6f4c99e174e49, type: 3}
+  curvesTowardsTarget: 0
 --- !u!82 &-3996186294629445181
 AudioSource:
   m_ObjectHideFlags: 0

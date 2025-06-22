@@ -106,8 +106,11 @@ GameObject:
   - component: {fileID: 3160447327852092079}
   - component: {fileID: 1850364924568299778}
   - component: {fileID: 89840377945825154}
-  - component: {fileID: 2468885874815086548}
   - component: {fileID: 7631133756603016576}
+  - component: {fileID: 5640652211508991442}
+  - component: {fileID: 266684422376629717}
+  - component: {fileID: 3525938628705364916}
+  - component: {fileID: -323566026013006342}
   m_Layer: 0
   m_Name: Exit
   m_TagString: Untagged
@@ -194,9 +197,50 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e47d2a07a8ea1f343bc86498c378d42c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  loc: {fileID: 5640652211508991442}
+--- !u!114 &7631133756603016576
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2862989877608427773}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5294ecea600c22f4eb21799baf7cf0f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  highlightColor: {r: 1, g: 0.5426793, b: 0.08018869, a: 1}
+  actionDescription: Descend
+  highlighted: 0
+--- !u!114 &5640652211508991442
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2862989877608427773}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1fd26484d3cf76a408c14eabfbca9561, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   coord: {x: 0, y: 0}
---- !u!64 &2468885874815086548
-MeshCollider:
+--- !u!114 &266684422376629717
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2862989877608427773}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8e059b1ece22d344a577955585925b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isActive: 1
+--- !u!65 &3525938628705364916
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -213,11 +257,10 @@ MeshCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -2432090755550338912, guid: ffc6d91457f22784cb04c8a3a2aaeba2, type: 3}
---- !u!114 &7631133756603016576
+  serializedVersion: 3
+  m_Size: {x: 2.5000005, y: 7.3, z: 2.9000008}
+  m_Center: {x: -0.049999963, y: 3.65, z: 0.15000007}
+--- !u!114 &-323566026013006342
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -226,11 +269,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 2862989877608427773}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5294ecea600c22f4eb21799baf7cf0f2, type: 3}
+  m_Script: {fileID: 11500000, guid: 9ac4587eee4b3bc4381bce15d0b02fc6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  highlightColor: {r: 1, g: 0.5426793, b: 0.08018869, a: 1}
-  actionDescription: Descend
+  loc: {fileID: 5640652211508991442}
+  state: 1
+  iconType: 2
+  actionable: 1
 --- !u!1 &9170875677439951552
 GameObject:
   m_ObjectHideFlags: 0

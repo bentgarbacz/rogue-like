@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 922014821705260405}
   - component: {fileID: 6351327343954653272}
   - component: {fileID: 6702184399526942547}
+  - component: {fileID: -2319568000336020780}
   m_Layer: 8
   m_Name: CaveWalltest
   m_TagString: Untagged
@@ -97,7 +98,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ac4587eee4b3bc4381bce15d0b02fc6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  coord: {x: 0, y: 0}
+  loc: {fileID: -2319568000336020780}
   state: 1
   iconType: 4
   actionable: 0
@@ -122,3 +123,16 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.539743, y: 2.9218435, z: 1.0341575}
   m_Center: {x: -0.06604859, y: 1.4609218, z: -0.023470776}
+--- !u!114 &-2319568000336020780
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2382165418398810183}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1fd26484d3cf76a408c14eabfbca9561, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  coord: {x: 0, y: 0}

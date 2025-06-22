@@ -99,7 +99,7 @@ PrefabInstance:
       addedObject: {fileID: -4323945779801790826}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 69a0bbb650622d34fa413d56f3d0e526, type: 3}
       insertIndex: -1
-      addedObject: {fileID: -5833097699364529717}
+      addedObject: {fileID: 3869853619381995738}
   m_SourcePrefab: {fileID: 100100000, guid: 69a0bbb650622d34fa413d56f3d0e526, type: 3}
 --- !u!1 &5245498800819785574 stripped
 GameObject:
@@ -175,8 +175,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2.1274436, y: 3.7581964, z: 1.4}
-  m_Center: {x: 1.25, y: 3.370899, z: 0}
+  m_Size: {x: 2.0073583, y: 5.0156894, z: 1.5781454}
+  m_Center: {x: 1.2697414, y: 2.5824673, z: -0.68788016}
 --- !u!65 &2756942916874697700
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -196,8 +196,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 8, y: 4.929639, z: 0.39999986}
-  m_Center: {x: 1.25, y: 2.494748, z: -1.6790068}
+  m_Size: {x: 8, y: 6.007502, z: 0.39999986}
+  m_Center: {x: 1.25, y: 2.6544352, z: -1.6790068}
 --- !u!114 &3710129273520718020
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -225,7 +225,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b540e3fe6a67f304688eec6bbcc71577, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  coord: {x: 0, y: 0}
+  loc: {fileID: 3869853619381995738}
 --- !u!82 &881991499906202363
 AudioSource:
   m_ObjectHideFlags: 0
@@ -246,7 +246,7 @@ AudioSource:
   SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 1
-  MinDistance: 1.0055009
+  MinDistance: 0.99004173
   MaxDistance: 500
   Pan2D: 0
   rolloffMode: 0
@@ -335,7 +335,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isActive: 1
---- !u!114 &-5833097699364529717
+--- !u!114 &3869853619381995738
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -344,7 +344,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5245498800819785574}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8e059b1ece22d344a577955585925b1, type: 3}
+  m_Script: {fileID: 11500000, guid: 1fd26484d3cf76a408c14eabfbca9561, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isActive: 1
+  coord: {x: 0, y: 0}

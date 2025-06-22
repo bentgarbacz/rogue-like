@@ -18,8 +18,8 @@ public class CatacombBiome : Biome
     public List<NPCType> possibleEnemyTypes = new()
     {
 
-        NPCType.Skeleton,
-        NPCType.SkeletonArcher,
+        NPCType.Slime,
+        NPCType.Slime,
         NPCType.Slime
     };
 
@@ -70,21 +70,22 @@ public class CatacombBiome : Biome
     {
 
         spawnPos.y -= exitSpawnPosVertOffset;
-        GameObject newCatacombExit = Instantiate(catacombExit, spawnPos, catacombExit.transform.rotation);
+        GameObject newExit = Instantiate(catacombExit, spawnPos, catacombExit.transform.rotation);
+        newExit.GetComponent<ObjectVisibility>().Initialize();;
 
-        foreach(Vector2Int direction in Direction2D.cardinalDirectionsList)
+        foreach (Vector2Int direction in Direction2D.cardinalDirectionsList)
         {
 
-            if(dungeonCoords.Contains(position + direction))
+            if (dungeonCoords.Contains(position + direction))
             {
-                
-                newCatacombExit.transform.rotation = Quaternion.Euler(0, GameFunctions.DetermineRotation(newCatacombExit.transform.position, new Vector3(position.x + direction.x, 0, position.y + direction.y)), 0);
+
+                newExit.transform.rotation = Quaternion.Euler(0, GameFunctions.DetermineRotation(newExit.transform.position, new Vector3(position.x + direction.x, 0, position.y + direction.y)), 0);
                 break;
             }
         }
 
-        newCatacombExit.GetComponent<Exit>().coord = position;
-        dum.AddGameObject(newCatacombExit);
+        newExit.GetComponent<Exit>().loc.coord = position;
+        dum.AddGameObject(newExit);
     }
 
     public override GameObject CreateWallTile(Vector3 spawnPos)
@@ -98,7 +99,7 @@ public class CatacombBiome : Biome
         return newWall;
     }
 
-    public override bool GenerateLevel(HashSet<Vector2Int> dungeonCoords)
+    public override Vector2Int GenerateLevel(HashSet<Vector2Int> dungeonCoords)
     {
 
         int width = 50;
@@ -258,8 +259,9 @@ public class CatacombBiome : Biome
 
                     Vector3 doorPos = new(perimeterCoord.x-0.5f, 0, perimeterCoord.y-0.5f);
                     GameObject newDoor = Instantiate(catacombDoor, doorPos, catacombDoor.transform.rotation);
-                    dum.AddGameObject(newDoor);
                     newDoor.GetComponent<Door>().InitDoor(perimeterCoord, room.GetDirectionFromRoom(perimeterCoord));
+                    newDoor.GetComponent<ObjectVisibility>().Initialize();
+                    dum.AddGameObject(newDoor);
                 }
             }
         }
@@ -286,7 +288,8 @@ public class CatacombBiome : Biome
                 Vector3 enemyPos = new Vector3(enemyCoord.x, 0, enemyCoord.y);
 
                 // Spawn the enemy at the chosen position
-                npcGen.CreateNPC(possibleEnemyTypes[ Random.Range(0, 3) ], enemyPos, dum);
+                //npcGen.CreateNPC(possibleEnemyTypes[ Random.Range(0, 3) ], enemyPos, dum);
+                npcGen.CreateNPC(NPCType.Slime, enemyPos, dum);
             }
         }
 
@@ -295,15 +298,13 @@ public class CatacombBiome : Biome
         foreach (Vector2Int coord in PathFinder.GetNeighbors(entranceCoord, dungeonCoords))
         {
 
-            PlayerCharacterSheet pc = dum.hero.GetComponent<PlayerCharacterSheet>();
-
-            if (pc.Move(coord, dum.occupiedlist))
+            if(!dum.occupiedlist.Contains(coord))
             {
 
-                break;
+                return coord;
             }
         }
 
-       return true;
+       return entranceCoord;
     }
 }

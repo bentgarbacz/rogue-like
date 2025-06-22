@@ -6,6 +6,8 @@ public class EnemyCharacterSheet : CharacterSheet
 {
 
     private NameplateManager npm;
+    public AudioClip aggroNoise;
+    public float aggroRange = 10;
 
     public override void Start()
     {
@@ -13,7 +15,7 @@ public class EnemyCharacterSheet : CharacterSheet
         base.Start();
         npm = GameObject.Find("CanvasHUD").transform.GetChild(10).GetComponent<NameplateManager>();
 
-
+        aggroNoise = Resources.Load<AudioClip>("Sounds/aggroNoise");
     }
 
     //Custom rules that describe how each enemy reacts when they see the player character
@@ -25,12 +27,12 @@ public class EnemyCharacterSheet : CharacterSheet
         if (!cbm.AddMeleeAttack(this.gameObject, dum.hero, minDamage, maxDamage, speed))
         {
 
-            List<Vector2Int> pathToPlayer = PathFinder.FindPath(coord, playerCharacter.coord, dum.dungeonCoords, ignoredPoints: dum.occupiedlist);
+            List<Vector2Int> pathToPlayer = PathFinder.FindPath(loc.coord, playerCharacter.loc.coord, dum.dungeonCoords, ignoredPoints: dum.occupiedlist);
 
             if (pathToPlayer == null)
             {
 
-                pathToPlayer = PathFinder.FindPath(coord, playerCharacter.coord, dum.dungeonCoords);
+                pathToPlayer = PathFinder.FindPath(loc.coord, playerCharacter.loc.coord, dum.dungeonCoords);
             }
 
             Move(pathToPlayer[1], dum.occupiedlist, waitTime);
@@ -41,10 +43,10 @@ public class EnemyCharacterSheet : CharacterSheet
     {
 
         //run away from player
-        Vector2Int playerCoord = dum.hero.GetComponent<PlayerCharacterSheet>().coord;
-        Vector2Int fleePath = coord;
+        Vector2Int playerCoord = dum.hero.GetComponent<PlayerCharacterSheet>().loc.coord;
+        Vector2Int fleePath = loc.coord;
 
-        foreach (Vector2Int p in PathFinder.GetNeighbors(coord, dum.dungeonCoords))
+        foreach (Vector2Int p in PathFinder.GetNeighbors(loc.coord, dum.dungeonCoords))
         {
 
             if (PathFinder.CalculateDistance(p, playerCoord) > PathFinder.CalculateDistance(fleePath, playerCoord))
@@ -66,6 +68,7 @@ public class EnemyCharacterSheet : CharacterSheet
     {
 
         GetComponent<TextNotificationManager>().CreateNotificationOrder(transform.position, 2, "!", Color.red);
+        audioSource.PlayOneShot(aggroNoise);
         return true;
     }
 

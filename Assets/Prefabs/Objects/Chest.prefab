@@ -110,7 +110,7 @@ GameObject:
   - component: {fileID: 7602760449659616811}
   - component: {fileID: 2921102596435833029}
   - component: {fileID: 8168649644023386049}
-  - component: {fileID: 4035718498325069953}
+  - component: {fileID: 7463949871396559584}
   m_Layer: 3
   m_Name: Chest
   m_TagString: Untagged
@@ -232,7 +232,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb5f41fc8cab10c4984fc592266ae150, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  coord: {x: 0, y: 0}
+  loc: {fileID: 7463949871396559584}
   openMesh: {fileID: -2432090755550338912, guid: b5bba572b4bf9e447a0eb6ff324eaf17, type: 3}
   lootTable: Chest
 --- !u!82 &2921102596435833029
@@ -344,7 +344,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isActive: 1
---- !u!114 &4035718498325069953
+--- !u!114 &7463949871396559584
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -353,7 +353,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6493254730876405042}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8e059b1ece22d344a577955585925b1, type: 3}
+  m_Script: {fileID: 11500000, guid: 1fd26484d3cf76a408c14eabfbca9561, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isActive: 1
+  coord: {x: 0, y: 0}

@@ -19,7 +19,7 @@ GameObject:
   - component: {fileID: 4570589818020675942}
   - component: {fileID: 6244909000317428381}
   - component: {fileID: -6680296695345406091}
-  - component: {fileID: 710569889660411446}
+  - component: {fileID: -7728542922694594339}
   m_Layer: 6
   m_Name: skeleton
   m_TagString: Untagged
@@ -170,7 +170,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86c6d4bd27f740949b437f6476c12d62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  coord: {x: 0, y: 0}
+  loc: {fileID: -7728542922694594339}
   maxHealth: 1
   health: 1
   accuracy: 100
@@ -191,6 +191,7 @@ MonoBehaviour:
   attackClip: {fileID: 0}
   missClip: {fileID: 0}
   title: N/A
+  aggroNoise: {fileID: 0}
 --- !u!114 &4570589818020675942
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -233,7 +234,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isActive: 1
---- !u!114 &710569889660411446
+--- !u!114 &-7728542922694594339
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -242,7 +243,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7806514022559795084}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8e059b1ece22d344a577955585925b1, type: 3}
+  m_Script: {fileID: 11500000, guid: 1fd26484d3cf76a408c14eabfbca9561, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isActive: 1
+  coord: {x: 0, y: 0}

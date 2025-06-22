@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7166957826822690183}
   - component: {fileID: -5166920695553764603}
   - component: {fileID: 2518684346852878964}
+  - component: {fileID: -4058603167762793119}
   m_Layer: 8
   m_Name: Wall
   m_TagString: Untagged
@@ -97,7 +98,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ac4587eee4b3bc4381bce15d0b02fc6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  coord: {x: 0, y: 0}
+  loc: {fileID: -4058603167762793119}
   state: 1
   iconType: 4
   actionable: 0
@@ -122,3 +123,16 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.5, y: 5.1, z: 1.5}
   m_Center: {x: -0.049999952, y: 2.55, z: -0.049999952}
+--- !u!114 &-4058603167762793119
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2564236300543592276}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1fd26484d3cf76a408c14eabfbca9561, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  coord: {x: 0, y: 0}
