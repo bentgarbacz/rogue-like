@@ -19,6 +19,10 @@ public class MiniMapManager : MonoBehaviour
     private Dictionary<Vector2Int, MapIconController> tileIcons;
     private DungeonManager dum;
     private MapIconController anchorIcon;
+    private static int tileLayer = 1;
+    private static int objectLayer = 2;
+    private static int characterLayer = 3;
+    private static int pcLayer = 5;
 
     void Start()
     {  
@@ -76,7 +80,7 @@ public class MiniMapManager : MonoBehaviour
 
         dynamicObjectIcons.Add(anchorIcon);
 
-        anchorIcon.InitializeController(dum.hero, pcIcon, dum.playerCharacter.loc.coord, 5, 0.66f);
+        anchorIcon.InitializeController(dum.hero, pcIcon, dum.playerCharacter.loc.coord, pcLayer, 0.66f);
     }
 
     public void AddIcon(GameObject newObject)
@@ -91,19 +95,19 @@ public class MiniMapManager : MonoBehaviour
             if (currentTile.GetIconType() == IconType.Entrance)
             {
 
-                mic.InitializeController(newObject, entranceIcon, currentTile.loc.coord, 0, 1.33f);
+                mic.InitializeController(newObject, entranceIcon, currentTile.loc.coord, tileLayer, 1.33f);
 
             }
             else if (currentTile.GetIconType() == IconType.Tile)
             {
 
-                mic.InitializeController(newObject, tileIcon, currentTile.loc.coord, 0);
+                mic.InitializeController(newObject, tileIcon, currentTile.loc.coord, tileLayer);
 
             }
             else if (currentTile.GetIconType() == IconType.Wall)
             {
 
-                mic.InitializeController(newObject, tileIcon, currentTile.loc.coord, 0);
+                mic.InitializeController(newObject, tileIcon, currentTile.loc.coord, tileLayer);
                 Color currentColor = mic.Icon().color;
                 mic.Icon().color = new Color(currentColor.r * 0.5f, currentColor.g * 0.5f, currentColor.b * 0.5f, currentColor.a);
 
@@ -111,7 +115,7 @@ public class MiniMapManager : MonoBehaviour
             else if (currentTile.GetIconType() == IconType.Exit)
             {
 
-                mic.InitializeController(newObject, exitIcon, currentTile.loc.coord, 0, 1.33f);
+                mic.InitializeController(newObject, exitIcon, currentTile.loc.coord, tileLayer, 1.33f);
             }
 
             tileIcons.Add(currentTile.loc.coord, mic);          
@@ -120,7 +124,7 @@ public class MiniMapManager : MonoBehaviour
         else if (newObject.GetComponent<Loot>() is Loot currentLoot)
         {
 
-            mic.InitializeController(newObject, objectIcon, currentLoot.loc.coord, 3, 0.66f);
+            mic.InitializeController(newObject, objectIcon, currentLoot.loc.coord, objectLayer, 0.66f);
             dynamicObjectIcons.Add(mic);
 
         }
@@ -131,7 +135,7 @@ public class MiniMapManager : MonoBehaviour
             {
 
                 mic.SetIcon(enemyIcon);
-                mic.InitializeController(newObject, enemyIcon, currentCharacter.loc.coord, 4, 0.66f);
+                mic.InitializeController(newObject, enemyIcon, currentCharacter.loc.coord, characterLayer, 0.66f);
             }
 
             dynamicObjectIcons.Add(mic);

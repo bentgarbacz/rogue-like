@@ -73,6 +73,5 @@ public class NPCGenerator : MonoBehaviour
 
             return null;
         }
-
     }
 }

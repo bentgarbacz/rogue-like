@@ -15,7 +15,9 @@ public static class LootTableReferences
         {
             {
                 "DebugChest",
-                new List<Item>(){   
+                new List<Item>(){
+                                    new TelekinesisScroll(100),
+                                    new ClairvoyanceScroll(100),
                                     new DebugHelm(100),
                                     new SlinkAwayScroll(100),
                                     new FortifyScroll(100),

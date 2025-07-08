@@ -10,7 +10,7 @@ public class SpellReferences : MonoBehaviour
 
     void Awake()
     {
-        
+
         spellDictionary.Add(SpellType.Heal, new Heal());
         spellDictionary.Add(SpellType.Fireball, new Fireball());
         spellDictionary.Add(SpellType.Teleport, new Teleport());
@@ -18,5 +18,7 @@ public class SpellReferences : MonoBehaviour
         spellDictionary.Add(SpellType.Fortify, new Fortify());
         spellDictionary.Add(SpellType.SavageLeap, new SavageLeap());
         spellDictionary.Add(SpellType.SlinkAway, new SlinkAway());
+        spellDictionary.Add(SpellType.Clairvoyance, new Clairvoyance());
+        spellDictionary.Add(SpellType.Telekinesis, new Telekinesis());
     }
 }

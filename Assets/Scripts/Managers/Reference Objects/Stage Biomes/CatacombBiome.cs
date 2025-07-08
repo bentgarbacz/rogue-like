@@ -18,9 +18,9 @@ public class CatacombBiome : Biome
     public List<NPCType> possibleEnemyTypes = new()
     {
 
-        NPCType.Slime,
-        NPCType.Slime,
-        NPCType.Slime
+        NPCType.Skeleton,
+        NPCType.Skeleton,
+        NPCType.Skeleton
     };
 
     public override void CreateTile(Vector3 spawnPos, Vector2Int position, int spawnRNG)
@@ -288,8 +288,8 @@ public class CatacombBiome : Biome
                 Vector3 enemyPos = new Vector3(enemyCoord.x, 0, enemyCoord.y);
 
                 // Spawn the enemy at the chosen position
-                //npcGen.CreateNPC(possibleEnemyTypes[ Random.Range(0, 3) ], enemyPos, dum);
-                npcGen.CreateNPC(NPCType.Slime, enemyPos, dum);
+                npcGen.CreateNPC(possibleEnemyTypes[ Random.Range(0, 2) ], enemyPos, dum);
+                //npcGen.CreateNPC(NPCType.Slime, enemyPos, dum);
             }
         }
 

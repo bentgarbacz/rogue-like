@@ -29,37 +29,43 @@ public class SavageLeap : Spell
     public override bool Cast(GameObject caster, GameObject target)
     {
 
-        if(target.GetComponent<CharacterSheet>())
+        if (!target.GetComponent<CharacterSheet>())
         {
 
-            Equipment mainHandWeapon = (Equipment)im.equipmentSlotsDictionary[ItemSlotType.MainHand].item;
-            CharacterSheet attackingCharacter = caster.GetComponent<CharacterSheet>();
-            CharacterSheet defendingCharacter = target.GetComponent<CharacterSheet>();
-            
-            if(mainHandWeapon != null)
-            {
-                float distance = Vector3.Distance(caster.transform.position, target.transform.position);
-
-                int minDamage = mainHandWeapon.bonusStatDictionary[StatType.MinDamage];
-                int maxDamage = mainHandWeapon.bonusStatDictionary[StatType.MaxDamage];
-
-                if(mainHandWeapon is not RangedWeapon && LineOfSight.HasLOS(caster, target) && distance <= range)
-                {
-                    
-                    if(!TeleportToTarget(attackingCharacter, defendingCharacter))
-                    {
-
-                        return false;
-                    }
-
-                    cbm.AddMeleeAttack(caster, target, minDamage, maxDamage, attackingCharacter.speed );
-
-                    ResetCooldown(caster);
-                    return true;
-                }
-            }
+            return false;
         }
 
+        Equipment mainHandWeapon = (Equipment)im.equipmentSlotsDictionary[ItemSlotType.MainHand].item;
+
+        if (mainHandWeapon == null)
+        {
+
+            return false;
+        }
+
+        CharacterSheet attackingCharacter = caster.GetComponent<CharacterSheet>();
+        CharacterSheet defendingCharacter = target.GetComponent<CharacterSheet>();
+        
+        float distance = Vector3.Distance(caster.transform.position, target.transform.position);
+
+        int minDamage = mainHandWeapon.bonusStatDictionary[StatType.MinDamage];
+        int maxDamage = mainHandWeapon.bonusStatDictionary[StatType.MaxDamage];
+
+        if(mainHandWeapon is not RangedWeapon && LineOfSight.HasLOS(caster, target) && distance <= range)
+        {
+            
+            if(!TeleportToTarget(attackingCharacter, defendingCharacter))
+            {
+
+                return false;
+            }
+
+            cbm.AddMeleeAttack(caster, target, minDamage, maxDamage, attackingCharacter.speed );
+
+            ResetCooldown(caster);
+            return true;
+        }
+        
         return false;
     }
 
