@@ -5,10 +5,9 @@ using UnityEngine;
 public class CharacterSheet : MonoBehaviour
 {
 
-    //public Vector2Int coord;
     public ObjectLocation loc;
+    public CharacterHealth characterHealth;
     public int maxHealth = 1;
-    public int health = 1;
     public int accuracy = 100;
     public int minDamage = 0;
     public int maxDamage = 0;
@@ -33,24 +32,12 @@ public class CharacterSheet : MonoBehaviour
     {
         
         GetComponent<MoveToTarget>().target = transform.position;
-        //loc = GetComponent<ObjectLocation>();
         loc.coord = new Vector2Int((int)transform.position.x, (int)transform.position.z);
+        characterHealth.InitHealth(maxHealth);
 
         sem = gameObject.AddComponent<StatusEffectManager>();
         audioSource = gameObject.AddComponent<AudioSource>();
         missClip = Resources.Load<AudioClip>("Sounds/Miss");
-    }
-
-    public virtual int TakeDamage(int damage)
-    {
-
-        return health -= damage;
-    }
-
-    public virtual void Heal(int healValue)
-    {
-
-        health = System.Math.Min(maxHealth, health + healValue);
     }
 
     public virtual bool Move(Vector2Int newCoord, HashSet<Vector2Int> occupiedlist, float waitTime = 0f)

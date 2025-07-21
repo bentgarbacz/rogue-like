@@ -7,6 +7,7 @@ public class Poison : StatusEffect
     
     public int damageOverTime;
     private DungeonManager dum;
+    private CharacterHealth characterHealth;
 
     public Poison(CharacterSheet affectedCharacter, int duration, int damageOverTime, DungeonManager dum)
     {
@@ -17,18 +18,20 @@ public class Poison : StatusEffect
         this.damageOverTime = damageOverTime;
         this.dum = dum;
         this.sprite = Resources.Load<Sprite>("Pixel Art/Spells/Poison");
+
+        characterHealth = affectedCharacter.GetComponent<CharacterHealth>();
     }
 
     public override int Effect()
     {
 
-        affectedCharacter.TakeDamage(damageOverTime);
+        characterHealth.TakeDamage(damageOverTime);
         affectedCharacter.GetComponent<TextNotificationManager>().CreateNotificationOrder(affectedCharacter.transform.position, 2f, damageOverTime.ToString(), Color.green);
         
-        if(affectedCharacter.health <= 0)
+        if(characterHealth.currentHealth <= 0)
         {
 
-            dum.Smite(affectedCharacter.gameObject, affectedCharacter.loc.coord);
+            dum.Smite(affectedCharacter.gameObject);
         }
 
         duration -= 1;

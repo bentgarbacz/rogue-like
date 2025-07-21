@@ -36,54 +36,50 @@ public class SpellCaster : MonoBehaviour
 
     void LateUpdate()
     {
-        
-        if(targeting == true)
+
+        if (!targeting || !mouse.leftButton.wasPressedThisFrame)
         {
 
-            if(mouse.leftButton.wasPressedThisFrame)
-            {
+            return;
+        }
 
-                GameObject target = cm.GetObject();
+        GameObject target = cm.GetObject();
 
-                if(target != null && currentSpell != null)
+        if(target != null && currentSpell != null)
+        {
+
+            if(currentSpell.Cast(this.gameObject, target))
+            {                        
+
+                if(currentSpell.castSound != null)
                 {
-                    
-                    bool spellCastSuccessfully = currentSpell.Cast(this.gameObject, target);
 
-                    if(spellCastSuccessfully)
-                    {                        
-
-                        if(currentSpell.castSound != null)
-                        {
-
-                            audioSource.PlayOneShot(currentSpell.castSound);
-                        }
-
-                        if(selfCasting)
-                        {
-
-                            SpendSpellCost(currentSpell.spellType);
-                            selfCasting = false;
-                        }
-
-                        if(currentItemSlot != null && currentScroll != null)
-                        {
-                        
-                            currentItemSlot.ThrowAway();
-                            currentScroll.Use();
-                            currentItemSlot = null;
-                            currentScroll = null;
-                        }
-
-                        ts.SignalAction();
-                    }
+                    audioSource.PlayOneShot(currentSpell.castSound);
                 }
 
-                currentSpell = null;
-                SetTargeting(false);
-                ttm.DisableForceTooltip();
+                if(selfCasting)
+                {
+
+                    SpendSpellCost(currentSpell.spellType);
+                    selfCasting = false;
+                }
+
+                if(currentItemSlot != null && currentScroll != null)
+                {
+                
+                    currentItemSlot.ThrowAway();
+                    currentScroll.Use();
+                    currentItemSlot = null;
+                    currentScroll = null;
+                }
+
+                ts.SignalAction();
             }
         }
+
+        currentSpell = null;
+        SetTargeting(false);
+        ttm.DisableForceTooltip();
     }
 
     public void SetTargeting(bool state)

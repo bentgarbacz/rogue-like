@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class Clairvoyance : Spell
 {
-    private VisibilityManager vm;
-    private TileManager tm;
+    private VisibilityManager visManager;
+    private TileManager tileManager;
 
     public Clairvoyance()
     {
@@ -18,15 +18,15 @@ public class Clairvoyance : Spell
 
         GameObject managers = GameObject.Find("System Managers");
 
-        vm = managers.GetComponent<VisibilityManager>();
-        tm = managers.GetComponent<TileManager>();
+        visManager = managers.GetComponent<VisibilityManager>();
+        tileManager = managers.GetComponent<TileManager>();
     }
 
     public override bool Cast(GameObject caster, GameObject target = null)
     {
 
-        tm.RevealAllTiles();
-        vm.ForceAllVisibility(true);
+        tileManager.RevealAllTiles();
+        visManager.ForceAllVisibility(true);
         ResetCooldown(caster);
         return true;
     }

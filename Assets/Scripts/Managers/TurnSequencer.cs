@@ -24,8 +24,8 @@ public class TurnSequencer : MonoBehaviour
     [SerializeField] private MiniMapManager miniMapManager;
     [SerializeField] private TileManager tileManager;
     [SerializeField] private VisibilityManager visibilityManager;
-
-
+    [SerializeField] private DijkstraMapManager djMapGenerator;
+ 
     void Start()
     {
 
@@ -101,6 +101,8 @@ public class TurnSequencer : MonoBehaviour
 
             return false;
         }
+        string filePath = @"C:\Users\bentg\Downloads\map_output.txt";
+        djMapGenerator.PrintMapToFile(djMapGenerator.CreateMapAboutObject(dum.hero, 100), filePath);
 
         Tile targetTile = target.GetComponent<Tile>();
         CharacterSheet targetCharacter = target.GetComponent<CharacterSheet>();

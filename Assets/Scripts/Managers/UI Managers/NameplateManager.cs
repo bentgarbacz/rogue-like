@@ -9,7 +9,8 @@ public class NameplateManager : MonoBehaviour
 
     [SerializeField]private Image bar;
     [SerializeField]private TextMeshProUGUI text;
-    private EnemyCharacterSheet character;
+    private EnemyCharacterSheet characterSheet;
+    private CharacterHealth characterHealth;
     private ObjectHighlighter characterHighlighter;
     private UIActiveManager uiam;
     public int displayTime = 0;
@@ -24,10 +25,10 @@ public class NameplateManager : MonoBehaviour
     public void UpdateHealth()
     {
         
-        if(character != null)
+        if(characterHealth != null)
         {
 
-            bar.fillAmount = (float)character.health / (float)character.maxHealth;
+            bar.fillAmount = (float)characterHealth.currentHealth / (float)characterHealth.maxHealth;
 
         }else
         {
@@ -39,11 +40,12 @@ public class NameplateManager : MonoBehaviour
     public void SetCharacter(GameObject characterGameObject)
     {
 
-        this.character = characterGameObject.GetComponent<EnemyCharacterSheet>();
+        this.characterSheet = characterGameObject.GetComponent<EnemyCharacterSheet>();
+        this.characterHealth = characterGameObject.GetComponent<CharacterHealth>();
         this.characterHighlighter = characterGameObject.GetComponent<ObjectHighlighter>();
         displayTime = 0;
         UpdateHealth();
-        text.SetText(character.GetName());
+        text.SetText(characterSheet.GetName());
         text.ForceMeshUpdate(true);
 
         uiam.OpenNameplatePanel();
@@ -54,7 +56,8 @@ public class NameplateManager : MonoBehaviour
 
         displayTime = 0;
 
-        this.character = null;
+        this.characterSheet = null;
+        this.characterHealth = null;
         text.SetText("N/A");
         text.ForceMeshUpdate(true);
 
@@ -64,7 +67,7 @@ public class NameplateManager : MonoBehaviour
     public void IncrementDisplayTimer()
     {
 
-        if(displayTime >= 10 && uiam.nameplatePanelIsOpen || character == null)
+        if(displayTime >= 10 && uiam.nameplatePanelIsOpen || characterSheet == null)
         {
 
             ClearCharacter();

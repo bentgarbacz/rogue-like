@@ -10,13 +10,14 @@ public class SkeletonCharacterSheet : EnemyCharacterSheet
         
         base.Start();
         maxHealth = 8;
-        health = maxHealth;
         accuracy = 100;
         minDamage = 1;
         maxDamage = 3;
         level = 3;
         speed = 11;
         evasion = 50;
+
+        characterHealth.InitHealth(maxHealth);
 
         dropTable = "Skeleton";
         title = "Skeleton";

@@ -2,17 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SummonSkullScroll : MonoBehaviour
+public class SummonSkullScroll : Scroll
 {
-    // Start is called before the first frame update
-    void Start()
+    
+    public SummonSkullScroll(int dropChance = 0)
     {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        this.intelligenceRequirement = 15;
+        this.title = "Summon Skull Scroll";
+        this.description = "Read this incantation to cast a spell.\nMemorization requirement: " + this.intelligenceRequirement + " intelligence";
+        this.spellType = SpellType.SummonSkull;
+        SetDropChance(dropChance);
     }
 }

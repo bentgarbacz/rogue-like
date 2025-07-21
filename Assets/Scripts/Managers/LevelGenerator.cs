@@ -99,9 +99,3 @@ public static class Direction2D
         return cardinalDirectionsList[UnityEngine.Random.Range(0, cardinalDirectionsList.Count)];
     }
 }
-
-public static class LevelGenFuncs
-{
-
-    
-}

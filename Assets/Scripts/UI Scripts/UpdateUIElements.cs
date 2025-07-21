@@ -30,12 +30,14 @@ public class UpdateUIElements : MonoBehaviour
     public TextMeshProUGUI freeStatPointsStatus;
     public GameObject hero;
     private PlayerCharacterSheet playerCharacter;
+    private PlayerHealth playerHealth;
     private UIActiveManager uiam;
 
     void Start()
     {
 
         playerCharacter = hero.GetComponent<PlayerCharacterSheet>();
+        playerHealth = hero.GetComponent<PlayerHealth>();
         uiam = GameObject.Find("System Managers").GetComponent<UIActiveManager>();
     }
 
@@ -45,15 +47,15 @@ public class UpdateUIElements : MonoBehaviour
         if(playerCharacter)
         {
 
-            healthStatusHUD.SetText(playerCharacter.health.ToString() + " / " + playerCharacter.maxHealth.ToString());
-            healthBar.fillAmount = (float)playerCharacter.health / (float)playerCharacter.maxHealth;
+            healthStatusHUD.SetText(playerHealth.currentHealth.ToString() + " / " + playerHealth.maxHealth.ToString());
+            healthBar.fillAmount = (float)playerHealth.currentHealth / (float)playerHealth.maxHealth;
             hungerBar.fillAmount = (float)playerCharacter.hunger / (float)playerCharacter.maxHunger;
             xpBar.fillAmount = (float)playerCharacter.totalXP / (float)playerCharacter.GetCurrentLevelUpBreakpoint();
             manaStatusHUD.SetText(playerCharacter.mana.ToString() + " / " + playerCharacter.maxMana.ToString());
             manaBar.fillAmount = (float)playerCharacter.mana / (float)playerCharacter.maxMana;
  
 
-            healthStatus.SetText("Health: " + playerCharacter.health.ToString() + " / " + playerCharacter.maxHealth.ToString());
+            healthStatus.SetText("Health: " + playerHealth.currentHealth.ToString() + " / " + playerHealth.maxHealth.ToString());
             hungerStatus.SetText("Hunger: " + playerCharacter.hunger.ToString());
             experienceStatus.SetText("Experience: " + playerCharacter.totalXP.ToString() + " / " + playerCharacter.GetCurrentLevelUpBreakpoint().ToString());
             manaStatus.SetText("Mana: " + playerCharacter.mana.ToString() + " / " + playerCharacter.maxMana.ToString());

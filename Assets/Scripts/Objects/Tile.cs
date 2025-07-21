@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class Tile : MonoBehaviour
 {
-    //public Vector2Int coord;
+
     public ObjectLocation loc;
     public bool state = true;
+    public HashSet<GameObject> EntitiesOnTile = new();
+    
     [SerializeField] private IconType iconType = IconType.None;
     [SerializeField] private bool actionable = true;
     private MeshRenderer meshRenderer;
