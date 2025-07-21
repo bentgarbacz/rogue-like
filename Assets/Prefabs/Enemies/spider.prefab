@@ -106,6 +106,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a8de573a55ccb6140a093a60bde043d0, type: 3}
       insertIndex: -1
       addedObject: {fileID: -8908208124042497931}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a8de573a55ccb6140a093a60bde043d0, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4047162275050389850}
   m_SourcePrefab: {fileID: 100100000, guid: a8de573a55ccb6140a093a60bde043d0, type: 3}
 --- !u!1 &6401718211484601336 stripped
 GameObject:
@@ -270,8 +273,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   loc: {fileID: -8908208124042497931}
+  characterHealth: {fileID: 4047162275050389850}
   maxHealth: 1
-  health: 1
   accuracy: 100
   minDamage: 0
   maxDamage: 0
@@ -291,6 +294,7 @@ MonoBehaviour:
   missClip: {fileID: 0}
   title: N/A
   aggroNoise: {fileID: 0}
+  aggroRange: 10
 --- !u!114 &2509677380161755348
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -317,3 +321,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   coord: {x: 0, y: 0}
+--- !u!114 &4047162275050389850
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6401718211484601336}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72e87b7061dffdb4eb8b7b698e1343c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 0
+  currentHealth: 0

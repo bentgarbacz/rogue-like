@@ -4,6 +4,8 @@ using UnityEngine;
 public class Heal : Spell
 {
 
+    private int healValue = 10;
+    
     public Heal()
     {
 
@@ -18,7 +20,7 @@ public class Heal : Spell
     public override bool Cast(GameObject caster, GameObject target = null)
     {
 
-        caster.GetComponent<CharacterSheet>().Heal(10);
+        caster.GetComponent<CharacterHealth>().Heal(healValue);
         ResetCooldown(caster);
         return true;
     }

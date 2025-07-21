@@ -12,6 +12,7 @@ public class DropLoot : MonoBehaviour
     private DungeonManager dum;
     private MiniMapManager miniMapManager;
     private VisibilityManager visibilityManager;
+    private TileManager tileManager;
 
 
     void Start()
@@ -22,17 +23,20 @@ public class DropLoot : MonoBehaviour
         dum = managers.GetComponent<DungeonManager>();
         miniMapManager = managers.GetComponent<UIActiveManager>().mapPanel.GetComponent<MiniMapManager>();
         visibilityManager = managers.GetComponent<VisibilityManager>();
+        tileManager = managers.GetComponent<TileManager>();
     }
 
     public void Drop()
     {
 
-        List<Item> droppedItems = LootTableReferences.CreateItems(GetComponent<CharacterSheet>().dropTable);        
+        List<Item> droppedItems = LootTableReferences.CreateItems(GetComponent<CharacterSheet>().dropTable);
 
-        if(droppedItems.Count > 0)
+        if (droppedItems.Count > 0)
         {
 
-            GameFunctions.DropLoot(this.gameObject, container, droppedItems, dum, miniMapManager, visibilityManager);
+            GameObject dropContainer = GameFunctions.DropLoot(this.gameObject, container, droppedItems, dum, miniMapManager, visibilityManager);
+            Vector2Int containerCoord = dropContainer.GetComponent<ObjectLocation>().coord;
+            tileManager.tileDict[containerCoord].EntitiesOnTile.Add(dropContainer);
         }
     }
 }

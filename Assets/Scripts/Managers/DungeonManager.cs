@@ -13,7 +13,6 @@ public class DungeonManager : MonoBehaviour
     public HashSet<Vector2Int> dungeonCoords;
     public HashSet<Vector2Int> occupiedlist = new();
     public HashSet<GameObject> dungeonSpecificGameObjects = new();
-    //public HashSet<GameObject> iconGameObjects = new();
     public HashSet<GameObject> enemies = new();
     public HashSet<GameObject> aggroEnemies = new();
     public HashSet<Loot> itemContainers = new();
@@ -54,13 +53,13 @@ public class DungeonManager : MonoBehaviour
         visibilityManager.AddObject(newGameObject);
     }
 
-    public void Smite(GameObject target, Vector2Int targetCoord)
+    public void Smite(GameObject target)
     {
         //Attacks to and from dead combatants removed from combat buffer
         cbm.PruneCombatBuffer(target);
 
         aggroEnemies.Remove(target);
-        occupiedlist.Remove(targetCoord);
+        occupiedlist.Remove(target.GetComponent<ObjectLocation>().coord);
         enemies.Remove(target);
         visibilityManager.RemoveObject(target);
 
@@ -86,14 +85,16 @@ public class DungeonManager : MonoBehaviour
     public void TossContainer(GameObject trashContainer)
     {
 
-        if (!trashContainer.GetComponent<Chest>())
+        if (trashContainer.GetComponent<Chest>())
         {
 
-            visibilityManager.RemoveObject(trashContainer);
-            dungeonSpecificGameObjects.Remove(trashContainer);
-            Destroy(trashContainer);
-            miniMapManager.UpdateDynamicIcons();
+            return;
         }
+
+        visibilityManager.RemoveObject(trashContainer);
+        dungeonSpecificGameObjects.Remove(trashContainer);
+        Destroy(trashContainer);
+        miniMapManager.UpdateDynamicIcons();
     }
 
     public void CleanUp()
@@ -142,5 +143,17 @@ public class DungeonManager : MonoBehaviour
     {
 
         ts.gameplayHalted = isHalted;
+    }
+
+    public bool CoordIsOpen(Vector2Int coord)
+    {
+
+        if (dungeonCoords.Contains(coord) && !occupiedlist.Contains(coord))
+        {
+
+            return true;
+        }
+
+        return false;
     }
 }

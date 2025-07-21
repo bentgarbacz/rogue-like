@@ -248,7 +248,7 @@ public class CatacombBiome : Biome
                 Vector3 chestPos = new(chestCoord.x, 0, chestCoord.y);
 
                 // Spawn the chest at the chosen position
-                npcGen.CreateChest(chestPos, dum);
+                npcGen.CreateChest(chestPos);
             }
 
             foreach(Vector2Int perimeterCoord in room.GetPerimeterCoordinates())
@@ -288,8 +288,7 @@ public class CatacombBiome : Biome
                 Vector3 enemyPos = new Vector3(enemyCoord.x, 0, enemyCoord.y);
 
                 // Spawn the enemy at the chosen position
-                npcGen.CreateNPC(possibleEnemyTypes[ Random.Range(0, 2) ], enemyPos, dum);
-                //npcGen.CreateNPC(NPCType.Slime, enemyPos, dum);
+                npcGen.CreateNPC(possibleEnemyTypes[ Random.Range(0, 2) ], enemyPos);
             }
         }
 

@@ -5,7 +5,6 @@ using UnityEngine;
 public class EnemyCharacterSheet : CharacterSheet
 {
 
-    private NameplateManager npm;
     public AudioClip aggroNoise;
     public float aggroRange = 10;
 
@@ -13,7 +12,6 @@ public class EnemyCharacterSheet : CharacterSheet
     {
 
         base.Start();
-        npm = GameObject.Find("CanvasHUD").transform.GetChild(10).GetComponent<NameplateManager>();
 
         aggroNoise = Resources.Load<AudioClip>("Sounds/aggroNoise");
     }
@@ -70,21 +68,5 @@ public class EnemyCharacterSheet : CharacterSheet
         GetComponent<TextNotificationManager>().CreateNotificationOrder(transform.position, 2, "!", Color.red);
         audioSource.PlayOneShot(aggroNoise);
         return true;
-    }
-
-    public override void Heal(int healValue)
-    {
-
-        base.Heal(healValue);
-        npm.UpdateHealth();
-    }
-
-    public override int TakeDamage(int damage)
-    {
-
-        int damageTaken = base.TakeDamage(damage);
-        npm.UpdateHealth();
-
-        return damageTaken;
     }
 }

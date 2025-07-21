@@ -10,13 +10,14 @@ public class GoblinCharacterSheet : EnemyCharacterSheet
         
         base.Start();
         maxHealth = 10;
-        health = maxHealth;
         accuracy = 66;
         minDamage = 1;
         maxDamage = 4;
         level = 4;
         speed = 8;
         evasion = 50;
+
+        characterHealth.InitHealth(maxHealth);
 
         dropTable = "Goblin";
         title = "Goblin";

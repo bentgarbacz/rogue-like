@@ -20,5 +20,6 @@ public class SpellReferences : MonoBehaviour
         spellDictionary.Add(SpellType.SlinkAway, new SlinkAway());
         spellDictionary.Add(SpellType.Clairvoyance, new Clairvoyance());
         spellDictionary.Add(SpellType.Telekinesis, new Telekinesis());
+        spellDictionary.Add(SpellType.SummonSkull, new SummonSkull());
     }
 }

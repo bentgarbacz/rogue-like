@@ -19,6 +19,7 @@
                 if(ignoredPoints != null)
                 {
 
+                    //If ignoredPoints contains start or destination, we dont want those points in the closed set, so we remove them
                     closedSet.UnionWith(ignoredPoints);
                     closedSet.Remove(start);
                     closedSet.Remove(destination);

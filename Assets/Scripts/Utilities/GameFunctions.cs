@@ -133,7 +133,7 @@ public static class GameFunctions
         return new Vector2Int((int)pos.x, (int)pos.z);
     }
 
-    public static void DropLoot(GameObject DroppingEntity, GameObject container, List<Item> droppedItems, DungeonManager dum, MiniMapManager miniMapManager, VisibilityManager visibilityManager, bool randomizePos = true)
+    public static GameObject DropLoot(GameObject DroppingEntity, GameObject container, List<Item> droppedItems, DungeonManager dum, MiniMapManager miniMapManager, VisibilityManager visibilityManager, bool randomizePos = true)
     {
 
         //Determine drop location and introduce randomness to make multiple loot instances clickable on a single tile
@@ -160,6 +160,8 @@ public static class GameFunctions
         miniMapManager.AddIcon(lootContainer);
 
         visibilityManager.UpdateVisibilities();
+
+        return lootContainer;
     }
 
     public static HashSet<Vector2Int> GetCircleCoords(Vector2Int center, int radius, bool perimeterOnly = false)

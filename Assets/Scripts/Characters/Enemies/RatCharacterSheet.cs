@@ -11,13 +11,14 @@ public class RatCharacterSheet : EnemyCharacterSheet
         
         base.Start();
         maxHealth = 15;
-        health = maxHealth;
         accuracy = 100;
         minDamage = 1;
         maxDamage = 3;
         level = 3;
         speed = 15;
         evasion = 75;
+
+        characterHealth.InitHealth(maxHealth);
 
         dropTable = "Rat";
         title = "Rat";
