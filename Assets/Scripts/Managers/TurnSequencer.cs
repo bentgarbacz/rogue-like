@@ -24,12 +24,11 @@ public class TurnSequencer : MonoBehaviour
     [SerializeField] private MiniMapManager miniMapManager;
     [SerializeField] private TileManager tileManager;
     [SerializeField] private VisibilityManager visibilityManager;
-    private Mouse mouse;
-
+    [SerializeField] private DijkstraMapManager djMapGenerator;
+ 
     void Start()
     {
 
-        mouse = Mouse.current;
         GameObject managers = GameObject.Find("System Managers");
         dum = managers.GetComponent<DungeonManager>();
         uiam = managers.GetComponent<UIActiveManager>();
@@ -44,166 +43,234 @@ public class TurnSequencer : MonoBehaviour
     void Update()
     {
 
-        //Halt game logic if combat is taking place
-        if (!cbm.fighting && !gameplayHalted)
+        if (cbm.fighting || gameplayHalted)
         {
-            //If you have not reached the last node of your path 
-            //and you are not currently moving to a node, move to the next node
-            if (playerMovementQueue.Count > 0 && !pcMovement.IsMoving())
+
+            return;
+        }
+
+        if (ProcessPlayerMovement())
+        {
+
+            return;
+        }
+
+        if (ProcessPlayerInput())
+        {
+
+            return;
+        }
+
+        if (actionTaken && !gameplayHalted)
+        {
+
+            ProcessEnemyTurns();
+            cbm.CommenceCombat();
+            UpkeepEffects();
+            AggroNearbyEnemies();
+        }        
+    }
+
+    private bool ProcessPlayerMovement()
+    {
+
+        if (playerMovementQueue.Count > 0 && !pcMovement.IsMoving())
+        {
+
+            playerCharacter.Move(playerMovementQueue.Dequeue(), dum.occupiedlist);
+            actionTaken = true;
+            return true;
+        }
+
+        return false;
+    }
+
+    private bool ProcessPlayerInput()
+    {
+
+        if (!Mouse.current.leftButton.wasPressedThisFrame || uiam.IsPointerOverUI() || pcAttackAnimation.IsAttacking() || gameplayHalted)
+        {
+
+            return false;
+        }
+
+        GameObject target = cm.GetObject();
+
+        if (target == null || uiam.IsPointerOverUI())
+        {
+
+            return false;
+        }
+        string filePath = @"C:\Users\bentg\Downloads\map_output.txt";
+        djMapGenerator.PrintMapToFile(djMapGenerator.CreateMapAboutObject(dum.hero, 100), filePath);
+
+        Tile targetTile = target.GetComponent<Tile>();
+        CharacterSheet targetCharacter = target.GetComponent<CharacterSheet>();
+        Interactable targetInteractable = target.GetComponent<Interactable>();
+
+        uiam.CloseInventoryPanel();
+        uiam.CloseLootPanel();
+        uiam.CloseCharacterPanel();
+        uiam.HideAssignSpell();
+        playerMovementQueue.Clear();
+
+        if (HandleInteractable(targetInteractable))
+        {
+
+            return true;
+        }
+
+        if (HandleTile(targetTile))
+        {
+
+            return true;
+        }
+
+        if (HandleCharacter(targetCharacter))
+        {
+
+            return true;
+        }
+
+        return false;
+    }
+
+    private bool HandleInteractable(Interactable targetInteractable)
+    {
+
+        if (targetInteractable == null)
+        {
+
+            return false;
+        }
+
+        if (PathFinder.GetNeighbors(targetInteractable.loc.coord, dum.dungeonCoords).Contains(playerCharacter.loc.coord) ||
+            targetInteractable.loc.coord == playerCharacter.loc.coord)
+        {
+
+            if (!targetInteractable.Interact())
             {
 
-                playerCharacter.Move(playerMovementQueue.Dequeue(), dum.occupiedlist);
-                UpkeepEffects();
-                actionTaken = true;
-
-                //Process a turn if:
-                //left mouse was pressed
-                //mouse is not over a blocking UI element
-                //you are not in the middle of an attack animation
-                //some other action has not paused regular gameplay by setting gameplayHalted to true
+                return false;
             }
-            else if (mouse.leftButton.wasPressedThisFrame && uiam.IsPointerOverUI() == false && !pcAttackAnimation.IsAttacking() && !gameplayHalted)
+
+            actionTaken = true;
+            return true;
+            
+        }else
+        {
+
+            List<Vector2Int> pathToDestination = PathFinder.FindPath(playerCharacter.loc.coord, targetInteractable.loc.coord, dum.dungeonCoords);
+            MoveOneSpace(pathToDestination);
+            return true;
+        }
+    }
+
+    private bool HandleTile(Tile targetTile)
+    {
+
+        if (targetTile == null)
+        {
+
+            return false;
+        }
+
+        if (!targetTile.IsActionable() ||
+            targetTile.loc.coord == playerCharacter.loc.coord ||
+            dum.occupiedlist.Contains(targetTile.loc.coord))
+        {
+
+            return false;
+        }
+
+        List<Vector2Int> pathToDestination = PathFinder.FindPath(playerCharacter.loc.coord, targetTile.loc.coord, dum.dungeonCoords, ignoredPoints: dum.occupiedlist);
+
+        if (pathToDestination != null && pathToDestination.Count > 1)
+        {
+
+            if (dum.aggroEnemies.Count > 0)
             {
 
-                GameObject target = cm.GetObject();
+                MoveOneSpace(pathToDestination);
+                return true;
 
-                //execute action if actionable object was clicked
-                if (target != null && uiam.IsPointerOverUI() == false)
+            }
+            else
+            {
+
+                playerMovementQueue.Clear();
+
+                for (int i = 1; i < pathToDestination.Count; i++)
                 {
 
-                    Tile targetTile = target.GetComponent<Tile>();
-                    CharacterSheet targetCharacter = target.GetComponent<CharacterSheet>();
-                    Interactable targetInteractable = target.GetComponent<Interactable>();
-
-                    uiam.CloseInventoryPanel();
-                    uiam.CloseLootPanel();
-                    uiam.CloseCharacterPanel();
-                    uiam.HideAssignSpell();
-
-                    playerMovementQueue.Clear();
-
-                    if (targetInteractable != null)
-                    {
-
-                        //interact with interactable object
-                        if (PathFinder.GetNeighbors(targetInteractable.loc.coord, dum.dungeonCoords).Contains(playerCharacter.loc.coord) || targetInteractable.loc.coord == playerCharacter.loc.coord)
-                        {
-
-                            if (!targetInteractable.Interact())
-                            {
-
-                                return;
-                            }
-
-                        }
-                        else //move towards interactable
-                        {
-
-                            List<Vector2Int> pathToDestination = PathFinder.FindPath(playerCharacter.loc.coord, targetInteractable.loc.coord, dum.dungeonCoords);
-                            MoveOneSpace(pathToDestination);
-                            return;
-                        }
-                    }
-
-                    if (targetTile != null)
-                    {
-
-                        if (!targetTile.IsActionable() ||
-                            targetTile.loc.coord == playerCharacter.loc.coord ||
-                            dum.occupiedlist.Contains(targetTile.loc.coord))
-                        {
-
-                            return;
-                        }
-
-                        List<Vector2Int> pathToDestination = PathFinder.FindPath(playerCharacter.loc.coord, targetTile.loc.coord, dum.dungeonCoords, ignoredPoints: dum.occupiedlist);
-
-                        if (pathToDestination != null && pathToDestination.Count > 1)
-                        {
-
-                            if (dum.aggroEnemies.Count > 0)
-                            {
-
-                                MoveOneSpace(pathToDestination);
-
-                            }
-                            else
-                            {
-
-                                playerMovementQueue.Clear();
-
-                                for (int i = 1; i < pathToDestination.Count; i++)
-                                {
-
-                                    playerMovementQueue.Enqueue(pathToDestination[i]);
-                                }
-                            }
-
-                            return;
-                        }
-                    }
-
-                    //initiate an attack on clicked enemy
-                    //attack if adjacent to enemy
-                    //move towards enemy if not adjacent
-                    if (targetCharacter != null)
-                    {
-
-                        if (targetCharacter != playerCharacter)
-                        {
-
-                            playerCharacter.AttackCharacter(target);
-                        }
-                    }
-
-                    actionTaken = true;
+                    playerMovementQueue.Enqueue(pathToDestination[i]);
                 }
             }
 
-            //If the player has taken an action, give enemies a turn
-            if (actionTaken && !gameplayHalted)
+            return true;
+        }
+
+        return false;
+    }
+
+    private bool HandleCharacter(CharacterSheet targetCharacter)
+    {
+
+        if (targetCharacter == null)
+        {
+
+            return false;
+        }
+
+        if (targetCharacter != playerCharacter)
+        {
+
+            playerCharacter.AttackCharacter(targetCharacter.gameObject);
+        }
+
+        actionTaken = true;
+        return true;
+    }
+
+    private void ProcessEnemyTurns()
+    {
+
+        float waitTime = baseWaitTime;
+        actionTaken = false;
+
+        foreach (GameObject enemy in dum.aggroEnemies)
+        {
+
+            enemy.GetComponent<EnemyCharacterSheet>().AggroBehavior(playerCharacter, dum, cbm, waitTime);
+            waitTime += incrementWaitTime;
+        }
+    }
+
+    public void AggroNearbyEnemies()
+    {
+
+        if (!dum.enemiesOnLookout)
+        {
+
+            return;
+        }
+
+        foreach (GameObject enemy in dum.enemies)
+        {
+
+            EnemyCharacterSheet enemyCS = enemy.GetComponent<EnemyCharacterSheet>();
+
+            if (!ShouldAggro(enemy, enemyCS))
             {
 
-                float waitTime = baseWaitTime;
-                actionTaken = false;
-                //give a turn to each aggroed enemy
-                foreach (GameObject enemy in dum.aggroEnemies)
-                {
-
-                    enemy.GetComponent<EnemyCharacterSheet>().AggroBehavior(playerCharacter, dum, cbm, waitTime);
-                    waitTime += incrementWaitTime;
-                }
-
-                //start combat for the turn
-                cbm.CommenceCombat();
-
-                //Perform upkeep effects for the turn
-                UpkeepEffects();
+                continue;
             }
 
-
-            //aggro enemies within aggroRange units 
-            if (dum.enemiesOnLookout)
+            if (enemyCS.OnAggro(dum, cbm))
             {
 
-                foreach (GameObject enemy in dum.enemies)
-                {
-
-                    EnemyCharacterSheet ecs = enemy.GetComponent<EnemyCharacterSheet>();
-
-                    if (ShouldAggro(enemy, ecs))
-                    {
-
-                        if (ecs.OnAggro(dum, cbm))
-                        {
-
-                            dum.aggroEnemies.Add(enemy);
-
-                            //automated walking via buffer is halted when an enemy sees you
-                            playerMovementQueue.Clear();
-                        }
-                    }
-                }
+                dum.aggroEnemies.Add(enemy);
+                playerMovementQueue.Clear();
             }
         }
     }
@@ -241,8 +308,8 @@ public class TurnSequencer : MonoBehaviour
     private bool ShouldAggro(GameObject enemy, EnemyCharacterSheet ecs)
     {
         
-        return ecs.aggroRange > Vector3.Distance(enemy.transform.position, dum.hero.transform.position) &&
-            !dum.aggroEnemies.Contains(enemy) &&
+        return !dum.aggroEnemies.Contains(enemy) &&
+            ecs.aggroRange > Vector3.Distance(enemy.transform.position, dum.hero.transform.position) &&
             LineOfSight.HasLOS(enemy, dum.hero);
     }
 }

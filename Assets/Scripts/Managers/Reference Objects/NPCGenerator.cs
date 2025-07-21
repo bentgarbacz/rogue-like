@@ -6,6 +6,8 @@ public class NPCGenerator : MonoBehaviour
 {
 
     private Dictionary<NPCType, GameObject> npcDict;
+    [SerializeField] private DungeonManager dum;
+    [SerializeField] private TileManager tileManager;
     [SerializeField] private GameObject chest;
     [SerializeField] private GameObject skeleton;
     [SerializeField] private GameObject skeletonArcher;
@@ -15,6 +17,7 @@ public class NPCGenerator : MonoBehaviour
     [SerializeField] private GameObject witch;
     [SerializeField] private GameObject goatMan;
     [SerializeField] private GameObject spider;
+    [SerializeField] private GameObject skull;
     private readonly Vector3 spawnPosOffset = new(0, 0.1f, 0);
 
     void Start()
@@ -31,34 +34,44 @@ public class NPCGenerator : MonoBehaviour
             {NPCType.Slime, slime},
             {NPCType.Witch, witch},
             {NPCType.GoatMan, goatMan},
-            {NPCType.Spider, spider}
+            {NPCType.Spider, spider},
+            {NPCType.Skull, skull}
         };
     }
 
-    public void CreateChest(Vector3 spawnPos, DungeonManager dum)
+    public void CreateChest(Vector3 spawnPos)
     {
 
-        GameObject newChest = Instantiate(chest, spawnPos + spawnPosOffset, Quaternion.Euler(0, Random.Range(0, 8) * 45, 0));
+        int yRotation = Random.Range(0, 8) * 45;
+        Quaternion spawnQuart = Quaternion.Euler(0, yRotation, 0);
+
+        GameObject newChest = Instantiate(chest, spawnPos + spawnPosOffset, spawnQuart);
         newChest.GetComponent<ObjectVisibility>().Initialize();
         dum.AddGameObject(newChest);
-        newChest.GetComponent<Loot>().loc.coord = new Vector2Int((int)spawnPos.x, (int)spawnPos.z);
+
+        Loot newLoot = newChest.GetComponent<Loot>();
+        newLoot.loc.coord = new Vector2Int((int)spawnPos.x, (int)spawnPos.z);
+        tileManager.tileDict[newLoot.loc.coord].EntitiesOnTile.Add(newChest);
     }
 
-    public void CreateNPC(NPCType npcType, Vector3 spawnPos, DungeonManager dum)
+    public GameObject CreateNPC(NPCType npcType, Vector3 spawnPos)
     {
 
         GameObject enemy = GetPrefab(npcType, spawnPos + spawnPosOffset);
         enemy.GetComponent<ObjectVisibility>().Initialize();
-        Vector2Int spawnCoord = new((int)spawnPos.x, (int)spawnPos.z); 
-        
-        if(enemy != null)
-        { 
+        Vector2Int spawnCoord = new((int)spawnPos.x, (int)spawnPos.z);
+
+        if (enemy != null)
+        {
 
             dum.AddGameObject(enemy);
             enemy.GetComponent<CharacterSheet>().Move(spawnCoord, dum.occupiedlist);
             dum.enemies.Add(enemy);
 
+            return enemy;
         }
+
+        return null;
     }
 
     private GameObject GetPrefab(NPCType npcType, Vector3 spawnPos)
@@ -73,6 +86,5 @@ public class NPCGenerator : MonoBehaviour
 
             return null;
         }
-
     }
 }

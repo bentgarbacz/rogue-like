@@ -20,6 +20,7 @@ GameObject:
   - component: {fileID: 6388881990920002779}
   - component: {fileID: 5579392547519543851}
   - component: {fileID: 497873858319877791}
+  - component: {fileID: -1568225123146525398}
   m_Layer: 6
   m_Name: goblin
   m_TagString: Untagged
@@ -171,8 +172,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   loc: {fileID: 497873858319877791}
+  characterHealth: {fileID: -1568225123146525398}
   maxHealth: 1
-  health: 1
   accuracy: 100
   minDamage: 1
   maxDamage: 1
@@ -192,6 +193,7 @@ MonoBehaviour:
   missClip: {fileID: 0}
   title: N/A
   aggroNoise: {fileID: 0}
+  aggroRange: 10
 --- !u!114 &3233290293381044806
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -247,3 +249,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   coord: {x: 0, y: 0}
+--- !u!114 &-1568225123146525398
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6521998039571531690}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72e87b7061dffdb4eb8b7b698e1343c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 0
+  currentHealth: 0

@@ -45,7 +45,6 @@ public class PlayerCharacterSheet : CharacterSheet
 
         base.Start();
         maxHealth = 20;
-        health = maxHealth;
         accuracy = 1000;
         minDamage = 1;
         maxDamage = 3;
@@ -55,6 +54,8 @@ public class PlayerCharacterSheet : CharacterSheet
         mana = maxMana;
         armor = 0;
         evasion = 50;
+
+        characterHealth.InitHealth(maxHealth);
 
         attackClip = Resources.Load<AudioClip>("Sounds/Strike");
         stepAudioClip = Resources.Load<AudioClip>("Sounds/Step");
@@ -111,7 +112,7 @@ public class PlayerCharacterSheet : CharacterSheet
 
         audioSource.PlayOneShot(levelUpAudioClip);
 
-        Heal(maxHealth / 4);
+        characterHealth.Heal(maxHealth / 4);
         freeStatPoints += 5;
 
         level += 1;
@@ -144,7 +145,7 @@ public class PlayerCharacterSheet : CharacterSheet
             if (hunger > 0)
             {
 
-                Heal(1);
+                characterHealth.Heal(1);
                 int regainManaCheck = UnityEngine.Random.Range(0, 2);
 
                 if (regainManaCheck == 1)
@@ -158,7 +159,7 @@ public class PlayerCharacterSheet : CharacterSheet
             {
 
                 hunger = 0;
-                TakeDamage(1);
+                characterHealth.TakeDamage(1);
                 GetComponent<TextNotificationManager>().CreateNotificationOrder(transform.position, 2f, "Hungry!", Color.red);
             }
 
@@ -307,22 +308,6 @@ public class PlayerCharacterSheet : CharacterSheet
     {
 
         snm.UpdateStatusNotifications(sem.GetStatusEffects());
-    }
-
-    public override void Heal(int healValue)
-    {
-
-        base.Heal(healValue);
-        UpdateUI();
-    }
-
-    public override int TakeDamage(int damage)
-    {
-
-        int damageTaken = base.TakeDamage(damage);
-        UpdateUI();
-
-        return damageTaken;
     }
 
     public override bool Move(Vector2Int newCoord, HashSet<Vector2Int> occupiedlist, float waitTime = 0f)

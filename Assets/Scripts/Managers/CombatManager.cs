@@ -60,9 +60,11 @@ public class CombatManager : MonoBehaviour
             float waitTime = attackTime;
 
             CharacterSheet attacker = attack.attacker.GetComponent<CharacterSheet>();
+            CharacterHealth attackerHealth = attack.attacker.GetComponent<CharacterHealth>();
             AttackAnimation attackerAnimation = attacker.GetComponent<AttackAnimation>();
 
             CharacterSheet defender = attack.defender.GetComponent<CharacterSheet>();
+            CharacterHealth defenderHealth = attack.defender.GetComponent<CharacterHealth>();
             TextNotificationManager defenderNotifier = defender.GetComponent<TextNotificationManager>();
 
             float hitChance = ((float)attacker.accuracy - (float)defender.evasion) / (float)attacker.accuracy * 100f;
@@ -133,7 +135,7 @@ public class CombatManager : MonoBehaviour
                         defenderNotifier.CreateNotificationOrder(defender.transform.position, 2f, damage.ToString(), Color.red);
                     }
 
-                    defender.TakeDamage(damage);
+                    defenderHealth.TakeDamage(damage);
                 
                 }else
                 {
@@ -145,10 +147,10 @@ public class CombatManager : MonoBehaviour
                 yield return new WaitForSeconds(trimTime); //Wait out time trimmed from above
 
                 //kills defender of attack if it's health falls below 1
-                if(defender.health <= 0)
+                if(defenderHealth.currentHealth <= 0)
                 {
                     yield return new WaitForSeconds(0.05f); //Give the GameObject of dead character time to wrap up before it is destroyed
-                    dum.Smite(combatBuffer[0].defender, defender.loc.coord);                                                                    
+                    dum.Smite(combatBuffer[0].defender);                                                                    
                 }
             }
 
@@ -193,7 +195,10 @@ public class CombatManager : MonoBehaviour
     {
         // Get the CharacterSheet components of the attacker and defender
         CharacterSheet attackerSheet = attacker.GetComponent<CharacterSheet>();
+        CharacterHealth attackerHealth = attacker.GetComponent<CharacterHealth>();
+
         CharacterSheet defenderSheet = defender.GetComponent<CharacterSheet>();
+        CharacterHealth defenderHealth = defender.GetComponent<CharacterHealth>();        
         TextNotificationManager defenderNotifier = defender.GetComponent<TextNotificationManager>();
 
         // Calculate hit chance
@@ -217,7 +222,7 @@ public class CombatManager : MonoBehaviour
             }
 
             // Apply damage to the defender
-            defenderSheet.TakeDamage(damage);
+            defenderHealth.TakeDamage(damage);
         }
         else
         {
@@ -227,10 +232,10 @@ public class CombatManager : MonoBehaviour
         }
 
         // Check if the defender is dead
-        if (defenderSheet.health <= 0)
+        if (defenderHealth.currentHealth <= 0)
         {
 
-            dum.Smite(defender, defenderSheet.loc.coord); // Remove the defender from the game
+            dum.Smite(defender); // Remove the defender from the game
         }
     }
 

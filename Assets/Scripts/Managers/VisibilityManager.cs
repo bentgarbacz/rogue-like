@@ -45,17 +45,36 @@ public class VisibilityManager : MonoBehaviour
             }
 
             Vector2Int currentCoord = objects[currentObject].location.coord;
-            
+
             if (tileManager.revealedTiles.Contains(currentCoord))
             {
 
                 vis.SetVisibility(true);
 
-            } else
+            }
+            else
             {
 
                 vis.SetVisibility(false);
             }
+        }
+    }
+    
+    public void ForceAllVisibility(bool state)
+    {
+
+        foreach (GameObject currentObject in objects.Keys)
+        {
+
+            ObjectVisibility vis = objects[currentObject].visibility;
+
+            if (!vis.isActive)
+            {
+
+                continue;
+            }
+
+            vis.SetVisibility(state);
         }
     }
 }

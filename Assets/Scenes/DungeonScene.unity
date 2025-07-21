@@ -6077,6 +6077,7 @@ GameObject:
   - component: {fileID: 438385576}
   - component: {fileID: 438385577}
   - component: {fileID: 438385578}
+  - component: {fileID: 438385579}
   m_Layer: 0
   m_Name: Map Generator
   m_TagString: Untagged
@@ -6129,6 +6130,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e6b437c73cd0d446a8e1a933af186e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dum: {fileID: 1314207894}
+  tileManager: {fileID: 1314207901}
   chest: {fileID: 6493254730876405042, guid: 3d2a97183afeb6843a3d22f8ee50bf01, type: 3}
   skeleton: {fileID: 7806514022559795084, guid: 3b210d9e70f6a1f4b9e6170b08367086, type: 3}
   skeletonArcher: {fileID: 3972246722018788467, guid: f114ea6c3de591b44808cb9aa30df140, type: 3}
@@ -6138,6 +6141,7 @@ MonoBehaviour:
   witch: {fileID: 1209241037779243595, guid: e82ad701c0f11ad4fa3ebe2e09d151d7, type: 3}
   goatMan: {fileID: 126544009712155564, guid: 32b73e10b7875634c966bc0ac94d5771, type: 3}
   spider: {fileID: 6401718211484601336, guid: 75a7d931c5552d749861a653e15f377a, type: 3}
+  skull: {fileID: 1841329591959837068, guid: 6c121abd61e28c34b91dc16e54bd8b7e, type: 3}
 --- !u!114 &438385577
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6193,6 +6197,19 @@ MonoBehaviour:
   caveEntrance: {fileID: 8240057085656814339, guid: f6b63ce657227bd4c9f0ea79119baacf, type: 3}
   caveExit: {fileID: 7533698930346909114, guid: 32b17f08694da2b4595049cc376fa085, type: 3}
   possibleEnemyTypes: 030000000400000006000000
+--- !u!114 &438385579
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 438385571}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8517170a8eb25ce47b8beeebed06fd65, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dum: {fileID: 1314207894}
 --- !u!1001 &444728522
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13406,6 +13423,7 @@ GameObject:
   - component: {fileID: 6442338754152421634}
   - component: {fileID: 6442338754152421633}
   - component: {fileID: 6442338754152421648}
+  - component: {fileID: 6442338754152421649}
   m_Layer: 6
   m_Name: Hero
   m_TagString: Untagged
@@ -22516,6 +22534,7 @@ MonoBehaviour:
   miniMapManager: {fileID: 313091427}
   tileManager: {fileID: 1314207901}
   visibilityManager: {fileID: 1314207902}
+  djMapGenerator: {fileID: 438385579}
 --- !u!4 &1314207892
 Transform:
   m_ObjectHideFlags: 0
@@ -22685,6 +22704,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dum: {fileID: 1314207894}
   visibilityManager: {fileID: 1314207902}
+  mm: {fileID: 313091427}
 --- !u!114 &1314207902
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -37776,8 +37796,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   loc: {fileID: 6442338754152421648}
+  characterHealth: {fileID: 6442338754152421649}
   maxHealth: 1
-  health: 1
   accuracy: 1000
   minDamage: 1
   maxDamage: 1
@@ -37912,6 +37932,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   coord: {x: 0, y: 0}
+--- !u!114 &6442338754152421649
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 869517488}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc767d8413e53f1409fce0581a5b40bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 0
+  currentHealth: 0
+  updateStats: {fileID: 896522264}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

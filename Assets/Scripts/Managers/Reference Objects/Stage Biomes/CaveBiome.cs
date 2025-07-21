@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditorInternal;
 using UnityEngine;
 
 public class CaveBiome : Biome
@@ -180,22 +179,22 @@ public class CaveBiome : Biome
                         if(spawnRNG >= 0 && spawnRNG <= 2)
                         {
                             
-                            npcGen.CreateChest(spawnPos, dum);
+                            npcGen.CreateChest(spawnPos);
 
                         }else if(spawnRNG >= 3 && spawnRNG <= 4)
                         {
 
-                            npcGen.CreateNPC(NPCType.Witch, spawnPos, dum);
+                            npcGen.CreateNPC(NPCType.Witch, spawnPos);
 
                         }else if(spawnRNG >= 5 && spawnRNG <= 6)
                         {
 
-                            npcGen.CreateNPC(NPCType.Witch, spawnPos, dum);
+                            npcGen.CreateNPC(NPCType.Witch, spawnPos);
 
                         }else if(spawnRNG >= 7 && spawnRNG <= 20)
                         {
 
-                            npcGen.CreateNPC(NPCType.Witch, spawnPos, dum);
+                            npcGen.CreateNPC(NPCType.Witch, spawnPos);
                         }
                     }
                 }

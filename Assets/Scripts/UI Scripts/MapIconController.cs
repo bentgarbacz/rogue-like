@@ -15,6 +15,8 @@ public class MapIconController : MonoBehaviour
 
         iconRectTransform = GetComponent<RectTransform>();
 
+        //transform.SetSiblingIndex(sortingOrder);
+
         SetParentObject(parentObject);
         SetIcon(sprite);
         SetCoord(coord);

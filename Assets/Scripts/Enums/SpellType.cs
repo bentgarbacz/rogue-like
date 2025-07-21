@@ -7,5 +7,8 @@ public enum SpellType
     PoisonousStrike,
     Fortify,
     SavageLeap,
-    SlinkAway
+    SlinkAway,
+    Clairvoyance,
+    Telekinesis,
+    SummonSkull
 }

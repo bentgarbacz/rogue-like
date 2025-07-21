@@ -14,7 +14,7 @@ public class SpellCaster : MonoBehaviour
     private ItemSlot currentItemSlot;
     private Scroll currentScroll;
     private TurnSequencer ts;
-    private SpellReferences sm;
+    private SpellReferences spellRef;
     private ClickManager cm;
     private ToolTipManager ttm;
     private AudioSource audioSource;
@@ -26,7 +26,7 @@ public class SpellCaster : MonoBehaviour
 
         GameObject managers = GameObject.Find("System Managers");
         ts = managers.GetComponent<TurnSequencer>();
-        sm = managers.GetComponent<SpellReferences>();
+        spellRef = managers.GetComponent<SpellReferences>();
         cm = managers.GetComponent<ClickManager>();
         ttm = managers.GetComponent<UIActiveManager>().toolTipContainer.GetComponent<ToolTipManager>();
         audioSource = GetComponent<AudioSource>();
@@ -36,54 +36,50 @@ public class SpellCaster : MonoBehaviour
 
     void LateUpdate()
     {
-        
-        if(targeting == true)
+
+        if (!targeting || !mouse.leftButton.wasPressedThisFrame)
         {
 
-            if(mouse.leftButton.wasPressedThisFrame)
-            {
+            return;
+        }
 
-                GameObject target = cm.GetObject();
+        GameObject target = cm.GetObject();
 
-                if(target != null && currentSpell != null)
+        if(target != null && currentSpell != null)
+        {
+
+            if(currentSpell.Cast(this.gameObject, target))
+            {                        
+
+                if(currentSpell.castSound != null)
                 {
-                    
-                    bool spellCastSuccessfully = currentSpell.Cast(this.gameObject, target);
 
-                    if(spellCastSuccessfully)
-                    {                        
-
-                        if(currentSpell.castSound != null)
-                        {
-
-                            audioSource.PlayOneShot(currentSpell.castSound);
-                        }
-
-                        if(selfCasting)
-                        {
-
-                            SpendSpellCost(currentSpell.spellType);
-                            selfCasting = false;
-                        }
-
-                        if(currentItemSlot != null && currentScroll != null)
-                        {
-                        
-                            currentItemSlot.ThrowAway();
-                            currentScroll.Use();
-                            currentItemSlot = null;
-                            currentScroll = null;
-                        }
-
-                        ts.SignalAction();
-                    }
+                    audioSource.PlayOneShot(currentSpell.castSound);
                 }
 
-                currentSpell = null;
-                SetTargeting(false);
-                ttm.DisableForceTooltip();
+                if(selfCasting)
+                {
+
+                    SpendSpellCost(currentSpell.spellType);
+                    selfCasting = false;
+                }
+
+                if(currentItemSlot != null && currentScroll != null)
+                {
+                
+                    currentItemSlot.ThrowAway();
+                    currentScroll.Use();
+                    currentItemSlot = null;
+                    currentScroll = null;
+                }
+
+                ts.SignalAction();
             }
         }
+
+        currentSpell = null;
+        SetTargeting(false);
+        ttm.DisableForceTooltip();
     }
 
     public void SetTargeting(bool state)
@@ -96,7 +92,7 @@ public class SpellCaster : MonoBehaviour
     private bool CastSpell(SpellType spellType, GameObject target = null)
     {
 
-        Spell spell = sm.spellDictionary[spellType];
+        Spell spell = spellRef.spellDictionary[spellType];
 
         if(spell.targeted && target == null)
         {
@@ -124,8 +120,8 @@ public class SpellCaster : MonoBehaviour
     public void SpendSpellCost(SpellType spellType)
     {
 
-        pc.knownSpells[spellType] = sm.spellDictionary[spellType].cooldown;
-        pc.mana -= sm.spellDictionary[spellType].manaCost;
+        pc.knownSpells[spellType] = spellRef.spellDictionary[spellType].cooldown;
+        pc.mana -= spellRef.spellDictionary[spellType].manaCost;
         pc.UpdateUI();
         UpdateSpellSlots();
     }

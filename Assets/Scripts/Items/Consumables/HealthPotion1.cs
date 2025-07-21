@@ -22,6 +22,6 @@ public class HealthPotion1 : Consumable
     public override void Use()
     {
 
-        hero.GetComponent<CharacterSheet>().Heal(healValue);
+        hero.GetComponent<CharacterHealth>().Heal(healValue);
     }
 }

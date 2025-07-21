@@ -7,12 +7,14 @@ public class EquipmentManager : MonoBehaviour
 
     public GameObject hero;
     private PlayerCharacterSheet playerCharacter;
+    private PlayerHealth playerHealth;
     private InventoryManager im;
 
     void Start()
     {
         
         playerCharacter = hero.GetComponent<PlayerCharacterSheet>();
+        playerHealth = hero.GetComponent<PlayerHealth>();
         im = GameObject.Find("System Managers").GetComponent<InventoryManager>();
     }
 
@@ -100,8 +102,10 @@ public class EquipmentManager : MonoBehaviour
         playerCharacter.maxHealth += playerCharacter.maxHealthBonus;
         playerCharacter.maxMana += playerCharacter.maxManaBonus;
 
+        playerHealth.maxHealth = playerCharacter.maxHealth;
+
         //Set health and mana values so that they do not exceed their maximum values after recalculating stats
-        playerCharacter.health = Mathf.Min(playerCharacter.health, playerCharacter.maxHealth);
+        playerHealth.currentHealth = Mathf.Min(playerHealth.currentHealth, playerHealth.maxHealth);
         playerCharacter.mana = Mathf.Min(playerCharacter.mana, playerCharacter.maxMana);
 
         playerCharacter.UpdateUI();

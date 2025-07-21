@@ -138,4 +138,18 @@ public class TileManager : MonoBehaviour
             }
         }
     }
+
+    public void RevealAllTiles()
+    {
+
+        foreach(Vector2Int coord in tileDict.Keys)
+        {
+
+            if (!revealedTiles.Contains(coord))
+            {
+
+                RevealTile(coord);
+            }
+        }
+    }
 }
