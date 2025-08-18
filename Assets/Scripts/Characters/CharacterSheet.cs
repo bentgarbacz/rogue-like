@@ -23,14 +23,20 @@ public class CharacterSheet : MonoBehaviour
     public int evasion = 0;    
     public string dropTable;
     protected StatusEffectManager sem;
+    protected TileManager tileManager;
+    protected DungeonManager dum;
     public AudioSource audioSource;
     public AudioClip attackClip;
     public AudioClip missClip;
     public string title = "N/A";
 
-    public virtual void Start()
+    public virtual void Awake()
     {
-        
+
+        GameObject managers = GameObject.Find("System Managers");
+        tileManager = managers.GetComponent<TileManager>();
+        dum = managers.GetComponent<DungeonManager>();
+
         GetComponent<MoveToTarget>().target = transform.position;
         loc.coord = new Vector2Int((int)transform.position.x, (int)transform.position.z);
         characterHealth.InitHealth(maxHealth);
@@ -40,28 +46,37 @@ public class CharacterSheet : MonoBehaviour
         missClip = Resources.Load<AudioClip>("Sounds/Miss");
     }
 
-    public virtual bool Move(Vector2Int newCoord, HashSet<Vector2Int> occupiedlist, float waitTime = 0f)
+    public virtual bool Move(Vector2Int newCoord, float waitTime = 0f)
     {
 
-        if(!occupiedlist.Contains(newCoord))
+        if (!dum.occupiedlist.Contains(newCoord))
         {
 
-            Vector3 newPos = new((float)newCoord.x, 0.1f, (float)newCoord.y); 
+            Vector3 newPos = new((float)newCoord.x, 0.1f, (float)newCoord.y);
 
-            occupiedlist.Add(newCoord);
-            occupiedlist.Remove(loc.coord);
+            dum.occupiedlist.Add(newCoord);
+            tileManager.GetTile(newCoord).AddEntity(this.gameObject);
+
+            dum.occupiedlist.Remove(loc.coord);
+            tileManager.GetTile(loc.coord).RemoveEntity(this.gameObject);
+
             loc.coord = newCoord;
-            
+
             GetComponent<MoveToTarget>().SetTarget(newPos, waitTime);
             transform.rotation = Quaternion.Euler(0, GameFunctions.DetermineRotation(transform.position, newPos), 0);
 
             return true;
         }
+        else
+        {
+
+            //Debug.Log("Tried to move but failed");
+        }
         
         return false;             
     }
 
-    public bool Teleport(Vector2Int newCoord, DungeonManager dum)
+    public bool Teleport(Vector2Int newCoord)
     {
 
         if(!dum.occupiedlist.Contains(newCoord))

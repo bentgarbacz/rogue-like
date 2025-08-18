@@ -11,10 +11,10 @@ public class WitchCharacterSheet : EnemyCharacterSheet
     private ProjectileType projectile = ProjectileType.MagicMissile;
     private AudioClip teleportClip;
 
-    public override void Start()
+    public override void Awake()
     {
         
-        base.Start();
+        base.Awake();
         maxHealth = 8;
         accuracy = 100;
         minDamage = 1;
@@ -32,7 +32,7 @@ public class WitchCharacterSheet : EnemyCharacterSheet
         teleportClip = Resources.Load<AudioClip>("Sounds/Teleport");
     }
 
-    public override void AggroBehavior(PlayerCharacterSheet playerCharacter, DungeonManager dum, CombatManager cbm, float waitTime)
+    public override void AggroBehavior(float waitTime)
     {
 
         if(attackCooldown == 0)
@@ -47,8 +47,8 @@ public class WitchCharacterSheet : EnemyCharacterSheet
             }else //move towards target if not within range
             {
                 
-                List<Vector2Int> pathToPlayer = PathFinder.FindPath(loc.coord, playerCharacter.loc.coord, dum.dungeonCoords);                     
-                Move(pathToPlayer[1], dum.occupiedlist, waitTime);
+                List<Vector2Int> pathToPlayer = PathFinder.FindPath(loc.coord, dum.playerCharacter.loc.coord, dum.dungeonCoords);                     
+                Move(pathToPlayer[1], waitTime);
             }
 
         }else
@@ -62,7 +62,7 @@ public class WitchCharacterSheet : EnemyCharacterSheet
             }else
             {
 
-                Flee(dum, waitTime);
+                Flee(waitTime);
             }
 
             attackCooldown -= 1;

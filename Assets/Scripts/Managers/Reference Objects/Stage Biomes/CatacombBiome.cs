@@ -288,7 +288,7 @@ public class CatacombBiome : Biome
                 Vector3 enemyPos = new Vector3(enemyCoord.x, 0, enemyCoord.y);
 
                 // Spawn the enemy at the chosen position
-                npcGen.CreateNPC(possibleEnemyTypes[ Random.Range(0, 2) ], enemyPos);
+                npcGen.CreateEnemy(possibleEnemyTypes[ Random.Range(0, 2) ], enemyPos);
             }
         }
 

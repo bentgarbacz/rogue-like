@@ -33,7 +33,7 @@ public class UpdateUIElements : MonoBehaviour
     private PlayerHealth playerHealth;
     private UIActiveManager uiam;
 
-    void Start()
+    void Awake()
     {
 
         playerCharacter = hero.GetComponent<PlayerCharacterSheet>();

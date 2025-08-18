@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 1079457220184783387}
   - component: {fileID: 1305208117437370247}
   - component: {fileID: 4856721366737545420}
-  - component: {fileID: 2857858642935490446}
+  - component: {fileID: 8975757175261770061}
   - component: {fileID: 4120890808576303417}
   - component: {fileID: 982067735002945547}
   - component: {fileID: 7021236716277137833}
@@ -58,6 +58,7 @@ MonoBehaviour:
   highlightColor: {r: 1, g: 0, b: 0, a: 1}
   actionDescription: Attack
   highlighted: 0
+  hideOnHighlight: 0
 --- !u!114 &5824375089683646722
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -159,7 +160,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   container: {fileID: 4067605956111919682, guid: 8ae8460d89cd89643b89cdf3b8bea50c, type: 3}
---- !u!114 &2857858642935490446
+--- !u!114 &8975757175261770061
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -168,15 +169,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 1841329591959837068}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86c6d4bd27f740949b437f6476c12d62, type: 3}
+  m_Script: {fileID: 11500000, guid: b9babef7002b7894a922edac9651468e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   loc: {fileID: 6921617333775835904}
   characterHealth: {fileID: -6926121629195054438}
   maxHealth: 1
   accuracy: 100
-  minDamage: 1
-  maxDamage: 1
+  minDamage: 0
+  maxDamage: 0
   level: 0
   speed: 0
   critChance: 0

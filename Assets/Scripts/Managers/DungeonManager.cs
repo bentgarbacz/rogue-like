@@ -15,6 +15,7 @@ public class DungeonManager : MonoBehaviour
     public HashSet<GameObject> dungeonSpecificGameObjects = new();
     public HashSet<GameObject> enemies = new();
     public HashSet<GameObject> aggroEnemies = new();
+    public HashSet<GameObject> npcs = new();
     public HashSet<Loot> itemContainers = new();
     private CombatManager cbm;
     private TurnSequencer ts;
@@ -61,6 +62,7 @@ public class DungeonManager : MonoBehaviour
         aggroEnemies.Remove(target);
         occupiedlist.Remove(target.GetComponent<ObjectLocation>().coord);
         enemies.Remove(target);
+        npcs.Remove(target);
         visibilityManager.RemoveObject(target);
 
         if (target.GetComponent<PlayerCharacterSheet>())
@@ -124,7 +126,7 @@ public class DungeonManager : MonoBehaviour
         tileManager.RefreshLayout();
         visibilityManager.Refresh();
 
-        playerCharacter.Teleport(new Vector2Int(0, 0), this);
+        playerCharacter.Teleport(new Vector2Int(0, 0));
     }
 
     public void ClearAggroBuffer()
@@ -143,17 +145,5 @@ public class DungeonManager : MonoBehaviour
     {
 
         ts.gameplayHalted = isHalted;
-    }
-
-    public bool CoordIsOpen(Vector2Int coord)
-    {
-
-        if (dungeonCoords.Contains(coord) && !occupiedlist.Contains(coord))
-        {
-
-            return true;
-        }
-
-        return false;
     }
 }

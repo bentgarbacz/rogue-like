@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: -5166920695553764603}
   - component: {fileID: 2518684346852878964}
   - component: {fileID: -4058603167762793119}
+  - component: {fileID: 7721453079708961158}
   m_Layer: 8
   m_Name: Wall
   m_TagString: Untagged
@@ -136,3 +137,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   coord: {x: 0, y: 0}
+--- !u!114 &7721453079708961158
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2564236300543592276}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5294ecea600c22f4eb21799baf7cf0f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  highlightColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  actionDescription: 
+  highlighted: 0
+  hideOnHighlight: 1

@@ -51,27 +51,54 @@ public class NPCGenerator : MonoBehaviour
 
         Loot newLoot = newChest.GetComponent<Loot>();
         newLoot.loc.coord = new Vector2Int((int)spawnPos.x, (int)spawnPos.z);
-        tileManager.tileDict[newLoot.loc.coord].EntitiesOnTile.Add(newChest);
+        tileManager.GetTile(newLoot.loc.coord).AddEntity(newChest);
     }
 
+    public GameObject CreateEnemy(NPCType enemyType, Vector3 spawnPos)
+    {
+
+        Vector2Int spawnCoord = new((int)spawnPos.x, (int)spawnPos.z);
+
+        if (dum.occupiedlist.Contains(spawnCoord))
+        {
+
+            return null;
+        }
+
+        GameObject enemy = GetPrefab(enemyType, spawnPos + spawnPosOffset);
+        enemy.GetComponent<ObjectVisibility>().Initialize(); 
+        
+        dum.occupiedlist.Add(spawnCoord);
+        tileManager.GetTile(spawnCoord).AddEntity(enemy);
+
+        dum.AddGameObject(enemy);
+        dum.enemies.Add(enemy);
+
+        return enemy;
+    }
+    
     public GameObject CreateNPC(NPCType npcType, Vector3 spawnPos)
     {
 
-        GameObject enemy = GetPrefab(npcType, spawnPos + spawnPosOffset);
-        enemy.GetComponent<ObjectVisibility>().Initialize();
         Vector2Int spawnCoord = new((int)spawnPos.x, (int)spawnPos.z);
 
-        if (enemy != null)
+        if (dum.occupiedlist.Contains(spawnCoord))
         {
 
-            dum.AddGameObject(enemy);
-            enemy.GetComponent<CharacterSheet>().Move(spawnCoord, dum.occupiedlist);
-            dum.enemies.Add(enemy);
-
-            return enemy;
+            return null;
         }
 
-        return null;
+        GameObject npc = GetPrefab(npcType, spawnPos + spawnPosOffset);
+        npc.GetComponent<ObjectVisibility>().Initialize();
+        
+        dum.occupiedlist.Add(spawnCoord);
+        tileManager.GetTile(spawnCoord).AddEntity(npc);
+
+        dum.AddGameObject(npc);
+        dum.npcs.Add(npc);
+
+        return npc;
+
     }
 
     private GameObject GetPrefab(NPCType npcType, Vector3 spawnPos)
@@ -82,7 +109,9 @@ public class NPCGenerator : MonoBehaviour
 
             return Instantiate(npcPrefab, spawnPos, npcPrefab.transform.rotation);
 
-        }else{
+        }
+        else
+        {
 
             return null;
         }

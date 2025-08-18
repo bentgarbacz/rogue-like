@@ -9,14 +9,12 @@ public class SlimeCharacterSheet : EnemyCharacterSheet
     private float fallSpeed = 30f;
     private Vector2Int landingCoord;
     private bool landingFound = false;
-    private DungeonManager dum;
-    private CombatManager cbm;
     private ObjectVisibility objectVisibility;
 
-    public override void Start()
+    public override void Awake()
     {
 
-        base.Start();
+        base.Awake();
         maxHealth = 10;
         accuracy = 66;
         minDamage = 1;
@@ -55,13 +53,13 @@ public class SlimeCharacterSheet : EnemyCharacterSheet
                 audioSource.PlayOneShot(attackClip);
                 cbm.ExecuteAttack(this.gameObject, dum.hero, minDamage, maxDamage, speed);
                 dum.occupiedlist.Remove(landingCoord);
-                Move(landingCoord, dum.occupiedlist);
+                Move(landingCoord);
                 dum.HaltGameplay(false);
             }
         }
     }
 
-    public override bool OnAggro(DungeonManager dum, CombatManager cbm)
+    public override bool OnAggro()
     {
 
         HashSet<Vector2Int> landingCoords = PathFinder.GetNeighbors(dum.playerCharacter.loc.coord, dum.dungeonCoords);
@@ -84,8 +82,6 @@ public class SlimeCharacterSheet : EnemyCharacterSheet
             if(landingFound)
             {
 
-                this.dum = dum;
-                this.cbm = cbm;
                 objectVisibility.isActive = true;
 
                 transform.position = dum.hero.transform.position + new Vector3(0, 10f, 0);
@@ -100,9 +96,9 @@ public class SlimeCharacterSheet : EnemyCharacterSheet
         return false;
     }
 
-    public override void AggroBehavior(PlayerCharacterSheet playerCharacter, DungeonManager dum, CombatManager cbm, float waitTime)
+    public override void AggroBehavior(float waitTime)
     {
 
-        base.AggroBehavior(playerCharacter, dum, cbm, waitTime);
+        base.AggroBehavior(waitTime);
     }
 }

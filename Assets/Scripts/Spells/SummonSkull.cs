@@ -57,12 +57,6 @@ public class SummonSkull : Spell
             return false;
         }
 
-        if (dum.occupiedlist.Contains(targetTile.loc.coord))
-        {
-
-            return false;
-        }
-
         GameObject minion = npcGen.CreateNPC(npcType, targetTile.transform.position);
 
         if (!minion)

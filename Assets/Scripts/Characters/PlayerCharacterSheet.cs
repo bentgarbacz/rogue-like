@@ -33,17 +33,15 @@ public class PlayerCharacterSheet : CharacterSheet
     public int maxManaBonus = 0;
     public int visibilityRadius = 5;
     public Dictionary<SpellType, int> knownSpells = new();
-    private DungeonManager dum;
     private InventoryManager im;
     private CombatManager cbm;
     [SerializeField] private UpdateUIElements updateStats;
     [SerializeField] private StatusNotificationManager snm;
-    [SerializeField] private TileManager tileManager;
 
-    public override void Start()
+    public override void Awake()
     {
 
-        base.Start();
+        base.Awake();
         maxHealth = 20;
         accuracy = 1000;
         minDamage = 1;
@@ -285,7 +283,7 @@ public class PlayerCharacterSheet : CharacterSheet
         {
 
             List<Vector2Int> pathToDestination = PathFinder.FindPath(loc.coord, defendingCharacter.loc.coord, dum.dungeonCoords);
-            Move(pathToDestination[1], dum.occupiedlist);
+            Move(pathToDestination[1]);
         }
 
         return attackOccured;
@@ -310,10 +308,10 @@ public class PlayerCharacterSheet : CharacterSheet
         snm.UpdateStatusNotifications(sem.GetStatusEffects());
     }
 
-    public override bool Move(Vector2Int newCoord, HashSet<Vector2Int> occupiedlist, float waitTime = 0f)
+    public override bool Move(Vector2Int newCoord, float waitTime = 0f)
     {
 
-        if (base.Move(newCoord, occupiedlist, waitTime))
+        if (base.Move(newCoord, waitTime))
         {
 
             RevealAroundPC();

@@ -10,10 +10,10 @@ public class SkeletonArcherCharacterSheet : EnemyCharacterSheet
     int range = 5;
     ProjectileType projectile = ProjectileType.Arrow;
 
-    public override void Start()
+    public override void Awake()
     {
         
-        base.Start();
+        base.Awake();
         maxHealth = 8;
         accuracy = 100;
         minDamage = 1;
@@ -30,7 +30,7 @@ public class SkeletonArcherCharacterSheet : EnemyCharacterSheet
         attackClip = Resources.Load<AudioClip>("Sounds/Skeleton");
     }
 
-    public override void AggroBehavior(PlayerCharacterSheet playerCharacter, DungeonManager dum, CombatManager cbm, float waitTime)
+    public override void AggroBehavior(float waitTime)
     {
 
         if(attackCooldown == 0)
@@ -45,22 +45,14 @@ public class SkeletonArcherCharacterSheet : EnemyCharacterSheet
             }else //move towards target if not within range
             {
                 
-                List<Vector2Int> pathToPlayer = PathFinder.FindPath(loc.coord, playerCharacter.loc.coord, dum.dungeonCoords);                     
-                Move(pathToPlayer[1], dum.occupiedlist, waitTime);
+                List<Vector2Int> pathToPlayer = PathFinder.FindPath(loc.coord, dum.playerCharacter.loc.coord, dum.dungeonCoords);                     
+                Move(pathToPlayer[1], waitTime);
             }
 
         }else
         {
 
-            //randomly walk while reloading ranged attack
-            Vector2Int randomDirection = new(loc.coord.x + Direction2D.GetRandomDirection().x, loc.coord.y + Direction2D.GetRandomDirection().y);
-
-            if(dum.dungeonCoords.Contains(randomDirection))
-            {
-
-                Move(randomDirection, dum.occupiedlist, waitTime);
-            }
-
+            Wander(waitTime);
             attackCooldown -= 1;
         }
     }

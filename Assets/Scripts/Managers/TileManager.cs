@@ -56,6 +56,31 @@ public class TileManager : MonoBehaviour
         }
     }
 
+    public Tile GetTile(Vector2Int coord)
+    {
+
+        return tileDict[coord];
+    }
+
+    public void MoveEntity(GameObject entity, Vector2Int startCoord, Vector2Int endCoord)
+    {
+
+        Tile startTile = GetTile(startCoord);
+        Tile endTile = GetTile(endCoord);
+
+        if (startTile)
+        {
+
+            startTile.RemoveEntity(entity);
+        }
+
+        if (endTile)
+        {
+
+            endTile.AddEntity(entity);
+        }
+    }
+
     public void RevealTiles(HashSet<Vector2Int> tileCoords)
     {
 

@@ -36,7 +36,7 @@ public class DropLoot : MonoBehaviour
 
             GameObject dropContainer = GameFunctions.DropLoot(this.gameObject, container, droppedItems, dum, miniMapManager, visibilityManager);
             Vector2Int containerCoord = dropContainer.GetComponent<ObjectLocation>().coord;
-            tileManager.tileDict[containerCoord].EntitiesOnTile.Add(dropContainer);
+            tileManager.tileDict[containerCoord].AddEntity(dropContainer);
         }
     }
 }
