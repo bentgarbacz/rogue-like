@@ -64,7 +64,14 @@ public class TurnSequencer : MonoBehaviour
         if (actionTaken && !gameplayHalted)
         {
 
-            ProcessEnemyTurns();
+            actionTaken = false;
+
+            djMapGenerator.PopulatePlayerMap();
+            ProcessEntityTurns(dum.aggroEnemies);
+            djMapGenerator.PopulateEnemyMap();
+            ProcessEntityTurns(dum.npcs);
+            djMapGenerator.PopulateNPCMap();
+
             cbm.CommenceCombat();
             UpkeepEffects();
             AggroNearbyEnemies();
@@ -77,7 +84,7 @@ public class TurnSequencer : MonoBehaviour
         if (playerMovementQueue.Count > 0 && !pcMovement.IsMoving())
         {
 
-            playerCharacter.Move(playerMovementQueue.Dequeue(), dum.occupiedlist);
+            playerCharacter.Move(playerMovementQueue.Dequeue());
             actionTaken = true;
             return true;
         }
@@ -101,8 +108,6 @@ public class TurnSequencer : MonoBehaviour
 
             return false;
         }
-        string filePath = @"C:\Users\bentg\Downloads\map_output.txt";
-        djMapGenerator.PrintMapToFile(djMapGenerator.CreateMapAboutObject(dum.hero, 100), filePath);
 
         Tile targetTile = target.GetComponent<Tile>();
         CharacterSheet targetCharacter = target.GetComponent<CharacterSheet>();
@@ -232,16 +237,17 @@ public class TurnSequencer : MonoBehaviour
         return true;
     }
 
-    private void ProcessEnemyTurns()
+    private void ProcessEntityTurns(HashSet<GameObject> entities)
     {
 
         float waitTime = baseWaitTime;
-        actionTaken = false;
 
-        foreach (GameObject enemy in dum.aggroEnemies)
+        HashSet<GameObject> entitiesCopy = new(entities);
+
+        foreach (GameObject entity in entitiesCopy)
         {
-
-            enemy.GetComponent<EnemyCharacterSheet>().AggroBehavior(playerCharacter, dum, cbm, waitTime);
+            
+            entity.GetComponent<EnemyCharacterSheet>().AggroBehavior(waitTime);
             waitTime += incrementWaitTime;
         }
     }
@@ -266,7 +272,7 @@ public class TurnSequencer : MonoBehaviour
                 continue;
             }
 
-            if (enemyCS.OnAggro(dum, cbm))
+            if (enemyCS.OnAggro())
             {
 
                 dum.aggroEnemies.Add(enemy);
@@ -307,9 +313,16 @@ public class TurnSequencer : MonoBehaviour
 
     private bool ShouldAggro(GameObject enemy, EnemyCharacterSheet ecs)
     {
-        
-        return !dum.aggroEnemies.Contains(enemy) &&
-            ecs.aggroRange > Vector3.Distance(enemy.transform.position, dum.hero.transform.position) &&
-            LineOfSight.HasLOS(enemy, dum.hero);
+
+        //OLD AGGRO SYSTEM
+        //return !dum.aggroEnemies.Contains(enemy) &&
+        //    ecs.aggroRange > Vector3.Distance(enemy.transform.position, dum.hero.transform.position) &&
+        //    LineOfSight.HasLOS(enemy, dum.hero);
+
+        bool isAggroed = dum.aggroEnemies.Contains(enemy);
+        bool inPlayerRange = ecs.aggroRange >= djMapGenerator.GetPlayerMapValue(ecs.loc.coord);
+        bool inNpcRange = ecs.aggroRange >= djMapGenerator.GetNpcMapValue(ecs.loc.coord);
+
+        return !isAggroed && (inPlayerRange || inNpcRange);
     }
 }

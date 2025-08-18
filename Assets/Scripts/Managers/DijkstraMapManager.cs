@@ -13,11 +13,6 @@ public class DijkstraMapManager : MonoBehaviour
     public Dictionary<Vector2Int, float> LootMap { get; private set; }
     public Dictionary<Vector2Int, float> NpcMap { get; private set; }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
 
     public Dictionary<Vector2Int, float> LayerMaps(List<Dictionary<Vector2Int, float>> maps)
     {
@@ -117,36 +112,61 @@ public class DijkstraMapManager : MonoBehaviour
         return LayerMaps(maps);
     }
 
-    public void PrintMap(Dictionary<Vector2Int, float> map)
+    public void PopulatePlayerMap()
     {
-        if (map == null || map.Count == 0)
-        {
-            Debug.Log("Map is empty.");
-            return;
-        }
 
-        int minX = map.Keys.Min(coord => coord.x);
-        int maxX = map.Keys.Max(coord => coord.x);
-        int minY = map.Keys.Min(coord => coord.y);
-        int maxY = map.Keys.Max(coord => coord.y);
+        PlayerMap = CreateMapAboutObject(dum.hero, 25);
+        //string filePath = @"C:\Users\bentg\Downloads\PLAYERmap_output.txt";
+        //PrintMapToFile(PlayerMap, filePath);
+    }
 
-        for (int y = maxY; y >= minY; y--)
-        {
-            string line = "";
-            for (int x = minX; x <= maxX; x++)
-            {
-                Vector2Int coord = new Vector2Int(x, y);
-                if (map.ContainsKey(coord))
-                {
-                    line += ((int)map[coord]).ToString().PadLeft(2, '0') + " ";
-                }
-                else
-                {
-                    line += " . ";
-                }
-            }
-            Debug.Log(line);
-        }
+    public void PopulateEnemyMap()
+    {
+
+        EnemyMap = CreateLayeredMap(dum.enemies, 10);
+        
+    }
+
+    public void PopulateLootMap()
+    {
+
+        //LootMap = CreateLayeredMap(dum.itemContainers, 50);
+    }
+
+    public void PopulateNPCMap()
+    {
+
+        NpcMap = CreateLayeredMap(dum.npcs, 10);
+        string filePath = @"C:\Users\bentg\Downloads\NPCmap_output.txt";
+        PrintMapToFile(NpcMap, filePath);
+    }
+
+    public float GetPlayerMapValue(Vector2Int coord)
+    {
+        if (PlayerMap != null && PlayerMap.TryGetValue(coord, out float value))
+            return value;
+        return float.MaxValue;
+    }
+
+    public float GetEnemyMapValue(Vector2Int coord)
+    {
+        if (EnemyMap != null && EnemyMap.TryGetValue(coord, out float value))
+            return value;
+        return float.MaxValue;
+    }
+
+    public float GetNpcMapValue(Vector2Int coord)
+    {
+        if (NpcMap != null && NpcMap.TryGetValue(coord, out float value))
+            return value;
+        return float.MaxValue;
+    }
+
+    public float GetLootMapValue(Vector2Int coord)
+    {
+        if (LootMap != null && LootMap.TryGetValue(coord, out float value))
+            return value;
+        return float.MaxValue;
     }
 
     public void PrintMapToFile(Dictionary<Vector2Int, float> map, string filePath)

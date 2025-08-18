@@ -6,10 +6,10 @@ using UnityEngine;
 public class SpiderCharacterSheet : EnemyCharacterSheet
 {
 
-    public override void Start()
+    public override void Awake()
     {
         
-        base.Start();
+        base.Awake();
         maxHealth = 15;
         accuracy = 100;
         minDamage = 1;
@@ -26,9 +26,9 @@ public class SpiderCharacterSheet : EnemyCharacterSheet
         attackClip = Resources.Load<AudioClip>("Sounds/Spider");
     }
 
-    public override void AggroBehavior(PlayerCharacterSheet playerCharacter, DungeonManager dum, CombatManager cbm, float waitTime)
+    public override void AggroBehavior(float waitTime)
     {
 
-        base.AggroBehavior(playerCharacter, dum, cbm, waitTime);
+        base.AggroBehavior(waitTime);
     }
 }

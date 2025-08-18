@@ -31,29 +31,26 @@ public class MoveToTarget : MonoBehaviour
         {
 
             waitTime -= Time.deltaTime;
-
+            return;
         }
-        else
+
+        if (distance > 0)
         {
 
-            if (distance > 0)
-            {
+            distance = Vector3.Distance(new Vector3(target.x, 0, target.z), new Vector3(transform.position.x, 0, transform.position.z));
 
-                distance = Vector3.Distance(new Vector3(target.x, 0, target.z), new Vector3(transform.position.x, 0, transform.position.z));
+            arcPos = Mathf.Clamp(CalcArc(distance), 0f, 1f);
 
-                arcPos = Mathf.Clamp(CalcArc(distance), 0f, 1f);
+            transform.position = Vector3.MoveTowards(
+                                                        transform.position,
+                                                        target + new Vector3(0, arcPos, 0),
+                                                        speed * Time.deltaTime
+                                                    );
 
-                transform.position = Vector3.MoveTowards(
-                                                            transform.position,
-                                                            target + new Vector3(0, arcPos, 0),
-                                                            speed * Time.deltaTime
-                                                        );
+        }else if (moving && distance == 0)
+        {
 
-            }else if (moving && distance == 0)
-            {
-
-                OnArrive();
-            }
+            OnArrive();
         }
     }
 

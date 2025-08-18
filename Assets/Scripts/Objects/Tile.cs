@@ -7,8 +7,7 @@ public class Tile : MonoBehaviour
 
     public ObjectLocation loc;
     public bool state = true;
-    public HashSet<GameObject> EntitiesOnTile = new();
-    
+    public HashSet<GameObject> entitiesOnTile = new();    
     [SerializeField] private IconType iconType = IconType.None;
     [SerializeField] private bool actionable = true;
     private MeshRenderer meshRenderer;
@@ -33,6 +32,24 @@ public class Tile : MonoBehaviour
     {
 
         return iconType;
+    }
+
+    public void AddEntity(GameObject entity)
+    {
+
+        entitiesOnTile.Add(entity);
+    }
+
+    public void RemoveEntity(GameObject entity)
+    {
+
+        entitiesOnTile.Remove(entity);
+    }
+
+    public bool ContainsEntity(GameObject entity)
+    {
+
+        return entitiesOnTile.Contains(entity);
     }
 
     public void SetCoord(Vector2Int coord)
