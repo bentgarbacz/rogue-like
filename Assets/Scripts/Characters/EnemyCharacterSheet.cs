@@ -17,7 +17,7 @@ public class EnemyCharacterSheet : CharacterSheet
         base.Awake();
 
         GameObject managers = GameObject.Find("System Managers");
-        dum = managers.GetComponent<DungeonManager>();
+        entityMgr = managers.GetComponent<EntityManager>();
         cbm = managers.GetComponent<CombatManager>();
 
         djm = GameObject.Find("Map Generator").GetComponent<DijkstraMapManager>();
@@ -25,40 +25,17 @@ public class EnemyCharacterSheet : CharacterSheet
         aggroNoise = Resources.Load<AudioClip>("Sounds/aggroNoise");
     }
 
-    /*
-    //Custom rules that describe how each enemy reacts when they see the player character
-    //Default behavior is running at the player then melee attacking them
-    public virtual void AggroBehavior(float waitTime = 0f)
-    {
-
-        //enemy attacks player character if they are in a neighboring tile
-        if (!cbm.AddMeleeAttack(this.gameObject, dum.hero, minDamage, maxDamage, speed))
-        {
-
-            List<Vector2Int> pathToPlayer = PathFinder.FindPath(loc.coord, dum.playerCharacter.loc.coord, dum.dungeonCoords, ignoredPoints: dum.occupiedlist);
-
-            if (pathToPlayer == null)
-            {
-
-                pathToPlayer = PathFinder.FindPath(loc.coord, dum.playerCharacter.loc.coord, dum.dungeonCoords);
-            }
-
-            Move(pathToPlayer[1], dum.occupiedlist, waitTime);
-        }
-    }
-    */
-
     public virtual void AggroBehavior(float waitTime = 0f)
     {
 
         if (!GetAggroStatus())
         {
 
-            dum.aggroEnemies.Remove(this.gameObject);
+            entityMgr.aggroEnemies.Remove(this.gameObject);
             return;
         }
 
-        List<Vector2Int> neighborPoints = new(PathFinder.GetNeighbors(loc.coord, dum.dungeonCoords));
+        List<Vector2Int> neighborPoints = new(PathFinder.GetNeighbors(loc.coord, tileMgr.dungeonCoords));
         neighborPoints = ShuffleNeighbors(neighborPoints);
 
         List<Vector2Int> cardinalNeighbors = GetCardinalNeighbors(neighborPoints);
@@ -86,7 +63,7 @@ public class EnemyCharacterSheet : CharacterSheet
                 AttackEntity(currCoord);
                 return;
             }
-            else if (currMinVal <= minDist && !dum.occupiedlist.Contains(currCoord))
+            else if (currMinVal <= minDist && !tileMgr.occupiedlist.Contains(currCoord))
             {
 
                 if (cardinalNeighbors.Contains(targetCoord) && !cardinalNeighbors.Contains(currCoord) && currMinVal == minDist)
@@ -108,7 +85,7 @@ public class EnemyCharacterSheet : CharacterSheet
 
         Vector2Int randomDirection = new(loc.coord.x + Direction2D.GetRandomDirection().x, loc.coord.y + Direction2D.GetRandomDirection().y);
 
-        if(dum.dungeonCoords.Contains(randomDirection))
+        if(tileMgr.dungeonCoords.Contains(randomDirection))
         {
 
             Move(randomDirection, waitTime);
@@ -119,10 +96,10 @@ public class EnemyCharacterSheet : CharacterSheet
     {
 
         //run away from player
-        Vector2Int playerCoord = dum.hero.GetComponent<PlayerCharacterSheet>().loc.coord;
+        Vector2Int playerCoord = entityMgr.hero.GetComponent<PlayerCharacterSheet>().loc.coord;
         Vector2Int fleePath = loc.coord;
 
-        foreach (Vector2Int p in PathFinder.GetNeighbors(loc.coord, dum.dungeonCoords))
+        foreach (Vector2Int p in PathFinder.GetNeighbors(loc.coord, tileMgr.dungeonCoords))
         {
 
             if (PathFinder.CalculateDistance(p, playerCoord) > PathFinder.CalculateDistance(fleePath, playerCoord))
@@ -132,7 +109,7 @@ public class EnemyCharacterSheet : CharacterSheet
             }
         }
 
-        if (dum.dungeonCoords.Contains(fleePath))
+        if (tileMgr.dungeonCoords.Contains(fleePath))
         {
 
             Move(fleePath, waitTime);
@@ -150,7 +127,7 @@ public class EnemyCharacterSheet : CharacterSheet
     protected virtual bool GetAggroStatus()
     {
 
-        if (djm.PlayerMap.ContainsKey(loc.coord) || djm.NpcMap.ContainsKey(loc.coord))
+        if (djm.playerMap.ContainsKey(loc.coord) || djm.npcMap.ContainsKey(loc.coord))
         {
 
             return true;
@@ -202,7 +179,7 @@ public class EnemyCharacterSheet : CharacterSheet
 
         GameObject targetEntity = null;
 
-        foreach (GameObject entity in tileManager.GetTile(coord).entitiesOnTile)
+        foreach (GameObject entity in tileMgr.GetTile(coord).entitiesOnTile)
         {
 
             if (entity != null && entity.GetComponent<CharacterSheet>() != null)

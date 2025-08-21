@@ -55,7 +55,7 @@ public class CatacombBiome : Biome
         }
         
         newTile.GetComponent<Tile>().SetCoord(position);
-        dum.AddGameObject(newTile);
+        entityMgr.AddGameObject(newTile);
     }
 
     public override void CreateEntranceTile(Vector3 spawnPos, Vector2Int position)
@@ -63,7 +63,7 @@ public class CatacombBiome : Biome
 
         GameObject newCatacombEntrance = Instantiate(catacombEntrance, spawnPos, catacombEntrance.transform.rotation);
         newCatacombEntrance.GetComponent<Tile>().SetCoord(position);
-        dum.AddGameObject(newCatacombEntrance);        
+        entityMgr.AddGameObject(newCatacombEntrance);        
     }
 
     public override void CreateExitTile(Vector3 spawnPos, Vector2Int position, HashSet<Vector2Int> dungeonCoords)
@@ -85,7 +85,7 @@ public class CatacombBiome : Biome
         }
 
         newExit.GetComponent<Exit>().loc.coord = position;
-        dum.AddGameObject(newExit);
+        entityMgr.AddGameObject(newExit);
     }
 
     public override GameObject CreateWallTile(Vector3 spawnPos)
@@ -93,7 +93,7 @@ public class CatacombBiome : Biome
 
         GameObject newWall = Instantiate(catacombWallTile, spawnPos, catacombWallTile.transform.rotation);
         newWall.GetComponent<Tile>().SetCoord(new Vector2Int((int)spawnPos.x, (int)spawnPos.z));
-        dum.AddGameObject(newWall);
+        entityMgr.AddGameObject(newWall);
         //newWall.GetComponent<Renderer>().material.color = Color.gray;
 
         return newWall;
@@ -208,20 +208,17 @@ public class CatacombBiome : Biome
         Vector2Int entranceCoord = entranceRoom.GetRandomCoordinate();
         Vector3 entrancePos = new(entranceCoord.x, 0, entranceCoord.y);
 
-        tileManager.DeleteTile(entranceCoord);
+        tileMgr.DeleteTile(entranceCoord);
         
-        // Create the entrance tile
         CreateEntranceTile(entrancePos, entranceCoord);
-
-        // Place the hero at the entrance
-        dum.hero.transform.position = entrancePos;
+        entityMgr.hero.transform.position = entrancePos;
 
         //Generate exit in the last room in rooms
         Room exitRoom = rooms[^1];
         Vector2Int exitCoord = exitRoom.GetRandomCoordinate();
         Vector3 exitPos = new(exitCoord.x, 0, exitCoord.y);
 
-        tileManager.DeleteTile(exitCoord);
+        tileMgr.DeleteTile(exitCoord);
 
         // Create the exit tile
         CreateExitTile(exitPos, exitCoord, dungeonCoords);
@@ -261,7 +258,7 @@ public class CatacombBiome : Biome
                     GameObject newDoor = Instantiate(catacombDoor, doorPos, catacombDoor.transform.rotation);
                     newDoor.GetComponent<Door>().InitDoor(perimeterCoord, room.GetDirectionFromRoom(perimeterCoord));
                     newDoor.GetComponent<ObjectVisibility>().Initialize();
-                    dum.AddGameObject(newDoor);
+                    entityMgr.AddGameObject(newDoor);
                 }
             }
         }
@@ -297,7 +294,7 @@ public class CatacombBiome : Biome
         foreach (Vector2Int coord in PathFinder.GetNeighbors(entranceCoord, dungeonCoords))
         {
 
-            if(!dum.occupiedlist.Contains(coord))
+            if(!tileMgr.occupiedlist.Contains(coord))
             {
 
                 return coord;

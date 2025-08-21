@@ -53,7 +53,7 @@ public class CaveBiome : Biome
         }
         
         newTile.GetComponent<Tile>().SetCoord(position);
-        dum.AddGameObject(newTile);
+        entityMgr.AddGameObject(newTile);
     }
 
     public override void CreateEntranceTile(Vector3 spawnPos, Vector2Int position)
@@ -61,7 +61,7 @@ public class CaveBiome : Biome
 
         GameObject newCatacombEntrance = Instantiate(caveEntrance, spawnPos, caveEntrance.transform.rotation);
         newCatacombEntrance.GetComponent<Tile>().SetCoord(position);
-        dum.AddGameObject(newCatacombEntrance);
+        entityMgr.AddGameObject(newCatacombEntrance);
     }
 
     public override void CreateExitTile(Vector3 spawnPos, Vector2Int position, HashSet<Vector2Int> dungeonCoords)
@@ -82,7 +82,7 @@ public class CaveBiome : Biome
         }
 
         newExit.GetComponent<Exit>().loc.coord = position;
-        dum.AddGameObject(newExit);
+        entityMgr.AddGameObject(newExit);
     }
 
     public override GameObject CreateWallTile(Vector3 spawnPos)
@@ -124,7 +124,7 @@ public class CaveBiome : Biome
         }
 
         newWall.GetComponent<Tile>().SetCoord(new Vector2Int((int)spawnPos.x, (int)spawnPos.z));
-        dum.AddGameObject(newWall);
+        entityMgr.AddGameObject(newWall);
 
         return newWall;   
     }
@@ -207,15 +207,12 @@ public class CaveBiome : Biome
         if(!exitSpawned)
         {
 
-            dum.CleanUp();
-            firstTileCoord = GenerateLevel(dum.dungeonCoords);
+            entityMgr.CleanUp();
+            firstTileCoord = GenerateLevel(tileMgr.dungeonCoords);
             return firstTileCoord;
         }
 
         GenerateWalls(dungeonCoords);
-
-        //dum.hero.GetComponent<CharacterSheet>().Move(firstTileCoord, dum.occupiedlist); 
-
         return firstTileCoord;
     }
 }

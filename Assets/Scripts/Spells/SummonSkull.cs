@@ -6,8 +6,8 @@ public class SummonSkull : Spell
 {
 
     private NPCGenerator npcGen;
-    private TileManager tileManager;
-    private DungeonManager dum;
+    private TileManager tileMgr;
+    private EntityManager entityMgr;
     private NPCType npcType = NPCType.Skull;
 
     public SummonSkull()
@@ -24,8 +24,8 @@ public class SummonSkull : Spell
 
         GameObject managers = GameObject.Find("System Managers");
 
-        tileManager = managers.GetComponent<TileManager>();
-        dum = managers.GetComponent<DungeonManager>();
+        tileMgr = managers.GetComponent<TileManager>();
+        entityMgr = managers.GetComponent<EntityManager>();
     }
 
     public override bool Cast(GameObject caster, GameObject target)
@@ -42,16 +42,16 @@ public class SummonSkull : Spell
 
                 Vector2Int checkCoord = targetCharacter.loc.coord + d;
 
-                if (dum.dungeonCoords.Contains(checkCoord) && !dum.occupiedlist.Contains(checkCoord))
+                if (tileMgr.dungeonCoords.Contains(checkCoord) && !tileMgr.occupiedlist.Contains(checkCoord))
                 {
 
-                    targetTile = tileManager.tileDict[checkCoord];
+                    targetTile = tileMgr.tileDict[checkCoord];
                 }
 
             }
         }
         
-        if (!targetTile || dum.occupiedlist.Contains(targetTile.loc.coord))
+        if (!targetTile || tileMgr.occupiedlist.Contains(targetTile.loc.coord))
         {
 
             return false;

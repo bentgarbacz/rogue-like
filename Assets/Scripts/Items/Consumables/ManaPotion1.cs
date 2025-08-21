@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ManaPotion1 : Consumable
 {
-    private GameObject hero = GameObject.Find("System Managers").GetComponent<DungeonManager>().hero;
+    private GameObject hero = GameObject.Find("System Managers").GetComponent<EntityManager>().hero;
     private readonly int manaRestoreValue = 15;
 
     public ManaPotion1(int dropChance = 0 )

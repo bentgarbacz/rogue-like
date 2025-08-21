@@ -5,8 +5,6 @@ using UnityEngine;
 public class Teleport : Spell
 {
 
-    private DungeonManager dum;
-
     public Teleport()
     {
         
@@ -17,8 +15,6 @@ public class Teleport : Spell
         this.manaCost = 5;
         this.sprite = Resources.Load<Sprite>("Pixel Art/Spells/Teleport");
         this.castSound = Resources.Load<AudioClip>("Sounds/Teleport");
-
-        dum = GameObject.Find("System Managers").GetComponent<DungeonManager>();
     }
 
     public override bool Cast(GameObject caster, GameObject target)

@@ -9,7 +9,7 @@ public class PoisonousStrike : Spell
     private int duration = 5;
     private CombatManager cbm;
     private InventoryManager im;
-    private DungeonManager dum;
+    private EntityManager entityMgr;
 
     public PoisonousStrike()
     {
@@ -23,7 +23,7 @@ public class PoisonousStrike : Spell
         GameObject managers = GameObject.Find("System Managers");
         cbm = managers.GetComponent<CombatManager>();
         im = managers.GetComponent<InventoryManager>();
-        dum = managers.GetComponent<DungeonManager>();
+        entityMgr = managers.GetComponent<EntityManager>();
     }
 
     public override bool Cast(GameObject caster, GameObject target)
@@ -53,7 +53,7 @@ public class PoisonousStrike : Spell
 
                         //poison target
                         target.GetComponent<TextNotificationManager>().CreateNotificationOrder(target.transform.position, 3f, "Poisoned", Color.green, 1f);
-                        target.GetComponent<StatusEffectManager>().AddEffect(new Poison(defendingCharacter, duration, damagePerTurn, dum));
+                        target.GetComponent<StatusEffectManager>().AddEffect(new Poison(defendingCharacter, duration, damagePerTurn, entityMgr));
 
                         ResetCooldown(caster);
                         return true;
@@ -67,7 +67,7 @@ public class PoisonousStrike : Spell
 
                         //poison target
                         target.GetComponent<TextNotificationManager>().CreateNotificationOrder(target.transform.position, 3f, "Poisoned", Color.green, 1f);
-                        target.GetComponent<StatusEffectManager>().AddEffect(new Poison(defendingCharacter, duration, damagePerTurn, dum));
+                        target.GetComponent<StatusEffectManager>().AddEffect(new Poison(defendingCharacter, duration, damagePerTurn, entityMgr));
                         
                         ResetCooldown(caster);
                         return true;

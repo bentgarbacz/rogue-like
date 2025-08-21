@@ -5,20 +5,18 @@ using UnityEngine;
 public class Exit : Interactable
 {
 
-    private DungeonManager dum;
-    private LevelGenerator lg;
+    private LevelGenerator levelGenerator;
 
     void Start()
     {
 
-        dum = GameObject.Find("System Managers").GetComponent<DungeonManager>();
-        lg = GameObject.Find("Map Generator").GetComponent<LevelGenerator>();
+        levelGenerator = GameObject.Find("Map Generator").GetComponent<LevelGenerator>();
     }
 
     public override bool Interact()
     {
                              
-        lg.NewLevel(lg.biomeDict[BiomeType.Catacomb]);
+        levelGenerator.NewLevel(levelGenerator.biomeDict[BiomeType.Catacomb]);
         
         return true;
     }

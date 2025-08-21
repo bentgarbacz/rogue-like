@@ -133,7 +133,7 @@ public static class GameFunctions
         return new Vector2Int((int)pos.x, (int)pos.z);
     }
 
-    public static GameObject DropLoot(GameObject DroppingEntity, GameObject container, List<Item> droppedItems, DungeonManager dum, MiniMapManager miniMapManager, VisibilityManager visibilityManager, bool randomizePos = true)
+    public static GameObject DropLoot(GameObject DroppingEntity, GameObject container, List<Item> droppedItems, EntityManager entityMgr, MiniMapManager miniMapManager, VisibilityManager visibilityManager, bool randomizePos = true)
     {
 
         //Determine drop location and introduce randomness to make multiple loot instances clickable on a single tile
@@ -154,8 +154,8 @@ public static class GameFunctions
         loot.loc.coord = new Vector2Int((int)DroppingEntity.transform.position.x, (int)DroppingEntity.transform.position.z);
         loot.AddItems(droppedItems);
 
-        dum.AddGameObject(lootContainer);
-        dum.itemContainers.Add(loot);
+        entityMgr.AddGameObject(lootContainer);
+        entityMgr.itemContainers.Add(loot);
 
         miniMapManager.AddIcon(lootContainer);
 

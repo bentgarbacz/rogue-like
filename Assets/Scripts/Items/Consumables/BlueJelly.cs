@@ -5,7 +5,7 @@ using UnityEngine;
 public class BlueJelly : Consumable
 {
 
-    private GameObject hero = GameObject.Find("System Managers").GetComponent<DungeonManager>().hero;
+    private GameObject hero = GameObject.Find("System Managers").GetComponent<EntityManager>().hero;
     private readonly int hungerValue = 200;
     private readonly int manaRestoreValue = 5;
 

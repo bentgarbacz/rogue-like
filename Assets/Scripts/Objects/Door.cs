@@ -5,7 +5,8 @@ using UnityEngine;
 public class Door : Interactable
 {
 
-    private DungeonManager dum;
+    private EntityManager entityMgr;
+    private TileManager tileMgr;
     private bool isOpen = false;
     private AudioSource audioSource;
     private bool toggleable = true;
@@ -16,7 +17,10 @@ public class Door : Interactable
     void Awake()
     {
 
-        dum = GameObject.Find("System Managers").GetComponent<DungeonManager>();
+        GameObject managers = GameObject.Find("System Managers");
+        entityMgr = managers.GetComponent<EntityManager>();
+        tileMgr = managers.GetComponent<TileManager>();
+
         audioSource = GetComponent<AudioSource>();
         objectHighlighter = GetComponent<ObjectHighlighter>();
 
@@ -71,7 +75,7 @@ public class Door : Interactable
 
         transform.Rotate(0f, angle, 0f);
         this.loc.coord = coord;
-        dum.occupiedlist.Add(coord);
+        tileMgr.occupiedlist.Add(coord);
     }
 
     public bool ToggleDoor()
@@ -104,12 +108,12 @@ public class Door : Interactable
         audioSource.Play();
         isOpen = true;
         transform.Rotate(0f, 90f, 0f);
-        dum.occupiedlist.Remove(loc.coord);
+        tileMgr.occupiedlist.Remove(loc.coord);
 
         visionBlockBox.enabled = false;
         Physics.SyncTransforms();
 
-        dum.playerCharacter.RevealAroundPC();
+        entityMgr.playerCharacter.RevealAroundPC();
 
         return true;
     }
@@ -117,14 +121,14 @@ public class Door : Interactable
     private bool CloseDoor()
     {
 
-        if(!dum.occupiedlist.Contains(loc.coord))
+        if(!tileMgr.occupiedlist.Contains(loc.coord))
         {
             
             objectHighlighter.SetActionText("Open");
             audioSource.Play();
             isOpen = false;
             transform.Rotate(0f, -90f, 0f);
-            dum.occupiedlist.Add(loc.coord); 
+            tileMgr.occupiedlist.Add(loc.coord); 
 
             visionBlockBox.enabled = true;
 

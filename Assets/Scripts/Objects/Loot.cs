@@ -7,7 +7,7 @@ public class Loot : Interactable
 
     public List<Item> items;
     protected UIActiveManager uiam;
-    protected DungeonManager dum;
+    protected EntityManager entityMgr;
     protected AudioSource audioSource;
 
     void Start()
@@ -16,7 +16,7 @@ public class Loot : Interactable
         GameObject managers = GameObject.Find("System Managers");
 
         uiam = managers.GetComponent<UIActiveManager>();
-        dum = managers.GetComponent<DungeonManager>();
+        entityMgr = managers.GetComponent<EntityManager>();
 
         audioSource = GetComponent<AudioSource>();
     }
@@ -53,7 +53,7 @@ public class Loot : Interactable
     public void Discard()
     {
 
-        dum.TossContainer(gameObject);
+        entityMgr.TossContainer(gameObject);
     }
 
     public virtual void DiscardIfEmpty()

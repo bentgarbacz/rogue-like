@@ -10,6 +10,7 @@ public class SlimeCharacterSheet : EnemyCharacterSheet
     private Vector2Int landingCoord;
     private bool landingFound = false;
     private ObjectVisibility objectVisibility;
+    private TurnSequencer turnSequencer;
 
     public override void Awake()
     {
@@ -32,6 +33,8 @@ public class SlimeCharacterSheet : EnemyCharacterSheet
 
         objectVisibility = GetComponent<ObjectVisibility>();
         objectVisibility.isActive = false;
+
+        turnSequencer = managers.GetComponent<TurnSequencer>();
     }
 
     void Update()
@@ -42,19 +45,19 @@ public class SlimeCharacterSheet : EnemyCharacterSheet
 
             transform.position = Vector3.MoveTowards(
                                                         transform.position, 
-                                                        dum.playerCharacter.transform.position, 
+                                                        entityMgr.playerCharacter.transform.position, 
                                                         fallSpeed * Time.deltaTime
                                                     );
 
-            if(transform.position == dum.playerCharacter.transform.position)
+            if(transform.position == entityMgr.playerCharacter.transform.position)
             {
 
                 falling = false;
                 audioSource.PlayOneShot(attackClip);
-                cbm.ExecuteAttack(this.gameObject, dum.hero, minDamage, maxDamage, speed);
-                dum.occupiedlist.Remove(landingCoord);
+                cbm.ExecuteAttack(this.gameObject, entityMgr.hero, minDamage, maxDamage, speed);
+                tileMgr.occupiedlist.Remove(landingCoord);
                 Move(landingCoord);
-                dum.HaltGameplay(false);
+                turnSequencer.HaltGameplay(false);
             }
         }
     }
@@ -62,7 +65,7 @@ public class SlimeCharacterSheet : EnemyCharacterSheet
     public override bool OnAggro()
     {
 
-        HashSet<Vector2Int> landingCoords = PathFinder.GetNeighbors(dum.playerCharacter.loc.coord, dum.dungeonCoords);
+        HashSet<Vector2Int> landingCoords = PathFinder.GetNeighbors(entityMgr.playerCharacter.loc.coord, tileMgr.dungeonCoords);
 
         if(!objectVisibility.isActive)
         {
@@ -70,7 +73,7 @@ public class SlimeCharacterSheet : EnemyCharacterSheet
             foreach(Vector2Int possibleCoord in landingCoords)
             {
                 
-                if(dum.occupiedlist.Add(possibleCoord))
+                if(tileMgr.occupiedlist.Add(possibleCoord))
                 {
 
                     landingFound = true;
@@ -84,10 +87,10 @@ public class SlimeCharacterSheet : EnemyCharacterSheet
 
                 objectVisibility.isActive = true;
 
-                transform.position = dum.hero.transform.position + new Vector3(0, 10f, 0);
+                transform.position = entityMgr.hero.transform.position + new Vector3(0, 10f, 0);
                 objectVisibility.SetVisibility(true);
                 falling = true;
-                dum.HaltGameplay();
+                turnSequencer.HaltGameplay();
 
                 return true;
             }

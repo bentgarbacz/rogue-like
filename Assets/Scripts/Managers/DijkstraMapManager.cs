@@ -7,11 +7,12 @@ using System.IO;
 public class DijkstraMapManager : MonoBehaviour
 {
 
-    [SerializeField] DungeonManager dum;
-    public Dictionary<Vector2Int, float> PlayerMap { get; private set; }
-    public Dictionary<Vector2Int, float> EnemyMap { get; private set; }
-    public Dictionary<Vector2Int, float> LootMap { get; private set; }
-    public Dictionary<Vector2Int, float> NpcMap { get; private set; }
+    [SerializeField] private EntityManager entityMgr;
+    [SerializeField] private TileManager tileMgr;
+    public Dictionary<Vector2Int, float> playerMap { get; private set; }
+    public Dictionary<Vector2Int, float> enemyMap { get; private set; }
+    public Dictionary<Vector2Int, float> lootMap { get; private set; }
+    public Dictionary<Vector2Int, float> npcMap { get; private set; }
 
 
     public Dictionary<Vector2Int, float> LayerMaps(List<Dictionary<Vector2Int, float>> maps)
@@ -69,7 +70,7 @@ public class DijkstraMapManager : MonoBehaviour
 
                 //objectMap[coord] = (float)currentStep;
 
-                foreach (Vector2Int checkCoord in PathFinder.GetNeighbors(coord, dum.dungeonCoords))
+                foreach (Vector2Int checkCoord in PathFinder.GetNeighbors(coord, tileMgr.dungeonCoords))
                 {
 
                     if (objectMap.ContainsKey(checkCoord))
@@ -115,16 +116,17 @@ public class DijkstraMapManager : MonoBehaviour
     public void PopulatePlayerMap()
     {
 
-        PlayerMap = CreateMapAboutObject(dum.hero, 25);
+        playerMap = CreateMapAboutObject(entityMgr.hero, 25);
         //string filePath = @"C:\Users\bentg\Downloads\PLAYERmap_output.txt";
-        //PrintMapToFile(PlayerMap, filePath);
+        //PrintMapToFile(playerMap, filePath);
     }
 
     public void PopulateEnemyMap()
     {
 
-        EnemyMap = CreateLayeredMap(dum.enemies, 10);
-        
+        enemyMap = CreateLayeredMap(entityMgr.enemies, 10);
+        //string filePath = @"C:\Users\bentg\Downloads\ENEMYmap_output.txt";
+        //PrintMapToFile(enemyMap, filePath);
     }
 
     public void PopulateLootMap()
@@ -136,35 +138,35 @@ public class DijkstraMapManager : MonoBehaviour
     public void PopulateNPCMap()
     {
 
-        NpcMap = CreateLayeredMap(dum.npcs, 10);
-        string filePath = @"C:\Users\bentg\Downloads\NPCmap_output.txt";
-        PrintMapToFile(NpcMap, filePath);
+        npcMap = CreateLayeredMap(entityMgr.npcs, 10);
+        //string filePath = @"C:\Users\bentg\Downloads\NPCmap_output.txt";
+        //PrintMapToFile(npcMap, filePath);
     }
 
     public float GetPlayerMapValue(Vector2Int coord)
     {
-        if (PlayerMap != null && PlayerMap.TryGetValue(coord, out float value))
+        if (playerMap != null && playerMap.TryGetValue(coord, out float value))
             return value;
         return float.MaxValue;
     }
 
     public float GetEnemyMapValue(Vector2Int coord)
     {
-        if (EnemyMap != null && EnemyMap.TryGetValue(coord, out float value))
+        if (enemyMap != null && enemyMap.TryGetValue(coord, out float value))
             return value;
         return float.MaxValue;
     }
 
     public float GetNpcMapValue(Vector2Int coord)
     {
-        if (NpcMap != null && NpcMap.TryGetValue(coord, out float value))
+        if (npcMap != null && npcMap.TryGetValue(coord, out float value))
             return value;
         return float.MaxValue;
     }
 
     public float GetLootMapValue(Vector2Int coord)
     {
-        if (LootMap != null && LootMap.TryGetValue(coord, out float value))
+        if (lootMap != null && lootMap.TryGetValue(coord, out float value))
             return value;
         return float.MaxValue;
     }

@@ -5,7 +5,7 @@ using UnityEngine;
 public class HealthPotion1 : Consumable
 {
 
-    private GameObject hero = GameObject.Find("System Managers").GetComponent<DungeonManager>().hero;
+    private GameObject hero = GameObject.Find("System Managers").GetComponent<EntityManager>().hero;
     private readonly int healValue = 10;
 
     public HealthPotion1(int dropChance = 0 )

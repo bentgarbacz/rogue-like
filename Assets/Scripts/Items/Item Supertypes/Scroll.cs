@@ -10,7 +10,7 @@ public class Scroll : Item
     public int intelligenceRequirement = 0;
     public SpellType spellType;
     public PlayerCharacterSheet playerCharacter;
-    private readonly GameObject hero = GameObject.Find("System Managers").GetComponent<DungeonManager>().hero;
+    private readonly GameObject hero = GameObject.Find("System Managers").GetComponent<EntityManager>().hero;
 
     public Scroll()
     {
