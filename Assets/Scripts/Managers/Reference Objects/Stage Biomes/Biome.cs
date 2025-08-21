@@ -5,10 +5,10 @@ using UnityEngine;
 public class Biome : MonoBehaviour
 {
 
-    [SerializeField] protected DungeonManager dum;
+    [SerializeField] protected EntityManager entityMgr;
     [SerializeField] protected NPCGenerator npcGen;
     [SerializeField] private GameObject wallJoiner;
-    [SerializeField] protected TileManager tileManager;
+    [SerializeField] protected TileManager tileMgr;
 
     public virtual void CreateTile(Vector3 spawnPos, Vector2Int position, int spawnRNG)
     {
@@ -92,6 +92,6 @@ public class Biome : MonoBehaviour
 
         GameObject newWallJoiner = Instantiate(wallJoiner, spawnPos, wallJoiner.transform.rotation);
         newWallJoiner.transform.LookAt(parentWall.transform);
-        dum.AddGameObject(newWallJoiner);
+        entityMgr.AddGameObject(newWallJoiner);
     }
 }

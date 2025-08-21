@@ -9,15 +9,13 @@ public class CombatManager : MonoBehaviour
     public float attackTime = 0.5f;
     public float trimTime = 0.25f;
     private List<Attack> combatBuffer;
-    private DungeonManager dum;
-    private ProjectileReferences allProjectiles;
+    [SerializeField] private EntityManager entityMgr;
+    [SerializeField] private TileManager tileMgr;
+    [SerializeField] private ProjectileReferences allProjectiles;
     
     void Start()
     {
 
-        GameObject managers = GameObject.Find("System Managers");
-        dum = managers.GetComponent<DungeonManager>();
-        allProjectiles = managers.GetComponent<ProjectileReferences>();
         combatBuffer = new();
     }
 
@@ -150,7 +148,7 @@ public class CombatManager : MonoBehaviour
                 if(defenderHealth.currentHealth <= 0)
                 {
                     yield return new WaitForSeconds(0.05f); //Give the GameObject of dead character time to wrap up before it is destroyed
-                    dum.Smite(combatBuffer[0].defender);                                                                    
+                    entityMgr.Smite(combatBuffer[0].defender);                                                                    
                 }
             }
 
@@ -165,7 +163,7 @@ public class CombatManager : MonoBehaviour
     {
 
         //attack occurs only if defender in in a neighboring tile of the attacker
-        if(PathFinder.GetNeighbors(defender.GetComponent<CharacterSheet>().loc.coord, dum.dungeonCoords).Contains(attacker.GetComponent<CharacterSheet>().loc.coord))
+        if(PathFinder.GetNeighbors(defender.GetComponent<CharacterSheet>().loc.coord, tileMgr.dungeonCoords).Contains(attacker.GetComponent<CharacterSheet>().loc.coord))
         {
 
             combatBuffer.Add( new Attack(attacker, defender, minDamage, maxDamage, speed));
@@ -235,7 +233,7 @@ public class CombatManager : MonoBehaviour
         if (defenderHealth.currentHealth <= 0)
         {
 
-            dum.Smite(defender); // Remove the defender from the game
+            entityMgr.Smite(defender); // Remove the defender from the game
         }
     }
 

@@ -6,17 +6,17 @@ public class Poison : StatusEffect
 {
     
     public int damageOverTime;
-    private DungeonManager dum;
+    private EntityManager entityMgr;
     private CharacterHealth characterHealth;
 
-    public Poison(CharacterSheet affectedCharacter, int duration, int damageOverTime, DungeonManager dum)
+    public Poison(CharacterSheet affectedCharacter, int duration, int damageOverTime, EntityManager entityMgr)
     {
 
         this.type = EffectType.Debuff;
         this.affectedCharacter = affectedCharacter;
         this.duration = duration;
         this.damageOverTime = damageOverTime;
-        this.dum = dum;
+        this.entityMgr = entityMgr;
         this.sprite = Resources.Load<Sprite>("Pixel Art/Spells/Poison");
 
         characterHealth = affectedCharacter.GetComponent<CharacterHealth>();
@@ -31,7 +31,7 @@ public class Poison : StatusEffect
         if(characterHealth.currentHealth <= 0)
         {
 
-            dum.Smite(affectedCharacter.gameObject);
+            entityMgr.Smite(affectedCharacter.gameObject);
         }
 
         duration -= 1;

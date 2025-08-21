@@ -62,7 +62,7 @@ public class PlayerCharacterSheet : CharacterSheet
         GetComponent<MoveToTarget>().SetNoise(audioSource, stepAudioClip);
 
         GameObject managers = GameObject.Find("System Managers");
-        dum = managers.GetComponent<DungeonManager>();
+        entityMgr = managers.GetComponent<EntityManager>();
         im = managers.GetComponent<InventoryManager>();
         cbm = managers.GetComponent<CombatManager>();
 
@@ -282,7 +282,7 @@ public class PlayerCharacterSheet : CharacterSheet
         if (!attackOccured)//move towards defender
         {
 
-            List<Vector2Int> pathToDestination = PathFinder.FindPath(loc.coord, defendingCharacter.loc.coord, dum.dungeonCoords);
+            List<Vector2Int> pathToDestination = PathFinder.FindPath(loc.coord, defendingCharacter.loc.coord, tileMgr.dungeonCoords);
             Move(pathToDestination[1]);
         }
 
@@ -298,14 +298,14 @@ public class PlayerCharacterSheet : CharacterSheet
     public override void ProcessStatusEffects()
     {
 
-        sem.ProcessStatusEffects();
+        statusEffectMgr.ProcessStatusEffects();
         UpdateStatusNotifications();
     }
 
     public void UpdateStatusNotifications()
     {
 
-        snm.UpdateStatusNotifications(sem.GetStatusEffects());
+        snm.UpdateStatusNotifications(statusEffectMgr.GetStatusEffects());
     }
 
     public override bool Move(Vector2Int newCoord, float waitTime = 0f)
@@ -324,6 +324,6 @@ public class PlayerCharacterSheet : CharacterSheet
     public void RevealAroundPC()
     {
         
-        tileManager.RevealTiles(GameFunctions.GetCircleCoords(loc.coord, visibilityRadius));
+        tileMgr.RevealTiles(GameFunctions.GetCircleCoords(loc.coord, visibilityRadius));
     }
 }

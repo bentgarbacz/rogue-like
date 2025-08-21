@@ -39,7 +39,7 @@ public class WitchCharacterSheet : EnemyCharacterSheet
         {
 
             //Ranged attack initates if target is within range
-            if(cbm.AddProjectileAttack(this.gameObject, dum.hero, range, minDamage, maxDamage, speed, projectile))
+            if(cbm.AddProjectileAttack(this.gameObject, entityMgr.hero, range, minDamage, maxDamage, speed, projectile))
             {
 
                 attackCooldown = 3;
@@ -47,7 +47,7 @@ public class WitchCharacterSheet : EnemyCharacterSheet
             }else //move towards target if not within range
             {
                 
-                List<Vector2Int> pathToPlayer = PathFinder.FindPath(loc.coord, dum.playerCharacter.loc.coord, dum.dungeonCoords);                     
+                List<Vector2Int> pathToPlayer = PathFinder.FindPath(loc.coord, entityMgr.playerCharacter.loc.coord, tileMgr.dungeonCoords);                     
                 Move(pathToPlayer[1], waitTime);
             }
 

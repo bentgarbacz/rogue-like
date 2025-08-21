@@ -4,32 +4,29 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class DungeonManager : MonoBehaviour
+public class EntityManager : MonoBehaviour
 {
 
     public GameObject hero;
     public PlayerCharacterSheet playerCharacter;
     public bool enemiesOnLookout = true;
-    public HashSet<Vector2Int> dungeonCoords;
-    public HashSet<Vector2Int> occupiedlist = new();
-    public HashSet<GameObject> dungeonSpecificGameObjects = new();
+    public HashSet<GameObject> entitiesInLevel = new();
     public HashSet<GameObject> enemies = new();
     public HashSet<GameObject> aggroEnemies = new();
     public HashSet<GameObject> npcs = new();
     public HashSet<Loot> itemContainers = new();
-    private CombatManager cbm;
-    private TurnSequencer ts;
-    private MiniMapManager miniMapManager;
-    [SerializeField] private TileManager tileManager;
-    [SerializeField] private VisibilityManager visibilityManager;
+    [SerializeField] private CombatManager combatMgr;
+    [SerializeField] private TurnSequencer ts;
+    [SerializeField] private MiniMapManager minimapMgr;
+    [SerializeField] private TileManager tileMgr;
+    [SerializeField] private VisibilityManager visibilityMgr;
 
     void Start()
     {
 
         GameObject managers = GameObject.Find("System Managers");
-        cbm = managers.GetComponent<CombatManager>();
-        ts = managers.GetComponent<TurnSequencer>();
-        miniMapManager = managers.GetComponent<UIActiveManager>().mapPanel.GetComponent<MiniMapManager>();
+        
+        minimapMgr = managers.GetComponent<UIActiveManager>().mapPanel.GetComponent<MiniMapManager>();
         playerCharacter = hero.GetComponent<PlayerCharacterSheet>();
     }
 
@@ -48,27 +45,27 @@ public class DungeonManager : MonoBehaviour
     public void AddGameObject(GameObject newGameObject)
     {
 
-        dungeonSpecificGameObjects.Add(newGameObject);
-        tileManager.AddTile(newGameObject.GetComponent<Tile>());
-        tileManager.AddDoor(newGameObject.GetComponent<Door>());
-        visibilityManager.AddObject(newGameObject);
+        entitiesInLevel.Add(newGameObject);
+        tileMgr.AddTile(newGameObject.GetComponent<Tile>());
+        tileMgr.AddDoor(newGameObject.GetComponent<Door>());
+        visibilityMgr.AddObject(newGameObject);
     }
 
     public void Smite(GameObject target)
     {
         //Attacks to and from dead combatants removed from combat buffer
-        cbm.PruneCombatBuffer(target);
+        combatMgr.PruneCombatBuffer(target);
 
         aggroEnemies.Remove(target);
-        occupiedlist.Remove(target.GetComponent<ObjectLocation>().coord);
+        tileMgr.occupiedlist.Remove(target.GetComponent<ObjectLocation>().coord);
         enemies.Remove(target);
         npcs.Remove(target);
-        visibilityManager.RemoveObject(target);
+        visibilityMgr.RemoveObject(target);
 
         if (target.GetComponent<PlayerCharacterSheet>())
         {
 
-            HaltGameplay();
+            ts.HaltGameplay();
 
         }
         else
@@ -81,7 +78,7 @@ public class DungeonManager : MonoBehaviour
         }
 
         Destroy(target);
-        miniMapManager.UpdateDynamicIcons();
+        minimapMgr.UpdateDynamicIcons();
     }
 
     public void TossContainer(GameObject trashContainer)
@@ -93,38 +90,38 @@ public class DungeonManager : MonoBehaviour
             return;
         }
 
-        visibilityManager.RemoveObject(trashContainer);
-        dungeonSpecificGameObjects.Remove(trashContainer);
+        visibilityMgr.RemoveObject(trashContainer);
+        entitiesInLevel.Remove(trashContainer);
         Destroy(trashContainer);
-        miniMapManager.UpdateDynamicIcons();
+        minimapMgr.UpdateDynamicIcons();
     }
 
     public void CleanUp()
     {
 
         enemiesOnLookout = true;
-        dungeonCoords = new();
+        tileMgr.dungeonCoords = new();
         enemies = new();
-        occupiedlist = new();
+        tileMgr.occupiedlist = new();
         itemContainers = new();
 
-        foreach (GameObject trash in dungeonSpecificGameObjects)
+        foreach (GameObject trash in entitiesInLevel)
         {
 
             Destroy(trash);
         }
 
-        foreach (GameObject trash in miniMapManager.iconGameObjects)
+        foreach (GameObject trash in minimapMgr.iconGameObjects)
         {
 
             Destroy(trash);
         }
 
-        dungeonSpecificGameObjects = new();
+        entitiesInLevel = new();
         aggroEnemies = new();
 
-        tileManager.RefreshLayout();
-        visibilityManager.Refresh();
+        tileMgr.RefreshLayout();
+        visibilityMgr.Refresh();
 
         playerCharacter.Teleport(new Vector2Int(0, 0));
     }
@@ -139,11 +136,5 @@ public class DungeonManager : MonoBehaviour
         }
 
         aggroEnemies = new HashSet<GameObject>();
-    }
-
-    public void HaltGameplay(bool isHalted = true)
-    {
-
-        ts.gameplayHalted = isHalted;
     }
 }

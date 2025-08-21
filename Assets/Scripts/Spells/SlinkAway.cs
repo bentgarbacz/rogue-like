@@ -5,7 +5,7 @@ using UnityEngine;
 public class SlinkAway : Spell
 {
     private readonly int duration = 15;
-    private DungeonManager dum;
+    private EntityManager entityMgr;
 
     public SlinkAway()
     {
@@ -18,7 +18,7 @@ public class SlinkAway : Spell
         this.sprite = Resources.Load<Sprite>("Pixel Art/Spells/Slink Away");
         this.castSound = Resources.Load<AudioClip>("Sounds/Disappear");
 
-        dum = GameObject.Find("System Managers").GetComponent<DungeonManager>();
+        entityMgr = GameObject.Find("System Managers").GetComponent<EntityManager>();
     }
 
     public override bool Cast(GameObject caster, GameObject target)
@@ -41,7 +41,7 @@ public class SlinkAway : Spell
                     return false;
                 }
 
-                statusEffectManager.AddEffect(new Stealth(casterCharacterSheet, duration, dum));
+                statusEffectManager.AddEffect(new Stealth(casterCharacterSheet, duration, entityMgr));
                 ResetCooldown(caster);
                 return true;
             }

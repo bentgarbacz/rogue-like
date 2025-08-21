@@ -10,7 +10,8 @@ using System.Linq;
 public class LevelGenerator : MonoBehaviour
 {
 
-    [SerializeField] private DungeonManager dum;
+    [SerializeField] private EntityManager entityMgr;
+    [SerializeField] private TileManager tileMgr;
     [SerializeField] private MiniMapManager miniMapManager;
     [SerializeField] private GameObject wallJoiner;
     [SerializeField] private List<GameObject> debugObjects = new();
@@ -34,11 +35,11 @@ public class LevelGenerator : MonoBehaviour
 
         Vector2Int firstTileCoord;
 
-        dum.CleanUp();
-        firstTileCoord = biome.GenerateLevel(dum.dungeonCoords);    
-        miniMapManager.DrawIcons(dum.dungeonSpecificGameObjects);
+        entityMgr.CleanUp();
+        firstTileCoord = biome.GenerateLevel(tileMgr.dungeonCoords);    
+        miniMapManager.DrawIcons(entityMgr.entitiesInLevel);
         miniMapManager.UpdateDynamicIcons();
-        dum.hero.GetComponent<CharacterSheet>().Move(firstTileCoord); 
+        entityMgr.hero.GetComponent<CharacterSheet>().Move(firstTileCoord); 
         MoveDebugObjects();
     }
 
@@ -53,15 +54,15 @@ public class LevelGenerator : MonoBehaviour
             if(chest != null)
             {
 
-                debugObject.transform.position = new Vector3(dum.hero.transform.position.x - 3, debugObject.transform.position.y, dum.hero.transform.position.z);
-                chest.loc.coord = dum.playerCharacter.loc.coord;
+                debugObject.transform.position = new Vector3(entityMgr.hero.transform.position.x - 3, debugObject.transform.position.y, entityMgr.hero.transform.position.z);
+                chest.loc.coord = entityMgr.playerCharacter.loc.coord;
 
             }else if(exit != null)
             {
 
-                debugObject.transform.position = new Vector3(dum.hero.transform.position.x + 3, debugObject.transform.position.y, dum.hero.transform.position.z);
+                debugObject.transform.position = new Vector3(entityMgr.hero.transform.position.x + 3, debugObject.transform.position.y, entityMgr.hero.transform.position.z);
                 debugObject.GetComponent<ObjectVisibility>().Initialize(true);
-                exit.loc.coord = dum.playerCharacter.loc.coord;
+                exit.loc.coord = entityMgr.playerCharacter.loc.coord;
             }
         }
     }

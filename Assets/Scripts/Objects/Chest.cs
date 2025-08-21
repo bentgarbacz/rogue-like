@@ -12,13 +12,13 @@ public class Chest : Loot
         GameObject managers = GameObject.Find("System Managers");
 
         uiam = managers.GetComponent<UIActiveManager>();
-        dum = managers.GetComponent<DungeonManager>();
+        entityMgr = managers.GetComponent<EntityManager>();
 
         audioSource = GetComponent<AudioSource>();
 
         
         AddItems(LootTableReferences.CreateItems(lootTable));  
-        dum.itemContainers.Add(this);
+        entityMgr.itemContainers.Add(this);
     }
 
     public override void DiscardIfEmpty()

@@ -6,7 +6,7 @@ public class DropItem : MonoBehaviour
 {
 
     public GameObject container;
-    private DungeonManager dum;
+    private EntityManager entityMgr;
     private VisibilityManager visibilityManager;
     [SerializeField] private MiniMapManager miniMapManager;
     private AudioSource audioSource;
@@ -21,7 +21,7 @@ public class DropItem : MonoBehaviour
         itemSlot = transform.parent.gameObject.GetComponent<ItemSlot>();
 
         GameObject managers = GameObject.Find("System Managers");
-        dum = managers.GetComponent<DungeonManager>();
+        entityMgr = managers.GetComponent<EntityManager>();
         visibilityManager = managers.GetComponent<VisibilityManager>();
 
         audioSource = GameObject.Find("CanvasHUD").GetComponent<AudioSource>();
@@ -33,7 +33,7 @@ public class DropItem : MonoBehaviour
 
         audioSource.PlayOneShot(dropClip);
 
-        GameFunctions.DropLoot(dum.hero, container, new(){itemSlot.item}, dum, miniMapManager, visibilityManager);
+        GameFunctions.DropLoot(entityMgr.hero, container, new(){itemSlot.item}, entityMgr, miniMapManager, visibilityManager);
 
         itemSlot.ThrowAway();
 

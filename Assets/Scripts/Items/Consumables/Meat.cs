@@ -5,7 +5,7 @@ using UnityEngine;
 public class Meat : Consumable
 {
 
-    private GameObject hero = GameObject.Find("System Managers").GetComponent<DungeonManager>().hero;
+    private GameObject hero = GameObject.Find("System Managers").GetComponent<EntityManager>().hero;
     private readonly int hungerValue = 333;
 
     public Meat(int dropChance = 0 )

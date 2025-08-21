@@ -12,38 +12,34 @@ public class TurnSequencer : MonoBehaviour
     private bool actionTaken = false;
     private Queue<Vector2Int> playerMovementQueue = new();
     private PlayerCharacterSheet playerCharacter;
-    private SpellCaster sc;
+    private SpellCaster spellCaster;
     private MoveToTarget pcMovement;
     private AttackAnimation pcAttackAnimation;
-    private DungeonManager dum;
-    private UIActiveManager uiam;
-    private CombatManager cbm;
-    private ClickManager cm;
+    [SerializeField] private EntityManager entityMgr;
+    [SerializeField] private TileManager tileMgr;
+    [SerializeField] private UIActiveManager uiam;
+    [SerializeField] private CombatManager combatMgr;
+    [SerializeField] private ClickManager clickMgr;
     [SerializeField] private LevelGenerator levelGenerator;
-    [SerializeField] private NameplateManager npm;
-    [SerializeField] private MiniMapManager miniMapManager;
-    [SerializeField] private TileManager tileManager;
-    [SerializeField] private VisibilityManager visibilityManager;
-    [SerializeField] private DijkstraMapManager djMapGenerator;
- 
+    [SerializeField] private NameplateManager namePlateMgr;
+    [SerializeField] private MiniMapManager minimapMgr;
+    [SerializeField] private VisibilityManager visibilityMgr;
+    [SerializeField] private DijkstraMapManager djMapMgr;
+
     void Start()
     {
-
-        GameObject managers = GameObject.Find("System Managers");
-        dum = managers.GetComponent<DungeonManager>();
-        uiam = managers.GetComponent<UIActiveManager>();
-        cbm = managers.GetComponent<CombatManager>();
-        cm = GetComponent<ClickManager>();
-        playerCharacter = dum.hero.GetComponent<PlayerCharacterSheet>();
-        sc = dum.hero.GetComponent<SpellCaster>();
+       
+        clickMgr = GetComponent<ClickManager>();
+        playerCharacter = entityMgr.hero.GetComponent<PlayerCharacterSheet>();
+        spellCaster = entityMgr.hero.GetComponent<SpellCaster>();
         pcMovement = playerCharacter.GetComponent<MoveToTarget>();
-        pcAttackAnimation = dum.hero.GetComponent<AttackAnimation>();
+        pcAttackAnimation = entityMgr.hero.GetComponent<AttackAnimation>();
     }
 
     void Update()
     {
 
-        if (cbm.fighting || gameplayHalted)
+        if (combatMgr.fighting || gameplayHalted)
         {
 
             return;
@@ -66,16 +62,16 @@ public class TurnSequencer : MonoBehaviour
 
             actionTaken = false;
 
-            djMapGenerator.PopulatePlayerMap();
-            ProcessEntityTurns(dum.aggroEnemies);
-            djMapGenerator.PopulateEnemyMap();
-            ProcessEntityTurns(dum.npcs);
-            djMapGenerator.PopulateNPCMap();
+            djMapMgr.PopulatePlayerMap();
+            ProcessEntityTurns(entityMgr.aggroEnemies);
+            djMapMgr.PopulateEnemyMap();
+            ProcessEntityTurns(entityMgr.npcs);
+            djMapMgr.PopulateNPCMap();
 
-            cbm.CommenceCombat();
+            combatMgr.CommenceCombat();
             UpkeepEffects();
             AggroNearbyEnemies();
-        }        
+        }
     }
 
     private bool ProcessPlayerMovement()
@@ -101,7 +97,7 @@ public class TurnSequencer : MonoBehaviour
             return false;
         }
 
-        GameObject target = cm.GetObject();
+        GameObject target = clickMgr.GetObject();
 
         if (target == null || uiam.IsPointerOverUI())
         {
@@ -149,7 +145,7 @@ public class TurnSequencer : MonoBehaviour
             return false;
         }
 
-        if (PathFinder.GetNeighbors(targetInteractable.loc.coord, dum.dungeonCoords).Contains(playerCharacter.loc.coord) ||
+        if (PathFinder.GetNeighbors(targetInteractable.loc.coord, tileMgr.dungeonCoords).Contains(playerCharacter.loc.coord) ||
             targetInteractable.loc.coord == playerCharacter.loc.coord)
         {
 
@@ -161,11 +157,12 @@ public class TurnSequencer : MonoBehaviour
 
             actionTaken = true;
             return true;
-            
-        }else
+
+        }
+        else
         {
 
-            List<Vector2Int> pathToDestination = PathFinder.FindPath(playerCharacter.loc.coord, targetInteractable.loc.coord, dum.dungeonCoords);
+            List<Vector2Int> pathToDestination = PathFinder.FindPath(playerCharacter.loc.coord, targetInteractable.loc.coord, tileMgr.dungeonCoords);
             MoveOneSpace(pathToDestination);
             return true;
         }
@@ -182,18 +179,18 @@ public class TurnSequencer : MonoBehaviour
 
         if (!targetTile.IsActionable() ||
             targetTile.loc.coord == playerCharacter.loc.coord ||
-            dum.occupiedlist.Contains(targetTile.loc.coord))
+            tileMgr.occupiedlist.Contains(targetTile.loc.coord))
         {
 
             return false;
         }
 
-        List<Vector2Int> pathToDestination = PathFinder.FindPath(playerCharacter.loc.coord, targetTile.loc.coord, dum.dungeonCoords, ignoredPoints: dum.occupiedlist);
+        List<Vector2Int> pathToDestination = PathFinder.FindPath(playerCharacter.loc.coord, targetTile.loc.coord, tileMgr.dungeonCoords, ignoredPoints: tileMgr.occupiedlist);
 
         if (pathToDestination != null && pathToDestination.Count > 1)
         {
 
-            if (dum.aggroEnemies.Count > 0)
+            if (entityMgr.aggroEnemies.Count > 0)
             {
 
                 MoveOneSpace(pathToDestination);
@@ -246,7 +243,7 @@ public class TurnSequencer : MonoBehaviour
 
         foreach (GameObject entity in entitiesCopy)
         {
-            
+
             entity.GetComponent<EnemyCharacterSheet>().AggroBehavior(waitTime);
             waitTime += incrementWaitTime;
         }
@@ -255,13 +252,13 @@ public class TurnSequencer : MonoBehaviour
     public void AggroNearbyEnemies()
     {
 
-        if (!dum.enemiesOnLookout)
+        if (!entityMgr.enemiesOnLookout)
         {
 
             return;
         }
 
-        foreach (GameObject enemy in dum.enemies)
+        foreach (GameObject enemy in entityMgr.enemies)
         {
 
             EnemyCharacterSheet enemyCS = enemy.GetComponent<EnemyCharacterSheet>();
@@ -275,7 +272,7 @@ public class TurnSequencer : MonoBehaviour
             if (enemyCS.OnAggro())
             {
 
-                dum.aggroEnemies.Add(enemy);
+                entityMgr.aggroEnemies.Add(enemy);
                 playerMovementQueue.Clear();
             }
         }
@@ -290,13 +287,13 @@ public class TurnSequencer : MonoBehaviour
     private void UpkeepEffects()
     {
 
-        dum.TriggerStatusEffects();
+        entityMgr.TriggerStatusEffects();
         playerCharacter.BecomeHungrier();
         playerCharacter.DecrementCooldowns();
-        sc.UpdateSpellSlots();
-        miniMapManager.UpdateDynamicIcons();
-        npm.IncrementDisplayTimer();
-        visibilityManager.UpdateVisibilities();
+        spellCaster.UpdateSpellSlots();
+        minimapMgr.UpdateDynamicIcons();
+        namePlateMgr.IncrementDisplayTimer();
+        visibilityMgr.UpdateVisibilities();
     }
 
     private void MoveOneSpace(List<Vector2Int> pathToDestination)
@@ -319,10 +316,32 @@ public class TurnSequencer : MonoBehaviour
         //    ecs.aggroRange > Vector3.Distance(enemy.transform.position, dum.hero.transform.position) &&
         //    LineOfSight.HasLOS(enemy, dum.hero);
 
-        bool isAggroed = dum.aggroEnemies.Contains(enemy);
-        bool inPlayerRange = ecs.aggroRange >= djMapGenerator.GetPlayerMapValue(ecs.loc.coord);
-        bool inNpcRange = ecs.aggroRange >= djMapGenerator.GetNpcMapValue(ecs.loc.coord);
+        bool isAggroed = entityMgr.aggroEnemies.Contains(enemy);
+        bool inPlayerRange = ecs.aggroRange >= djMapMgr.GetPlayerMapValue(ecs.loc.coord);
+        bool inNpcRange = ecs.aggroRange >= djMapMgr.GetNpcMapValue(ecs.loc.coord);
+        bool seesTarget = LineOfSight.HasLOS(enemy, entityMgr.hero);
 
-        return !isAggroed && (inPlayerRange || inNpcRange);
+        if (!seesTarget)
+        {
+
+            foreach (GameObject entity in entityMgr.npcs)
+            {
+
+                if (LineOfSight.HasLOS(enemy, entity))
+                {
+
+                    seesTarget = true;
+                    break;
+                }
+            }
+        }
+
+        return !isAggroed && seesTarget && (inPlayerRange || inNpcRange);
+    }
+    
+    public void HaltGameplay(bool isHalted = true)
+    {
+
+        gameplayHalted = isHalted;
     }
 }

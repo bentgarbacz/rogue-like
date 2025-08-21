@@ -5,12 +5,14 @@ using UnityEngine;
 public class TileManager : MonoBehaviour
 {
 
+    public HashSet<Vector2Int> dungeonCoords;
+    public HashSet<Vector2Int> occupiedlist = new();
     public Dictionary<Vector2Int, Tile> tileDict = new();
     public HashSet<Vector2Int> revealedTiles = new();
     public HashSet<Vector2Int> doorCoords = new();
-    [SerializeField] DungeonManager dum;
-    [SerializeField] VisibilityManager visibilityManager;
-    [SerializeField] MiniMapManager mm;
+    [SerializeField] private EntityManager entityMgr;
+    [SerializeField] private VisibilityManager visibilityManager;
+    [SerializeField] private MiniMapManager mm;
 
     public void AddTile(Tile newTile)
     {
@@ -47,19 +49,29 @@ public class TileManager : MonoBehaviour
     public void DeleteTile(Vector2Int coord)
     {
 
-        if (tileDict.ContainsKey(coord))
+        if (!tileDict.ContainsKey(coord))
         {
 
-            dum.dungeonSpecificGameObjects.Remove(tileDict[coord].gameObject);
-            Destroy(tileDict[coord].gameObject);
-            tileDict.Remove(coord);
+            return;
         }
+
+        entityMgr.entitiesInLevel.Remove(tileDict[coord].gameObject);
+        Destroy(tileDict[coord].gameObject);
+        tileDict.Remove(coord);
     }
 
     public Tile GetTile(Vector2Int coord)
     {
+        
+        if (tileDict.ContainsKey(coord))
+        {
 
-        return tileDict[coord];
+            return tileDict[coord];
+        }
+
+        //Debug.Log(coord + " Does not exist in current level");
+
+        return null;
     }
 
     public void MoveEntity(GameObject entity, Vector2Int startCoord, Vector2Int endCoord)
@@ -67,6 +79,9 @@ public class TileManager : MonoBehaviour
 
         Tile startTile = GetTile(startCoord);
         Tile endTile = GetTile(endCoord);
+
+        occupiedlist.Add(endCoord);
+        occupiedlist.Remove(startCoord);
 
         if (startTile)
         {
@@ -93,7 +108,7 @@ public class TileManager : MonoBehaviour
                 continue;
             }
 
-            if (tileDict[tileCoord].state == false && LineOfSight.HasLOS(dum.hero, tileDict[tileCoord].gameObject))
+            if (tileDict[tileCoord].state == false && LineOfSight.HasLOS(entityMgr.hero, tileDict[tileCoord].gameObject))
             {
 
                 RevealTile(tileCoord);

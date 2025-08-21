@@ -9,7 +9,7 @@ using Random = UnityEngine.Random;
 public class DropLoot : MonoBehaviour
 {
     public GameObject container;
-    private DungeonManager dum;
+    private EntityManager entityMgr;
     private MiniMapManager miniMapManager;
     private VisibilityManager visibilityManager;
     private TileManager tileManager;
@@ -20,7 +20,7 @@ public class DropLoot : MonoBehaviour
 
         GameObject managers = GameObject.Find("System Managers");
 
-        dum = managers.GetComponent<DungeonManager>();
+        entityMgr = managers.GetComponent<EntityManager>();
         miniMapManager = managers.GetComponent<UIActiveManager>().mapPanel.GetComponent<MiniMapManager>();
         visibilityManager = managers.GetComponent<VisibilityManager>();
         tileManager = managers.GetComponent<TileManager>();
@@ -34,7 +34,7 @@ public class DropLoot : MonoBehaviour
         if (droppedItems.Count > 0)
         {
 
-            GameObject dropContainer = GameFunctions.DropLoot(this.gameObject, container, droppedItems, dum, miniMapManager, visibilityManager);
+            GameObject dropContainer = GameFunctions.DropLoot(this.gameObject, container, droppedItems, entityMgr, miniMapManager, visibilityManager);
             Vector2Int containerCoord = dropContainer.GetComponent<ObjectLocation>().coord;
             tileManager.tileDict[containerCoord].AddEntity(dropContainer);
         }

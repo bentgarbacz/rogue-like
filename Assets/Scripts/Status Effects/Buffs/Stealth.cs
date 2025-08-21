@@ -5,20 +5,20 @@ using UnityEngine;
 public class Stealth : StatusEffect
 {
     
-    private DungeonManager dum;
+    private EntityManager entityMgr;
 
-    public Stealth(CharacterSheet affectedCharacter, int duration, DungeonManager dum)
+    public Stealth(CharacterSheet affectedCharacter, int duration, EntityManager entityMgr)
     {
 
         this.type = EffectType.Buff;
         this.affectedCharacter = affectedCharacter;
         this.duration = duration;
-        this.dum = dum;
+        this.entityMgr = entityMgr;
         this.sprite = Resources.Load<Sprite>("Pixel Art/Spells/Slink Away");
         this.isUnique = true;
 
-        dum.enemiesOnLookout = false;
-        dum.ClearAggroBuffer();
+        entityMgr.enemiesOnLookout = false;
+        entityMgr.ClearAggroBuffer();
     }
 
     public override int Effect()
@@ -31,7 +31,7 @@ public class Stealth : StatusEffect
     public override void EndEffect()
     {
         
-        dum.enemiesOnLookout = true;
+        entityMgr.enemiesOnLookout = true;
     }
 
     public override string GetDescription()

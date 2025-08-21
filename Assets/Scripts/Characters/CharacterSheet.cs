@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class CharacterSheet : MonoBehaviour
@@ -22,26 +23,27 @@ public class CharacterSheet : MonoBehaviour
     public int armor = 0;
     public int evasion = 0;    
     public string dropTable;
-    protected StatusEffectManager sem;
-    protected TileManager tileManager;
-    protected DungeonManager dum;
+    protected StatusEffectManager statusEffectMgr;
+    protected TileManager tileMgr;
+    protected EntityManager entityMgr;
     public AudioSource audioSource;
     public AudioClip attackClip;
     public AudioClip missClip;
     public string title = "N/A";
+    protected GameObject managers;
 
     public virtual void Awake()
     {
 
-        GameObject managers = GameObject.Find("System Managers");
-        tileManager = managers.GetComponent<TileManager>();
-        dum = managers.GetComponent<DungeonManager>();
+        managers = GameObject.Find("System Managers");
+        tileMgr = managers.GetComponent<TileManager>();
+        entityMgr = managers.GetComponent<EntityManager>();
 
         GetComponent<MoveToTarget>().target = transform.position;
         loc.coord = new Vector2Int((int)transform.position.x, (int)transform.position.z);
         characterHealth.InitHealth(maxHealth);
 
-        sem = gameObject.AddComponent<StatusEffectManager>();
+        statusEffectMgr = gameObject.AddComponent<StatusEffectManager>();
         audioSource = gameObject.AddComponent<AudioSource>();
         missClip = Resources.Load<AudioClip>("Sounds/Miss");
     }
@@ -49,16 +51,12 @@ public class CharacterSheet : MonoBehaviour
     public virtual bool Move(Vector2Int newCoord, float waitTime = 0f)
     {
 
-        if (!dum.occupiedlist.Contains(newCoord))
+        if (!tileMgr.occupiedlist.Contains(newCoord))
         {
 
             Vector3 newPos = new((float)newCoord.x, 0.1f, (float)newCoord.y);
 
-            dum.occupiedlist.Add(newCoord);
-            tileManager.GetTile(newCoord).AddEntity(this.gameObject);
-
-            dum.occupiedlist.Remove(loc.coord);
-            tileManager.GetTile(loc.coord).RemoveEntity(this.gameObject);
+            tileMgr.MoveEntity(this.gameObject, loc.coord, newCoord);
 
             loc.coord = newCoord;
 
@@ -67,11 +65,6 @@ public class CharacterSheet : MonoBehaviour
 
             return true;
         }
-        else
-        {
-
-            //Debug.Log("Tried to move but failed");
-        }
         
         return false;             
     }
@@ -79,13 +72,12 @@ public class CharacterSheet : MonoBehaviour
     public bool Teleport(Vector2Int newCoord)
     {
 
-        if(!dum.occupiedlist.Contains(newCoord))
+        if(!tileMgr.occupiedlist.Contains(newCoord))
         {
 
             Vector3 newPos = new((float)newCoord.x, 0.1f, (float)newCoord.y); 
 
-            dum.occupiedlist.Add(newCoord);
-            dum.occupiedlist.Remove(loc.coord);
+            tileMgr.MoveEntity(this.gameObject, loc.coord, newCoord);
             
             transform.position = newPos;
 
@@ -107,13 +99,13 @@ public class CharacterSheet : MonoBehaviour
     public virtual void ProcessStatusEffects()
     {
 
-        if(sem == null)
+        if(statusEffectMgr == null)
         {
 
             return;
         }
         
-        sem.ProcessStatusEffects();
+        statusEffectMgr.ProcessStatusEffects();
     }
 }
 

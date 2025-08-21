@@ -29,38 +29,38 @@ public class MinionCharacterSheet : EnemyCharacterSheet
     public override void AggroBehavior(float waitTime)
     {
 
-        if (!djm.EnemyMap.Keys.Contains(loc.coord))
+        if (!djm.enemyMap.Keys.Contains(loc.coord))
         {
 
             Wander(waitTime);
             return;
         }
 
-        List<Vector2Int> neighborPoints = new(PathFinder.GetNeighbors(loc.coord, dum.dungeonCoords));
+        List<Vector2Int> neighborPoints = new(PathFinder.GetNeighbors(loc.coord, tileMgr.dungeonCoords));
         neighborPoints = ShuffleNeighbors(neighborPoints);
 
         Vector2Int targetCoord = loc.coord;
-        float minDist = djm.EnemyMap[loc.coord];
+        float minDist = djm.enemyMap[loc.coord];
 
         foreach (Vector2Int currCoord in neighborPoints)
         {
 
-            if (!djm.EnemyMap.Keys.Contains(currCoord))
+            if (!djm.enemyMap.Keys.Contains(currCoord))
             {
 
                 continue;
             }
 
-            if (djm.EnemyMap[currCoord] == 0)
+            if (djm.enemyMap[currCoord] == 0)
             {
 
                 AttackEntity(currCoord);
                 return;
             }
-            else if (djm.EnemyMap[currCoord] <= minDist && !dum.occupiedlist.Contains(currCoord))
+            else if (djm.enemyMap[currCoord] <= minDist && !tileMgr.occupiedlist.Contains(currCoord))
             {
 
-                minDist = djm.EnemyMap[currCoord];
+                minDist = djm.enemyMap[currCoord];
                 targetCoord = currCoord;
             }
         }

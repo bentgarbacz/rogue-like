@@ -6,8 +6,8 @@ public class NPCGenerator : MonoBehaviour
 {
 
     private Dictionary<NPCType, GameObject> npcDict;
-    [SerializeField] private DungeonManager dum;
-    [SerializeField] private TileManager tileManager;
+    [SerializeField] private EntityManager entityMgr;
+    [SerializeField] private TileManager tileMgr;
     [SerializeField] private GameObject chest;
     [SerializeField] private GameObject skeleton;
     [SerializeField] private GameObject skeletonArcher;
@@ -47,11 +47,11 @@ public class NPCGenerator : MonoBehaviour
 
         GameObject newChest = Instantiate(chest, spawnPos + spawnPosOffset, spawnQuart);
         newChest.GetComponent<ObjectVisibility>().Initialize();
-        dum.AddGameObject(newChest);
+        entityMgr.AddGameObject(newChest);
 
         Loot newLoot = newChest.GetComponent<Loot>();
         newLoot.loc.coord = new Vector2Int((int)spawnPos.x, (int)spawnPos.z);
-        tileManager.GetTile(newLoot.loc.coord).AddEntity(newChest);
+        tileMgr.GetTile(newLoot.loc.coord).AddEntity(newChest);
     }
 
     public GameObject CreateEnemy(NPCType enemyType, Vector3 spawnPos)
@@ -59,7 +59,7 @@ public class NPCGenerator : MonoBehaviour
 
         Vector2Int spawnCoord = new((int)spawnPos.x, (int)spawnPos.z);
 
-        if (dum.occupiedlist.Contains(spawnCoord))
+        if (tileMgr.occupiedlist.Contains(spawnCoord))
         {
 
             return null;
@@ -68,11 +68,11 @@ public class NPCGenerator : MonoBehaviour
         GameObject enemy = GetPrefab(enemyType, spawnPos + spawnPosOffset);
         enemy.GetComponent<ObjectVisibility>().Initialize(); 
         
-        dum.occupiedlist.Add(spawnCoord);
-        tileManager.GetTile(spawnCoord).AddEntity(enemy);
+        tileMgr.occupiedlist.Add(spawnCoord);
+        tileMgr.GetTile(spawnCoord).AddEntity(enemy);
 
-        dum.AddGameObject(enemy);
-        dum.enemies.Add(enemy);
+        entityMgr.AddGameObject(enemy);
+        entityMgr.enemies.Add(enemy);
 
         return enemy;
     }
@@ -82,7 +82,7 @@ public class NPCGenerator : MonoBehaviour
 
         Vector2Int spawnCoord = new((int)spawnPos.x, (int)spawnPos.z);
 
-        if (dum.occupiedlist.Contains(spawnCoord))
+        if (tileMgr.occupiedlist.Contains(spawnCoord))
         {
 
             return null;
@@ -91,11 +91,11 @@ public class NPCGenerator : MonoBehaviour
         GameObject npc = GetPrefab(npcType, spawnPos + spawnPosOffset);
         npc.GetComponent<ObjectVisibility>().Initialize();
         
-        dum.occupiedlist.Add(spawnCoord);
-        tileManager.GetTile(spawnCoord).AddEntity(npc);
+        tileMgr.occupiedlist.Add(spawnCoord);
+        tileMgr.GetTile(spawnCoord).AddEntity(npc);
 
-        dum.AddGameObject(npc);
-        dum.npcs.Add(npc);
+        entityMgr.AddGameObject(npc);
+        entityMgr.npcs.Add(npc);
 
         return npc;
 

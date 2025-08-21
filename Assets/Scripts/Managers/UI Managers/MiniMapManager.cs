@@ -17,7 +17,7 @@ public class MiniMapManager : MonoBehaviour
     public HashSet<GameObject> iconGameObjects = new();
     private List<MapIconController> dynamicObjectIcons;
     private Dictionary<Vector2Int, MapIconController> tileIcons;
-    private DungeonManager dum;
+    private EntityManager entityMgr;
     private MapIconController anchorIcon;
     private static int tileLayer = 1;
     private static int objectLayer = 2;
@@ -29,7 +29,7 @@ public class MiniMapManager : MonoBehaviour
 
         GameObject managers = GameObject.Find("System Managers");
 
-        dum = managers.GetComponent<DungeonManager>();
+        entityMgr = managers.GetComponent<EntityManager>();
     }
 
     public void RevealTile(Vector2Int coord)
@@ -80,7 +80,7 @@ public class MiniMapManager : MonoBehaviour
 
         dynamicObjectIcons.Add(anchorIcon);
 
-        anchorIcon.InitializeController(dum.hero, pcIcon, dum.playerCharacter.loc.coord, pcLayer, 0.66f);
+        anchorIcon.InitializeController(entityMgr.hero, pcIcon, entityMgr.playerCharacter.loc.coord, pcLayer, 0.66f);
     }
 
     public void AddIcon(GameObject newObject)
