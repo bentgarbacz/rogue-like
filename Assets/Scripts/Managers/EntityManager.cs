@@ -100,7 +100,7 @@ public class EntityManager : MonoBehaviour
     {
 
         enemiesOnLookout = true;
-        tileMgr.dungeonCoords = new();
+        tileMgr.levelCoords = new();
         enemies = new();
         tileMgr.occupiedlist = new();
         itemContainers = new();
@@ -119,6 +119,7 @@ public class EntityManager : MonoBehaviour
 
         entitiesInLevel = new();
         aggroEnemies = new();
+        npcs = new();
 
         tileMgr.RefreshLayout();
         visibilityMgr.Refresh();

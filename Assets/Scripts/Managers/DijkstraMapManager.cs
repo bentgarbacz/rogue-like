@@ -70,7 +70,7 @@ public class DijkstraMapManager : MonoBehaviour
 
                 //objectMap[coord] = (float)currentStep;
 
-                foreach (Vector2Int checkCoord in PathFinder.GetNeighbors(coord, tileMgr.dungeonCoords))
+                foreach (Vector2Int checkCoord in PathFinder.GetNeighbors(coord, tileMgr.levelCoords))
                 {
 
                     if (objectMap.ContainsKey(checkCoord))
@@ -96,7 +96,7 @@ public class DijkstraMapManager : MonoBehaviour
     public Dictionary<Vector2Int, float> CreateLayeredMap(HashSet<GameObject> gameObjects, int maxSteps)
     {
 
-        List<Dictionary<Vector2Int, float>> maps = new List<Dictionary<Vector2Int, float>>();
+        List<Dictionary<Vector2Int, float>> maps = new();
 
         foreach (GameObject obj in gameObjects)
         {

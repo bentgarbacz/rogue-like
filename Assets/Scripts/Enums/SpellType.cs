@@ -10,5 +10,6 @@ public enum SpellType
     SlinkAway,
     Clairvoyance,
     Telekinesis,
-    SummonSkull
+    SummonSkull,
+    Lift
 }

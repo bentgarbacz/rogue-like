@@ -282,7 +282,7 @@ public class PlayerCharacterSheet : CharacterSheet
         if (!attackOccured)//move towards defender
         {
 
-            List<Vector2Int> pathToDestination = PathFinder.FindPath(loc.coord, defendingCharacter.loc.coord, tileMgr.dungeonCoords);
+            List<Vector2Int> pathToDestination = PathFinder.FindPath(loc.coord, defendingCharacter.loc.coord, tileMgr.levelCoords);
             Move(pathToDestination[1]);
         }
 

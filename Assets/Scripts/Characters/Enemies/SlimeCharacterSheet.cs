@@ -65,7 +65,7 @@ public class SlimeCharacterSheet : EnemyCharacterSheet
     public override bool OnAggro()
     {
 
-        HashSet<Vector2Int> landingCoords = PathFinder.GetNeighbors(entityMgr.playerCharacter.loc.coord, tileMgr.dungeonCoords);
+        HashSet<Vector2Int> landingCoords = PathFinder.GetNeighbors(entityMgr.playerCharacter.loc.coord, tileMgr.levelCoords);
 
         if(!objectVisibility.isActive)
         {

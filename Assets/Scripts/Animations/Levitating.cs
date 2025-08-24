@@ -2,23 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(MoveToTarget))]
 public class Levitating : MonoBehaviour
 {
+    private float speed = 4.5f; // Controls oscillation speed
+    private bool isLevitating = false;
+    private float lowerY;
+    private float upperY;
+    private float initialY;
+    private MoveToTarget entityMovement;
+    private float phaseOffset;
 
-    public float speed = 5f;
-    protected float distance;
-    private float arcPos;
-    protected bool isLevitating = false;
-
-    void Start()
+    void Awake()
     {
 
-        distance = 0;
+        phaseOffset = Random.Range(0f, Mathf.PI * 2f);
     }
 
     void Update()
     {
-
 
         if (!isLevitating)
         {
@@ -26,20 +28,30 @@ public class Levitating : MonoBehaviour
             return;
         }
 
-        if (distance > 0)
-        {
+        float t = (Mathf.Sin(Time.time * speed + phaseOffset) + 1f) / 2f; // t in [0,1]
+        float newY = Mathf.Lerp(lowerY, upperY, t);
 
-            //distance = Vector3.Distance(new Vector3(target.x, 0, target.z), new Vector3(transform.position.x, 0, transform.position.z));
+        transform.position = new Vector3(transform.position.x, newY, transform.position.z);
+    }
 
-            //arcPos = Mathf.Clamp(CalcArc(distance), 0f, 1f);
+    public void StartLevitating()
+    {
 
-            //transform.position = Vector3.MoveTowards(
-                                                        //transform.position,
-                                                        //target + new Vector3(0, arcPos, 0),
-                                                        //speed * Time.deltaTime
-                                                    //);
+        initialY = transform.position.y;
+        lowerY = initialY + 0.125f;
+        upperY = initialY + 0.375f;
 
-        }
+        entityMovement = GetComponent<MoveToTarget>();
+        entityMovement.jumpsWhileMoving = false;
+
+        isLevitating = true;
+    }
+
+    public void EndLevitating()
+    {
+
+        entityMovement.jumpsWhileMoving = true;
+        isLevitating = false;
+        transform.position = new Vector3(transform.position.x, initialY, transform.position.z);
     }
 }
-

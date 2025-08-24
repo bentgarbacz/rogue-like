@@ -11,12 +11,13 @@ public class MoveToTarget : MonoBehaviour
     public Vector3 target;
     public float speed = 5f;
     protected float distance;
-    private float arcPos;
     protected bool moving = false;
-    protected bool makesNoise = false;
+    private float initialY;
+    public bool makesNoise = false;
     public AudioSource audioSource;
     public AudioClip stepAudioClip;
     public float waitTime = 0f;
+    public bool jumpsWhileMoving = true;
 
     void Start()
     {
@@ -37,13 +38,29 @@ public class MoveToTarget : MonoBehaviour
         if (distance > 0)
         {
 
+            Vector3 currentPos;
+            Vector3 targetPos;
+            float arcPos;
+
             distance = Vector3.Distance(new Vector3(target.x, 0, target.z), new Vector3(transform.position.x, 0, transform.position.z));
 
-            arcPos = Mathf.Clamp(CalcArc(distance), 0f, 1f);
+            if (jumpsWhileMoving)
+            {
+
+                currentPos = transform.position;
+                arcPos = Mathf.Clamp(CalcArc(distance), 0f, 1f);
+                targetPos = target + new Vector3(0, arcPos, 0);
+            }
+            else
+            {
+
+                currentPos = transform.position;
+                targetPos = new Vector3(target.x, transform.position.y, target.z);
+            }
 
             transform.position = Vector3.MoveTowards(
-                                                        transform.position,
-                                                        target + new Vector3(0, arcPos, 0),
+                                                        currentPos,
+                                                        targetPos,
                                                         speed * Time.deltaTime
                                                     );
 
@@ -58,7 +75,7 @@ public class MoveToTarget : MonoBehaviour
     {
 
         this.waitTime = waitTime;
-
+        initialY = transform.position.y;
         moving = true;
         this.target = target;
         distance = Vector3.Distance(new Vector3(target.x, 0, target.z), new Vector3(transform.position.x, 0, transform.position.z));
@@ -93,13 +110,18 @@ public class MoveToTarget : MonoBehaviour
     protected virtual void OnArrive()
     {
 
-        if (makesNoise)
+        if (jumpsWhileMoving)
         {
 
-            audioSource.PlayOneShot(stepAudioClip);
+            if (makesNoise)
+            {
+
+                audioSource.PlayOneShot(stepAudioClip);
+            }
+
+            transform.position = new Vector3(transform.position.x, initialY, transform.position.z);
         }
 
-        transform.position = new Vector3(transform.position.x, 0.1f, transform.position.z);
         moving = false;
     }
 }

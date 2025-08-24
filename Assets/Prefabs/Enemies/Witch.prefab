@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: -3471939831133976243}
   - component: {fileID: -4638706645687807641}
   - component: {fileID: 3252948773069954238}
+  - component: {fileID: 3458889684430336733}
   m_Layer: 0
   m_Name: Witch
   m_TagString: Untagged
@@ -129,6 +130,7 @@ MonoBehaviour:
   highlightColor: {r: 1, g: 0, b: 0, a: 1}
   actionDescription: Attack
   highlighted: 0
+  hideOnHighlight: 0
 --- !u!114 &5684848413921679686
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -143,9 +145,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {x: 0, y: 0, z: 0}
   speed: 5
+  makesNoise: 0
   audioSource: {fileID: 0}
   stepAudioClip: {fileID: 0}
   waitTime: 0
+  jumpsWhileMoving: 1
 --- !u!114 &5446102463811442776
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -223,6 +227,7 @@ MonoBehaviour:
   title: N/A
   aggroNoise: {fileID: 0}
   aggroRange: 10
+  levitating: {fileID: 3458889684430336733}
 --- !u!114 &-3471939831133976243
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -263,3 +268,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 0
   currentHealth: 0
+--- !u!114 &3458889684430336733
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1209241037779243595}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0673498bd88caf246a183f18fd0fc368, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 6

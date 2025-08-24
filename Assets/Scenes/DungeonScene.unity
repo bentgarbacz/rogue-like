@@ -6112,7 +6112,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a04310f158603604aa4128b2fa05efba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dum: {fileID: 1314207894}
+  entityMgr: {fileID: 1314207894}
+  tileMgr: {fileID: 1314207901}
   miniMapManager: {fileID: 313091427}
   wallJoiner: {fileID: 1025472403522751266, guid: 20f1a7c70bc0d8948ab390c0e7b73c5e, type: 3}
   debugObjects:
@@ -6130,8 +6131,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e6b437c73cd0d446a8e1a933af186e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dum: {fileID: 1314207894}
-  tileManager: {fileID: 1314207901}
+  entityMgr: {fileID: 1314207894}
+  tileMgr: {fileID: 1314207901}
   chest: {fileID: 6493254730876405042, guid: 3d2a97183afeb6843a3d22f8ee50bf01, type: 3}
   skeleton: {fileID: 7806514022559795084, guid: 3b210d9e70f6a1f4b9e6170b08367086, type: 3}
   skeletonArcher: {fileID: 3972246722018788467, guid: f114ea6c3de591b44808cb9aa30df140, type: 3}
@@ -6154,10 +6155,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b92bc9dc0914404498936f9c6707470b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dum: {fileID: 1314207894}
+  entityMgr: {fileID: 1314207894}
   npcGen: {fileID: 438385576}
   wallJoiner: {fileID: 1025472403522751266, guid: 20f1a7c70bc0d8948ab390c0e7b73c5e, type: 3}
-  tileManager: {fileID: 1314207901}
+  tileMgr: {fileID: 1314207901}
   catacombFloorTile: {fileID: 105230754911932028, guid: 8d4f13fce8820d04ab675de69b3d5d10, type: 3}
   catacombFloorTileAlt1: {fileID: 1039253894988395355, guid: 47ecf65409af0d146976083feaa53f96, type: 3}
   catacombFloorTileAlt2: {fileID: 105230754911932028, guid: 8d4f13fce8820d04ab675de69b3d5d10, type: 3}
@@ -6180,10 +6181,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69065a6ca42c06648b24c6dc06c12901, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dum: {fileID: 1314207894}
+  entityMgr: {fileID: 1314207894}
   npcGen: {fileID: 438385576}
   wallJoiner: {fileID: 1025472403522751266, guid: 20f1a7c70bc0d8948ab390c0e7b73c5e, type: 3}
-  tileManager: {fileID: 1314207901}
+  tileMgr: {fileID: 1314207901}
   caveFloorTileAlt1: {fileID: 8206862141811745960, guid: 9345928340a4d654dab13b1256a95948, type: 3}
   caveFloorTileAlt2: {fileID: 5859785116392968625, guid: 883e1beb6e9461e4d948775e3d5bb08c, type: 3}
   caveFloorTileAlt3: {fileID: 8502035101222249981, guid: b0b44c261d3ec8f44862f4f7a55fee8a, type: 3}
@@ -6209,7 +6210,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8517170a8eb25ce47b8beeebed06fd65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dum: {fileID: 1314207894}
+  entityMgr: {fileID: 1314207894}
+  tileMgr: {fileID: 1314207901}
 --- !u!1001 &444728522
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13424,6 +13426,7 @@ GameObject:
   - component: {fileID: 6442338754152421633}
   - component: {fileID: 6442338754152421648}
   - component: {fileID: 6442338754152421649}
+  - component: {fileID: 6442338754152421650}
   m_Layer: 6
   m_Name: Hero
   m_TagString: Untagged
@@ -22529,12 +22532,16 @@ MonoBehaviour:
   gameplayHalted: 0
   baseWaitTime: 0.05
   incrementWaitTime: 0.05
+  entityMgr: {fileID: 1314207894}
+  tileMgr: {fileID: 1314207901}
+  uiam: {fileID: 1314207895}
+  combatMgr: {fileID: 1314207896}
+  clickMgr: {fileID: 1314207893}
   levelGenerator: {fileID: 438385574}
-  npm: {fileID: 1977274821}
-  miniMapManager: {fileID: 313091427}
-  tileManager: {fileID: 1314207901}
-  visibilityManager: {fileID: 1314207902}
-  djMapGenerator: {fileID: 438385579}
+  namePlateMgr: {fileID: 1977274821}
+  minimapMgr: {fileID: 313091427}
+  visibilityMgr: {fileID: 1314207902}
+  djMapMgr: {fileID: 438385579}
 --- !u!4 &1314207892
 Transform:
   m_ObjectHideFlags: 0
@@ -22575,10 +22582,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hero: {fileID: 869517488}
-  playerCharacter: {fileID: 0}
+  playerCharacter: {fileID: 6442338754152421642}
   enemiesOnLookout: 1
-  tileManager: {fileID: 1314207901}
-  visibilityManager: {fileID: 1314207902}
+  combatMgr: {fileID: 1314207896}
+  ts: {fileID: 1314207891}
+  minimapMgr: {fileID: 313091427}
+  tileMgr: {fileID: 1314207901}
+  visibilityMgr: {fileID: 1314207902}
 --- !u!114 &1314207895
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22636,6 +22646,9 @@ MonoBehaviour:
   fighting: 0
   attackTime: 0.333
   trimTime: 0.25
+  entityMgr: {fileID: 1314207894}
+  tileMgr: {fileID: 1314207901}
+  allProjectiles: {fileID: 1314207899}
 --- !u!114 &1314207897
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22702,9 +22715,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3432990a7822741459cb228db32bbf19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dum: {fileID: 1314207894}
+  entityMgr: {fileID: 1314207894}
   visibilityManager: {fileID: 1314207902}
-  mm: {fileID: 313091427}
+  minimapManager: {fileID: 313091427}
 --- !u!114 &1314207902
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -37842,7 +37855,6 @@ MonoBehaviour:
   visibilityRadius: 5
   updateStats: {fileID: 896522264}
   snm: {fileID: 1171624150}
-  tileManager: {fileID: 1314207901}
 --- !u!114 &6442338754152421643
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -37858,6 +37870,7 @@ MonoBehaviour:
   highlightColor: {r: 1, g: 1, b: 1, a: 0}
   actionDescription: Skip Turn
   highlighted: 0
+  hideOnHighlight: 0
 --- !u!114 &6442338754152421644
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -37916,9 +37929,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {x: 0, y: 0, z: 0}
   speed: 5
+  makesNoise: 0
   audioSource: {fileID: 0}
   stepAudioClip: {fileID: 0}
   waitTime: 0
+  jumpsWhileMoving: 1
 --- !u!114 &6442338754152421648
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -37947,6 +37962,18 @@ MonoBehaviour:
   maxHealth: 0
   currentHealth: 0
   updateStats: {fileID: 896522264}
+--- !u!114 &6442338754152421650
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 869517488}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0673498bd88caf246a183f18fd0fc368, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

@@ -145,7 +145,7 @@ public class TurnSequencer : MonoBehaviour
             return false;
         }
 
-        if (PathFinder.GetNeighbors(targetInteractable.loc.coord, tileMgr.dungeonCoords).Contains(playerCharacter.loc.coord) ||
+        if (PathFinder.GetNeighbors(targetInteractable.loc.coord, tileMgr.levelCoords).Contains(playerCharacter.loc.coord) ||
             targetInteractable.loc.coord == playerCharacter.loc.coord)
         {
 
@@ -162,7 +162,7 @@ public class TurnSequencer : MonoBehaviour
         else
         {
 
-            List<Vector2Int> pathToDestination = PathFinder.FindPath(playerCharacter.loc.coord, targetInteractable.loc.coord, tileMgr.dungeonCoords);
+            List<Vector2Int> pathToDestination = PathFinder.FindPath(playerCharacter.loc.coord, targetInteractable.loc.coord, tileMgr.levelCoords);
             MoveOneSpace(pathToDestination);
             return true;
         }
@@ -185,7 +185,7 @@ public class TurnSequencer : MonoBehaviour
             return false;
         }
 
-        List<Vector2Int> pathToDestination = PathFinder.FindPath(playerCharacter.loc.coord, targetTile.loc.coord, tileMgr.dungeonCoords, ignoredPoints: tileMgr.occupiedlist);
+        List<Vector2Int> pathToDestination = PathFinder.FindPath(playerCharacter.loc.coord, targetTile.loc.coord, tileMgr.levelCoords, ignoredPoints: tileMgr.occupiedlist);
 
         if (pathToDestination != null && pathToDestination.Count > 1)
         {
@@ -244,7 +244,7 @@ public class TurnSequencer : MonoBehaviour
         foreach (GameObject entity in entitiesCopy)
         {
 
-            entity.GetComponent<EnemyCharacterSheet>().AggroBehavior(waitTime);
+            entity.GetComponent<NpcCharacterSheet>().AggroBehavior(waitTime);
             waitTime += incrementWaitTime;
         }
     }

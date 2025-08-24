@@ -36,10 +36,10 @@ public class LevelGenerator : MonoBehaviour
         Vector2Int firstTileCoord;
 
         entityMgr.CleanUp();
-        firstTileCoord = biome.GenerateLevel(tileMgr.dungeonCoords);    
+        firstTileCoord = biome.GenerateLevel(tileMgr.levelCoords);    
         miniMapManager.DrawIcons(entityMgr.entitiesInLevel);
         miniMapManager.UpdateDynamicIcons();
-        entityMgr.hero.GetComponent<CharacterSheet>().Move(firstTileCoord); 
+        entityMgr.playerCharacter.Move(firstTileCoord); 
         MoveDebugObjects();
     }
 
