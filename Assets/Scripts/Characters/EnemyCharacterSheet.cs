@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class EnemyCharacterSheet : CharacterSheet
+[RequireComponent(typeof(TextNotificationManager))]
+public class EnemyCharacterSheet : NpcCharacterSheet
 {
 
     public AudioClip aggroNoise;
     public float aggroRange = 10;
-    protected CombatManager cbm;
-    protected DijkstraMapManager djm;
 
     public override void Awake()
     {
@@ -25,7 +24,7 @@ public class EnemyCharacterSheet : CharacterSheet
         aggroNoise = Resources.Load<AudioClip>("Sounds/aggroNoise");
     }
 
-    public virtual void AggroBehavior(float waitTime = 0f)
+    public override void AggroBehavior(float waitTime = 0f)
     {
 
         if (!GetAggroStatus())
@@ -35,7 +34,7 @@ public class EnemyCharacterSheet : CharacterSheet
             return;
         }
 
-        List<Vector2Int> neighborPoints = new(PathFinder.GetNeighbors(loc.coord, tileMgr.dungeonCoords));
+        List<Vector2Int> neighborPoints = new(PathFinder.GetNeighbors(loc.coord, tileMgr.levelCoords));
         neighborPoints = ShuffleNeighbors(neighborPoints);
 
         List<Vector2Int> cardinalNeighbors = GetCardinalNeighbors(neighborPoints);
@@ -80,42 +79,6 @@ public class EnemyCharacterSheet : CharacterSheet
         Move(targetCoord, waitTime);
     }
 
-    public virtual void Wander(float waitTime)
-    {
-
-        Vector2Int randomDirection = new(loc.coord.x + Direction2D.GetRandomDirection().x, loc.coord.y + Direction2D.GetRandomDirection().y);
-
-        if(tileMgr.dungeonCoords.Contains(randomDirection))
-        {
-
-            Move(randomDirection, waitTime);
-        }
-    }
-
-    public virtual void Flee(float waitTime)
-    {
-
-        //run away from player
-        Vector2Int playerCoord = entityMgr.hero.GetComponent<PlayerCharacterSheet>().loc.coord;
-        Vector2Int fleePath = loc.coord;
-
-        foreach (Vector2Int p in PathFinder.GetNeighbors(loc.coord, tileMgr.dungeonCoords))
-        {
-
-            if (PathFinder.CalculateDistance(p, playerCoord) > PathFinder.CalculateDistance(fleePath, playerCoord))
-            {
-
-                fleePath = p;
-            }
-        }
-
-        if (tileMgr.dungeonCoords.Contains(fleePath))
-        {
-
-            Move(fleePath, waitTime);
-        }
-    }
-
     public virtual bool OnAggro()
     {
 
@@ -131,68 +94,6 @@ public class EnemyCharacterSheet : CharacterSheet
         {
 
             return true;
-        }
-
-        return false;
-    }
-
-    protected List<Vector2Int> ShuffleNeighbors(List<Vector2Int> neighborPoints)
-    {
-
-        List<Vector2Int> shuffledNeighbors = new(neighborPoints);
-
-        for (int i = shuffledNeighbors.Count - 1; i > 0; i--)
-        {
-
-            int j = Random.Range(0, i + 1);
-            Vector2Int temp = shuffledNeighbors[i];
-            shuffledNeighbors[i] = shuffledNeighbors[j];
-            shuffledNeighbors[j] = temp;
-        }
-
-        return shuffledNeighbors;
-    }
-
-    protected List<Vector2Int> GetCardinalNeighbors(List<Vector2Int> neighborPoints)
-    {
-
-        List<Vector2Int> cardinalNeighbors = new();
-
-        foreach (Vector2Int point in neighborPoints)
-        {
-
-            Vector2Int offset = point - loc.coord;
-
-            if (Direction2D.cardinalDirectionsList.Contains(offset))
-            {
-
-                cardinalNeighbors.Add(point);
-            }
-
-        }
-
-        return cardinalNeighbors;
-    }
-
-    protected virtual bool AttackEntity(Vector2Int coord)
-    {
-
-        GameObject targetEntity = null;
-
-        foreach (GameObject entity in tileMgr.GetTile(coord).entitiesOnTile)
-        {
-
-            if (entity != null && entity.GetComponent<CharacterSheet>() != null)
-            {
-
-                targetEntity = entity;
-            }
-        }
-
-        if (targetEntity != null)
-        {
-
-            return cbm.AddMeleeAttack(this.gameObject, targetEntity, minDamage, maxDamage, speed);
         }
 
         return false;

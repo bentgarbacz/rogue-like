@@ -10,10 +10,11 @@ public class WitchCharacterSheet : EnemyCharacterSheet
     private int range = 5;
     private ProjectileType projectile = ProjectileType.MagicMissile;
     private AudioClip teleportClip;
+    [SerializeField] private Levitating levitating;
 
     public override void Awake()
     {
-        
+
         base.Awake();
         maxHealth = 8;
         accuracy = 100;
@@ -30,6 +31,8 @@ public class WitchCharacterSheet : EnemyCharacterSheet
 
         attackClip = Resources.Load<AudioClip>("Sounds/Mystical");
         teleportClip = Resources.Load<AudioClip>("Sounds/Teleport");
+
+        levitating.StartLevitating();
     }
 
     public override void AggroBehavior(float waitTime)
@@ -47,7 +50,7 @@ public class WitchCharacterSheet : EnemyCharacterSheet
             }else //move towards target if not within range
             {
                 
-                List<Vector2Int> pathToPlayer = PathFinder.FindPath(loc.coord, entityMgr.playerCharacter.loc.coord, tileMgr.dungeonCoords);                     
+                List<Vector2Int> pathToPlayer = PathFinder.FindPath(loc.coord, entityMgr.playerCharacter.loc.coord, tileMgr.levelCoords);                     
                 Move(pathToPlayer[1], waitTime);
             }
 

@@ -5,14 +5,14 @@ using UnityEngine;
 public class TileManager : MonoBehaviour
 {
 
-    public HashSet<Vector2Int> dungeonCoords;
+    public HashSet<Vector2Int> levelCoords;
     public HashSet<Vector2Int> occupiedlist = new();
     public Dictionary<Vector2Int, Tile> tileDict = new();
     public HashSet<Vector2Int> revealedTiles = new();
     public HashSet<Vector2Int> doorCoords = new();
     [SerializeField] private EntityManager entityMgr;
     [SerializeField] private VisibilityManager visibilityManager;
-    [SerializeField] private MiniMapManager mm;
+    [SerializeField] private MiniMapManager minimapManager;
 
     public void AddTile(Tile newTile)
     {
@@ -74,6 +74,14 @@ public class TileManager : MonoBehaviour
         return null;
     }
 
+    public HashSet<Vector2Int> GetUnoccupiedCoords()
+    {
+
+        HashSet<Vector2Int> unoccupiedCoords = new(levelCoords);
+        unoccupiedCoords.ExceptWith(occupiedlist);
+        return unoccupiedCoords;
+    } 
+
     public void MoveEntity(GameObject entity, Vector2Int startCoord, Vector2Int endCoord)
     {
 
@@ -132,7 +140,7 @@ public class TileManager : MonoBehaviour
     {
 
         tileDict[tileCoord].SetState(true);
-        mm.RevealTile(tileCoord);
+        minimapManager.RevealTile(tileCoord);
         revealedTiles.Add(tileCoord);
     }
 
@@ -156,7 +164,7 @@ public class TileManager : MonoBehaviour
             {
 
                 tileDict[checkCoord].SetState(true);
-                mm.RevealTile(checkCoord);
+                minimapManager.RevealTile(checkCoord);
             }
         }
     }

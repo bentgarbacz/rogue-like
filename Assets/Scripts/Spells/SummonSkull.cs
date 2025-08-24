@@ -42,7 +42,7 @@ public class SummonSkull : Spell
 
                 Vector2Int checkCoord = targetCharacter.loc.coord + d;
 
-                if (tileMgr.dungeonCoords.Contains(checkCoord) && !tileMgr.occupiedlist.Contains(checkCoord))
+                if (tileMgr.levelCoords.Contains(checkCoord) && !tileMgr.occupiedlist.Contains(checkCoord))
                 {
 
                     targetTile = tileMgr.tileDict[checkCoord];

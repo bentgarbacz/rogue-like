@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: -4550968541817060802}
   - component: {fileID: 621349534230966677}
   - component: {fileID: 6824987926104504072}
+  - component: {fileID: -5862324887883249642}
   m_Layer: 6
   m_Name: skeleton archer
   m_TagString: Untagged
@@ -58,6 +59,7 @@ MonoBehaviour:
   highlightColor: {r: 1, g: 0, b: 0, a: 1}
   actionDescription: Attack
   highlighted: 0
+  hideOnHighlight: 0
 --- !u!114 &2529191352459577142
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -72,9 +74,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {x: 0, y: 0, z: 0}
   speed: 5
+  makesNoise: 0
   audioSource: {fileID: 0}
   stepAudioClip: {fileID: 0}
   waitTime: 0
+  jumpsWhileMoving: 1
 --- !u!65 &7752134258933949897
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -263,3 +267,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 0
   currentHealth: 0
+--- !u!114 &-5862324887883249642
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3972246722018788467}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0673498bd88caf246a183f18fd0fc368, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 6

@@ -68,8 +68,8 @@ public class CombatManager : MonoBehaviour
             float hitChance = ((float)attacker.accuracy - (float)defender.evasion) / (float)attacker.accuracy * 100f;
             bool hitSuccessful = Random.Range(0, 100) <= hitChance;
 
-            //turn towards target
-            attacker.transform.LookAt(defender.transform);
+            Vector3 lookDirection = new(defender.transform.position.x, attacker.transform.position.y, defender.transform.position.z);
+            attacker.transform.LookAt(lookDirection);
 
             if(attack.projectileType is not ProjectileType.None)
             {
@@ -163,7 +163,7 @@ public class CombatManager : MonoBehaviour
     {
 
         //attack occurs only if defender in in a neighboring tile of the attacker
-        if(PathFinder.GetNeighbors(defender.GetComponent<CharacterSheet>().loc.coord, tileMgr.dungeonCoords).Contains(attacker.GetComponent<CharacterSheet>().loc.coord))
+        if(PathFinder.GetNeighbors(defender.GetComponent<CharacterSheet>().loc.coord, tileMgr.levelCoords).Contains(attacker.GetComponent<CharacterSheet>().loc.coord))
         {
 
             combatBuffer.Add( new Attack(attacker, defender, minDamage, maxDamage, speed));

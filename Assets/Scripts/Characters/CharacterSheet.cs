@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
+[RequireComponent(typeof(MoveToTarget))]
 public class CharacterSheet : MonoBehaviour
 {
 

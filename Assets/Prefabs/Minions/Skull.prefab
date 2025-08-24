@@ -15,12 +15,13 @@ GameObject:
   - component: {fileID: 1079457220184783387}
   - component: {fileID: 1305208117437370247}
   - component: {fileID: 4856721366737545420}
-  - component: {fileID: 8975757175261770061}
   - component: {fileID: 4120890808576303417}
   - component: {fileID: 982067735002945547}
   - component: {fileID: 7021236716277137833}
   - component: {fileID: 6921617333775835904}
   - component: {fileID: -6926121629195054438}
+  - component: {fileID: -3780327769775053345}
+  - component: {fileID: 346186359096431351}
   m_Layer: 6
   m_Name: Skull
   m_TagString: Untagged
@@ -76,6 +77,7 @@ MonoBehaviour:
   audioSource: {fileID: 0}
   stepAudioClip: {fileID: 0}
   waitTime: 0
+  jumpsWhileMoving: 1
 --- !u!65 &646475524544100165
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -160,41 +162,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   container: {fileID: 4067605956111919682, guid: 8ae8460d89cd89643b89cdf3b8bea50c, type: 3}
---- !u!114 &8975757175261770061
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1841329591959837068}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b9babef7002b7894a922edac9651468e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  loc: {fileID: 6921617333775835904}
-  characterHealth: {fileID: -6926121629195054438}
-  maxHealth: 1
-  accuracy: 100
-  minDamage: 0
-  maxDamage: 0
-  level: 0
-  speed: 0
-  critChance: 0
-  critMultiplier: 2
-  vitality: 0
-  strength: 0
-  dexterity: 0
-  intelligence: 0
-  armor: 0
-  evasion: 0
-  dropTable: 
-  audioSource: {fileID: 0}
-  attackClip: {fileID: 0}
-  missClip: {fileID: 0}
-  title: N/A
-  aggroNoise: {fileID: 0}
-  aggroRange: 10
 --- !u!114 &4120890808576303417
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -264,3 +231,50 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 0
   currentHealth: 0
+--- !u!114 &-3780327769775053345
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1841329591959837068}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0673498bd88caf246a183f18fd0fc368, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 2
+--- !u!114 &346186359096431351
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1841329591959837068}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: defb1b72e2bfb9c40a66dd18dd28f641, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  loc: {fileID: 6921617333775835904}
+  characterHealth: {fileID: -6926121629195054438}
+  maxHealth: 1
+  accuracy: 100
+  minDamage: 0
+  maxDamage: 0
+  level: 0
+  speed: 0
+  critChance: 0
+  critMultiplier: 2
+  vitality: 0
+  strength: 0
+  dexterity: 0
+  intelligence: 0
+  armor: 0
+  evasion: 0
+  dropTable: 
+  audioSource: {fileID: 0}
+  attackClip: {fileID: 0}
+  missClip: {fileID: 0}
+  title: N/A
+  levitating: {fileID: -3780327769775053345}
