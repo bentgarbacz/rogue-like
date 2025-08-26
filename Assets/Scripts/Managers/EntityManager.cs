@@ -51,9 +51,9 @@ public class EntityManager : MonoBehaviour
         visibilityMgr.AddObject(newGameObject);
     }
 
-    public void Smite(GameObject target)
+    public void KillEntity(GameObject target)
     {
-        //Attacks to and from dead combatants removed from combat buffer
+
         combatMgr.PruneCombatBuffer(target);
 
         aggroEnemies.Remove(target);
@@ -62,19 +62,11 @@ public class EntityManager : MonoBehaviour
         npcs.Remove(target);
         visibilityMgr.RemoveObject(target);
 
-        if (target.GetComponent<PlayerCharacterSheet>())
+
+        if (target.TryGetComponent<CharacterSheet>(out var characterSheet))
         {
 
-            ts.HaltGameplay();
-
-        }
-        else
-        {
-
-            target.GetComponent<DropLoot>().Drop();
-
-            int gainedXP = target.GetComponent<CharacterSheet>().level * 5;
-            playerCharacter.GainXP(gainedXP);
+            characterSheet.OnDeath();
         }
 
         Destroy(target);

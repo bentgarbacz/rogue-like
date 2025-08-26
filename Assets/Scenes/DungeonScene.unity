@@ -10395,7 +10395,7 @@ Light:
   m_Shape: 0
   m_Color: {r: 1, g: 0.8272029, b: 0.6650944, a: 1}
   m_Intensity: 1.5
-  m_Range: 20
+  m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
@@ -37855,6 +37855,7 @@ MonoBehaviour:
   visibilityRadius: 5
   updateStats: {fileID: 896522264}
   snm: {fileID: 1171624150}
+  turnSequencer: {fileID: 1314207891}
 --- !u!114 &6442338754152421643
 MonoBehaviour:
   m_ObjectHideFlags: 0

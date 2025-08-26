@@ -6,6 +6,8 @@ using Unity.Burst;
 using Unity.VisualScripting;
 using System.Linq;
 
+[RequireComponent(typeof(CaveBiome))]
+[RequireComponent(typeof(CatacombBiome))]
 
 public class LevelGenerator : MonoBehaviour
 {

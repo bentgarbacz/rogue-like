@@ -6,7 +6,6 @@ public class Poison : StatusEffect
 {
     
     public int damageOverTime;
-    private EntityManager entityMgr;
     private CharacterHealth characterHealth;
 
     public Poison(CharacterSheet affectedCharacter, int duration, int damageOverTime, EntityManager entityMgr)
@@ -16,7 +15,6 @@ public class Poison : StatusEffect
         this.affectedCharacter = affectedCharacter;
         this.duration = duration;
         this.damageOverTime = damageOverTime;
-        this.entityMgr = entityMgr;
         this.sprite = Resources.Load<Sprite>("Pixel Art/Spells/Poison");
 
         characterHealth = affectedCharacter.GetComponent<CharacterHealth>();
@@ -25,14 +23,9 @@ public class Poison : StatusEffect
     public override int Effect()
     {
 
+        TextNotificationManager textNotificationMgr = affectedCharacter.GetComponent<TextNotificationManager>();
+        textNotificationMgr.CreateNotificationOrder(affectedCharacter.transform.position, 2f, damageOverTime.ToString(), Color.green);
         characterHealth.TakeDamage(damageOverTime);
-        affectedCharacter.GetComponent<TextNotificationManager>().CreateNotificationOrder(affectedCharacter.transform.position, 2f, damageOverTime.ToString(), Color.green);
-        
-        if(characterHealth.currentHealth <= 0)
-        {
-
-            entityMgr.Smite(affectedCharacter.gameObject);
-        }
 
         duration -= 1;
         return duration;

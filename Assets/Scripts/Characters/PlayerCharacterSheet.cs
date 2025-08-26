@@ -37,6 +37,7 @@ public class PlayerCharacterSheet : CharacterSheet
     private CombatManager cbm;
     [SerializeField] private UpdateUIElements updateStats;
     [SerializeField] private StatusNotificationManager snm;
+    [SerializeField] private TurnSequencer turnSequencer;
 
     public override void Awake()
     {
@@ -323,7 +324,13 @@ public class PlayerCharacterSheet : CharacterSheet
 
     public void RevealAroundPC()
     {
-        
+
         tileMgr.RevealTiles(GameFunctions.GetCircleCoords(loc.coord, visibilityRadius));
+    }
+
+    public override void OnDeath()
+    {
+
+        turnSequencer.HaltGameplay();
     }
 }

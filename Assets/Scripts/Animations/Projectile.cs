@@ -20,31 +20,42 @@ public class Projectile : MonoBehaviour
 
     void Update()
     {
-        
-        if(shooting == true)
+
+        if (shooting == false)
         {
 
-            //move to target from start position
-            transform.position = Vector3.MoveTowards(
-                                                        transform.position, 
-                                                        target.transform.position, 
-                                                        speed * Time.deltaTime
-                                                    );
+            return;
 
-            if (curvesTowardsTarget)
-            {
-                
-                transform.LookAt(target.transform.position);
-            }
-            
-            //Destroy self after reaching target
-                if (transform.position == target.transform.position)
-                {
-
-                    shooting = false;
-                    StartCoroutine(HitTarget());
-                }
         }
+        else if (target == null)
+        {
+
+            StartCoroutine(HitTarget());
+            shooting = false;
+            return;
+        }
+
+        //move to target from start position
+        transform.position = Vector3.MoveTowards(
+                                                    transform.position, 
+                                                    target.transform.position, 
+                                                    speed * Time.deltaTime
+                                                );
+
+        if (curvesTowardsTarget)
+        {
+            
+            transform.LookAt(target.transform.position);
+        }
+        
+        //Destroy self after reaching target
+        if (transform.position == target.transform.position)
+        {
+
+            shooting = false;
+            StartCoroutine(HitTarget());
+        }
+        
     }
 
     private IEnumerator HitTarget()
