@@ -4,6 +4,7 @@ using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(TextNotificationManager))]
+[RequireComponent(typeof(DropLoot))]
 public class EnemyCharacterSheet : NpcCharacterSheet
 {
 
@@ -97,5 +98,14 @@ public class EnemyCharacterSheet : NpcCharacterSheet
         }
 
         return false;
+    }
+
+    public override void OnDeath()
+    {
+
+        GetComponent<DropLoot>().Drop();
+
+        int gainedXP = level * 5;
+        entityMgr.playerCharacter.GainXP(gainedXP);
     }
 }

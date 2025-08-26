@@ -6,6 +6,8 @@ using UnityEngine;
 public class MinionCharacterSheet : NpcCharacterSheet
 {
 
+    private bool isSummoningSick = true;
+
     public override void Awake()
     {
 
@@ -15,12 +17,19 @@ public class MinionCharacterSheet : NpcCharacterSheet
     public override void AggroBehavior(float waitTime)
     {
 
-        if (!djm.enemyMap.Keys.Contains(loc.coord))
+        if (isSummoningSick)
         {
 
-            Wander(waitTime);
+            isSummoningSick = false;
             return;
         }
+
+        if (!djm.enemyMap.Keys.Contains(loc.coord))
+            {
+
+                Wander(waitTime);
+                return;
+            }
 
         List<Vector2Int> neighborPoints = new(PathFinder.GetNeighbors(loc.coord, tileMgr.levelCoords));
         neighborPoints = ShuffleNeighbors(neighborPoints);

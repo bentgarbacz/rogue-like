@@ -22,7 +22,7 @@ public class CharacterSheet : MonoBehaviour
     public int dexterity = 0;
     public int intelligence = 0;
     public int armor = 0;
-    public int evasion = 0;    
+    public int evasion = 0;
     public string dropTable;
     protected StatusEffectManager statusEffectMgr;
     protected TileManager tileMgr;
@@ -66,20 +66,20 @@ public class CharacterSheet : MonoBehaviour
 
             return true;
         }
-        
-        return false;             
+
+        return false;
     }
 
     public bool Teleport(Vector2Int newCoord)
     {
 
-        if(!tileMgr.occupiedlist.Contains(newCoord))
+        if (!tileMgr.occupiedlist.Contains(newCoord))
         {
 
-            Vector3 newPos = new((float)newCoord.x, 0.1f, (float)newCoord.y); 
+            Vector3 newPos = new((float)newCoord.x, 0.1f, (float)newCoord.y);
 
             tileMgr.MoveEntity(this.gameObject, loc.coord, newCoord);
-            
+
             transform.position = newPos;
 
             loc.coord = newCoord;
@@ -100,13 +100,19 @@ public class CharacterSheet : MonoBehaviour
     public virtual void ProcessStatusEffects()
     {
 
-        if(statusEffectMgr == null)
+        if (statusEffectMgr == null)
         {
 
             return;
         }
-        
+
         statusEffectMgr.ProcessStatusEffects();
+    }
+
+    public virtual void OnDeath()
+    {
+
+        return;
     }
 }
 

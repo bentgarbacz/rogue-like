@@ -8,16 +8,10 @@ public class CombatManager : MonoBehaviour
     public bool fighting = false;
     public float attackTime = 0.5f;
     public float trimTime = 0.25f;
-    private List<Attack> combatBuffer;
+    private List<Attack> combatBuffer = new();
     [SerializeField] private EntityManager entityMgr;
     [SerializeField] private TileManager tileMgr;
     [SerializeField] private ProjectileReferences allProjectiles;
-    
-    void Start()
-    {
-
-        combatBuffer = new();
-    }
 
     public void CommenceCombat()
     {
@@ -143,13 +137,6 @@ public class CombatManager : MonoBehaviour
                 }
 
                 yield return new WaitForSeconds(trimTime); //Wait out time trimmed from above
-
-                //kills defender of attack if it's health falls below 1
-                if(defenderHealth.currentHealth <= 0)
-                {
-                    yield return new WaitForSeconds(0.05f); //Give the GameObject of dead character time to wrap up before it is destroyed
-                    entityMgr.Smite(combatBuffer[0].defender);                                                                    
-                }
             }
 
             combatBuffer.RemoveAt(0);            
@@ -227,13 +214,6 @@ public class CombatManager : MonoBehaviour
             
             // Miss notification
             defenderNotifier.CreateNotificationOrder(defender.transform.position, 2f, "Miss", Color.white);
-        }
-
-        // Check if the defender is dead
-        if (defenderHealth.currentHealth <= 0)
-        {
-
-            entityMgr.Smite(defender); // Remove the defender from the game
         }
     }
 
