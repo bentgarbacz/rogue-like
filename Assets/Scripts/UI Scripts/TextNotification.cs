@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
+
 
 public class TextNotification : MonoBehaviour
 {
@@ -8,6 +11,8 @@ public class TextNotification : MonoBehaviour
     public Vector3 terminalTarget;
     public float speed;
     private bool initialized = false;
+    [SerializeField] public Image background;
+    [SerializeField] public TextMeshPro text;
 
     void Update()
     {

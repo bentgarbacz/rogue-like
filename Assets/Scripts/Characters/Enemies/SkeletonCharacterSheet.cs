@@ -25,9 +25,9 @@ public class SkeletonCharacterSheet : EnemyCharacterSheet
         attackClip = Resources.Load<AudioClip>("Sounds/Skeleton");
     }
     
-    public override void AggroBehavior(float waitTime)
+    public override void AggroBehavior()
     {
 
-        base.AggroBehavior(waitTime);
+        base.AggroBehavior();
     }
 }

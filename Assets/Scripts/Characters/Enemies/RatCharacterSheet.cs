@@ -26,9 +26,9 @@ public class RatCharacterSheet : EnemyCharacterSheet
         attackClip = Resources.Load<AudioClip>("Sounds/Rat");
     }
 
-    public override void AggroBehavior(float waitTime)
+    public override void AggroBehavior()
     {
 
-        base.AggroBehavior(waitTime);
+        base.AggroBehavior();
     }
 }

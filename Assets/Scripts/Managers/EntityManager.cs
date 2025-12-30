@@ -20,6 +20,7 @@ public class EntityManager : MonoBehaviour
     [SerializeField] private MiniMapManager minimapMgr;
     [SerializeField] private TileManager tileMgr;
     [SerializeField] private VisibilityManager visibilityMgr;
+    [SerializeField] private NPCMovementManager movementMgr;
 
     void Start()
     {
@@ -66,6 +67,7 @@ public class EntityManager : MonoBehaviour
         if (target.TryGetComponent<CharacterSheet>(out var characterSheet))
         {
 
+            movementMgr.RemoveCharacter(characterSheet);
             characterSheet.OnDeath();
         }
 
@@ -115,6 +117,7 @@ public class EntityManager : MonoBehaviour
 
         tileMgr.RefreshLayout();
         visibilityMgr.Refresh();
+        movementMgr.Refresh();
 
         playerCharacter.Teleport(new Vector2Int(0, 0));
     }

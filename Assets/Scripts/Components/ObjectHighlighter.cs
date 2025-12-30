@@ -12,9 +12,8 @@ public class ObjectHighlighter : MonoBehaviour, IPointerEnterHandler, IPointerEx
     private NameplateManager npm;
     private UIActiveManager uiam;
     private CharacterSheet highlightedCharacter;
+    private Renderer gameObjectRenderer;
     public bool highlighted = false;
-    private MeshRenderer meshRenderer;
-    [SerializeField] private bool hideOnHighlight = false;
 
     void Start()
     {
@@ -23,8 +22,8 @@ public class ObjectHighlighter : MonoBehaviour, IPointerEnterHandler, IPointerEx
         highlightedCharacter = GetComponent<CharacterSheet>();
         ttm = uiam.toolTipContainer.GetComponent<ToolTipManager>();
         npm = uiam.nameplatePanel.GetComponent<NameplateManager>();
-        meshRenderer = GetComponent<MeshRenderer>();
         startcolor = GetComponent<Renderer>().material.color;
+        gameObjectRenderer = GetComponent<Renderer>();
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -53,13 +52,7 @@ public class ObjectHighlighter : MonoBehaviour, IPointerEnterHandler, IPointerEx
             }
         }
 
-        if (hideOnHighlight)
-        {
-
-            meshRenderer.enabled = false;
-        }
-
-        GetComponent<Renderer>().material.color = highlightColor;
+        gameObjectRenderer.material.color = highlightColor;
         highlighted = true;
     }
 
@@ -68,13 +61,7 @@ public class ObjectHighlighter : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
         ttm.SetTooltip(false);
 
-        if (hideOnHighlight)
-        {
-
-            meshRenderer.enabled = true;
-        }
-
-        GetComponent<Renderer>().material.color = startcolor;
+        gameObjectRenderer.material.color = startcolor;
         highlighted = false;
     }
 

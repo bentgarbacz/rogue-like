@@ -27,9 +27,9 @@ public class GoatmanCharacterSheet : EnemyCharacterSheet
 
 
 
-    public override void AggroBehavior(float waitTime)
+    public override void AggroBehavior()
     {
 
-        base.AggroBehavior(waitTime);
+        base.AggroBehavior();
     }
 }

@@ -9,10 +9,11 @@ public class DijkstraMapManager : MonoBehaviour
 
     [SerializeField] private EntityManager entityMgr;
     [SerializeField] private TileManager tileMgr;
-    public Dictionary<Vector2Int, float> playerMap { get; private set; }
-    public Dictionary<Vector2Int, float> enemyMap { get; private set; }
-    public Dictionary<Vector2Int, float> lootMap { get; private set; }
-    public Dictionary<Vector2Int, float> npcMap { get; private set; }
+    public Dictionary<Vector2Int, float> playerMap = new();
+    public Dictionary<Vector2Int, float> enemyMap = new();
+    public Dictionary<Vector2Int, float> lootMap = new();
+    public Dictionary<Vector2Int, float> npcMap = new();
+    public Dictionary<Vector2Int, float> playerAndNpcMap = new();
 
 
     public Dictionary<Vector2Int, float> LayerMaps(List<Dictionary<Vector2Int, float>> maps)
@@ -141,6 +142,13 @@ public class DijkstraMapManager : MonoBehaviour
         npcMap = CreateLayeredMap(entityMgr.npcs, 10);
         //string filePath = @"C:\Users\bentg\Downloads\NPCmap_output.txt";
         //PrintMapToFile(npcMap, filePath);
+    }
+    
+    public void UpdateCombinedMapPlayerAndNPC()
+    {
+        
+        List<Dictionary<Vector2Int, float>> maps = new() {npcMap, playerMap};
+        playerAndNpcMap = LayerMaps(maps);
     }
 
     public float GetPlayerMapValue(Vector2Int coord)
