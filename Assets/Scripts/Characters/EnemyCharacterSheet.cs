@@ -25,7 +25,7 @@ public class EnemyCharacterSheet : NpcCharacterSheet
         aggroNoise = Resources.Load<AudioClip>("Sounds/aggroNoise");
     }
 
-    public override void AggroBehavior(float waitTime = 0f)
+    public override void AggroBehavior()
     {
 
         if (!GetAggroStatus())
@@ -34,50 +34,22 @@ public class EnemyCharacterSheet : NpcCharacterSheet
             entityMgr.aggroEnemies.Remove(this.gameObject);
             return;
         }
-
-        List<Vector2Int> neighborPoints = new(PathFinder.GetNeighbors(loc.coord, tileMgr.levelCoords));
-        neighborPoints = ShuffleNeighbors(neighborPoints);
-
-        List<Vector2Int> cardinalNeighbors = GetCardinalNeighbors(neighborPoints);
-
-        Vector2Int targetCoord = loc.coord;
-        float minDist = float.MaxValue;
-
-        foreach (Vector2Int currCoord in neighborPoints)
+        
+        List<Dictionary<Vector2Int, float>> mapsOfInterest = new(){djm.npcMap, djm.playerMap};
+        Vector2Int targetCoord = GetNeighborTileOfMostInterest(loc.coord, mapsOfInterest);
+        float tileInterestVal = Mathf.Min(djm.GetPlayerMapValue(targetCoord), djm.GetNpcMapValue(targetCoord));
+        
+        if(tileInterestVal == 0)
         {
 
-            float currPlayerVal = djm.GetPlayerMapValue(currCoord);
-            float currNpcVal = djm.GetNpcMapValue(currCoord);
+            AttackEntity(targetCoord);
 
-            if (currPlayerVal == float.MaxValue && currNpcVal == float.MaxValue)
-            {
+        }else
+        {
 
-                continue;
-            }
-
-            float currMinVal = Mathf.Min(currPlayerVal, currNpcVal);
-
-            if (currMinVal == 0)
-            {
-
-                AttackEntity(currCoord);
-                return;
-            }
-            else if (currMinVal <= minDist && !tileMgr.occupiedlist.Contains(currCoord))
-            {
-
-                if (cardinalNeighbors.Contains(targetCoord) && !cardinalNeighbors.Contains(currCoord) && currMinVal == minDist)
-                {
-
-                    continue;
-                }
-
-                minDist = currMinVal;
-                targetCoord = currCoord;
-            }
+            movementManager.AddMovement(this, targetCoord);
         }
 
-        Move(targetCoord, waitTime);
     }
 
     public virtual bool OnAggro()

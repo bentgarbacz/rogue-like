@@ -14,7 +14,7 @@ public class MinionCharacterSheet : NpcCharacterSheet
         base.Awake();
     }
     
-    public override void AggroBehavior(float waitTime)
+    public override void AggroBehavior()
     {
 
         if (isSummoningSick)
@@ -25,11 +25,11 @@ public class MinionCharacterSheet : NpcCharacterSheet
         }
 
         if (!djm.enemyMap.Keys.Contains(loc.coord))
-            {
+        {
 
-                Wander(waitTime);
-                return;
-            }
+            Wander();
+            return;
+        }
 
         List<Vector2Int> neighborPoints = new(PathFinder.GetNeighbors(loc.coord, tileMgr.levelCoords));
         neighborPoints = ShuffleNeighbors(neighborPoints);
@@ -60,6 +60,6 @@ public class MinionCharacterSheet : NpcCharacterSheet
             }
         }
 
-        Move(targetCoord, waitTime);
+        movementManager.AddMovement(this, targetCoord);
     }
 }

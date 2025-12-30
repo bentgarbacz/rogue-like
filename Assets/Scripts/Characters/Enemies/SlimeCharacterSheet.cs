@@ -65,43 +65,45 @@ public class SlimeCharacterSheet : EnemyCharacterSheet
     public override bool OnAggro()
     {
 
+        if(objectVisibility.isActive)
+        {
+        
+            return base.OnAggro();
+        }
+
         HashSet<Vector2Int> landingCoords = PathFinder.GetNeighbors(entityMgr.playerCharacter.loc.coord, tileMgr.levelCoords);
 
-        if(!objectVisibility.isActive)
+        foreach(Vector2Int possibleCoord in landingCoords)
+        {
+            
+            if(tileMgr.occupiedlist.Add(possibleCoord))
+            {
+
+                landingFound = true;
+                landingCoord = possibleCoord;
+                break;
+            }
+        }
+
+        if(landingFound)
         {
 
-            foreach(Vector2Int possibleCoord in landingCoords)
-            {
-                
-                if(tileMgr.occupiedlist.Add(possibleCoord))
-                {
+            objectVisibility.isActive = true;
 
-                    landingFound = true;
-                    landingCoord = possibleCoord;
-                    break;
-                }
-            }
+            transform.position = entityMgr.hero.transform.position + new Vector3(0, 10f, 0);
+            objectVisibility.SetVisibility(true);
+            falling = true;
+            turnSequencer.HaltGameplay();
 
-            if(landingFound)
-            {
-
-                objectVisibility.isActive = true;
-
-                transform.position = entityMgr.hero.transform.position + new Vector3(0, 10f, 0);
-                objectVisibility.SetVisibility(true);
-                falling = true;
-                turnSequencer.HaltGameplay();
-
-                return true;
-            }
+            return true;
         }
 
         return false;
     }
 
-    public override void AggroBehavior(float waitTime)
+    public override void AggroBehavior()
     {
 
-        base.AggroBehavior(waitTime);
+        base.AggroBehavior();
     }
 }

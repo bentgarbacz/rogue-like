@@ -26,9 +26,9 @@ public class SpiderCharacterSheet : EnemyCharacterSheet
         attackClip = Resources.Load<AudioClip>("Sounds/Spider");
     }
 
-    public override void AggroBehavior(float waitTime)
+    public override void AggroBehavior()
     {
 
-        base.AggroBehavior(waitTime);
+        base.AggroBehavior();
     }
 }

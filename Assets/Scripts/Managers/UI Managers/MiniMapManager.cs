@@ -173,7 +173,7 @@ public class MiniMapManager : MonoBehaviour
         }
 
         // y value is constant to preserve camera height
-        // z value is negated because the camera and the map are facing eachother, like a mirror
+        // z value is negated because the camera and the map are facing each other, like a mirror
         mapCamera.transform.position = new Vector3(
 
             anchorIcon.iconRectTransform.anchoredPosition.x, 

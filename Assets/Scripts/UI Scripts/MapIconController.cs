@@ -31,7 +31,7 @@ public class MapIconController : MonoBehaviour
 
     public void SetIcon(Sprite sprite)
     {
-
+    
         icon.sprite = sprite;
     }
 

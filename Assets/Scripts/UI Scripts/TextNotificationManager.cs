@@ -19,7 +19,13 @@ public class TextNotificationManager : MonoBehaviour
     void Update()
     {
 
-        if(notificationCreationCleared == true && notificationOrders.Count > 0)
+        if(notificationCreationCleared == false)
+        {
+
+            return;
+        }
+
+        if(notificationOrders.Count > 0)
         {
 
             notificationCreationCleared = false;
@@ -45,24 +51,25 @@ public class TextNotificationManager : MonoBehaviour
         notificationCreationCleared = true;
     }   
 
-    private void CreateNotification(Vector3 position, float height, string text, Color textColor, float speed = 2f)
+    private void CreateNotification(Vector3 position, float spawnOffsetY, string text, Color textColor, float speed = 2f)
     {
 
-        GameObject notification = Instantiate(notificationPrefab, new Vector3(position.x, position.y + height, position.z), Quaternion.identity);
-        TextMeshPro notificationText = notification.transform.GetChild(1).GetComponent<TextMeshPro>();
-
-        notificationText.SetText(text);
-        notificationText.ForceMeshUpdate(true);
-
-        notificationText.color = textColor;        
-
-        RectTransform backgroundRect = notification.transform.GetChild(0).GetComponent<RectTransform>();
-        Vector2 renderedTextSize = notificationText.GetRenderedValues();
-        backgroundRect.sizeDelta = new Vector2(Mathf.Max(xMin, renderedTextSize.x + xBuffer), renderedTextSize.y + yBuffer);
+        GameObject newNotification = Instantiate(notificationPrefab, new Vector3(position.x, position.y + spawnOffsetY, position.z), Quaternion.identity);
+        TextNotification textNotification = newNotification.GetComponent<TextNotification>();
         
-        Vector3 terminalPosition = new Vector3(notification.transform.position.x, notification.transform.position.y + destroyAfterDistance, notification.transform.position.z);
+        textNotification.text.SetText(text);
+        textNotification.text.color = textColor;
+        textNotification.text.ForceMeshUpdate(true);           
+       
+        Vector2 renderedTextSize = textNotification.text.GetRenderedValues();
+        textNotification.background.rectTransform.sizeDelta = new Vector2(Mathf.Max(xMin, renderedTextSize.x + xBuffer), renderedTextSize.y + yBuffer);
+        //textNotification.text.transform.SetAsLastSibling();
+        
+        Vector3 terminalPosition = new(newNotification.transform.position.x, 
+                                       newNotification.transform.position.y + destroyAfterDistance, 
+                                       newNotification.transform.position.z);
 
-        notification.GetComponent<TextNotification>().InitText(terminalPosition, speed);
+        textNotification.InitText(terminalPosition, speed);
     }    
 }
 

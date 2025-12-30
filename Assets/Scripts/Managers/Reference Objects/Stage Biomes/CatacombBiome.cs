@@ -282,7 +282,7 @@ public class CatacombBiome : Biome
                 } while (usedEnemyCoords.Contains(enemyCoord));
 
                 usedEnemyCoords.Add(enemyCoord); // Mark the coordinate as used
-                Vector3 enemyPos = new Vector3(enemyCoord.x, 0, enemyCoord.y);
+                Vector3 enemyPos = new(enemyCoord.x, 0, enemyCoord.y);
 
                 // Spawn the enemy at the chosen position
                 npcGen.CreateEnemy(possibleEnemyTypes[ Random.Range(0, 2) ], enemyPos);

@@ -32,6 +32,8 @@ public class ToolTipManager : MonoBehaviour
         if (uiam.toolTipContainerIsOpen)
         {
             
+            max = new Vector3(mainCamera.pixelWidth, mainCamera.pixelHeight, 0);
+            
             transform.position = new Vector3(
                                                 Mathf.Clamp(Input.mousePosition.x + 10, min.x, max.x), 
                                                 Mathf.Clamp(Input.mousePosition.y + tooltipContainerRect.rect.height, min.y, max.y), 

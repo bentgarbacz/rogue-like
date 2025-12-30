@@ -7,8 +7,6 @@ using UnityEngine.InputSystem;
 public class TurnSequencer : MonoBehaviour
 {
     public bool gameplayHalted = false;
-    public float baseWaitTime = 0.05f;
-    public float incrementWaitTime = 0.05f;
     private bool actionTaken = false;
     private Queue<Vector2Int> playerMovementQueue = new();
     private PlayerCharacterSheet playerCharacter;
@@ -25,6 +23,7 @@ public class TurnSequencer : MonoBehaviour
     [SerializeField] private MiniMapManager minimapMgr;
     [SerializeField] private VisibilityManager visibilityMgr;
     [SerializeField] private DijkstraMapManager djMapMgr;
+    [SerializeField] private NPCMovementManager movementManager;
 
     void Start()
     {
@@ -45,7 +44,7 @@ public class TurnSequencer : MonoBehaviour
             return;
         }
 
-        if (ProcessPlayerMovement())
+        if (ProcessMovement())
         {
 
             return;
@@ -63,6 +62,7 @@ public class TurnSequencer : MonoBehaviour
             actionTaken = false;
 
             djMapMgr.PopulatePlayerMap();
+            djMapMgr.UpdateCombinedMapPlayerAndNPC();
             ProcessEntityTurns(entityMgr.aggroEnemies);
             djMapMgr.PopulateEnemyMap();
             ProcessEntityTurns(entityMgr.npcs);
@@ -74,7 +74,7 @@ public class TurnSequencer : MonoBehaviour
         }
     }
 
-    private bool ProcessPlayerMovement()
+    private bool ProcessMovement()
     {
 
         if (playerMovementQueue.Count > 0 && !pcMovement.IsMoving())
@@ -84,6 +84,9 @@ public class TurnSequencer : MonoBehaviour
             actionTaken = true;
             return true;
         }
+
+        movementManager.ProcessMovement();
+        minimapMgr.UpdateDynamicIcons();
 
         return false;
     }
@@ -237,15 +240,12 @@ public class TurnSequencer : MonoBehaviour
     private void ProcessEntityTurns(HashSet<GameObject> entities)
     {
 
-        float waitTime = baseWaitTime;
-
         HashSet<GameObject> entitiesCopy = new(entities);
 
         foreach (GameObject entity in entitiesCopy)
         {
 
-            entity.GetComponent<NpcCharacterSheet>().AggroBehavior(waitTime);
-            waitTime += incrementWaitTime;
+            entity.GetComponent<NpcCharacterSheet>().AggroBehavior();
         }
     }
 
@@ -308,13 +308,25 @@ public class TurnSequencer : MonoBehaviour
         }
     }
 
-    private bool ShouldAggro(GameObject enemy, EnemyCharacterSheet ecs)
+    private bool ShouldAggro(GameObject enemy, EnemyCharacterSheet ecs = null)
     {
 
         //OLD AGGRO SYSTEM
         //return !dum.aggroEnemies.Contains(enemy) &&
         //    ecs.aggroRange > Vector3.Distance(enemy.transform.position, dum.hero.transform.position) &&
         //    LineOfSight.HasLOS(enemy, dum.hero);
+
+        if(ecs == null)
+        {
+
+            ecs = enemy.GetComponent<EnemyCharacterSheet>();
+        }
+
+        if(ecs == null)
+        {
+            
+            return false;
+        }
 
         bool isAggroed = entityMgr.aggroEnemies.Contains(enemy);
         bool inPlayerRange = ecs.aggroRange >= djMapMgr.GetPlayerMapValue(ecs.loc.coord);

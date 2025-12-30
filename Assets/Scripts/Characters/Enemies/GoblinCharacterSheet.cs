@@ -25,9 +25,9 @@ public class GoblinCharacterSheet : EnemyCharacterSheet
         attackClip = Resources.Load<AudioClip>("Sounds/Frog");
     }
 
-    public override void AggroBehavior(float waitTime = 0f)
+    public override void AggroBehavior()
     {
 
-        base.AggroBehavior(waitTime);
+        base.AggroBehavior();
     }
 }

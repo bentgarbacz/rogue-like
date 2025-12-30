@@ -30,7 +30,7 @@ public class SkeletonArcherCharacterSheet : EnemyCharacterSheet
         attackClip = Resources.Load<AudioClip>("Sounds/Skeleton");
     }
 
-    public override void AggroBehavior(float waitTime)
+    public override void AggroBehavior()
     {
 
         if(attackCooldown == 0)
@@ -45,14 +45,14 @@ public class SkeletonArcherCharacterSheet : EnemyCharacterSheet
             }else //move towards target if not within range
             {
                 
-                List<Vector2Int> pathToPlayer = PathFinder.FindPath(loc.coord, entityMgr.playerCharacter.loc.coord, tileMgr.levelCoords);                     
-                Move(pathToPlayer[1], waitTime);
+                List<Vector2Int> pathToPlayer = PathFinder.FindPath(loc.coord, entityMgr.playerCharacter.loc.coord, tileMgr.levelCoords);         
+                movementManager.AddMovement(this, pathToPlayer[1]);            
             }
 
         }else
         {
 
-            Wander(waitTime);
+            Wander();
             attackCooldown -= 1;
         }
     }
