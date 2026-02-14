@@ -53,6 +53,7 @@ public class PlayerCharacterSheet : CharacterSheet
         mana = maxMana;
         armor = 0;
         evasion = 50;
+        title = "Player";
 
         characterHealth.InitHealth(maxHealth);
 

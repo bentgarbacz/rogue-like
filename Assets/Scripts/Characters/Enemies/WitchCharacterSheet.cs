@@ -48,7 +48,7 @@ public class WitchCharacterSheet : EnemyCharacterSheet
         List<Dictionary<Vector2Int, float>> mapsOfInterest = new(){djm.npcMap, djm.playerMap};
         Vector2Int targetCoord = GetRangedTarget(loc.coord, mapsOfInterest);
 
-        if(attackCooldown == 0 && targetCoord != new Vector2Int(int.MaxValue, int.MaxValue))
+        if(attackCooldown <= 0 && targetCoord != new Vector2Int(int.MaxValue, int.MaxValue))
         {
 
             GameObject targetEntity = null;
@@ -84,7 +84,7 @@ public class WitchCharacterSheet : EnemyCharacterSheet
 
         }else
         {
-            if(teleportCooldown == 0)
+            if(teleportCooldown <= 0)
             {
 
                 audioSource.PlayOneShot(teleportClip);

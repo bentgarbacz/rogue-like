@@ -139,6 +139,11 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -160,6 +165,7 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
@@ -183,8 +189,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2, y: 0.5, z: 2.1}
-  m_Center: {x: 0, y: 0.25, z: -0.050000012}
+  m_Size: {x: 2, y: 0.51744735, z: 2.1}
+  m_Center: {x: 0, y: 0.5669605, z: -0.050000027}
 --- !u!114 &3546253196550962845
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -200,7 +206,6 @@ MonoBehaviour:
   highlightColor: {r: 1, g: 0, b: 0, a: 1}
   actionDescription: Attack
   highlighted: 0
-  hideOnHighlight: 0
 --- !u!114 &4689085768974521071
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -349,4 +354,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0673498bd88caf246a183f18fd0fc368, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 6

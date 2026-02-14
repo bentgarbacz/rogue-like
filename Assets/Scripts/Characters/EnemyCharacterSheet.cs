@@ -62,14 +62,20 @@ public class EnemyCharacterSheet : NpcCharacterSheet
 
     protected virtual bool GetAggroStatus()
     {
-
-        if (djm.playerMap.ContainsKey(loc.coord) || djm.npcMap.ContainsKey(loc.coord))
+        
+        if(djm.playerAndNpcMap.ContainsKey(loc.coord))
         {
+            
+            float aggroVal = djm.playerAndNpcMap[loc.coord];
 
-            return true;
+            if(aggroVal >= aggroRange * 1.5)
+            {
+                
+                return false;
+            }
         }
 
-        return false;
+        return true;
     }
 
     public override void OnDeath()

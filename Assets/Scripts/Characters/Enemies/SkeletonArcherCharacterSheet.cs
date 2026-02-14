@@ -33,28 +33,51 @@ public class SkeletonArcherCharacterSheet : EnemyCharacterSheet
     public override void AggroBehavior()
     {
 
-        if(attackCooldown == 0)
+        if (!GetAggroStatus())
         {
 
-            //Ranged attack initates if target is within range
-            if(cbm.AddProjectileAttack(this.gameObject, entityMgr.hero, range, minDamage, maxDamage, speed, projectile))
+            entityMgr.aggroEnemies.Remove(this.gameObject);
+            return;
+        }
+
+        List<Dictionary<Vector2Int, float>> mapsOfInterest = new(){djm.playerMap, djm.npcMap};
+        Vector2Int targetCoord = GetRangedTarget(loc.coord, mapsOfInterest);
+
+        if(attackCooldown <= 0 && targetCoord != new Vector2Int(int.MaxValue, int.MaxValue))
+        {
+
+            GameObject targetEntity = null;
+
+            foreach (GameObject entity in tileMgr.GetTile(targetCoord).entitiesOnTile)
             {
 
-                attackCooldown = 3;
+                if (entity != null && entity.GetComponent<CharacterSheet>() != null)
+                {
 
-            }else //move towards target if not within range
-            {
-                
-                List<Vector2Int> pathToPlayer = PathFinder.FindPath(loc.coord, entityMgr.playerCharacter.loc.coord, tileMgr.levelCoords);         
-                movementManager.AddMovement(this, pathToPlayer[1]);            
+                    targetEntity = entity;
+                }
             }
 
-        }else
-        {
+            if (targetEntity != null)
+            {
 
-            Wander();
-            attackCooldown -= 1;
+                bool attackResult = cbm.AddProjectileAttack(this.gameObject, targetEntity, range, minDamage, maxDamage, speed, projectile);
+                
+                //Ranged attack initates if target is within range
+                if(attackResult)
+                {
+
+                    attackCooldown = 3;
+                    return;
+                }
+
+                Debug.Log(targetEntity.GetComponent<CharacterSheet>().title);
+            }
+
         }
+
+        Wander();
+        attackCooldown -= 1;
     }
 }
 
