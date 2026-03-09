@@ -70,10 +70,7 @@ public class SkeletonArcherCharacterSheet : EnemyCharacterSheet
                     attackCooldown = 3;
                     return;
                 }
-
-                Debug.Log(targetEntity.GetComponent<CharacterSheet>().title);
             }
-
         }
 
         Wander();

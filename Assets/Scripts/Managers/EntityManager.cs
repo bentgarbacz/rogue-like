@@ -61,6 +61,7 @@ public class EntityManager : MonoBehaviour
         tileMgr.occupiedlist.Remove(target.GetComponent<ObjectLocation>().coord);
         enemies.Remove(target);
         npcs.Remove(target);
+        entitiesInLevel.Remove(target);
         visibilityMgr.RemoveObject(target);
 
 
@@ -68,7 +69,6 @@ public class EntityManager : MonoBehaviour
         {
 
             movementMgr.RemoveCharacter(characterSheet);
-            characterSheet.OnDeath();
         }
 
         Destroy(target);
@@ -101,6 +101,12 @@ public class EntityManager : MonoBehaviour
 
         foreach (GameObject trash in entitiesInLevel)
         {
+
+            if(trash == hero)
+            {
+                
+                continue;
+            }
 
             Destroy(trash);
         }

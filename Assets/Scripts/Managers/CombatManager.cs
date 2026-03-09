@@ -6,6 +6,7 @@ public class CombatManager : MonoBehaviour
 {
 
     public bool fighting = false;
+    public bool combatPaused = false;
     public float attackTime = 0.5f;
     public float trimTime = 0.25f;
     private List<Attack> combatBuffer = new();
@@ -47,6 +48,12 @@ public class CombatManager : MonoBehaviour
 
         while(combatBuffer.Count > 0)
         {
+
+            if(combatPaused)
+            {
+                yield return null;
+                continue;
+            }
 
             Attack attack = combatBuffer[0];
             float waitTime = attackTime;

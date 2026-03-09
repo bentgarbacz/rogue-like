@@ -62,6 +62,12 @@ public class CharacterHealth : MonoBehaviour
     private IEnumerator Die()
     {
 
+        if (TryGetComponent<CharacterSheet>(out var characterSheet))
+        {
+
+            characterSheet.OnDeath();
+        }
+
         yield return new WaitForSeconds(0.05f); //Give the GameObject of dead character time to wrap up before it is destroyed
         entityMgr.KillEntity(this.gameObject);
     }

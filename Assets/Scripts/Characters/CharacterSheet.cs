@@ -70,7 +70,7 @@ public class CharacterSheet : MonoBehaviour
         return false;
     }
 
-    public bool Teleport(Vector2Int newCoord)
+    public virtual bool Teleport(Vector2Int newCoord)
     {
 
         if (!tileMgr.occupiedlist.Contains(newCoord))

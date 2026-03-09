@@ -41,6 +41,7 @@ public class LevelGenerator : MonoBehaviour
         firstTileCoord = biome.GenerateLevel(tileMgr.levelCoords);    
         miniMapManager.DrawIcons(entityMgr.entitiesInLevel);
         miniMapManager.UpdateDynamicIcons();
+        entityMgr.AddGameObject(entityMgr.hero);
         entityMgr.playerCharacter.Move(firstTileCoord); 
         MoveDebugObjects();
     }

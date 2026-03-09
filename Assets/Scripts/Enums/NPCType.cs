@@ -10,5 +10,6 @@ public enum NPCType
     Witch,
     GoatMan,
     Spider,
-    Skull
+    Skull,
+    Floater
 }

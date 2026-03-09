@@ -323,6 +323,19 @@ public class PlayerCharacterSheet : CharacterSheet
         return false;
     }
 
+    public override bool Teleport(Vector2Int newCoord)
+    {
+        
+        if (base.Teleport(newCoord))
+        {
+            
+            RevealAroundPC();
+            return true;
+        }
+
+        return false;
+    }
+
     public void RevealAroundPC()
     {
 

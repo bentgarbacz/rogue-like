@@ -36,7 +36,8 @@ public class Teleport : Spell
                     return false;
                 }
                 
-                ResetCooldown(caster);
+                ResetCooldown(caster);          
+              
                 return true;
             }
         }

@@ -18,6 +18,7 @@ public class NPCGenerator : MonoBehaviour
     [SerializeField] private GameObject goatMan;
     [SerializeField] private GameObject spider;
     [SerializeField] private GameObject skull;
+    [SerializeField] private GameObject floater;
     private readonly Vector3 spawnPosOffset = new(0, 0.1f, 0);
 
     void Start()
@@ -35,7 +36,8 @@ public class NPCGenerator : MonoBehaviour
             {NPCType.Witch, witch},
             {NPCType.GoatMan, goatMan},
             {NPCType.Spider, spider},
-            {NPCType.Skull, skull}
+            {NPCType.Skull, skull},
+            {NPCType.Floater, floater}
         };
     }
 
