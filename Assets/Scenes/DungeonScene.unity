@@ -13499,6 +13499,7 @@ GameObject:
   - component: {fileID: 6442338754152421648}
   - component: {fileID: 6442338754152421649}
   - component: {fileID: 6442338754152421650}
+  - component: {fileID: 6442338754152421651}
   m_Layer: 6
   m_Name: Hero
   m_TagString: Untagged
@@ -16899,7 +16900,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioSource: {fileID: 0}
-  statType: Strength
+  statType: 1
   hero: {fileID: 869517488}
 --- !u!1 &1035471882
 GameObject:
@@ -19950,7 +19951,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7602760449659616811, guid: 3d2a97183afeb6843a3d22f8ee50bf01, type: 3}
       propertyPath: lootTable
-      value: DebugChest
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 7865473162580240948, guid: 3d2a97183afeb6843a3d22f8ee50bf01, type: 3}
       propertyPath: actionDescription
@@ -20474,7 +20475,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioSource: {fileID: 0}
-  statType: Dexterity
+  statType: 2
   hero: {fileID: 869517488}
 --- !u!114 &1228206845
 MonoBehaviour:
@@ -22624,6 +22625,7 @@ GameObject:
   - component: {fileID: 1314207902}
   - component: {fileID: 1314207901}
   - component: {fileID: 1314207903}
+  - component: {fileID: 1314207904}
   m_Layer: 0
   m_Name: System Managers
   m_TagString: Untagged
@@ -22758,6 +22760,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fighting: 0
+  combatPaused: 0
   attackTime: 0.333
   trimTime: 0.25
   entityMgr: {fileID: 1314207894}
@@ -22860,6 +22863,18 @@ MonoBehaviour:
   baseWaitTime: 0.025
   incrementWaitTime: 0.025
   ts: {fileID: 1314207891}
+--- !u!114 &1314207904
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1314207890}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 099e8e90c6096bc41bbbe90aa62ddacc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LockManager
 --- !u!1 &1338763342
 GameObject:
   m_ObjectHideFlags: 0
@@ -33311,7 +33326,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioSource: {fileID: 0}
-  statType: Intelligence
+  statType: 3
   hero: {fileID: 869517488}
 --- !u!1 &1925104844
 GameObject:
@@ -38045,7 +38060,7 @@ MonoBehaviour:
   intelligence: 0
   armor: 0
   evasion: 0
-  dropTable: 
+  dropTable: 0
   audioSource: {fileID: 0}
   attackClip: {fileID: 0}
   missClip: {fileID: 0}
@@ -38195,6 +38210,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0673498bd88caf246a183f18fd0fc368, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6442338754152421651
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 869517488}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 099e8e90c6096bc41bbbe90aa62ddacc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LockManager
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

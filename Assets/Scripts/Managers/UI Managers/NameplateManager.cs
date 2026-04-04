@@ -9,7 +9,7 @@ public class NameplateManager : MonoBehaviour
 
     [SerializeField]private Image bar;
     [SerializeField]private TextMeshProUGUI text;
-    private EnemyCharacterSheet characterSheet;
+    private NpcCharacterSheet characterSheet;
     private CharacterHealth characterHealth;
     private ObjectHighlighter characterHighlighter;
     private UIActiveManager uiam;
@@ -40,12 +40,24 @@ public class NameplateManager : MonoBehaviour
     public void SetCharacter(GameObject characterGameObject)
     {
 
-        this.characterSheet = characterGameObject.GetComponent<EnemyCharacterSheet>();
+        this.characterSheet = characterGameObject.GetComponent<NpcCharacterSheet>();
         this.characterHealth = characterGameObject.GetComponent<CharacterHealth>();
         this.characterHighlighter = characterGameObject.GetComponent<ObjectHighlighter>();
         displayTime = 0;
         UpdateHealth();
         text.SetText(characterSheet.GetName());
+
+        if (characterSheet is EnemyCharacterSheet)
+        {
+
+            bar.color = Color.white; // no tint for enemies, default image is red
+        }
+        else
+        {
+            
+            bar.color = Color.green;
+        }
+
         text.ForceMeshUpdate(true);
 
         uiam.OpenNameplatePanel();

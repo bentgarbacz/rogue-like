@@ -5,7 +5,7 @@ using UnityEngine;
 public class Chest : Loot
 {
     public Mesh openMesh;
-    public string lootTable = "Chest";
+    public DropTableType lootTable = DropTableType.Chest;
     
     void Start()
     {   

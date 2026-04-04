@@ -12,7 +12,7 @@ public class DropLoot : MonoBehaviour
     private EntityManager entityMgr;
     private MiniMapManager miniMapManager;
     private VisibilityManager visibilityManager;
-    private TileManager tileManager;
+    private TileManager tileMgr;
 
 
     void Start()
@@ -23,7 +23,7 @@ public class DropLoot : MonoBehaviour
         entityMgr = managers.GetComponent<EntityManager>();
         miniMapManager = managers.GetComponent<UIActiveManager>().mapPanel.GetComponent<MiniMapManager>();
         visibilityManager = managers.GetComponent<VisibilityManager>();
-        tileManager = managers.GetComponent<TileManager>();
+        tileMgr = managers.GetComponent<TileManager>();
     }
 
     public void Drop()
@@ -34,9 +34,9 @@ public class DropLoot : MonoBehaviour
         if (droppedItems.Count > 0)
         {
 
-            GameObject dropContainer = GameFunctions.DropLoot(this.gameObject, container, droppedItems, entityMgr, miniMapManager, visibilityManager);
+            GameObject dropContainer = GameFunctions.DropLoot(this.gameObject, container, droppedItems, entityMgr, tileMgr, miniMapManager, visibilityManager);
             Vector2Int containerCoord = dropContainer.GetComponent<ObjectLocation>().coord;
-            tileManager.tileDict[containerCoord].AddEntity(dropContainer);
+            tileMgr.tileDict[containerCoord].AddEntity(dropContainer);
         }
     }
 }

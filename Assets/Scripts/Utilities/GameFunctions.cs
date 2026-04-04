@@ -133,11 +133,12 @@ public static class GameFunctions
         return new Vector2Int((int)pos.x, (int)pos.z);
     }
 
-    public static GameObject DropLoot(GameObject DroppingEntity, GameObject container, List<Item> droppedItems, EntityManager entityMgr, MiniMapManager miniMapManager, VisibilityManager visibilityManager, bool randomizePos = true)
+    public static GameObject DropLoot(GameObject DroppingEntity, GameObject container, List<Item> droppedItems, EntityManager entityMgr, TileManager tileMgr, MiniMapManager miniMapManager, VisibilityManager visibilityManager, bool randomizePos = true)
     {
 
         //Determine drop location and introduce randomness to make multiple loot instances clickable on a single tile
-        Vector3 dropPos = DroppingEntity.transform.position;
+        Tile dropTile = tileMgr.GetTile(DroppingEntity.GetComponent<ObjectLocation>().coord);
+        Vector3 dropPos = dropTile.transform.position;
 
         if (randomizePos)
         {
@@ -145,6 +146,8 @@ public static class GameFunctions
             dropPos.x += (float)(Random.Range(-20, 20) * 0.01);
             dropPos.z += (float)(Random.Range(-20, 20) * 0.01);
         }
+
+        dropPos.y += 0.1f;
 
         GameObject lootContainer = Object.Instantiate(container, dropPos, DroppingEntity.transform.rotation);
         lootContainer.GetComponent<ObjectVisibility>().Initialize();

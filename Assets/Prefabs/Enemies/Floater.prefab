@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 3252948773069954238}
   - component: {fileID: 3458889684430336733}
   - component: {fileID: 6031769452984247594}
+  - component: {fileID: 2991197453068254607}
   m_Layer: 0
   m_Name: Floater
   m_TagString: Untagged
@@ -278,7 +279,7 @@ MonoBehaviour:
   intelligence: 0
   armor: 0
   evasion: 0
-  dropTable: 
+  dropTable: 0
   audioSource: {fileID: 0}
   attackClip: {fileID: 0}
   missClip: {fileID: 0}
@@ -291,3 +292,15 @@ MonoBehaviour:
   explosionPrefab: {fileID: 4813693456416241478, guid: 4d660c462b505a84db6103a01c513f9f, type: 3}
   explosionClip: {fileID: 8300000, guid: 6ff447136edf78942b383e6ffa8a4387, type: 3}
   levitating: {fileID: 3458889684430336733}
+--- !u!114 &2991197453068254607
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1209241037779243595}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 099e8e90c6096bc41bbbe90aa62ddacc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LockManager

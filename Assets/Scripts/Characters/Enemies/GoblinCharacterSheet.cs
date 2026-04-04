@@ -19,7 +19,7 @@ public class GoblinCharacterSheet : EnemyCharacterSheet
 
         characterHealth.InitHealth(maxHealth);
 
-        dropTable = "Goblin";
+        dropTable = DropTableType.Goblin;
         title = "Goblin";
 
         attackClip = Resources.Load<AudioClip>("Sounds/Frog");

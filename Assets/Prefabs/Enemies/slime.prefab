@@ -108,6 +108,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 7d839594bdc99d64393ac207af8f740b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4267438536865360833}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 7d839594bdc99d64393ac207af8f740b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -2261820644011533407}
   m_SourcePrefab: {fileID: 100100000, guid: 7d839594bdc99d64393ac207af8f740b, type: 3}
 --- !u!1 &1896811922957596743 stripped
 GameObject:
@@ -169,6 +172,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!65 &2265836428310027818
 BoxCollider:
@@ -295,7 +299,7 @@ MonoBehaviour:
   intelligence: 0
   armor: 0
   evasion: 0
-  dropTable: 
+  dropTable: 0
   audioSource: {fileID: 0}
   attackClip: {fileID: 0}
   missClip: {fileID: 0}
@@ -354,3 +358,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0673498bd88caf246a183f18fd0fc368, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-2261820644011533407
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1896811922957596743}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 099e8e90c6096bc41bbbe90aa62ddacc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LockManager

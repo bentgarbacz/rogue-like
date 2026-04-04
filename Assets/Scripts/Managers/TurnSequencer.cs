@@ -6,7 +6,8 @@ using UnityEngine.InputSystem;
 
 public class TurnSequencer : MonoBehaviour
 {
-    public bool gameplayHalted = false;
+    private bool turnLock = false;
+    private int turnLockCount = 0;
     private bool actionTaken = false;
     private Queue<Vector2Int> playerMovementQueue = new();
     private PlayerCharacterSheet playerCharacter;
@@ -38,7 +39,7 @@ public class TurnSequencer : MonoBehaviour
     void Update()
     {
 
-        if (combatMgr.fighting || gameplayHalted)
+        if (combatMgr.fighting || turnLock)
         {
 
             return;
@@ -56,7 +57,7 @@ public class TurnSequencer : MonoBehaviour
             return;
         }
 
-        if (actionTaken && !gameplayHalted)
+        if (actionTaken && !turnLock)
         {
 
             actionTaken = false;
@@ -94,7 +95,7 @@ public class TurnSequencer : MonoBehaviour
     private bool ProcessPlayerInput()
     {
 
-        if (!Mouse.current.leftButton.wasPressedThisFrame || uiam.IsPointerOverUI() || pcAttackAnimation.IsAttacking() || gameplayHalted)
+        if (!Mouse.current.leftButton.wasPressedThisFrame || uiam.IsPointerOverUI() || pcAttackAnimation.IsAttacking() || turnLock)
         {
 
             return false;
@@ -277,6 +278,48 @@ public class TurnSequencer : MonoBehaviour
             }
         }
     }
+    
+    public void IncrementTurnLock(int count = 1)
+    {
+        
+        if(count < 1)
+        {
+            
+            return;
+        }
+
+        turnLockCount += count;
+
+        if(turnLockCount > 0)
+        {
+            
+            turnLock = true;
+        }
+    }
+
+    public void DecrementTurnLock(int count = 1)
+    {
+        
+        if(count < 1)
+        {
+            
+            return;
+        }
+
+        turnLockCount = Mathf.Max(turnLockCount - count, 0);
+
+        if(turnLockCount == 0)
+        {
+            
+            turnLock = false;
+        }
+    }
+
+    public bool TurnLockState()
+    {
+        
+        return turnLock;
+    }
 
     public void SignalAction()
     {
@@ -349,11 +392,5 @@ public class TurnSequencer : MonoBehaviour
         }
 
         return !isAggroed && seesTarget && (inPlayerRange || inNpcRange);
-    }
-    
-    public void HaltGameplay(bool isHalted = true)
-    {
-
-        gameplayHalted = isHalted;
     }
 }

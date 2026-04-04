@@ -12,6 +12,8 @@ public class SpellSlot : MonoBehaviour
     public Image cooldownMask;
     public Sprite defaultSprite;
     private SpellReferences sm;    
+    private TurnSequencer turnSeq;
+    private CombatManager combatSeq;
     private AudioSource audioSource;
     private AudioClip errorClip;
     [SerializeField] private SpellCaster sc;
@@ -22,6 +24,9 @@ public class SpellSlot : MonoBehaviour
         
         GameObject managers = GameObject.Find("System Managers");
         sm = managers.GetComponent<SpellReferences>();
+        turnSeq = managers.GetComponent<TurnSequencer>();
+        combatSeq = managers.GetComponent<CombatManager>();
+
         errorClip = Resources.Load<AudioClip>("Sounds/Error");
         audioSource = GameObject.Find("CanvasHUD").GetComponent<AudioSource>();
         defaultSprite = Resources.Load<Sprite>("Pixel Art/UI/Inventory/emptySprite");
@@ -63,7 +68,7 @@ public class SpellSlot : MonoBehaviour
         if(spell is not SpellType.None)
         {
             
-            cooldownMask.fillAmount = ((float)pc.knownSpells[spell] / (float)sm.spellDictionary[spell].cooldown);
+            cooldownMask.fillAmount = (float)pc.knownSpells[spell] / (float)sm.spellDictionary[spell].cooldown;
 
         }else
         {
@@ -75,7 +80,9 @@ public class SpellSlot : MonoBehaviour
     public void Click()
     {
 
-        if(spell is not SpellType.None)
+        bool locked = turnSeq.TurnLockState() || combatSeq.fighting;
+
+        if(spell is not SpellType.None && !locked)
         {
 
             if(pc.knownSpells[spell] <= 0 && pc.mana >= sm.spellDictionary[spell].manaCost)

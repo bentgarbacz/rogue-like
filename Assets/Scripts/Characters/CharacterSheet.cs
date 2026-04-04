@@ -23,10 +23,11 @@ public class CharacterSheet : MonoBehaviour
     public int intelligence = 0;
     public int armor = 0;
     public int evasion = 0;
-    public string dropTable;
+    public DropTableType dropTable = DropTableType.None;
     protected StatusEffectManager statusEffectMgr;
     protected TileManager tileMgr;
     protected EntityManager entityMgr;
+    protected LockManager lockMgr;
     public AudioSource audioSource;
     public AudioClip attackClip;
     public AudioClip missClip;
@@ -39,6 +40,8 @@ public class CharacterSheet : MonoBehaviour
         managers = GameObject.Find("System Managers");
         tileMgr = managers.GetComponent<TileManager>();
         entityMgr = managers.GetComponent<EntityManager>();
+
+        lockMgr = GetComponent<LockManager>();
 
         GetComponent<MoveToTarget>().target = transform.position;
         loc.coord = new Vector2Int((int)transform.position.x, (int)transform.position.z);
@@ -85,7 +88,6 @@ public class CharacterSheet : MonoBehaviour
             loc.coord = newCoord;
 
             return true;
-
         }
 
         return false;
