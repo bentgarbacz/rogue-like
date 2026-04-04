@@ -23,7 +23,7 @@ public class SkullCharacterSheet : MinionCharacterSheet
 
         characterHealth.InitHealth(maxHealth);
 
-        dropTable = "Skeleton";
+        dropTable = DropTableType.Skeleton;
         title = "Skull";
 
         attackClip = Resources.Load<AudioClip>("Sounds/Skeleton");

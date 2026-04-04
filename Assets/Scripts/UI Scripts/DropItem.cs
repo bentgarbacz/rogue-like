@@ -7,7 +7,9 @@ public class DropItem : MonoBehaviour
 
     public GameObject container;
     private EntityManager entityMgr;
+    private TileManager tileMgr;
     private VisibilityManager visibilityManager;
+    private MouseOverItemSlot mouseOverItemSlot;
     [SerializeField] private MiniMapManager miniMapManager;
     private AudioSource audioSource;
     private AudioClip dropClip;
@@ -22,7 +24,9 @@ public class DropItem : MonoBehaviour
 
         GameObject managers = GameObject.Find("System Managers");
         entityMgr = managers.GetComponent<EntityManager>();
+        tileMgr = managers.GetComponent<TileManager>();
         visibilityManager = managers.GetComponent<VisibilityManager>();
+        mouseOverItemSlot = GetComponentInParent<MouseOverItemSlot>();
 
         audioSource = GameObject.Find("CanvasHUD").GetComponent<AudioSource>();
         dropClip = Resources.Load<AudioClip>("Sounds/Arrow");
@@ -33,12 +37,12 @@ public class DropItem : MonoBehaviour
 
         audioSource.PlayOneShot(dropClip);
 
-        GameFunctions.DropLoot(entityMgr.hero, container, new(){itemSlot.item}, entityMgr, miniMapManager, visibilityManager);
+        GameFunctions.DropLoot(entityMgr.hero, container, new(){itemSlot.item}, entityMgr, tileMgr, miniMapManager, visibilityManager);
 
         itemSlot.ThrowAway();
 
-        GetComponentInParent<MouseOverItemSlot>().MouseExit();
-        GetComponentInParent<MouseOverItemSlot>().MouseEnter();
+        mouseOverItemSlot.MouseExit();
+        mouseOverItemSlot.MouseEnter();
         idm.ForgetItem();
     }
 }

@@ -6,7 +6,7 @@ public class AllocateStats : MonoBehaviour
 {
 
     public AudioSource audioSource;
-    public string statType = "";
+    public StatType statType = StatType.None;
     public GameObject hero;
     private PlayerCharacterSheet playerCharacter;
     private InventoryManager im;
@@ -32,19 +32,19 @@ public class AllocateStats : MonoBehaviour
             
             audioSource.Play();
 
-            if(statType == "Strength")
+            if(statType == StatType.Strength)
             {
 
                 playerCharacter.freeStatPoints -= 1;
                 playerCharacter.strength += 1;
 
-            }else if(statType == "Dexterity")
+            }else if(statType == StatType.Dexterity)
             {
 
                 playerCharacter.freeStatPoints -= 1;
                 playerCharacter.dexterity += 1;
 
-            }else if(statType == "Intelligence")
+            }else if(statType == StatType.Intelligence)
             {
 
                 playerCharacter.freeStatPoints -= 1;

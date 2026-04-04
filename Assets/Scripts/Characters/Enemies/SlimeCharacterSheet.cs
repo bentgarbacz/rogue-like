@@ -26,7 +26,7 @@ public class SlimeCharacterSheet : EnemyCharacterSheet
 
         characterHealth.InitHealth(maxHealth);
 
-        dropTable = "Slime";
+        dropTable = DropTableType.Slime;
         title = "Slime";
 
         attackClip = Resources.Load<AudioClip>("Sounds/Slime");
@@ -54,10 +54,11 @@ public class SlimeCharacterSheet : EnemyCharacterSheet
 
                 falling = false;
                 audioSource.PlayOneShot(attackClip);
-                cbm.ExecuteAttack(this.gameObject, entityMgr.hero, minDamage, maxDamage, speed);
+                Attack attack = new(this.gameObject, entityMgr.hero, minDamage, maxDamage, speed);
+                cbm.ExecuteAttack(attack);
                 tileMgr.occupiedlist.Remove(landingCoord);
                 Move(landingCoord);
-                turnSequencer.HaltGameplay(false);
+                lockMgr.GiveTurnLock();
             }
         }
     }
@@ -93,7 +94,7 @@ public class SlimeCharacterSheet : EnemyCharacterSheet
             transform.position = entityMgr.hero.transform.position + new Vector3(0, 10f, 0);
             objectVisibility.SetVisibility(true);
             falling = true;
-            turnSequencer.HaltGameplay();
+            lockMgr.TakeTurnLock();
 
             return true;
         }

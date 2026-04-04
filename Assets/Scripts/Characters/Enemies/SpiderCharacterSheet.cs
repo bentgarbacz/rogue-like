@@ -20,7 +20,7 @@ public class SpiderCharacterSheet : EnemyCharacterSheet
 
         characterHealth.InitHealth(maxHealth);
 
-        dropTable = "Spider";
+        dropTable = DropTableType.None;
         title = "Spider";
 
         attackClip = Resources.Load<AudioClip>("Sounds/Spider");

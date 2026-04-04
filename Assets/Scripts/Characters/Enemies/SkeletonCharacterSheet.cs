@@ -19,7 +19,7 @@ public class SkeletonCharacterSheet : EnemyCharacterSheet
 
         characterHealth.InitHealth(maxHealth);
 
-        dropTable = "Skeleton";
+        dropTable = DropTableType.Skeleton;
         title = "Skeleton";
 
         attackClip = Resources.Load<AudioClip>("Sounds/Skeleton");

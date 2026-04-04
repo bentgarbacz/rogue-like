@@ -19,7 +19,7 @@ public class GoatmanCharacterSheet : EnemyCharacterSheet
 
         characterHealth.InitHealth(maxHealth);
 
-        dropTable = "Goatman";
+        dropTable = DropTableType.None;
         title = "Goatman";
 
         attackClip = Resources.Load<AudioClip>("Sounds/Frog");

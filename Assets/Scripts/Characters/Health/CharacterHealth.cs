@@ -24,7 +24,8 @@ public class CharacterHealth : MonoBehaviour
         if (currentHealth <= 0)
         {
 
-            StartCoroutine(Die());
+            //StartCoroutine(Die());
+            Die();
         }
 
         return currentHealth;
@@ -59,7 +60,7 @@ public class CharacterHealth : MonoBehaviour
         }
     }
 
-    private IEnumerator Die()
+    private void Die()
     {
 
         if (TryGetComponent<CharacterSheet>(out var characterSheet))
@@ -68,7 +69,7 @@ public class CharacterHealth : MonoBehaviour
             characterSheet.OnDeath();
         }
 
-        yield return new WaitForSeconds(0.05f); //Give the GameObject of dead character time to wrap up before it is destroyed
+        //yield return new WaitForSeconds(0.05f); //Give the GameObject of dead character time to wrap up before it is destroyed
         entityMgr.KillEntity(this.gameObject);
     }
 }

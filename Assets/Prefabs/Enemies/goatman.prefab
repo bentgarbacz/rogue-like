@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 605593626995150245}
   - component: {fileID: 2624392541600856589}
   - component: {fileID: 8725249071976799000}
+  - component: {fileID: -1097240246753986801}
   m_Layer: 6
   m_Name: goatman
   m_TagString: Untagged
@@ -154,6 +155,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!114 &6082402909784468029
 MonoBehaviour:
@@ -225,7 +227,7 @@ MonoBehaviour:
   intelligence: 0
   armor: 0
   evasion: 0
-  dropTable: 
+  dropTable: 0
   audioSource: {fileID: 0}
   attackClip: {fileID: 0}
   missClip: {fileID: 0}
@@ -284,3 +286,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0673498bd88caf246a183f18fd0fc368, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-1097240246753986801
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 126544009712155564}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 099e8e90c6096bc41bbbe90aa62ddacc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LockManager

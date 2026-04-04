@@ -74,26 +74,28 @@ public class PlayerCharacterSheet : CharacterSheet
     public void GainXP(int XP)
     {
 
+        Vector3 notificationPos = GetComponent<ObjectLocation>().Coord3d() + new Vector3(0f, transform.position.y, 0f);
+
         totalXP += XP;
 
         if (totalXP >= levelUpBreakpoint)
         {
 
-            GetComponent<TextNotificationManager>().CreateNotificationOrder(transform.position, 3f, "Level Up!", Color.yellow);
+            GetComponent<TextNotificationManager>().CreateNotificationOrder(notificationPos, 3f, "Level Up!", Color.yellow);
 
             while (totalXP >= levelUpBreakpoint)
             {
 
                 LevelUp();
                 totalXP -= levelUpBreakpoint;
-                levelUpBreakpoint += ((2 * levelUpBreakpoint) / 3);
+                levelUpBreakpoint += (2 * levelUpBreakpoint) / 3;
             }
 
         }
         else
         {
 
-            GetComponent<TextNotificationManager>().CreateNotificationOrder(transform.position, 2f, XP.ToString() + " XP", Color.green);
+            GetComponent<TextNotificationManager>().CreateNotificationOrder(notificationPos, 2f, XP.ToString() + " XP", Color.green);
         }
 
         updateStats.RefreshUI();
@@ -345,6 +347,6 @@ public class PlayerCharacterSheet : CharacterSheet
     public override void OnDeath()
     {
 
-        turnSequencer.HaltGameplay();
+        //turnSequencer.HaltGameplay();
     }
 }

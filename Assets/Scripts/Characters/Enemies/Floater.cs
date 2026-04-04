@@ -26,7 +26,7 @@ public class Floater : EnemyCharacterSheet
 
         characterHealth.InitHealth(maxHealth);
 
-        dropTable = "Goblin";
+        dropTable = DropTableType.Goblin;
         title = "Floater";
 
         attackClip = Resources.Load<AudioClip>("Sounds/Frog");
@@ -37,7 +37,7 @@ public class Floater : EnemyCharacterSheet
 
     public override void OnDeath()
     {
-
+        
         GameObject explosionObject = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
 
         Explosion explosionComponent = explosionObject.GetComponent<Explosion>();

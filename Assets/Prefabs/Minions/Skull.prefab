@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: -6926121629195054438}
   - component: {fileID: -3780327769775053345}
   - component: {fileID: 346186359096431351}
+  - component: {fileID: -6882121628333816929}
   m_Layer: 6
   m_Name: Skull
   m_TagString: Untagged
@@ -146,6 +147,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!33 &1305208117437370247
 MeshFilter:
@@ -277,9 +279,21 @@ MonoBehaviour:
   intelligence: 0
   armor: 0
   evasion: 0
-  dropTable: 
+  dropTable: 0
   audioSource: {fileID: 0}
   attackClip: {fileID: 0}
   missClip: {fileID: 0}
   title: N/A
   levitating: {fileID: -3780327769775053345}
+--- !u!114 &-6882121628333816929
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1841329591959837068}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 099e8e90c6096bc41bbbe90aa62ddacc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LockManager

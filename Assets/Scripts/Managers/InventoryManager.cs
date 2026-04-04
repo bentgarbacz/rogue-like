@@ -12,6 +12,8 @@ public class InventoryManager : MonoBehaviour
     private UIActiveManager uiam;
     private EquipmentManager equm;
     private SpellCaster sc;
+    private TurnSequencer turnSeq;
+    private CombatManager combatSeq;
     private readonly int inventorySlotCount = 24;
     private readonly int lootSlotCount = 8;
     private readonly int equipmentSlotCount = 9;
@@ -23,6 +25,8 @@ public class InventoryManager : MonoBehaviour
         uiam = managers.GetComponent<UIActiveManager>();
         equm = managers.GetComponent<EquipmentManager>();
         sc = equm.hero.GetComponent<SpellCaster>();
+        turnSeq = managers.GetComponent<TurnSequencer>();
+        combatSeq = managers.GetComponent<CombatManager>();
 
         GameObject invGrid = uiam.inventoryPanel.transform.GetChild(0).gameObject;
         GameObject lootGrid = uiam.lootPanel.transform.GetChild(0).gameObject;
@@ -242,10 +246,16 @@ public class InventoryManager : MonoBehaviour
         }else if(targetSlot.item is Scroll scroll)
         {
 
-            targetSlot.slot.GetComponent<MouseOverItemSlot>().MouseExit();
-            uiam.ToggleInventory();
-            sc.CastScroll(scroll, targetSlot);
-            actionIsSuccessful = true;
+            bool locked = turnSeq.TurnLockState() || combatSeq.fighting;
+
+            if(!locked)
+            {
+
+                targetSlot.slot.GetComponent<MouseOverItemSlot>().MouseExit();
+                uiam.ToggleInventory();
+                sc.CastScroll(scroll, targetSlot);
+                actionIsSuccessful = true;
+            }
         }
 
         return actionIsSuccessful;

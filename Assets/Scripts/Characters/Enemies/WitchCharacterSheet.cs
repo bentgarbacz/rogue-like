@@ -26,7 +26,7 @@ public class WitchCharacterSheet : EnemyCharacterSheet
 
         characterHealth.InitHealth(maxHealth);
 
-        dropTable = "Witch";
+        dropTable = DropTableType.Witch;
         title = "Witch";
 
         attackClip = Resources.Load<AudioClip>("Sounds/Mystical");

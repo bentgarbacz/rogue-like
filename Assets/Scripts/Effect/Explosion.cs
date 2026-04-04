@@ -5,9 +5,10 @@ using UnityEngine;
 public class Explosion : MonoBehaviour
 {
 
-    TurnSequencer ts;
-    CombatManager combatMgr;
-    EntityManager entityMgr;
+    private TurnSequencer ts;
+    private CombatManager combatMgr;
+    private EntityManager entityMgr;
+    private LockManager lockMgr;
     public AudioClip explosionClip;
     public AudioSource audioSource;
     public float explodeRadius = 1f;
@@ -22,6 +23,8 @@ public class Explosion : MonoBehaviour
         ts = managers.GetComponent<TurnSequencer>();
         combatMgr = managers.GetComponent<CombatManager>();
         entityMgr = managers.GetComponent<EntityManager>();
+
+        lockMgr = GetComponent<LockManager>();
 
         explosionClip = Resources.Load<AudioClip>("Sounds/Explode");
     }
@@ -44,8 +47,8 @@ public class Explosion : MonoBehaviour
     private IEnumerator Explode()
     {
 
-        ts.gameplayHalted = true;
-        combatMgr.combatPaused = true;
+        lockMgr.TakeCombatLock();
+        lockMgr.TakeTurnLock();
 
         audioSource.PlayOneShot(explosionClip);
 
@@ -63,15 +66,14 @@ public class Explosion : MonoBehaviour
 
             if (distance <= explodeRadius)
             {
-
-                combatMgr.ExecuteAttack(exploder, target, explosionMinDamage, explosionMaxDamage, 0);
+                
+                Attack attack = new(exploder, target, explosionMinDamage, explosionMaxDamage, 0);
+                combatMgr.ExecuteAttack(attack);
             }
         }
 
         yield return new WaitForSeconds(0.5f);
-            
-        ts.gameplayHalted = false;
-        combatMgr.combatPaused = false;
+
         Destroy(this.gameObject);
     }
 }

@@ -6,7 +6,8 @@ public class CombatManager : MonoBehaviour
 {
 
     public bool fighting = false;
-    public bool combatPaused = false;
+    private bool combatLock = false;
+    private int combatLockCount = 0;
     public float attackTime = 0.5f;
     public float trimTime = 0.25f;
     private List<Attack> combatBuffer = new();
@@ -25,6 +26,48 @@ public class CombatManager : MonoBehaviour
             SortBuffer();
             StartCoroutine(CombatTurns());
         }
+    }
+
+    public void IncrementCombatLock(int count = 1)
+    {
+        
+        if(count < 1)
+        {
+            
+            return;
+        }
+
+        combatLockCount += count;
+
+        if(combatLockCount > 0)
+        {
+            
+            combatLock = true;
+        }
+    }
+
+    public void DecrementCombatLock(int count = 1)
+    {
+        
+        if(count < 1)
+        {
+            
+            return;
+        }
+
+        combatLockCount = Mathf.Max(combatLockCount - count, 0);
+
+        if(combatLockCount == 0)
+        {
+            
+            combatLock = false;
+        }
+    }
+
+    public bool CombatLockState()
+    {
+        
+        return combatLock;
     }
 
     //Removes target's attacks from combat buffer
@@ -49,7 +92,7 @@ public class CombatManager : MonoBehaviour
         while(combatBuffer.Count > 0)
         {
 
-            if(combatPaused)
+            if(combatLock)
             {
                 yield return null;
                 continue;
@@ -58,27 +101,18 @@ public class CombatManager : MonoBehaviour
             Attack attack = combatBuffer[0];
             float waitTime = attackTime;
 
-            CharacterSheet attacker = attack.attacker.GetComponent<CharacterSheet>();
-            CharacterHealth attackerHealth = attack.attacker.GetComponent<CharacterHealth>();
-            AttackAnimation attackerAnimation = attacker.GetComponent<AttackAnimation>();
+            AttackAnimation attackerAnimation = attack.attacker.GetComponent<AttackAnimation>();
 
-            CharacterSheet defender = attack.defender.GetComponent<CharacterSheet>();
-            CharacterHealth defenderHealth = attack.defender.GetComponent<CharacterHealth>();
-            TextNotificationManager defenderNotifier = defender.GetComponent<TextNotificationManager>();
-
-            float hitChance = ((float)attacker.accuracy - (float)defender.evasion) / (float)attacker.accuracy * 100f;
-            bool hitSuccessful = Random.Range(0, 100) <= hitChance;
-
-            Vector3 lookDirection = new(defender.transform.position.x, attacker.transform.position.y, defender.transform.position.z);
-            attacker.transform.LookAt(lookDirection);
+            Vector3 lookDirection = new(attack.defender.transform.position.x, attack.attacker.transform.position.y, attack.defender.transform.position.z);
+            attack.attacker.transform.LookAt(lookDirection);
 
             if(attack.projectileType is not ProjectileType.None)
             {
 
-                GameObject projectileObject = allProjectiles.CreateProjectile(attack.projectileType, attacker.transform.position, attacker.transform.rotation);
+                GameObject projectileObject = allProjectiles.CreateProjectile(attack.projectileType, attack.attacker.transform.position, attack.attacker.transform.rotation);
                 Projectile projectile = projectileObject.GetComponent<Projectile>();
 
-                float projectileTime = ProjectileAirTime(projectile.speed, attacker.loc.coord, defender.loc.coord);
+                float projectileTime = ProjectileAirTime(projectile.speed, attack.attackerCS.loc.coord, attack.defenderCS.loc.coord);
 
                 if(projectileTime > waitTime)
                 {
@@ -86,66 +120,33 @@ public class CombatManager : MonoBehaviour
                     waitTime = projectileTime;
                 }
 
-                projectile.Shoot(defender.gameObject, attacker.audioSource);
+                projectile.Shoot(attack.defender, attack.attackerCS.audioSource);
             } 
 
-            //Play combat noises
-            if(hitSuccessful)
+
+            attackerAnimation.MeleeAttack();
+
+            yield return new WaitForSeconds(waitTime - trimTime); //Trim some time here because it feels more responsive
+            
+
+            
+            if(ExecuteAttack(attack))
             {
 
                  //Skip sound for projectile attack, handled by projectile script
                 if(attack.projectileType is ProjectileType.None)
                 {
 
-                    attacker.audioSource.PlayOneShot(attacker.attackClip);
+                    attack.attackerCS.audioSource.PlayOneShot(attack.attackerCS.attackClip);
                 }
             
             }else
             {
 
-                defender.audioSource.PlayOneShot(defender.missClip);
+                attack.defenderCS.audioSource.PlayOneShot(attack.defenderCS.missClip);
             }
 
-            attackerAnimation.MeleeAttack();
-
-            yield return new WaitForSeconds(waitTime - trimTime); //Trim some time here because it feels more responsive
-            //yield return new WaitForSeconds(waitTime);
-
-            if(defender != null)
-            {
-
-                //Calculate damage 
-                if(hitSuccessful)
-                {
-
-                    int damage = Random.Range(attack.minDamage, attack.maxDamage + 1);
-                    
-
-                    //Determine if attack was critical         
-                    if(Random.Range(0, 100) < attacker.critChance)
-                    {
-
-                        damage *= attacker.critMultiplier;
-                        defenderNotifier.CreateNotificationOrder(defender.transform.position, 2f, damage.ToString(), Color.yellow);
-
-                    }else
-                    {
-
-                        defenderNotifier.CreateNotificationOrder(defender.transform.position, 2f, damage.ToString(), Color.red);
-                    }
-
-                    defenderHealth.TakeDamage(damage);
-                
-                }else
-                {
-
-                    //take 0 damage on miss
-                    defenderNotifier.CreateNotificationOrder(defender.transform.position, 2f, "Miss", Color.white);
-                }
-
-                yield return new WaitForSeconds(trimTime); //Wait out time trimmed from above
-            }
-
+            yield return new WaitForSeconds(trimTime); //Wait out time trimmed from above
             combatBuffer.RemoveAt(0);            
         }
         
@@ -183,45 +184,51 @@ public class CombatManager : MonoBehaviour
         return false;
     }
 
-    public void ExecuteAttack(GameObject attacker, GameObject defender, int minDamage, int maxDamage, int speed, ProjectileType projectileType = ProjectileType.None)
+    public bool ExecuteAttack(Attack attack)
     {
-        // Get the CharacterSheet components of the attacker and defender
-        CharacterSheet attackerSheet = attacker.GetComponent<CharacterSheet>();
-        CharacterHealth attackerHealth = attacker.GetComponent<CharacterHealth>();
 
-        CharacterSheet defenderSheet = defender.GetComponent<CharacterSheet>();
-        CharacterHealth defenderHealth = defender.GetComponent<CharacterHealth>();        
-        TextNotificationManager defenderNotifier = defender.GetComponent<TextNotificationManager>();
+        if(attack.defender == null)
+        {
+
+            return false;
+        }
 
         // Calculate hit chance
-        float hitChance = ((float)attackerSheet.accuracy - (float)defenderSheet.evasion) / (float)attackerSheet.accuracy * 100f;
+        float hitChance = ((float)attack.attackerCS.accuracy - (float)attack.defenderCS.evasion) / (float)attack.attackerCS.accuracy * 100f;
         bool hitSuccessful = Random.Range(0, 100) <= hitChance;
+        string text;
+        Color textColor = Color.red;
 
         if (hitSuccessful)
         {
             // Calculate damage
-            int damage = Random.Range(minDamage, maxDamage + 1);
+            int damage = Random.Range(attack.minDamage, attack.maxDamage + 1);            
 
             // Determine if the attack is critical
-            if (Random.Range(0, 100) < attackerSheet.critChance)
+            if (Random.Range(0, 100) < attack.attackerCS.critChance)
             {
-                damage *= attackerSheet.critMultiplier;
-                defenderNotifier.CreateNotificationOrder(defender.transform.position, 2f, damage.ToString(), Color.yellow); // Critical hit notification
-            }
-            else
-            {
-                defenderNotifier.CreateNotificationOrder(defender.transform.position, 2f, damage.ToString(), Color.red); // Regular hit notification
+                damage *= attack.attackerCS.critMultiplier;
+                textColor = Color.yellow;
             }
 
+            text = damage.ToString();
+
             // Apply damage to the defender
-            defenderHealth.TakeDamage(damage);
+            attack.defenderCS.characterHealth.TakeDamage(damage);
         }
         else
         {
-            
-            // Miss notification
-            defenderNotifier.CreateNotificationOrder(defender.transform.position, 2f, "Miss", Color.white);
+
+            textColor = Color.white;
+            text = "Miss";
         }
+
+        Vector3 defenderLoc= attack.defender.GetComponent<ObjectLocation>().Coord3d();
+        Vector3 notificationPos = defenderLoc + new Vector3(0f, attack.defender.transform.position.y, 0f);
+
+        //attack.defender.GetComponent<TextNotificationManager>().CreateNotificationOrder(attack.defender.transform.position, 2f, text, textColor);
+        attack.defender.GetComponent<TextNotificationManager>().CreateNotificationOrder(notificationPos, 2f, text, textColor);
+        return hitSuccessful;
     }
 
     private void SortBuffer()
@@ -257,7 +264,9 @@ public class Attack
 {
 
     public GameObject attacker;
+    public CharacterSheet attackerCS;
     public GameObject defender;
+    public CharacterSheet defenderCS;
     public int minDamage;
     public int maxDamage;
     public int speed;
@@ -267,7 +276,11 @@ public class Attack
     {
 
         this.attacker = attacker;
+        attackerCS = attacker.GetComponent<CharacterSheet>();
+
         this.defender = defender;
+        defenderCS = defender.GetComponent<CharacterSheet>();
+
         this.minDamage = minDamage;
         this.maxDamage = maxDamage;
         this.speed = speed;

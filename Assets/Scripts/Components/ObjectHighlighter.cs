@@ -44,7 +44,7 @@ public class ObjectHighlighter : MonoBehaviour, IPointerEnterHandler, IPointerEx
         if (highlightedCharacter != null)
         {
 
-            if (highlightedCharacter is EnemyCharacterSheet)
+            if (highlightedCharacter is NpcCharacterSheet)
             {
 
                 npm.SetCharacter(this.gameObject);

@@ -24,7 +24,7 @@ public class SkeletonArcherCharacterSheet : EnemyCharacterSheet
 
         characterHealth.InitHealth(maxHealth);
 
-        dropTable = "Skeleton";
+        dropTable = DropTableType.Skeleton;
         title = "Skeleton Archer";
 
         attackClip = Resources.Load<AudioClip>("Sounds/Skeleton");

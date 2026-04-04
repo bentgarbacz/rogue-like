@@ -5,16 +5,16 @@ using UnityEngine;
 
 public static class LootTableReferences
 {
-    public static Dictionary<string, List<Item>> lootTableLookup = SetLootTables();
+    public static Dictionary<DropTableType, List<Item>> lootTableLookup = SetLootTables();
 
-    private static Dictionary<string, List<Item>> SetLootTables()
+    private static Dictionary<DropTableType, List<Item>> SetLootTables()
     {
 
         //Dictionary containing ledger of potential items that can spawn from various entities
-        Dictionary<string, List<Item>> lootTableLookup = new()
+        Dictionary<DropTableType, List<Item>> lootTableLookup = new()
         {
             {
-                "DebugChest",
+                DropTableType.DebugChest,
                 new List<Item>(){
                                     new SummonSkullScroll(100),
                                     new LiftScroll(100),
@@ -36,7 +36,7 @@ public static class LootTableReferences
                                 }
             },
             {
-                "Chest",
+                DropTableType.Chest,
                 new List<Item>(){   
                                     new LeatherBoots(10),
                                     new LeatherChest(10),
@@ -55,7 +55,7 @@ public static class LootTableReferences
                                 }
             },
             {
-                "Goblin",
+                DropTableType.Goblin,
                 new List<Item>(){
                                     new HealthPotion1(7),
                                     new ManaPotion1(7),
@@ -63,26 +63,26 @@ public static class LootTableReferences
                                 }
             },
             {
-                "Skeleton",
+                DropTableType.Skeleton,
                 new List<Item>(){
                                     new HealthPotion1(15),
                                     new ManaPotion1(15)
                                 }
             },
             {
-                "Rat",
+                DropTableType.Rat,
                 new List<Item>(){
                                     new Meat(33)
                                 }
             },
             {
-                "Slime",
+                DropTableType.Slime,
                 new List<Item>(){
                                     new BlueJelly(33)
                                 }
             },
             {
-                "Witch",
+                DropTableType.Witch,
                 new List<Item>(){
                                     new FireballScroll(10),
                                     new HealScroll(10),
@@ -94,27 +94,30 @@ public static class LootTableReferences
         return lootTableLookup;
     }
 
-    public static List<Item> CreateItems(string dropTable)
+    public static List<Item> CreateItems(DropTableType dropTable)
     {
 
         //Randomly generate items for a given entity
         List<Item> droppedItems = new();
 
-        if(lootTableLookup.Keys.Contains(dropTable))
+        if(!lootTableLookup.Keys.Contains(dropTable))
         {
+            
+            return droppedItems;
+        }
         
-            foreach(Item i in lootTableLookup[dropTable])
+        foreach(Item i in lootTableLookup[dropTable])
+        {
+
+            int rng = UnityEngine.Random.Range(0, 100);
+
+            if(rng <= i.dropChance)
             {
 
-                int rng = UnityEngine.Random.Range(0, 100);
-
-                if(rng <= i.dropChance)
-                {
-
-                    droppedItems.Add(i);
-                }
+                droppedItems.Add(i);
             }
         }
+        
 
         return droppedItems;
     }

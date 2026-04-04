@@ -20,7 +20,7 @@ public class RatCharacterSheet : EnemyCharacterSheet
 
         characterHealth.InitHealth(maxHealth);
 
-        dropTable = "Rat";
+        dropTable = DropTableType.Rat;
         title = "Rat";
 
         attackClip = Resources.Load<AudioClip>("Sounds/Rat");
