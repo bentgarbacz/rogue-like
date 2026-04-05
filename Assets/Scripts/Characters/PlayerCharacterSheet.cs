@@ -34,7 +34,7 @@ public class PlayerCharacterSheet : CharacterSheet
     public int visibilityRadius = 5;
     public Dictionary<SpellType, int> knownSpells = new();
     private InventoryManager im;
-    private CombatManager cbm;
+    private CombatSequencer combatSeq;
     [SerializeField] private UpdateUIElements updateStats;
     [SerializeField] private StatusNotificationManager snm;
     [SerializeField] private TurnSequencer turnSequencer;
@@ -66,7 +66,7 @@ public class PlayerCharacterSheet : CharacterSheet
         GameObject managers = GameObject.Find("System Managers");
         entityMgr = managers.GetComponent<EntityManager>();
         im = managers.GetComponent<InventoryManager>();
-        cbm = managers.GetComponent<CombatManager>();
+        combatSeq = managers.GetComponent<CombatSequencer>();
 
         updateStats.RefreshUI();
     }
@@ -199,7 +199,7 @@ public class PlayerCharacterSheet : CharacterSheet
         if (mainHandWeapon == null && (offHandWeapon == null || offHandWeapon is Shield))
         {
 
-            attackResult = cbm.AddMeleeAttack(
+            attackResult = combatSeq.AddMeleeAttack(
                                               this.gameObject,
                                               defender,
                                               minDamage,
@@ -219,7 +219,7 @@ public class PlayerCharacterSheet : CharacterSheet
                 if (mainHandWeapon is not RangedWeapon)
                 {
 
-                    attackResult = cbm.AddMeleeAttack(
+                    attackResult = combatSeq.AddMeleeAttack(
                                                       this.gameObject,
                                                       defender,
                                                       mainHandWeapon.bonusStatDictionary[StatType.MinDamage],
@@ -233,7 +233,7 @@ public class PlayerCharacterSheet : CharacterSheet
                 else if (mainHandWeapon is RangedWeapon rangedWeapon)
                 {
 
-                    attackResult = cbm.AddProjectileAttack(
+                    attackResult = combatSeq.AddProjectileAttack(
                                                             this.gameObject,
                                                             defender,
                                                             rangedWeapon.bonusStatDictionary[StatType.Range],
@@ -254,7 +254,7 @@ public class PlayerCharacterSheet : CharacterSheet
                 if (offHandWeapon is not RangedWeapon)
                 {
 
-                    attackResult = cbm.AddMeleeAttack(
+                    attackResult = combatSeq.AddMeleeAttack(
                                                       this.gameObject,
                                                       defender,
                                                       offHandWeapon.bonusStatDictionary[StatType.MinDamage],
@@ -268,7 +268,7 @@ public class PlayerCharacterSheet : CharacterSheet
                 else if (offHandWeapon is RangedWeapon rangedWeapon)
                 {
 
-                    attackResult = cbm.AddProjectileAttack(
+                    attackResult = combatSeq.AddProjectileAttack(
                                                             this.gameObject,
                                                             defender,
                                                             rangedWeapon.bonusStatDictionary[StatType.Range],
@@ -347,6 +347,6 @@ public class PlayerCharacterSheet : CharacterSheet
     public override void OnDeath()
     {
 
-        //turnSequencer.HaltGameplay();
+        turnSequencer.DeadLock();
     }
 }

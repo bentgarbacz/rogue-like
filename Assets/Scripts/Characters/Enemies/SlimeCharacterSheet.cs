@@ -55,7 +55,7 @@ public class SlimeCharacterSheet : EnemyCharacterSheet
                 falling = false;
                 audioSource.PlayOneShot(attackClip);
                 Attack attack = new(this.gameObject, entityMgr.hero, minDamage, maxDamage, speed);
-                cbm.ExecuteAttack(attack);
+                combatSeq.ExecuteAttack(attack);
                 tileMgr.occupiedlist.Remove(landingCoord);
                 Move(landingCoord);
                 lockMgr.GiveTurnLock();

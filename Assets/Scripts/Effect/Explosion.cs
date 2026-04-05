@@ -6,7 +6,7 @@ public class Explosion : MonoBehaviour
 {
 
     private TurnSequencer ts;
-    private CombatManager combatMgr;
+    private CombatSequencer combatSeq;
     private EntityManager entityMgr;
     private LockManager lockMgr;
     public AudioClip explosionClip;
@@ -21,7 +21,7 @@ public class Explosion : MonoBehaviour
         GameObject managers = GameObject.Find("System Managers");
         
         ts = managers.GetComponent<TurnSequencer>();
-        combatMgr = managers.GetComponent<CombatManager>();
+        combatSeq = managers.GetComponent<CombatSequencer>();
         entityMgr = managers.GetComponent<EntityManager>();
 
         lockMgr = GetComponent<LockManager>();
@@ -68,7 +68,7 @@ public class Explosion : MonoBehaviour
             {
                 
                 Attack attack = new(exploder, target, explosionMinDamage, explosionMaxDamage, 0);
-                combatMgr.ExecuteAttack(attack);
+                combatSeq.ExecuteAttack(attack);
             }
         }
 

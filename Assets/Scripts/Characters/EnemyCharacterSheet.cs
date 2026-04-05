@@ -18,7 +18,7 @@ public class EnemyCharacterSheet : NpcCharacterSheet
 
         GameObject managers = GameObject.Find("System Managers");
         entityMgr = managers.GetComponent<EntityManager>();
-        cbm = managers.GetComponent<CombatManager>();
+        combatSeq = managers.GetComponent<CombatSequencer>();
 
         djm = GameObject.Find("Map Generator").GetComponent<DijkstraMapManager>();
 

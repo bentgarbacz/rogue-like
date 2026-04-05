@@ -15,7 +15,7 @@ public class EntityManager : MonoBehaviour
     public HashSet<GameObject> aggroEnemies = new();
     public HashSet<GameObject> npcs = new();
     public HashSet<Loot> itemContainers = new();
-    [SerializeField] private CombatManager combatMgr;
+    [SerializeField] private CombatSequencer combatSeq;
     [SerializeField] private TurnSequencer ts;
     [SerializeField] private MiniMapManager minimapMgr;
     [SerializeField] private TileManager tileMgr;
@@ -55,7 +55,7 @@ public class EntityManager : MonoBehaviour
     public void KillEntity(GameObject target)
     {
 
-        combatMgr.PruneCombatBuffer(target);
+        combatSeq.PruneCombatBuffer(target);
 
         aggroEnemies.Remove(target);
         tileMgr.occupiedlist.Remove(target.GetComponent<ObjectLocation>().coord);

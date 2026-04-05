@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Fireball : Spell
 {
-    private CombatManager cbm;
+    private CombatSequencer combatSeq;
 
     public Fireball()
     {
@@ -18,7 +18,7 @@ public class Fireball : Spell
         this.manaCost = 10;
         this.sprite = Resources.Load<Sprite>("Pixel Art/Spells/Fireball");
         this.projectileType = ProjectileType.Fireball;
-        cbm = GameObject.Find("System Managers").GetComponent<CombatManager>();
+        combatSeq = GameObject.Find("System Managers").GetComponent<CombatSequencer>();
     }
 
     public override bool Cast(GameObject caster, GameObject target)
@@ -27,7 +27,7 @@ public class Fireball : Spell
         if(target.GetComponent<CharacterSheet>())
         {
 
-            if(cbm.AddProjectileAttack(caster, target, range, minDamage, maxDamage, caster.GetComponent<CharacterSheet>().speed, projectileType))
+            if(combatSeq.AddProjectileAttack(caster, target, range, minDamage, maxDamage, caster.GetComponent<CharacterSheet>().speed, projectileType))
             {
 
                 ResetCooldown(caster);

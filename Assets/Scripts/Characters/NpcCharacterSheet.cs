@@ -6,7 +6,7 @@ using UnityEngine;
 public class NpcCharacterSheet : CharacterSheet
 {
 
-    protected CombatManager cbm;
+    protected CombatSequencer combatSeq;
     protected DijkstraMapManager djm;
     protected NPCMovementManager movementManager;
 
@@ -17,7 +17,7 @@ public class NpcCharacterSheet : CharacterSheet
 
         GameObject managers = GameObject.Find("System Managers");
         entityMgr = managers.GetComponent<EntityManager>();
-        cbm = managers.GetComponent<CombatManager>();
+        combatSeq = managers.GetComponent<CombatSequencer>();
         movementManager = managers.GetComponent<NPCMovementManager>();
 
         djm = GameObject.Find("Map Generator").GetComponent<DijkstraMapManager>();
@@ -139,7 +139,7 @@ public class NpcCharacterSheet : CharacterSheet
         if (targetEntity != null)
         {
 
-            return cbm.AddMeleeAttack(this.gameObject, targetEntity, minDamage, maxDamage, speed);
+            return combatSeq.AddMeleeAttack(this.gameObject, targetEntity, minDamage, maxDamage, speed);
         }
 
         return false;

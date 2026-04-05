@@ -7,7 +7,7 @@ public class PoisonousStrike : Spell
 {  
 
     private int duration = 5;
-    private CombatManager cbm;
+    private CombatSequencer combatSeq;
     private InventoryManager im;
     private EntityManager entityMgr;
 
@@ -21,7 +21,7 @@ public class PoisonousStrike : Spell
         this.sprite = Resources.Load<Sprite>("Pixel Art/Spells/Poisonous Strike");
 
         GameObject managers = GameObject.Find("System Managers");
-        cbm = managers.GetComponent<CombatManager>();
+        combatSeq = managers.GetComponent<CombatSequencer>();
         im = managers.GetComponent<InventoryManager>();
         entityMgr = managers.GetComponent<EntityManager>();
     }
@@ -48,7 +48,7 @@ public class PoisonousStrike : Spell
                 if(mainHandWeapon is not RangedWeapon)
                 {
                     
-                    if(cbm.AddMeleeAttack(caster, target, minDamage, maxDamage, attackingCharacter.speed))
+                    if(combatSeq.AddMeleeAttack(caster, target, minDamage, maxDamage, attackingCharacter.speed))
                     {
 
                         //poison target
@@ -62,7 +62,7 @@ public class PoisonousStrike : Spell
                 }else if(mainHandWeapon is RangedWeapon rangedWeapon)
                 {
                     
-                    if(cbm.AddProjectileAttack(caster, target, rangedWeapon.bonusStatDictionary[StatType.Range], minDamage, maxDamage, attackingCharacter.speed, rangedWeapon.projectile))
+                    if(combatSeq.AddProjectileAttack(caster, target, rangedWeapon.bonusStatDictionary[StatType.Range], minDamage, maxDamage, attackingCharacter.speed, rangedWeapon.projectile))
                     {
 
                         //poison target

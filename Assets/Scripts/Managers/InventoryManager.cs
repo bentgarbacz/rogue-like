@@ -13,7 +13,7 @@ public class InventoryManager : MonoBehaviour
     private EquipmentManager equm;
     private SpellCaster sc;
     private TurnSequencer turnSeq;
-    private CombatManager combatSeq;
+    private CombatSequencer combatSeq;
     private readonly int inventorySlotCount = 24;
     private readonly int lootSlotCount = 8;
     private readonly int equipmentSlotCount = 9;
@@ -26,7 +26,7 @@ public class InventoryManager : MonoBehaviour
         equm = managers.GetComponent<EquipmentManager>();
         sc = equm.hero.GetComponent<SpellCaster>();
         turnSeq = managers.GetComponent<TurnSequencer>();
-        combatSeq = managers.GetComponent<CombatManager>();
+        combatSeq = managers.GetComponent<CombatSequencer>();
 
         GameObject invGrid = uiam.inventoryPanel.transform.GetChild(0).gameObject;
         GameObject lootGrid = uiam.lootPanel.transform.GetChild(0).gameObject;

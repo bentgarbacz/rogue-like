@@ -66,7 +66,7 @@ public class WitchCharacterSheet : EnemyCharacterSheet
             if (targetEntity != null)
             {
 
-                bool attackResult = cbm.AddProjectileAttack(this.gameObject, targetEntity, range, minDamage, maxDamage, speed, projectile);
+                bool attackResult = combatSeq.AddProjectileAttack(this.gameObject, targetEntity, range, minDamage, maxDamage, speed, projectile);
                 
                 //Ranged attack initates if target is within range
                 if(attackResult)

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // Enemy that explodes on death and damages nearby characters
-public class Floater : EnemyCharacterSheet
+public class FloaterCharacterSheet : EnemyCharacterSheet
 {
 
     public float explodeRadius = 2f;
@@ -12,7 +12,7 @@ public class Floater : EnemyCharacterSheet
     public AudioClip explosionClip;
     [SerializeField] private Levitating levitating;
 
-        public override void Awake()
+    public override void Awake()
     {
 
         base.Awake();
