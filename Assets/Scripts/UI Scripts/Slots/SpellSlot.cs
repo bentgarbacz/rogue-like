@@ -13,7 +13,7 @@ public class SpellSlot : MonoBehaviour
     public Sprite defaultSprite;
     private SpellReferences sm;    
     private TurnSequencer turnSeq;
-    private CombatManager combatSeq;
+    private CombatSequencer combatSeq;
     private AudioSource audioSource;
     private AudioClip errorClip;
     [SerializeField] private SpellCaster sc;
@@ -25,7 +25,7 @@ public class SpellSlot : MonoBehaviour
         GameObject managers = GameObject.Find("System Managers");
         sm = managers.GetComponent<SpellReferences>();
         turnSeq = managers.GetComponent<TurnSequencer>();
-        combatSeq = managers.GetComponent<CombatManager>();
+        combatSeq = managers.GetComponent<CombatSequencer>();
 
         errorClip = Resources.Load<AudioClip>("Sounds/Error");
         audioSource = GameObject.Find("CanvasHUD").GetComponent<AudioSource>();

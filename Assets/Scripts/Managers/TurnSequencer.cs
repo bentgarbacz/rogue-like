@@ -17,7 +17,7 @@ public class TurnSequencer : MonoBehaviour
     [SerializeField] private EntityManager entityMgr;
     [SerializeField] private TileManager tileMgr;
     [SerializeField] private UIActiveManager uiam;
-    [SerializeField] private CombatManager combatMgr;
+    [SerializeField] private CombatSequencer combatSeq;
     [SerializeField] private ClickManager clickMgr;
     [SerializeField] private LevelGenerator levelGenerator;
     [SerializeField] private NameplateManager namePlateMgr;
@@ -39,7 +39,7 @@ public class TurnSequencer : MonoBehaviour
     void Update()
     {
 
-        if (combatMgr.fighting || turnLock)
+        if (combatSeq.fighting || turnLock)
         {
 
             return;
@@ -69,7 +69,7 @@ public class TurnSequencer : MonoBehaviour
             ProcessEntityTurns(entityMgr.npcs);
             djMapMgr.PopulateNPCMap();
 
-            combatMgr.CommenceCombat();
+            combatSeq.CommenceCombat();
             UpkeepEffects();
             AggroNearbyEnemies();
         }
@@ -319,6 +319,14 @@ public class TurnSequencer : MonoBehaviour
     {
         
         return turnLock;
+    }
+
+    //Only use this when player character dies
+    public void DeadLock()
+    {
+        
+        turnLock = true;
+        turnLockCount = int.MaxValue;
     }
 
     public void SignalAction()

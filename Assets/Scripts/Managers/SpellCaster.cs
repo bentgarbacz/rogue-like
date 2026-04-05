@@ -18,7 +18,7 @@ public class SpellCaster : MonoBehaviour
     private ClickManager cm;
     private ToolTipManager ttm;
     private LockManager lockMgr;
-    private CombatManager combatMgr;
+    private CombatSequencer combatSeq;
     private AudioSource audioSource;
     [SerializeField] private PlayerCharacterSheet pc;
     private Mouse mouse;
@@ -31,7 +31,7 @@ public class SpellCaster : MonoBehaviour
         spellRef = managers.GetComponent<SpellReferences>();
         cm = managers.GetComponent<ClickManager>();
         ttm = managers.GetComponent<UIActiveManager>().toolTipContainer.GetComponent<ToolTipManager>();
-        combatMgr = managers.GetComponent<CombatManager>();
+        combatSeq = managers.GetComponent<CombatSequencer>();
         lockMgr = GetComponent<LockManager>();
         audioSource = GetComponent<AudioSource>();
 
@@ -143,7 +143,7 @@ public class SpellCaster : MonoBehaviour
     public void SelfCast(SpellType spellType)
     {
 
-        
+
 
         if(CastSpell(spellType))
         {

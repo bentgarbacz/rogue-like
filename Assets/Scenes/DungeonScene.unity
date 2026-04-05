@@ -22645,11 +22645,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0858690206951944bb4cefe5dfdae9de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameplayHalted: 0
   entityMgr: {fileID: 1314207894}
   tileMgr: {fileID: 1314207901}
   uiam: {fileID: 1314207895}
-  combatMgr: {fileID: 1314207896}
+  combatSeq: {fileID: 1314207896}
   clickMgr: {fileID: 1314207893}
   levelGenerator: {fileID: 438385574}
   namePlateMgr: {fileID: 1977274821}
@@ -22699,7 +22698,7 @@ MonoBehaviour:
   hero: {fileID: 869517488}
   playerCharacter: {fileID: 6442338754152421642}
   enemiesOnLookout: 1
-  combatMgr: {fileID: 1314207896}
+  combatSeq: {fileID: 1314207896}
   ts: {fileID: 1314207891}
   minimapMgr: {fileID: 313091427}
   tileMgr: {fileID: 1314207901}
@@ -22760,7 +22759,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fighting: 0
-  combatPaused: 0
   attackTime: 0.333
   trimTime: 0.25
   entityMgr: {fileID: 1314207894}

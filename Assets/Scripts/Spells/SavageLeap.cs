@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class SavageLeap : Spell
 {
-    private CombatManager cbm;
+    private CombatSequencer combatSeq;
     private InventoryManager im;
     private TileManager tileMgr;
 
@@ -21,7 +21,7 @@ public class SavageLeap : Spell
         this.sprite = Resources.Load<Sprite>("Pixel Art/Spells/Savage Leap");
 
         GameObject managers = GameObject.Find("System Managers");
-        cbm = managers.GetComponent<CombatManager>();
+        combatSeq = managers.GetComponent<CombatSequencer>();
         im = managers.GetComponent<InventoryManager>();
         tileMgr = managers.GetComponent<TileManager>();
     }
@@ -60,7 +60,7 @@ public class SavageLeap : Spell
                 return false;
             }
 
-            cbm.AddMeleeAttack(caster, target, minDamage, maxDamage, attackingCharacter.speed );
+            combatSeq.AddMeleeAttack(caster, target, minDamage, maxDamage, attackingCharacter.speed );
 
             ResetCooldown(caster);
             return true;

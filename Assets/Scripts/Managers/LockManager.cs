@@ -5,7 +5,7 @@ public class LockManager : MonoBehaviour
 
     TurnSequencer turnSeq;
     int turnLockCount = 0;
-    CombatManager combatSeq;
+    CombatSequencer combatSeq;
     int combatLockCount = 0;
 
     void Awake()
@@ -14,7 +14,7 @@ public class LockManager : MonoBehaviour
         GameObject managers = GameObject.Find("System Managers");
 
         turnSeq = managers.GetComponent<TurnSequencer>();
-        combatSeq = managers.GetComponent<CombatManager>();
+        combatSeq = managers.GetComponent<CombatSequencer>();
     }
 
     public void TakeTurnLock(int count = 1)
@@ -75,6 +75,4 @@ public class LockManager : MonoBehaviour
         GiveCombatLock(combatLockCount);
         GiveTurnLock(turnLockCount);
     }
-
-
 }
