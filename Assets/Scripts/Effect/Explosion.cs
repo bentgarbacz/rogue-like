@@ -47,8 +47,8 @@ public class Explosion : MonoBehaviour
     private IEnumerator Explode()
     {
 
-        lockMgr.TakeCombatLock();
-        lockMgr.TakeTurnLock();
+        lockMgr.AcquireCombatLock();
+        lockMgr.AcquireTurnLock();
 
         audioSource.PlayOneShot(explosionClip);
 

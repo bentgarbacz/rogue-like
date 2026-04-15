@@ -70,6 +70,12 @@ public class CombatSequencer : MonoBehaviour
         return combatLock;
     }
 
+    public bool AttacksAreQueued()
+    {
+        
+        return combatBuffer.Count > 0;
+    }
+
     //Removes target's attacks from combat buffer
     public void PruneCombatBuffer(GameObject target)
     {
@@ -158,14 +164,14 @@ public class CombatSequencer : MonoBehaviour
     {
 
         //attack occurs only if defender in in a neighboring tile of the attacker
-        if(PathFinder.GetNeighbors(defender.GetComponent<CharacterSheet>().loc.coord, tileMgr.levelCoords).Contains(attacker.GetComponent<CharacterSheet>().loc.coord))
-        {
+        //if(PathFinder.GetNeighbors(defender.GetComponent<CharacterSheet>().loc.coord, tileMgr.levelCoords).Contains(attacker.GetComponent<CharacterSheet>().loc.coord))
+        //{
 
             combatBuffer.Add( new Attack(attacker, defender, minDamage, maxDamage, speed));
-            return true;
-        }
+            //return true;
+        //}
 
-        return false;
+        return true;
     }
 
     public bool AddProjectileAttack(GameObject attacker, GameObject defender, int range, int minDamage, int maxDamage, int speed, ProjectileType projectile)
@@ -271,6 +277,7 @@ public class Attack
     public int maxDamage;
     public int speed;
     public ProjectileType projectileType;
+    public HashSet<StatusEffect> statusEffects;
 
     public Attack(GameObject attacker, GameObject defender, int minDamage, int maxDamage, int speed, ProjectileType projectileType = ProjectileType.None)
     {
@@ -285,5 +292,6 @@ public class Attack
         this.maxDamage = maxDamage;
         this.speed = speed;
         this.projectileType = projectileType;
+        this.statusEffects = new();
     }
 }

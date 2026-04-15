@@ -117,7 +117,3 @@ public class CharacterSheet : MonoBehaviour
         return;
     }
 }
-
-
-
-

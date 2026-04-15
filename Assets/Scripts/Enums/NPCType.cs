@@ -11,5 +11,6 @@ public enum NPCType
     GoatMan,
     Spider,
     Skull,
-    Floater
+    Floater,
+    StoneGolem
 }

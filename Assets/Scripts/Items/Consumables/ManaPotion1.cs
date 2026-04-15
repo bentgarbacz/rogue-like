@@ -21,6 +21,6 @@ public class ManaPotion1 : Consumable
     public override void Use()
     {
 
-        hero.GetComponent<PlayerCharacterSheet>().RegainMana(manaRestoreValue);
+        hero.GetComponent<PlayerCharacterSheet>().GainMana(manaRestoreValue);
     }
 }
