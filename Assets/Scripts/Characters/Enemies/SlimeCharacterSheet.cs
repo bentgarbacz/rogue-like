@@ -58,7 +58,7 @@ public class SlimeCharacterSheet : EnemyCharacterSheet
                 combatSeq.ExecuteAttack(attack);
                 tileMgr.occupiedlist.Remove(landingCoord);
                 Move(landingCoord);
-                lockMgr.GiveTurnLock();
+                lockMgr.ReleaseTurnLock();
             }
         }
     }
@@ -94,7 +94,7 @@ public class SlimeCharacterSheet : EnemyCharacterSheet
             transform.position = entityMgr.hero.transform.position + new Vector3(0, 10f, 0);
             objectVisibility.SetVisibility(true);
             falling = true;
-            lockMgr.TakeTurnLock();
+            lockMgr.AcquireTurnLock();
 
             return true;
         }

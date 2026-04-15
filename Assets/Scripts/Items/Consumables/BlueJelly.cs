@@ -24,6 +24,6 @@ public class BlueJelly : Consumable
     {
 
         hero.GetComponent<PlayerCharacterSheet>().SatiateHunger(hungerValue);
-        hero.GetComponent<PlayerCharacterSheet>().RegainMana(manaRestoreValue);
+        hero.GetComponent<PlayerCharacterSheet>().GainMana(manaRestoreValue);
     }
 }

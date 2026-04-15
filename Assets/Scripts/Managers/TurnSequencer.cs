@@ -13,13 +13,11 @@ public class TurnSequencer : MonoBehaviour
     private PlayerCharacterSheet playerCharacter;
     private SpellCaster spellCaster;
     private MoveToTarget pcMovement;
-    private AttackAnimation pcAttackAnimation;
     [SerializeField] private EntityManager entityMgr;
     [SerializeField] private TileManager tileMgr;
     [SerializeField] private UIActiveManager uiam;
     [SerializeField] private CombatSequencer combatSeq;
     [SerializeField] private ClickManager clickMgr;
-    [SerializeField] private LevelGenerator levelGenerator;
     [SerializeField] private NameplateManager namePlateMgr;
     [SerializeField] private MiniMapManager minimapMgr;
     [SerializeField] private VisibilityManager visibilityMgr;
@@ -33,23 +31,10 @@ public class TurnSequencer : MonoBehaviour
         playerCharacter = entityMgr.hero.GetComponent<PlayerCharacterSheet>();
         spellCaster = entityMgr.hero.GetComponent<SpellCaster>();
         pcMovement = playerCharacter.GetComponent<MoveToTarget>();
-        pcAttackAnimation = entityMgr.hero.GetComponent<AttackAnimation>();
     }
 
     void Update()
     {
-
-        if (combatSeq.fighting || turnLock)
-        {
-
-            return;
-        }
-
-        if (ProcessMovement())
-        {
-
-            return;
-        }
 
         if (ProcessPlayerInput())
         {
@@ -57,7 +42,13 @@ public class TurnSequencer : MonoBehaviour
             return;
         }
 
-        if (actionTaken && !turnLock)
+        if (combatSeq.fighting || turnLock)
+        {
+
+            return;
+        }
+
+        if (actionTaken)
         {
 
             actionTaken = false;
@@ -68,10 +59,16 @@ public class TurnSequencer : MonoBehaviour
             djMapMgr.PopulateEnemyMap();
             ProcessEntityTurns(entityMgr.npcs);
             djMapMgr.PopulateNPCMap();
-
+            
             combatSeq.CommenceCombat();
             UpkeepEffects();
             AggroNearbyEnemies();
+        }
+
+        if (ProcessMovement())
+        {
+
+            return;
         }
     }
 
@@ -82,7 +79,7 @@ public class TurnSequencer : MonoBehaviour
         {
 
             playerCharacter.Move(playerMovementQueue.Dequeue());
-            actionTaken = true;
+            //actionTaken = true;
             return true;
         }
 
@@ -95,7 +92,7 @@ public class TurnSequencer : MonoBehaviour
     private bool ProcessPlayerInput()
     {
 
-        if (!Mouse.current.leftButton.wasPressedThisFrame || uiam.IsPointerOverUI() || pcAttackAnimation.IsAttacking() || turnLock)
+        if (!Mouse.current.leftButton.wasPressedThisFrame || uiam.IsPointerOverUI() || combatSeq.fighting)
         {
 
             return false;
@@ -117,6 +114,7 @@ public class TurnSequencer : MonoBehaviour
         uiam.CloseLootPanel();
         uiam.CloseCharacterPanel();
         uiam.HideAssignSpell();
+        
         playerMovementQueue.Clear();
 
         if (HandleInteractable(targetInteractable))
@@ -335,7 +333,7 @@ public class TurnSequencer : MonoBehaviour
         actionTaken = true;
     }
 
-    private void UpkeepEffects()
+    public void UpkeepEffects()
     {
 
         entityMgr.TriggerStatusEffects();
@@ -361,11 +359,6 @@ public class TurnSequencer : MonoBehaviour
 
     private bool ShouldAggro(GameObject enemy, EnemyCharacterSheet ecs = null)
     {
-
-        //OLD AGGRO SYSTEM
-        //return !dum.aggroEnemies.Contains(enemy) &&
-        //    ecs.aggroRange > Vector3.Distance(enemy.transform.position, dum.hero.transform.position) &&
-        //    LineOfSight.HasLOS(enemy, dum.hero);
 
         if(ecs == null)
         {

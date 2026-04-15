@@ -101,10 +101,10 @@ public class PlayerCharacterSheet : CharacterSheet
         updateStats.RefreshUI();
     }
 
-    public void RegainMana(int regainValue)
+    public void GainMana(int gainValue)
     {
 
-        mana = System.Math.Min(maxMana, mana + regainValue);
+        mana = System.Math.Min(maxMana, mana + gainValue);
 
         updateStats.RefreshUI();
     }
@@ -148,12 +148,12 @@ public class PlayerCharacterSheet : CharacterSheet
             {
 
                 characterHealth.Heal(1);
-                int regainManaCheck = UnityEngine.Random.Range(0, 2);
+                int gainManaCheck = UnityEngine.Random.Range(0, 2);
 
-                if (regainManaCheck == 1)
+                if (gainManaCheck == 1)
                 {
 
-                    RegainMana(1);
+                    GainMana(1);
                 }
 
             }
@@ -185,112 +185,115 @@ public class PlayerCharacterSheet : CharacterSheet
         }
     }
 
+    private (int minDamage, int maxDamage) GetWeaponDamage(Equipment weapon)
+    {
+        int minDamage = weapon.bonusStatDictionary[StatType.MinDamage];
+        int maxDamage = weapon.bonusStatDictionary[StatType.MaxDamage];
+        return (minDamage, maxDamage);
+    }
+
+    private bool TryQueueMeleeAttack(Equipment weapon, GameObject defender, CharacterSheet defendingCharacter, int attackSpeed)
+    {
+        if (!GameFunctions.IsAdjacent(loc.coord, defendingCharacter.loc.coord))
+        {
+            return false;
+        }
+
+        (int minDamage, int maxDamage) = GetWeaponDamage(weapon);
+        return combatSeq.AddMeleeAttack(this.gameObject, defender, minDamage, maxDamage, attackSpeed);
+    }
+
+    private bool TryQueueRangedAttack(RangedWeapon rangedWeapon, GameObject defender, int attackSpeed)
+    {
+        (int minDamage, int maxDamage) = GetWeaponDamage(rangedWeapon);
+        int range = rangedWeapon.bonusStatDictionary[StatType.Range];
+        
+        return combatSeq.AddProjectileAttack(
+            this.gameObject,
+            defender,
+            range,
+            minDamage,
+            maxDamage,
+            attackSpeed,
+            rangedWeapon.projectile
+        );
+    }
+
+    private bool QueueAttacksForEquipment(Equipment mainHandWeapon, Equipment offHandWeapon, GameObject defender, CharacterSheet defendingCharacter)
+    {
+        bool attackOccurred = false;
+
+        // Attempt main-hand attack
+        if (mainHandWeapon != null)
+        {
+            if (mainHandWeapon is RangedWeapon rangedWeapon)
+            {
+                attackOccurred = TryQueueRangedAttack(rangedWeapon, defender, speed) || attackOccurred;
+            }
+            else
+            {
+                attackOccurred = TryQueueMeleeAttack(mainHandWeapon, defender, defendingCharacter, speed) || attackOccurred;
+            }
+        }
+
+        // Attempt off-hand attack (if not a shield)
+        if (offHandWeapon != null && offHandWeapon is not Shield)
+        {
+            int offHandSpeed = speed / 2; // 0.5x speed penalty for off-hand
+
+            if (offHandWeapon is RangedWeapon rangedOffHand)
+            {
+                attackOccurred = TryQueueRangedAttack(rangedOffHand, defender, offHandSpeed) || attackOccurred;
+            }
+            else
+            {
+                attackOccurred = TryQueueMeleeAttack(offHandWeapon, defender, defendingCharacter, offHandSpeed) || attackOccurred;
+            }
+        }
+
+        return attackOccurred;
+    }
+
     public bool AttackCharacter(GameObject defender)
     {
-
-        bool attackOccured = false;
-        bool attackResult;
-
         CharacterSheet defendingCharacter = defender.GetComponent<CharacterSheet>();
-
+        
         Equipment mainHandWeapon = (Equipment)im.equipmentSlotsDictionary[ItemSlotType.MainHand].item;
         Equipment offHandWeapon = (Equipment)im.equipmentSlotsDictionary[ItemSlotType.OffHand].item;
 
-        if (mainHandWeapon == null && (offHandWeapon == null || offHandWeapon is Shield))
+        // Determine if using bare hands (no weapons or only shield equipped)
+        bool isBareHanded = mainHandWeapon == null && (offHandWeapon == null || offHandWeapon is Shield);
+
+        bool attackOccurred = false;
+
+        // Attempt bare-hands melee attack
+        if (isBareHanded)
         {
-
-            attackResult = combatSeq.AddMeleeAttack(
-                                              this.gameObject,
-                                              defender,
-                                              minDamage,
-                                              maxDamage,
-                                              speed
-                                             );
-
-            attackOccured = attackResult || attackOccured;
-
+            if (GameFunctions.IsAdjacent(loc.coord, defendingCharacter.loc.coord))
+            {
+                attackOccurred = combatSeq.AddMeleeAttack(
+                    this.gameObject,
+                    defender,
+                    minDamage,
+                    maxDamage,
+                    speed
+                );
+            }
         }
+        // Attempt equipped weapon attacks
         else
         {
-
-            if (mainHandWeapon != null)
-            {
-
-                if (mainHandWeapon is not RangedWeapon)
-                {
-
-                    attackResult = combatSeq.AddMeleeAttack(
-                                                      this.gameObject,
-                                                      defender,
-                                                      mainHandWeapon.bonusStatDictionary[StatType.MinDamage],
-                                                      mainHandWeapon.bonusStatDictionary[StatType.MaxDamage],
-                                                      speed
-                                                     );
-
-                    attackOccured = attackResult || attackOccured;
-
-                }
-                else if (mainHandWeapon is RangedWeapon rangedWeapon)
-                {
-
-                    attackResult = combatSeq.AddProjectileAttack(
-                                                            this.gameObject,
-                                                            defender,
-                                                            rangedWeapon.bonusStatDictionary[StatType.Range],
-                                                            rangedWeapon.bonusStatDictionary[StatType.MinDamage],
-                                                            rangedWeapon.bonusStatDictionary[StatType.MaxDamage],
-                                                            speed,
-                                                            rangedWeapon.projectile
-                                                           );
-
-                    attackOccured = attackResult || attackOccured;
-                }
-            }
-
-
-            if (offHandWeapon != null && offHandWeapon is not Shield)
-            {
-
-                if (offHandWeapon is not RangedWeapon)
-                {
-
-                    attackResult = combatSeq.AddMeleeAttack(
-                                                      this.gameObject,
-                                                      defender,
-                                                      offHandWeapon.bonusStatDictionary[StatType.MinDamage],
-                                                      offHandWeapon.bonusStatDictionary[StatType.MaxDamage],
-                                                      speed / 2
-                                                     );
-
-                    attackOccured = attackResult || attackOccured;
-
-                }
-                else if (offHandWeapon is RangedWeapon rangedWeapon)
-                {
-
-                    attackResult = combatSeq.AddProjectileAttack(
-                                                            this.gameObject,
-                                                            defender,
-                                                            rangedWeapon.bonusStatDictionary[StatType.Range],
-                                                            rangedWeapon.bonusStatDictionary[StatType.MinDamage],
-                                                            rangedWeapon.bonusStatDictionary[StatType.MaxDamage],
-                                                            speed / 2,
-                                                            rangedWeapon.projectile
-                                                          );
-
-                    attackOccured = attackResult || attackOccured;
-                }
-            }
+            attackOccurred = QueueAttacksForEquipment(mainHandWeapon, offHandWeapon, defender, defendingCharacter);
         }
 
-        if (!attackOccured)//move towards defender
+        // If no attack succeeded, move towards defender
+        if (!attackOccurred)
         {
-
             List<Vector2Int> pathToDestination = PathFinder.FindPath(loc.coord, defendingCharacter.loc.coord, tileMgr.levelCoords);
             Move(pathToDestination[1]);
         }
 
-        return attackOccured;
+        return attackOccurred;
     }
 
     public void UpdateUI()

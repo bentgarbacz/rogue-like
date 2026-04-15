@@ -133,6 +133,23 @@ public static class GameFunctions
         return new Vector2Int((int)pos.x, (int)pos.z);
     }
 
+    /// <summary>
+    /// Checks if two tile coordinates are adjacent (cardinal or intercardinal neighbors).
+    /// Uses Chebyshev distance: a tile is adjacent if the maximum of absolute coordinate differences is <= 1.
+    /// This covers all 8 surrounding tiles: cardinal (up/down/left/right) and intercardinal (diagonals).
+    /// </summary>
+    /// <param name="coord1">The first tile coordinate.</param>
+    /// <param name="coord2">The second tile coordinate.</param>
+    /// <returns>True if the tiles are adjacent; false otherwise.</returns>
+    public static bool IsAdjacent(Vector2Int coord1, Vector2Int coord2)
+    {
+        int distanceX = Mathf.Abs(coord1.x - coord2.x);
+        int distanceY = Mathf.Abs(coord1.y - coord2.y);
+        int maxDistance = Mathf.Max(distanceX, distanceY);
+
+        return maxDistance <= 1;
+    }
+
     public static GameObject DropLoot(GameObject DroppingEntity, GameObject container, List<Item> droppedItems, EntityManager entityMgr, TileManager tileMgr, MiniMapManager miniMapManager, VisibilityManager visibilityManager, bool randomizePos = true)
     {
 

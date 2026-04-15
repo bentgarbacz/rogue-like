@@ -9,19 +9,21 @@ public class MoveToTarget : MonoBehaviour
 {
 
     public Vector3 target;
-    public float speed = 5f;
-    protected float distance;
-    protected bool moving = false;
-    private float initialY;
+    public float speed = 5f;    
     public bool makesNoise = false;
     public AudioSource audioSource;
     public AudioClip stepAudioClip;
     public float waitTime = 0f;
     public bool jumpsWhileMoving = true;
+    protected float initialY;
+    protected LockManager lockMgr;
+    protected float distance;
+    protected bool moving = false;
 
-    void Start()
+    void Awake()
     {
 
+        lockMgr = GetComponent<LockManager>();
         distance = 0;
     }
 
@@ -71,15 +73,17 @@ public class MoveToTarget : MonoBehaviour
         }
     }
 
-    public void SetTarget(Vector3 target, float waitTime = 0f)
+    public virtual void SetTarget(Vector3 target, float waitTime = 0f)
     {
 
         this.waitTime = waitTime;
-        //initialY = transform.position.y;
         initialY = 0.1f;
         moving = true;
         this.target = target;
         distance = Vector3.Distance(new Vector3(target.x, 0, target.z), new Vector3(transform.position.x, 0, transform.position.z));
+
+        lockMgr.AcquireTurnLock();
+        lockMgr.AcquireCombatLock();
     }
 
     private float CalcArc(float xVal)
@@ -125,6 +129,8 @@ public class MoveToTarget : MonoBehaviour
             transform.position = new Vector3(transform.position.x, initialY, transform.position.z);
         }
 
-        moving = false;
+        moving = false;    
+        lockMgr.ReleaseTurnLock();
+        lockMgr.ReleaseCombatLock();
     }
 }

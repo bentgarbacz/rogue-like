@@ -6173,6 +6173,7 @@ MonoBehaviour:
   spider: {fileID: 6401718211484601336, guid: 75a7d931c5552d749861a653e15f377a, type: 3}
   skull: {fileID: 1841329591959837068, guid: 6c121abd61e28c34b91dc16e54bd8b7e, type: 3}
   floater: {fileID: 1209241037779243595, guid: 50d37cda8d825a94ca70aff5882c34e3, type: 3}
+  stoneGolem: {fileID: 1222550511502223975, guid: f3aa2ad5a8787d14f9aaf1955776d8c1, type: 3}
 --- !u!114 &438385577
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22650,7 +22651,6 @@ MonoBehaviour:
   uiam: {fileID: 1314207895}
   combatSeq: {fileID: 1314207896}
   clickMgr: {fileID: 1314207893}
-  levelGenerator: {fileID: 438385574}
   namePlateMgr: {fileID: 1977274821}
   minimapMgr: {fileID: 313091427}
   visibilityMgr: {fileID: 1314207902}

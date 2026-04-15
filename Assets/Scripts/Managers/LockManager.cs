@@ -17,7 +17,7 @@ public class LockManager : MonoBehaviour
         combatSeq = managers.GetComponent<CombatSequencer>();
     }
 
-    public void TakeTurnLock(int count = 1)
+    public void AcquireTurnLock(int count = 1)
     {
 
         if(count <= 0)
@@ -30,7 +30,7 @@ public class LockManager : MonoBehaviour
         turnLockCount += count;
     }
 
-    public void GiveTurnLock(int count = 1)
+    public void ReleaseTurnLock(int count = 1)
     {
         
         if(count <= 0 || turnLockCount < count)
@@ -43,7 +43,7 @@ public class LockManager : MonoBehaviour
         turnLockCount = Mathf.Max(turnLockCount - count, 0);
     }
 
-    public void TakeCombatLock(int count = 1)
+    public void AcquireCombatLock(int count = 1)
     {
         
         if(count <= 0)
@@ -56,7 +56,7 @@ public class LockManager : MonoBehaviour
         combatLockCount += count;
     }
 
-    public void GiveCombatLock(int count = 1)
+    public void ReleaseCombatLock(int count = 1)
     {
         
         if(count <= 0 || combatLockCount < count)
@@ -72,7 +72,7 @@ public class LockManager : MonoBehaviour
     void OnDestroy()
     {
         
-        GiveCombatLock(combatLockCount);
-        GiveTurnLock(turnLockCount);
+        ReleaseCombatLock(combatLockCount);
+        ReleaseTurnLock(turnLockCount);
     }
 }

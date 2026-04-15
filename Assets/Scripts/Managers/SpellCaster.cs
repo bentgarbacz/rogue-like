@@ -13,12 +13,11 @@ public class SpellCaster : MonoBehaviour
     private Spell currentSpell;
     private ItemSlot currentItemSlot;
     private Scroll currentScroll;
-    private TurnSequencer ts;
+    private TurnSequencer turnSeq;
     private SpellReferences spellRef;
-    private ClickManager cm;
-    private ToolTipManager ttm;
+    private ClickManager clickMgr;
+    private ToolTipManager toolTipMgr;
     private LockManager lockMgr;
-    private CombatSequencer combatSeq;
     private AudioSource audioSource;
     [SerializeField] private PlayerCharacterSheet pc;
     private Mouse mouse;
@@ -27,11 +26,10 @@ public class SpellCaster : MonoBehaviour
     {
 
         GameObject managers = GameObject.Find("System Managers");
-        ts = managers.GetComponent<TurnSequencer>();
+        turnSeq = managers.GetComponent<TurnSequencer>();
         spellRef = managers.GetComponent<SpellReferences>();
-        cm = managers.GetComponent<ClickManager>();
-        ttm = managers.GetComponent<UIActiveManager>().toolTipContainer.GetComponent<ToolTipManager>();
-        combatSeq = managers.GetComponent<CombatSequencer>();
+        clickMgr = managers.GetComponent<ClickManager>();
+        toolTipMgr = managers.GetComponent<UIActiveManager>().toolTipContainer.GetComponent<ToolTipManager>();
         lockMgr = GetComponent<LockManager>();
         audioSource = GetComponent<AudioSource>();
 
@@ -47,7 +45,7 @@ public class SpellCaster : MonoBehaviour
             return;
         }
 
-        GameObject target = cm.GetObject();
+        GameObject target = clickMgr.GetObject();
 
         if(target != null && currentSpell != null)
         {
@@ -77,13 +75,13 @@ public class SpellCaster : MonoBehaviour
                     currentScroll = null;
                 }
 
-                ts.SignalAction();
+                turnSeq.SignalAction();
             }
         }
 
         currentSpell = null;
         SetTargeting(false);
-        ttm.DisableForceTooltip();
+        toolTipMgr.DisableForceTooltip();
     }
 
     private void SetTargeting(bool state)
@@ -92,12 +90,12 @@ public class SpellCaster : MonoBehaviour
         if(state)
         {
 
-            lockMgr.TakeTurnLock();
+            lockMgr.AcquireTurnLock();
         }
         else
         {
 
-            lockMgr.GiveTurnLock();
+            lockMgr.ReleaseTurnLock();
         }
 
         targeting = state;
@@ -113,7 +111,7 @@ public class SpellCaster : MonoBehaviour
 
             SetTargeting(true);
             currentSpell = spell;
-            ttm.EnableForceTooltip("Casting " + spellType);
+            toolTipMgr.EnableForceTooltip("Casting " + spellType);
 
             return false;
             
@@ -149,7 +147,7 @@ public class SpellCaster : MonoBehaviour
         {
 
             SpendSpellCost(spellType);
-            ts.SignalAction();
+            turnSeq.SignalAction();
 
         }else{
 
@@ -165,7 +163,7 @@ public class SpellCaster : MonoBehaviour
 
             scroll.Use();
             slot.ThrowAway();
-            ts.SignalAction();
+            turnSeq.SignalAction();
 
         }else{
 
