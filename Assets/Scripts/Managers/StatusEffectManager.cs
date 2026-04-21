@@ -53,6 +53,7 @@ public class StatusEffectManager : MonoBehaviour
         if(!uniqueEffectFound)
         {
 
+            newEffect.StartEffect();
             statusEffects.Add(newEffect);
         }    
 

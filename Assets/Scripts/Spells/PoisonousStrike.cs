@@ -48,12 +48,12 @@ public class PoisonousStrike : Spell
                 if(mainHandWeapon is not RangedWeapon)
                 {
                     
-                    if(combatSeq.AddMeleeAttack(caster, target, minDamage, maxDamage, attackingCharacter.speed))
+                    if(combatSeq.CheckMeleeAttackValidity(caster, target))
                     {
 
-                        //poison target
-                        target.GetComponent<TextNotificationManager>().CreateNotificationOrder(target.transform.position, 3f, "Poisoned", Color.green, 1f);
-                        target.GetComponent<StatusEffectManager>().AddEffect(new Poison(defendingCharacter, duration, damagePerTurn, entityMgr));
+                        Attack attack = new(caster, target, minDamage, maxDamage, attackingCharacter.speed);
+                        attack.AttachStatusEffect(new Poison(defendingCharacter, duration, damagePerTurn), 1f);                        
+                        combatSeq.AddAttack(attack);
 
                         ResetCooldown(caster);
                         return true;
@@ -62,12 +62,12 @@ public class PoisonousStrike : Spell
                 }else if(mainHandWeapon is RangedWeapon rangedWeapon)
                 {
                     
-                    if(combatSeq.AddProjectileAttack(caster, target, rangedWeapon.bonusStatDictionary[StatType.Range], minDamage, maxDamage, attackingCharacter.speed, rangedWeapon.projectile))
+                    if(combatSeq.CheckProjectileAttackValidity(caster, target, rangedWeapon.bonusStatDictionary[StatType.Range]))
                     {
 
-                        //poison target
-                        target.GetComponent<TextNotificationManager>().CreateNotificationOrder(target.transform.position, 3f, "Poisoned", Color.green, 1f);
-                        target.GetComponent<StatusEffectManager>().AddEffect(new Poison(defendingCharacter, duration, damagePerTurn, entityMgr));
+                        Attack attack = new(caster, target, minDamage, maxDamage, attackingCharacter.speed, rangedWeapon.projectile);
+                        attack.AttachStatusEffect(new Poison(defendingCharacter, duration, damagePerTurn), 1f);                        
+                        combatSeq.AddAttack(attack);
                         
                         ResetCooldown(caster);
                         return true;

@@ -8,7 +8,7 @@ public class Poison : StatusEffect
     public int damageOverTime;
     private CharacterHealth characterHealth;
 
-    public Poison(CharacterSheet affectedCharacter, int duration, int damageOverTime, EntityManager entityMgr)
+    public Poison(CharacterSheet affectedCharacter, int duration, int damageOverTime)
     {
 
         this.type = EffectType.Debuff;
@@ -24,11 +24,17 @@ public class Poison : StatusEffect
     {
 
         TextNotificationManager textNotificationMgr = affectedCharacter.GetComponent<TextNotificationManager>();
-        textNotificationMgr.CreateNotificationOrder(affectedCharacter.transform.position, 2f, damageOverTime.ToString(), Color.green);
+        textNotificationMgr.CreateNotificationOrder(2f, damageOverTime.ToString(), Color.green);
         characterHealth.TakeDamage(damageOverTime);
 
         duration -= 1;
         return duration;
+    }
+
+    public override void StartEffect()
+    {
+
+        affectedCharacter.GetComponent<TextNotificationManager>().CreateNotificationOrder(3f, "Poisoned", Color.green, 1f);
     }
 
     public override string GetDescription()

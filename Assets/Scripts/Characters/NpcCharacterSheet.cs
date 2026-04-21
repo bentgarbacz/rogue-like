@@ -136,13 +136,16 @@ public class NpcCharacterSheet : CharacterSheet
             }
         }
 
-        if (targetEntity != null)
+        if (targetEntity == null || !combatSeq.CheckMeleeAttackValidity(this.gameObject, targetEntity))
         {
 
-            return combatSeq.AddMeleeAttack(this.gameObject, targetEntity, minDamage, maxDamage, speed);
+            return false;
         }
 
-        return false;
+        Attack attack = new(this.gameObject, targetEntity, minDamage, maxDamage, speed);
+        combatSeq.AddAttack(attack);
+
+        return true;
     }
 
     protected virtual Vector2Int GetNeighborTileOfMostInterest(Vector2Int startCoord, List<Dictionary<Vector2Int, float>> mapsOfInterest)

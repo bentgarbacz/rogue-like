@@ -33,15 +33,21 @@ public class TextNotificationManager : MonoBehaviour
             NotificationOrder currentNotification = notificationOrders[0];
             notificationOrders.RemoveAt(0);
 
-            CreateNotification(currentNotification.position, currentNotification.height, currentNotification.text, currentNotification.textColor, currentNotification.speed);
+            CreateNotification(currentNotification.height, currentNotification.text, currentNotification.textColor, currentNotification.speed);
             StartCoroutine(WaitForNotification());
         }
     }
 
-    public void CreateNotificationOrder(Vector3 position, float height, string text, Color textColor, float speed = 2f)
+    public void CreateNotificationOrder(float height, string text, Color textColor, float speed = 2f)
     {
 
-        notificationOrders.Add(new NotificationOrder(position, height, text, textColor, speed));
+        if(notificationOrders.Count >= 5)
+        {
+            
+            notificationOrders.RemoveAt(0);
+        }
+
+        notificationOrders.Add(new NotificationOrder(height, text, textColor, speed));
     }
 
     private IEnumerator WaitForNotification()
@@ -51,8 +57,10 @@ public class TextNotificationManager : MonoBehaviour
         notificationCreationCleared = true;
     }   
 
-    private void CreateNotification(Vector3 position, float spawnOffsetY, string text, Color textColor, float speed = 2f)
+    private void CreateNotification(float spawnOffsetY, string text, Color textColor, float speed = 2f)
     {
+
+        Vector3 position = transform.position;
 
         GameObject newNotification = Instantiate(notificationPrefab, new Vector3(position.x, position.y + spawnOffsetY, position.z), Quaternion.identity);
         TextNotification textNotification = newNotification.GetComponent<TextNotification>();
@@ -76,16 +84,14 @@ public class TextNotificationManager : MonoBehaviour
 public class NotificationOrder
 {
 
-    public Vector3 position;
     public float height;
     public string text;
     public Color textColor;
     public float speed;
 
-    public NotificationOrder(Vector3 position, float height, string text, Color textColor, float speed)
+    public NotificationOrder(float height, string text, Color textColor, float speed)
     {
 
-        this.position = position;
         this.height = height;
         this.text = text;
         this.textColor = textColor;

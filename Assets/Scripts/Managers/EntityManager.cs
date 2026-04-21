@@ -134,7 +134,7 @@ public class EntityManager : MonoBehaviour
         foreach (GameObject enemy in aggroEnemies)
         {
 
-            enemy.GetComponent<TextNotificationManager>().CreateNotificationOrder(enemy.transform.position, 2, "?", Color.red);
+            enemy.GetComponent<TextNotificationManager>().CreateNotificationOrder(2, "?", Color.red);
         }
 
         aggroEnemies = new HashSet<GameObject>();

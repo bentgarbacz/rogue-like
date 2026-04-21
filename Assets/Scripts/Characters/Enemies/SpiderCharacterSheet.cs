@@ -45,36 +45,33 @@ public class SpiderCharacterSheet : EnemyCharacterSheet
         return null;
     }
 
-    public override void AggroBehavior()
+    protected override bool AttackEntity(Vector2Int coord)
     {
 
-        if (!GetAggroStatus())
+        GameObject targetEntity = null;
+
+        foreach (GameObject entity in tileMgr.GetTile(coord).entitiesOnTile)
         {
 
-            entityMgr.aggroEnemies.Remove(this.gameObject);
-            return;
-        }
-        
-        List<Dictionary<Vector2Int, float>> mapsOfInterest = new(){djm.npcMap, djm.playerMap};
-        Vector2Int targetCoord = GetNeighborTileOfMostInterest(loc.coord, mapsOfInterest);
-        float tileInterestVal = Mathf.Min(djm.GetPlayerMapValue(targetCoord), djm.GetNpcMapValue(targetCoord));
-        
-        if(tileInterestVal == 0)
-        {
-            GameObject target = GetTargetAtCoord(targetCoord);
-            if(AttackEntity(targetCoord) && target != null)
+            if (entity != null && entity.GetComponent<CharacterSheet>() != null)
             {
-                if(Random.Range(0, 100) < poisonChance)
-                {
-                    target.GetComponent<StatusEffectManager>().AddEffect(new Poison(target.GetComponent<CharacterSheet>(), poisonDuration, poisonDamage, entityMgr));
-                    target.GetComponent<TextNotificationManager>().CreateNotificationOrder(target.transform.position, 3f, "Poisoned", Color.green, 1f);
-                }
-            }
-        }else
-        {
 
-            movementManager.AddMovement(this, targetCoord);
+                targetEntity = entity;
+            }
         }
 
+        if (targetEntity == null || !combatSeq.CheckMeleeAttackValidity(this.gameObject, targetEntity))
+        {
+
+            return false;
+        }
+
+        Attack attack = new(this.gameObject, targetEntity, minDamage, maxDamage, speed);
+        Poison poison = new(targetEntity.GetComponent<CharacterSheet>(), 8, minDamage);
+
+        attack.AttachStatusEffect(poison, 1f);
+        combatSeq.AddAttack(attack);
+
+        return true;
     }
 }

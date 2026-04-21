@@ -60,7 +60,8 @@ public class SavageLeap : Spell
                 return false;
             }
 
-            combatSeq.AddMeleeAttack(caster, target, minDamage, maxDamage, attackingCharacter.speed );
+            Attack attack = new(caster, target, minDamage, maxDamage, attackingCharacter.speed);
+            combatSeq.AddAttack(attack);
 
             ResetCooldown(caster);
             return true;

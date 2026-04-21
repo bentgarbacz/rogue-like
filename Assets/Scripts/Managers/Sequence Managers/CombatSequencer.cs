@@ -160,21 +160,23 @@ public class CombatSequencer : MonoBehaviour
         fighting = false;
     }
 
-    public bool AddMeleeAttack(GameObject attacker, GameObject defender, int minDamage, int maxDamage, int speed)
+    public bool CheckMeleeAttackValidity(GameObject attacker, GameObject defender)
     {
 
         //attack occurs only if defender in in a neighboring tile of the attacker
-        //if(PathFinder.GetNeighbors(defender.GetComponent<CharacterSheet>().loc.coord, tileMgr.levelCoords).Contains(attacker.GetComponent<CharacterSheet>().loc.coord))
-        //{
+        if(PathFinder.GetNeighbors(defender.GetComponent<CharacterSheet>().loc.coord, tileMgr.levelCoords).Contains(attacker.GetComponent<CharacterSheet>().loc.coord))
+        {
 
-            combatBuffer.Add( new Attack(attacker, defender, minDamage, maxDamage, speed));
-            //return true;
-        //}
+            //combatBuffer.Add( new Attack(attacker, defender, minDamage, maxDamage, speed));
+            return true;
+        }
+
+        //combatBuffer.Add( new Attack(attacker, defender, minDamage, maxDamage, speed));
 
         return true;
     }
 
-    public bool AddProjectileAttack(GameObject attacker, GameObject defender, int range, int minDamage, int maxDamage, int speed, ProjectileType projectile)
+    public bool CheckProjectileAttackValidity(GameObject attacker, GameObject defender, int range)
     {
 
         float distance = Vector3.Distance(attacker.transform.position, defender.transform.position);
@@ -183,11 +185,17 @@ public class CombatSequencer : MonoBehaviour
         if(range >= distance && LineOfSight.HasLOS(attacker, defender))
         {
             
-            combatBuffer.Add( new Attack(attacker, defender,minDamage, maxDamage, speed, projectile) );
+            //combatBuffer.Add( new Attack(attacker, defender,minDamage, maxDamage, speed, projectile) );
             return true;
         }
 
         return false;
+    }
+
+    public void AddAttack(Attack attack)
+    {
+
+        combatBuffer.Add(attack);
     }
 
     public bool ExecuteAttack(Attack attack)
@@ -221,6 +229,10 @@ public class CombatSequencer : MonoBehaviour
 
             // Apply damage to the defender
             attack.defenderCS.characterHealth.TakeDamage(damage);
+
+            // Resolve status effects
+            attack.ResolveEffects();
+
         }
         else
         {
@@ -229,11 +241,9 @@ public class CombatSequencer : MonoBehaviour
             text = "Miss";
         }
 
-        Vector3 defenderLoc= attack.defender.GetComponent<ObjectLocation>().Coord3d();
-        Vector3 notificationPos = defenderLoc + new Vector3(0f, attack.defender.transform.position.y, 0f);
-
+        
         //attack.defender.GetComponent<TextNotificationManager>().CreateNotificationOrder(attack.defender.transform.position, 2f, text, textColor);
-        attack.defender.GetComponent<TextNotificationManager>().CreateNotificationOrder(notificationPos, 2f, text, textColor);
+        attack.defender.GetComponent<TextNotificationManager>().CreateNotificationOrder(2f, text, textColor);
         return hitSuccessful;
     }
 
@@ -277,7 +287,7 @@ public class Attack
     public int maxDamage;
     public int speed;
     public ProjectileType projectileType;
-    public HashSet<StatusEffect> statusEffects;
+    public Dictionary<StatusEffect, float> statusEffects;
 
     public Attack(GameObject attacker, GameObject defender, int minDamage, int maxDamage, int speed, ProjectileType projectileType = ProjectileType.None)
     {
@@ -293,5 +303,29 @@ public class Attack
         this.speed = speed;
         this.projectileType = projectileType;
         this.statusEffects = new();
+    }
+
+    public void AttachStatusEffect(StatusEffect statusEffect, float procChance)
+    {
+
+        //Percentage chance to proc is stored as a value between 1 and 0, where 1 = 100% and 0 = 0%
+        procChance = Mathf.Max(procChance, 0);
+        procChance = Mathf.Min(procChance, 1);
+
+        statusEffects.Add(statusEffect, procChance);
+    }
+
+    public void ResolveEffects()
+    {
+
+        foreach (StatusEffect currentEffect in statusEffects.Keys)
+        {
+
+            if (Random.Range(0f, 1f) <= statusEffects[currentEffect])
+            {
+                
+                defenderCS.statusEffectMgr.AddEffect(currentEffect);
+            }
+        }
     }
 }
