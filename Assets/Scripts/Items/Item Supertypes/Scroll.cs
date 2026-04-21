@@ -28,7 +28,7 @@ public class Scroll : Item
         if(MeetsRequirements() && !playerCharacter.knownSpells.ContainsKey(spellType))
         {
 
-            hero.GetComponent<TextNotificationManager>().CreateNotificationOrder(hero.transform.position, 3f, "Spell Memorized", Color.cyan, 1f);
+            hero.GetComponent<TextNotificationManager>().CreateNotificationOrder(3f, "Spell Memorized", Color.cyan, 1f);
             playerCharacter.knownSpells.Add(spellType, 0);
         }
     }

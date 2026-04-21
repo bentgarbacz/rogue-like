@@ -61,11 +61,14 @@ public class SkeletonArcherCharacterSheet : EnemyCharacterSheet
             if (targetEntity != null)
             {
 
-                bool attackResult = combatSeq.AddProjectileAttack(this.gameObject, targetEntity, range, minDamage, maxDamage, speed, projectile);
-                
+                bool inRange = combatSeq.CheckProjectileAttackValidity(this.gameObject, targetEntity, range);
+
                 //Ranged attack initates if target is within range
-                if(attackResult)
+                if(inRange)
                 {
+
+                    Attack attack = new(this.gameObject, targetEntity, minDamage, maxDamage, speed, projectile);
+                    combatSeq.AddAttack(attack);
 
                     attackCooldown = 3;
                     return;

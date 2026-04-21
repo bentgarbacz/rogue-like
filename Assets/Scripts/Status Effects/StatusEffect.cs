@@ -18,6 +18,12 @@ public class StatusEffect
         return duration;
     }
 
+    public virtual void StartEffect()
+    {
+        
+        return;
+    }
+
     public virtual void EndEffect()
     {
 

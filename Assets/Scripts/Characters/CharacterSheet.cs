@@ -24,7 +24,7 @@ public class CharacterSheet : MonoBehaviour
     public int armor = 0;
     public int evasion = 0;
     public DropTableType dropTable = DropTableType.None;
-    protected StatusEffectManager statusEffectMgr;
+    public StatusEffectManager statusEffectMgr;
     protected TileManager tileMgr;
     protected EntityManager entityMgr;
     protected LockManager lockMgr;

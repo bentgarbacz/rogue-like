@@ -27,10 +27,14 @@ public class Fireball : Spell
         if(target.GetComponent<CharacterSheet>())
         {
 
-            if(combatSeq.AddProjectileAttack(caster, target, range, minDamage, maxDamage, caster.GetComponent<CharacterSheet>().speed, projectileType))
+            if(combatSeq.CheckProjectileAttackValidity(caster, target, range))
             {
 
+                Attack attack = new(caster, target, minDamage, maxDamage, caster.GetComponent<CharacterSheet>().speed, projectileType);
+                combatSeq.AddAttack(attack);
+
                 ResetCooldown(caster);
+                
                 return true;
             }
         }

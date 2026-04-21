@@ -55,7 +55,7 @@ public class EnemyCharacterSheet : NpcCharacterSheet
     public virtual bool OnAggro()
     {
 
-        GetComponent<TextNotificationManager>().CreateNotificationOrder(transform.position, 2, "!", Color.red);
+        GetComponent<TextNotificationManager>().CreateNotificationOrder(2, "!", Color.red);
         audioSource.PlayOneShot(aggroNoise);
         return true;
     }

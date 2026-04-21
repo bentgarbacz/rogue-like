@@ -74,14 +74,12 @@ public class PlayerCharacterSheet : CharacterSheet
     public void GainXP(int XP)
     {
 
-        Vector3 notificationPos = GetComponent<ObjectLocation>().Coord3d() + new Vector3(0f, transform.position.y, 0f);
-
         totalXP += XP;
 
         if (totalXP >= levelUpBreakpoint)
         {
 
-            GetComponent<TextNotificationManager>().CreateNotificationOrder(notificationPos, 3f, "Level Up!", Color.yellow);
+            GetComponent<TextNotificationManager>().CreateNotificationOrder(3f, "Level Up!", Color.yellow);
 
             while (totalXP >= levelUpBreakpoint)
             {
@@ -95,7 +93,7 @@ public class PlayerCharacterSheet : CharacterSheet
         else
         {
 
-            GetComponent<TextNotificationManager>().CreateNotificationOrder(notificationPos, 2f, XP.ToString() + " XP", Color.green);
+            GetComponent<TextNotificationManager>().CreateNotificationOrder(2f, XP.ToString() + " XP", Color.green);
         }
 
         updateStats.RefreshUI();
@@ -162,7 +160,7 @@ public class PlayerCharacterSheet : CharacterSheet
 
                 hunger = 0;
                 characterHealth.TakeDamage(1);
-                GetComponent<TextNotificationManager>().CreateNotificationOrder(transform.position, 2f, "Hungry!", Color.red);
+                GetComponent<TextNotificationManager>().CreateNotificationOrder(2f, "Hungry!", Color.red);
             }
 
             hungerBuffer = 0;
@@ -194,29 +192,37 @@ public class PlayerCharacterSheet : CharacterSheet
 
     private bool TryQueueMeleeAttack(Equipment weapon, GameObject defender, CharacterSheet defendingCharacter, int attackSpeed)
     {
-        if (!GameFunctions.IsAdjacent(loc.coord, defendingCharacter.loc.coord))
+        if (!!combatSeq.CheckMeleeAttackValidity(this.gameObject, defender))
         {
+
             return false;
         }
 
         (int minDamage, int maxDamage) = GetWeaponDamage(weapon);
-        return combatSeq.AddMeleeAttack(this.gameObject, defender, minDamage, maxDamage, attackSpeed);
+        Attack attack = new(this.gameObject, defender, minDamage, maxDamage, attackSpeed);
+
+        combatSeq.AddAttack(attack);
+
+        return true;
     }
 
     private bool TryQueueRangedAttack(RangedWeapon rangedWeapon, GameObject defender, int attackSpeed)
     {
-        (int minDamage, int maxDamage) = GetWeaponDamage(rangedWeapon);
-        int range = rangedWeapon.bonusStatDictionary[StatType.Range];
         
-        return combatSeq.AddProjectileAttack(
-            this.gameObject,
-            defender,
-            range,
-            minDamage,
-            maxDamage,
-            attackSpeed,
-            rangedWeapon.projectile
-        );
+        int range = rangedWeapon.bonusStatDictionary[StatType.Range];
+
+        if (!combatSeq.CheckProjectileAttackValidity(this.gameObject, defender, range))
+        {
+
+            return false;
+        }
+
+        (int minDamage, int maxDamage) = GetWeaponDamage(rangedWeapon);
+        Attack attack = new(this.gameObject, defender, minDamage, maxDamage, attackSpeed, rangedWeapon.projectile);
+
+        combatSeq.AddAttack(attack);
+
+        return true;
     }
 
     private bool QueueAttacksForEquipment(Equipment mainHandWeapon, Equipment offHandWeapon, GameObject defender, CharacterSheet defendingCharacter)
@@ -269,26 +275,26 @@ public class PlayerCharacterSheet : CharacterSheet
         // Attempt bare-hands melee attack
         if (isBareHanded)
         {
-            if (GameFunctions.IsAdjacent(loc.coord, defendingCharacter.loc.coord))
+
+            if ( combatSeq.CheckMeleeAttackValidity(this.gameObject, defender) )
             {
-                attackOccurred = combatSeq.AddMeleeAttack(
-                    this.gameObject,
-                    defender,
-                    minDamage,
-                    maxDamage,
-                    speed
-                );
+                
+                Attack attack = new(this.gameObject, defender, minDamage, maxDamage, speed);
+                combatSeq.AddAttack(attack);
+                attackOccurred = true;
             }
         }
         // Attempt equipped weapon attacks
         else
         {
+
             attackOccurred = QueueAttacksForEquipment(mainHandWeapon, offHandWeapon, defender, defendingCharacter);
         }
 
         // If no attack succeeded, move towards defender
         if (!attackOccurred)
         {
+
             List<Vector2Int> pathToDestination = PathFinder.FindPath(loc.coord, defendingCharacter.loc.coord, tileMgr.levelCoords);
             Move(pathToDestination[1]);
         }

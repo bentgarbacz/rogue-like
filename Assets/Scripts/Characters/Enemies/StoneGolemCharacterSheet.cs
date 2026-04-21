@@ -103,7 +103,7 @@ public class StoneGolemCharacterSheet : EnemyCharacterSheet
         renderer.material.color = originalColor * 0.2f; // Darker version
         
         // Show "..." notification
-        notificationManager.CreateNotificationOrder(transform.position, 2f, "...", Color.gray);
+        notificationManager.CreateNotificationOrder(2f, "...", Color.gray);
         
         // Wait a bit then reset color
         yield return new WaitForSeconds(0.5f);

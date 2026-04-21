@@ -92,7 +92,7 @@ public class TurnSequencer : MonoBehaviour
     private bool ProcessPlayerInput()
     {
 
-        if (!Mouse.current.leftButton.wasPressedThisFrame || uiam.IsPointerOverUI() || combatSeq.fighting)
+        if (!Mouse.current.leftButton.wasPressedThisFrame || uiam.IsPointerOverUI() || combatSeq.fighting || (turnLock && !IsPlayerMoving()))
         {
 
             return false;
@@ -311,6 +311,11 @@ public class TurnSequencer : MonoBehaviour
             
             turnLock = false;
         }
+    }
+
+    private bool IsPlayerMoving()
+    {
+        return playerMovementQueue.Count > 0 || pcMovement.IsMoving();
     }
 
     public bool TurnLockState()
