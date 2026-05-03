@@ -6,6 +6,7 @@ public class Stealth : StatusEffect
 {
     
     private EntityManager entityMgr;
+    private Renderer renderer;
 
     public Stealth(CharacterSheet affectedCharacter, int duration, EntityManager entityMgr)
     {
@@ -17,8 +18,7 @@ public class Stealth : StatusEffect
         this.sprite = Resources.Load<Sprite>("Pixel Art/Spells/Slink Away");
         this.isUnique = true;
 
-        entityMgr.enemiesOnLookout = false;
-        entityMgr.ClearAggroBuffer();
+        renderer = affectedCharacter.GetComponent<Renderer>();
     }
 
     public override int Effect()
@@ -28,9 +28,18 @@ public class Stealth : StatusEffect
         return duration;
     }
 
+    public override void StartEffect()
+    {
+        
+        TransparencyManager.SetTransparency(renderer, 0.3f);
+        entityMgr.enemiesOnLookout = false;
+        entityMgr.ClearAggroBuffer();
+    }
+
     public override void EndEffect()
     {
         
+        TransparencyManager.SetOpaque(renderer);
         entityMgr.enemiesOnLookout = true;
     }
 

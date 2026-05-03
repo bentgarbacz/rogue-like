@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 
 public class CharacterHealth : MonoBehaviour
 {
@@ -8,18 +9,26 @@ public class CharacterHealth : MonoBehaviour
     public int maxHealth;
     public int currentHealth;
     private EntityManager entityMgr;
+    private CharacterSheet characterSheet;
 
     public void Awake()
     {
 
         GameObject managers = GameObject.Find("System Managers");
         entityMgr = managers.GetComponent<EntityManager>();
+        characterSheet = GetComponent<CharacterSheet>();
     }
 
     public virtual int TakeDamage(int damage)
     {
 
         currentHealth = System.Math.Max(0, currentHealth - damage);
+
+        if(damage > 0)
+        {
+            
+            characterSheet.OnDamage();
+        }
 
         if (currentHealth <= 0)
         {
@@ -63,13 +72,8 @@ public class CharacterHealth : MonoBehaviour
     private void Die()
     {
 
-        if (TryGetComponent<CharacterSheet>(out var characterSheet))
-        {
-
-            characterSheet.OnDeath();
-        }
-
-        //yield return new WaitForSeconds(0.05f); //Give the GameObject of dead character time to wrap up before it is destroyed
         entityMgr.KillEntity(this.gameObject);
+        characterSheet.OnDeath();
+        Destroy(this.gameObject);
     }
 }

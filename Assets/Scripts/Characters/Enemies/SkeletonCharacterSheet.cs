@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class SkeletonCharacterSheet : EnemyCharacterSheet
 {
+    private NPCGenerator npcGen;
 
     public override void Awake()
     {
-        
         base.Awake();
         maxHealth = 8;
         accuracy = 100;
@@ -23,11 +23,18 @@ public class SkeletonCharacterSheet : EnemyCharacterSheet
         title = "Skeleton";
 
         attackClip = Resources.Load<AudioClip>("Sounds/Skeleton");
+        npcGen = GameObject.Find("Map Generator").GetComponent<NPCGenerator>();
     }
     
     public override void AggroBehavior()
     {
-
         base.AggroBehavior();
+    }
+
+    public override void OnDeath()
+    {
+        
+        GameObject newSkeletalRemains = npcGen.CreateEnemy(NPCType.SkeletalRemains, loc.Coord3d());
+        entityMgr.aggroEnemies.Add(newSkeletalRemains);
     }
 }

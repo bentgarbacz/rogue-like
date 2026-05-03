@@ -6164,6 +6164,7 @@ MonoBehaviour:
   tileMgr: {fileID: 1314207901}
   chest: {fileID: 6493254730876405042, guid: 3d2a97183afeb6843a3d22f8ee50bf01, type: 3}
   skeleton: {fileID: 7806514022559795084, guid: 3b210d9e70f6a1f4b9e6170b08367086, type: 3}
+  skeletalRemains: {fileID: 3564674477248252701, guid: f07e4c749f8358849b82bce143f9dd26, type: 3}
   skeletonArcher: {fileID: 3972246722018788467, guid: f114ea6c3de591b44808cb9aa30df140, type: 3}
   goblin: {fileID: 6521998039571531690, guid: 0fe73ca023d67f9468b8ce7c063dc8fc, type: 3}
   rat: {fileID: 2415684302311000984, guid: dcf8a7a24bba19044a4dc32251b8ab86, type: 3}
@@ -6174,6 +6175,7 @@ MonoBehaviour:
   skull: {fileID: 1841329591959837068, guid: 6c121abd61e28c34b91dc16e54bd8b7e, type: 3}
   floater: {fileID: 1209241037779243595, guid: 50d37cda8d825a94ca70aff5882c34e3, type: 3}
   stoneGolem: {fileID: 1222550511502223975, guid: f3aa2ad5a8787d14f9aaf1955776d8c1, type: 3}
+  lich: {fileID: 862274426324552958, guid: 8ac96bd939f785e49857ea6c3c024c6b, type: 3}
 --- !u!114 &438385577
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6199,7 +6201,7 @@ MonoBehaviour:
   catacombEntrance: {fileID: 8240057085656814339, guid: f6b63ce657227bd4c9f0ea79119baacf, type: 3}
   catacombExit: {fileID: 2862989877608427773, guid: 57670d2158c8b544a9c7250631b130e5, type: 3}
   catacombDoor: {fileID: 5245498800819785574, guid: c4b3e4b4019ff174daac85013a1d921a, type: 3}
-  possibleEnemyTypes: 010000000200000005000000
+  possibleEnemyTypes: 010000000100000001000000
 --- !u!114 &438385578
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -38058,7 +38060,11 @@ MonoBehaviour:
   intelligence: 0
   armor: 0
   evasion: 0
+  damageDealtMultiplier: 1
+  damageTakenMultiplier: 1
+  isActionBlocked: 0
   dropTable: 0
+  statusEffectMgr: {fileID: 0}
   audioSource: {fileID: 0}
   attackClip: {fileID: 0}
   missClip: {fileID: 0}
@@ -38102,6 +38108,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5294ecea600c22f4eb21799baf7cf0f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  defaultColor: {r: 1, g: 1, b: 1, a: 1}
   highlightColor: {r: 1, g: 1, b: 1, a: 0}
   actionDescription: Skip Turn
   highlighted: 0
@@ -38146,8 +38153,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1cf962c0af8d49642b65f9e5edefd052, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targeting: 0
-  selfCasting: 0
   pc: {fileID: 6442338754152421642}
 --- !u!114 &6442338754152421647
 MonoBehaviour:

@@ -15,8 +15,6 @@ public class StoneSkin : StatusEffect
         this.duration = duration;
         this.armorIncrease = armorIncrease;
         this.sprite = Resources.Load<Sprite>("Pixel Art/Spells/Fortify");
-        
-        affectedCharacter.armor += armorIncrease;
     }
 
     public override int Effect()
@@ -24,6 +22,12 @@ public class StoneSkin : StatusEffect
 
         duration -= 1;
         return duration;
+    }
+
+    public override void StartEffect()
+    {
+        
+        affectedCharacter.armor += armorIncrease;
     }
 
     public override void EndEffect()

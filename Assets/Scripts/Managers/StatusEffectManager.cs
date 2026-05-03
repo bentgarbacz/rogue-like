@@ -34,7 +34,7 @@ public class StatusEffectManager : MonoBehaviour
             for(int i = 0; i < statusEffects.Count; i++)
             {
 
-                if(newEffect.type == statusEffects[i].type)
+                if(newEffect.GetType() == statusEffects[i].GetType())
                 {
 
                     if(newEffect.duration > statusEffects[i].duration)

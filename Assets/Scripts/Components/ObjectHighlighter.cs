@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 
 public class ObjectHighlighter : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    private Color startcolor;
+    public Color defaultColor = Color.white;
     public Color highlightColor = Color.yellow;
     public string actionDescription = "";
     private ToolTipManager ttm;
@@ -22,7 +22,6 @@ public class ObjectHighlighter : MonoBehaviour, IPointerEnterHandler, IPointerEx
         highlightedCharacter = GetComponent<CharacterSheet>();
         ttm = uiam.toolTipContainer.GetComponent<ToolTipManager>();
         npm = uiam.nameplatePanel.GetComponent<NameplateManager>();
-        startcolor = GetComponent<Renderer>().material.color;
         gameObjectRenderer = GetComponent<Renderer>();
     }
 
@@ -52,7 +51,7 @@ public class ObjectHighlighter : MonoBehaviour, IPointerEnterHandler, IPointerEx
             }
         }
 
-        gameObjectRenderer.material.color = highlightColor;
+        gameObjectRenderer.material.color = ColorWithAlphaPreserved(highlightColor);
         highlighted = true;
     }
 
@@ -61,7 +60,7 @@ public class ObjectHighlighter : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
         ttm.SetTooltip(false);
 
-        gameObjectRenderer.material.color = startcolor;
+        gameObjectRenderer.material.color = ColorWithAlphaPreserved(defaultColor);
         highlighted = false;
     }
 
@@ -102,5 +101,13 @@ public class ObjectHighlighter : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
             EnterBehavior();
         }
+    }
+
+    private Color ColorWithAlphaPreserved(Color color)
+    {
+
+        Color modifiedColor = color;
+        modifiedColor.a = gameObjectRenderer.material.color.a;
+        return modifiedColor;
     }
 }

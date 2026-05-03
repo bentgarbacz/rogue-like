@@ -10,6 +10,7 @@ public class TileManager : MonoBehaviour
     public Dictionary<Vector2Int, Tile> tileDict = new();
     public HashSet<Vector2Int> revealedTiles = new();
     public HashSet<Vector2Int> doorCoords = new();
+    public HashSet<Vector2Int> transparentTiles = new();
     [SerializeField] private EntityManager entityMgr;
     [SerializeField] private VisibilityManager visibilityManager;
     [SerializeField] private MiniMapManager minimapManager;
@@ -44,6 +45,7 @@ public class TileManager : MonoBehaviour
         tileDict = new();
         revealedTiles = new();
         doorCoords = new();
+        transparentTiles = new();
     }
 
     public void DeleteTile(Vector2Int coord)
@@ -193,11 +195,73 @@ public class TileManager : MonoBehaviour
         foreach(Vector2Int coord in tileDict.Keys)
         {
 
-            if (!revealedTiles.Contains(coord))
+            if (revealedTiles.Contains(coord))
             {
 
-                RevealTile(coord);
+                continue;
+            }
+
+            RevealTile(coord);
+        }
+
+        visibilityManager.UpdateVisibilities();
+    }
+
+    public void MakeAdjacentWallsTransparent(Vector2Int coord, float transparencyLevel = 0.3f)
+    {
+
+        List<Vector2Int> directions = NeighborVals.allDirectionsList;
+
+        foreach (Vector2Int d in directions)
+        {
+
+            Vector2Int checkCoord = new(coord.x + d.x, coord.y + d.y);
+
+            if (!tileDict.ContainsKey(checkCoord))
+            {
+
+                continue;
+            }
+
+            Tile tile = tileDict[checkCoord];
+
+            // Only apply transparency to walls (non-actionable tiles)
+            if (!tile.IsActionable())
+            {
+
+                Renderer renderer = tile.gameObject.GetComponent<Renderer>();
+                if (renderer != null)
+                {
+
+                    TransparencyManager.SetTransparency(renderer, transparencyLevel);
+                    transparentTiles.Add(checkCoord);
+                }
             }
         }
+    }
+
+    public void ReturnTransparentTilesToOpaque()
+    {
+
+        foreach (Vector2Int coord in transparentTiles)
+        {
+
+            if (!tileDict.ContainsKey(coord))
+            {
+
+                continue;
+            }
+
+            Tile tile = tileDict[coord];
+            Renderer renderer = tile.gameObject.GetComponent<Renderer>();
+
+            if (renderer != null)
+            {
+
+                TransparencyManager.SetOpaque(renderer);
+            }
+        }
+
+        transparentTiles.Clear();
     }
 }

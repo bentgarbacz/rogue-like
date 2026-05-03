@@ -10,6 +10,7 @@ public class NPCGenerator : MonoBehaviour
     [SerializeField] private TileManager tileMgr;
     [SerializeField] private GameObject chest;
     [SerializeField] private GameObject skeleton;
+    [SerializeField] private GameObject skeletalRemains;
     [SerializeField] private GameObject skeletonArcher;
     [SerializeField] private GameObject goblin;
     [SerializeField] private GameObject rat;
@@ -20,6 +21,7 @@ public class NPCGenerator : MonoBehaviour
     [SerializeField] private GameObject skull;
     [SerializeField] private GameObject floater;
     [SerializeField] private GameObject stoneGolem;
+    [SerializeField] private GameObject lich;
     private readonly Vector3 spawnPosOffset = new(0, 0.1f, 0);
 
     void Start()
@@ -30,6 +32,7 @@ public class NPCGenerator : MonoBehaviour
 
             {NPCType.Chest, chest},
             {NPCType.Skeleton, skeleton},
+            {NPCType.SkeletalRemains, skeletalRemains},
             {NPCType.SkeletonArcher, skeletonArcher},
             {NPCType.Goblin, goblin},
             {NPCType.Rat, rat},
@@ -39,7 +42,8 @@ public class NPCGenerator : MonoBehaviour
             {NPCType.Spider, spider},
             {NPCType.Skull, skull},
             {NPCType.Floater, floater},
-            {NPCType.StoneGolem, stoneGolem}
+            {NPCType.StoneGolem, stoneGolem},
+            {NPCType.Lich, lich}
         };
     }
 

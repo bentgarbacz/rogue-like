@@ -7,8 +7,8 @@ using UnityEngine.InputSystem;
 public class SpellCaster : MonoBehaviour
 {
 
-    public bool targeting = false;
-    public bool selfCasting = false;
+    private bool targeting = false;
+    private bool selfCasting = false;
     private List<SpellSlot> spellSlots = new();
     private Spell currentSpell;
     private ItemSlot currentItemSlot;
@@ -47,7 +47,7 @@ public class SpellCaster : MonoBehaviour
 
         GameObject target = clickMgr.GetObject();
 
-        if(target != null && currentSpell != null)
+        if(target != null && currentSpell != null && !pc.isActionBlocked)
         {
 
             if(currentSpell.Cast(this.gameObject, target))
@@ -103,6 +103,12 @@ public class SpellCaster : MonoBehaviour
 
     private bool CastSpell(SpellType spellType, GameObject target = null)
     {
+
+        if(pc.isActionBlocked)
+        {
+            
+            return false;
+        }
 
         Spell spell = spellRef.spellDictionary[spellType];
 

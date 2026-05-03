@@ -22,5 +22,11 @@ public class SpellReferences : MonoBehaviour
         spellDictionary.Add(SpellType.Telekinesis, new Telekinesis());
         spellDictionary.Add(SpellType.SummonSkull, new SummonSkull());
         spellDictionary.Add(SpellType.Lift, new Lift());
+        spellDictionary.Add(SpellType.Freeze, new Freeze());
+        spellDictionary.Add(SpellType.IceBolt, new IceBolt());
+        spellDictionary.Add(SpellType.EnrageSpell, new EnrageSpell());
+        spellDictionary.Add(SpellType.ResilienceSpell, new ResilienceSpell());
+        spellDictionary.Add(SpellType.WeakenSpell, new WeakenSpell());
+        spellDictionary.Add(SpellType.VulnerableSpell, new VulnerableSpell());
     }
 }
