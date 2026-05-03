@@ -9,7 +9,6 @@ public class StoneGolemCharacterSheet : EnemyCharacterSheet
 {
     private int skipTurnCount = 0;
     private ObjectHighlighter highlighter;
-    private TextNotificationManager notificationManager;
     private Color originalColor;
 
     public override void Awake()
@@ -33,7 +32,6 @@ public class StoneGolemCharacterSheet : EnemyCharacterSheet
         attackClip = Resources.Load<AudioClip>("Sounds/BigSmack");
 
         highlighter = GetComponent<ObjectHighlighter>();
-        notificationManager = GetComponent<TextNotificationManager>();
         originalColor = highlighter.GetComponent<Renderer>().material.color;
     }
 
@@ -72,7 +70,7 @@ public class StoneGolemCharacterSheet : EnemyCharacterSheet
             
             if (tileMgr.levelCoords.Contains(twoStepCoord) && !tileMgr.occupiedlist.Contains(twoStepCoord))
             {
-                movementManager.AddMovement(this, twoStepCoord);
+                //movementManager.AddMovement(this, twoStepCoord);
                 Move(twoStepCoord);
                 attackCoord = twoStepCoord;
             }

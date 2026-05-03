@@ -65,11 +65,7 @@ public class TurnSequencer : MonoBehaviour
             AggroNearbyEnemies();
         }
 
-        if (ProcessMovement())
-        {
-
-            return;
-        }
+        ProcessMovement();
     }
 
     private bool ProcessMovement()
@@ -85,6 +81,7 @@ public class TurnSequencer : MonoBehaviour
 
         movementManager.ProcessMovement();
         minimapMgr.UpdateDynamicIcons();
+        visibilityMgr.UpdateVisibilities();
 
         return false;
     }
@@ -104,6 +101,13 @@ public class TurnSequencer : MonoBehaviour
         {
 
             return false;
+        }
+
+        if(playerCharacter.isActionBlocked)
+        {
+
+            actionTaken = true;
+            return true;
         }
 
         Tile targetTile = target.GetComponent<Tile>();
@@ -244,6 +248,12 @@ public class TurnSequencer : MonoBehaviour
         foreach (GameObject entity in entitiesCopy)
         {
 
+            if (entity.GetComponent<CharacterSheet>().isActionBlocked)
+            {
+
+                continue;
+            }
+
             entity.GetComponent<NpcCharacterSheet>().AggroBehavior();
         }
     }
@@ -347,7 +357,7 @@ public class TurnSequencer : MonoBehaviour
         spellCaster.UpdateSpellSlots();
         minimapMgr.UpdateDynamicIcons();
         namePlateMgr.IncrementDisplayTimer();
-        visibilityMgr.UpdateVisibilities();
+        //visibilityMgr.UpdateVisibilities();
     }
 
     private void MoveOneSpace(List<Vector2Int> pathToDestination)

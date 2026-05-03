@@ -149,7 +149,7 @@ public class CombatSequencer : MonoBehaviour
             }else
             {
 
-                attack.defenderCS.audioSource.PlayOneShot(attack.defenderCS.missClip);
+                attack.attackerCS.audioSource.PlayOneShot(attack.attackerCS.missClip);
             }
 
             yield return new WaitForSeconds(trimTime); //Wait out time trimmed from above
@@ -163,17 +163,9 @@ public class CombatSequencer : MonoBehaviour
     public bool CheckMeleeAttackValidity(GameObject attacker, GameObject defender)
     {
 
-        //attack occurs only if defender in in a neighboring tile of the attacker
-        if(PathFinder.GetNeighbors(defender.GetComponent<CharacterSheet>().loc.coord, tileMgr.levelCoords).Contains(attacker.GetComponent<CharacterSheet>().loc.coord))
-        {
+        HashSet<Vector2Int> targetNeighbors = PathFinder.GetNeighbors(defender.GetComponent<CharacterSheet>().loc.coord, tileMgr.levelCoords);
 
-            //combatBuffer.Add( new Attack(attacker, defender, minDamage, maxDamage, speed));
-            return true;
-        }
-
-        //combatBuffer.Add( new Attack(attacker, defender, minDamage, maxDamage, speed));
-
-        return true;
+        return targetNeighbors.Contains(attacker.GetComponent<CharacterSheet>().loc.coord);
     }
 
     public bool CheckProjectileAttackValidity(GameObject attacker, GameObject defender, int range)
@@ -181,15 +173,7 @@ public class CombatSequencer : MonoBehaviour
 
         float distance = Vector3.Distance(attacker.transform.position, defender.transform.position);
 
-        //attack occurs only if attacker has a line of sight on the target
-        if(range >= distance && LineOfSight.HasLOS(attacker, defender))
-        {
-            
-            //combatBuffer.Add( new Attack(attacker, defender,minDamage, maxDamage, speed, projectile) );
-            return true;
-        }
-
-        return false;
+        return range >= distance && LineOfSight.HasLOS(attacker, defender);
     }
 
     public void AddAttack(Attack attack)
@@ -217,6 +201,10 @@ public class CombatSequencer : MonoBehaviour
         {
             // Calculate damage
             int damage = Random.Range(attack.minDamage, attack.maxDamage + 1);            
+
+            float multiplier = attack.attackerCS.damageDealtMultiplier * attack.defenderCS.damageTakenMultiplier;
+
+            damage = (int)(damage * multiplier);    
 
             // Determine if the attack is critical
             if (Random.Range(0, 100) < attack.attackerCS.critChance)

@@ -24,21 +24,23 @@ public class Fireball : Spell
     public override bool Cast(GameObject caster, GameObject target)
     {
 
-        if(target.GetComponent<CharacterSheet>())
+        if(!target.GetComponent<CharacterSheet>())
         {
 
-            if(combatSeq.CheckProjectileAttackValidity(caster, target, range))
-            {
-
-                Attack attack = new(caster, target, minDamage, maxDamage, caster.GetComponent<CharacterSheet>().speed, projectileType);
-                combatSeq.AddAttack(attack);
-
-                ResetCooldown(caster);
-                
-                return true;
-            }
+            return false;
         }
 
-        return false;
+        if(!combatSeq.CheckProjectileAttackValidity(caster, target, range))
+        {
+
+            return false;
+        }
+        
+        Attack attack = new(caster, target, minDamage, maxDamage, caster.GetComponent<CharacterSheet>().speed, projectileType);
+        combatSeq.AddAttack(attack);
+
+        ResetCooldown(caster);
+        
+        return true;        
     }
 }

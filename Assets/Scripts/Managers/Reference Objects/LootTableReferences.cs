@@ -16,6 +16,10 @@ public static class LootTableReferences
             {
                 DropTableType.DebugChest,
                 new List<Item>(){
+                                    new EnrageSpellScroll(100),
+                                    new ResilienceSpellScroll(100),
+                                    new WeakenSpellScroll(100),
+                                    new VulnerableSpellScroll(100),
                                     new SummonSkullScroll(100),
                                     new LiftScroll(100),
                                     new ClairvoyanceScroll(100),
@@ -24,6 +28,8 @@ public static class LootTableReferences
                                     new FortifyScroll(100),
                                     new SavageLeapScroll(100),
                                     new PoisonousStrikeScroll(100),
+                                    new FreezeScroll(100),
+                                    new IceBoltScroll(100),
                                     new Robes(100),
                                     new ManaPotion1(100),
                                     new FireballScroll(100),

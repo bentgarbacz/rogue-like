@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class CatacombBiome : Biome
 {
@@ -93,6 +94,7 @@ public class CatacombBiome : Biome
 
         GameObject newWall = Instantiate(catacombWallTile, spawnPos, catacombWallTile.transform.rotation);
         newWall.GetComponent<Tile>().SetCoord(new Vector2Int((int)spawnPos.x, (int)spawnPos.z));
+
         entityMgr.AddGameObject(newWall);
         //newWall.GetComponent<Renderer>().material.color = Color.gray;
 

@@ -23,6 +23,9 @@ public class CharacterSheet : MonoBehaviour
     public int intelligence = 0;
     public int armor = 0;
     public int evasion = 0;
+    public float damageDealtMultiplier = 1f;
+    public float damageTakenMultiplier = 1f;
+    public bool isActionBlocked = false;
     public DropTableType dropTable = DropTableType.None;
     public StatusEffectManager statusEffectMgr;
     protected TileManager tileMgr;
@@ -33,6 +36,7 @@ public class CharacterSheet : MonoBehaviour
     public AudioClip missClip;
     public string title = "N/A";
     protected GameObject managers;
+    protected TextNotificationManager notificationManager;
 
     public virtual void Awake()
     {
@@ -42,6 +46,7 @@ public class CharacterSheet : MonoBehaviour
         entityMgr = managers.GetComponent<EntityManager>();
 
         lockMgr = GetComponent<LockManager>();
+        notificationManager = GetComponent<TextNotificationManager>();
 
         GetComponent<MoveToTarget>().target = transform.position;
         loc.coord = new Vector2Int((int)transform.position.x, (int)transform.position.z);
@@ -55,42 +60,44 @@ public class CharacterSheet : MonoBehaviour
     public virtual bool Move(Vector2Int newCoord, float waitTime = 0f)
     {
 
-        if (!tileMgr.occupiedlist.Contains(newCoord))
+        if (tileMgr.occupiedlist.Contains(newCoord))
         {
 
-            Vector3 newPos = new((float)newCoord.x, 0.1f, (float)newCoord.y);
-
-            tileMgr.MoveEntity(this.gameObject, loc.coord, newCoord);
-
-            loc.coord = newCoord;
-
-            GetComponent<MoveToTarget>().SetTarget(newPos, waitTime);
-            transform.rotation = Quaternion.Euler(0, GameFunctions.DetermineRotation(transform.position, newPos), 0);
-
-            return true;
+            return false;            
         }
 
-        return false;
+        Vector3 newPos = new((float)newCoord.x, 0.1f, (float)newCoord.y);
+
+        tileMgr.MoveEntity(this.gameObject, loc.coord, newCoord);
+
+        loc.coord = newCoord;
+
+        GetComponent<MoveToTarget>().SetTarget(newPos, waitTime);
+        transform.rotation = Quaternion.Euler(0, GameFunctions.DetermineRotation(transform.position, newPos), 0);
+
+        return true;
+    
     }
 
     public virtual bool Teleport(Vector2Int newCoord)
     {
 
-        if (!tileMgr.occupiedlist.Contains(newCoord))
+        if (tileMgr.occupiedlist.Contains(newCoord))
         {
 
-            Vector3 newPos = new((float)newCoord.x, 0.1f, (float)newCoord.y);
 
-            tileMgr.MoveEntity(this.gameObject, loc.coord, newCoord);
-
-            transform.position = newPos;
-
-            loc.coord = newCoord;
-
-            return true;
+            return false;
         }
 
-        return false;
+        Vector3 newPos = new((float)newCoord.x, 0.1f, (float)newCoord.y);
+
+        tileMgr.MoveEntity(this.gameObject, loc.coord, newCoord);
+
+        transform.position = newPos;
+
+        loc.coord = newCoord;
+
+        return true;
     }
 
     public string GetName()
@@ -114,6 +121,12 @@ public class CharacterSheet : MonoBehaviour
     public virtual void OnDeath()
     {
 
+        return;
+    }
+
+    public virtual void OnDamage()
+    {
+        
         return;
     }
 }

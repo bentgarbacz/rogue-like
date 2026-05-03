@@ -33,18 +33,6 @@ public class SpiderCharacterSheet : EnemyCharacterSheet
         attackClip = Resources.Load<AudioClip>("Sounds/Spider");
     }
 
-    private GameObject GetTargetAtCoord(Vector2Int coord)
-    {
-        foreach (GameObject entity in tileMgr.GetTile(coord).entitiesOnTile)
-        {
-            if (entity != null && entity.GetComponent<CharacterSheet>() != null)
-            {
-                return entity;
-            }
-        }
-        return null;
-    }
-
     protected override bool AttackEntity(Vector2Int coord)
     {
 
@@ -67,9 +55,9 @@ public class SpiderCharacterSheet : EnemyCharacterSheet
         }
 
         Attack attack = new(this.gameObject, targetEntity, minDamage, maxDamage, speed);
-        Poison poison = new(targetEntity.GetComponent<CharacterSheet>(), 8, minDamage);
+        Poison poison = new(targetEntity.GetComponent<CharacterSheet>(), 3, minDamage);
 
-        attack.AttachStatusEffect(poison, 1f);
+        attack.AttachStatusEffect(poison, 0.3f);
         combatSeq.AddAttack(attack);
 
         return true;

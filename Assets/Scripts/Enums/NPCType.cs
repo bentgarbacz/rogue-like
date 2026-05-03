@@ -3,6 +3,7 @@ public enum NPCType
 
     Chest,
     Skeleton,
+    SkeletalRemains,
     SkeletonArcher,
     Goblin,
     Rat,
@@ -12,5 +13,6 @@ public enum NPCType
     Spider,
     Skull,
     Floater,
-    StoneGolem
+    StoneGolem,
+    Lich
 }

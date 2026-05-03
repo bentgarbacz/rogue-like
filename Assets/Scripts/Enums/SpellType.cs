@@ -11,5 +11,11 @@ public enum SpellType
     Clairvoyance,
     Telekinesis,
     SummonSkull,
-    Lift
+    Lift,
+    Freeze,
+    IceBolt,
+    EnrageSpell,
+    ResilienceSpell,
+    WeakenSpell,
+    VulnerableSpell
 }

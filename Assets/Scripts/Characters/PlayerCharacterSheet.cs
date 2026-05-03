@@ -192,7 +192,7 @@ public class PlayerCharacterSheet : CharacterSheet
 
     private bool TryQueueMeleeAttack(Equipment weapon, GameObject defender, CharacterSheet defendingCharacter, int attackSpeed)
     {
-        if (!!combatSeq.CheckMeleeAttackValidity(this.gameObject, defender))
+        if (!combatSeq.CheckMeleeAttackValidity(this.gameObject, defender))
         {
 
             return false;
@@ -234,10 +234,12 @@ public class PlayerCharacterSheet : CharacterSheet
         {
             if (mainHandWeapon is RangedWeapon rangedWeapon)
             {
+
                 attackOccurred = TryQueueRangedAttack(rangedWeapon, defender, speed) || attackOccurred;
             }
             else
             {
+
                 attackOccurred = TryQueueMeleeAttack(mainHandWeapon, defender, defendingCharacter, speed) || attackOccurred;
             }
         }
@@ -350,7 +352,9 @@ public class PlayerCharacterSheet : CharacterSheet
     public void RevealAroundPC()
     {
 
+        tileMgr.ReturnTransparentTilesToOpaque();
         tileMgr.RevealTiles(GameFunctions.GetCircleCoords(loc.coord, visibilityRadius));
+        tileMgr.MakeAdjacentWallsTransparent(loc.coord);
     }
 
     public override void OnDeath()

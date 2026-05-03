@@ -71,7 +71,6 @@ public class EntityManager : MonoBehaviour
             movementMgr.RemoveCharacter(characterSheet);
         }
 
-        Destroy(target);
         minimapMgr.UpdateDynamicIcons();
     }
 
