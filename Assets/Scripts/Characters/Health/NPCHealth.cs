@@ -11,15 +11,16 @@ public class NPCHealth : CharacterHealth
     {
         
         npm = GameObject.Find("CanvasHUD").transform.GetChild(10).GetComponent<NameplateManager>();
+        
+        currentHealth = characterSheet.stats.maxHealth;
+        currentBarrier = characterSheet.stats.maxBarrier;
     }
 
-    public override int TakeDamage(int damage)
+    public override void TakeDamage(int damage)
     {
 
-        int damageTaken = base.TakeDamage(damage);
+        base.TakeDamage(damage);
         npm.UpdateHealth();
-
-        return damageTaken;
     }
 
     public override void Heal(int healValue)

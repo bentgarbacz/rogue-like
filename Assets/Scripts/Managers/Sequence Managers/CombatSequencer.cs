@@ -105,6 +105,14 @@ public class CombatSequencer : MonoBehaviour
             }
 
             Attack attack = combatBuffer[0];
+
+            if(attack.defender == null || attack.defenderCS == null || attack.attacker == null || attack.attackerCS == null)
+            {
+                
+                combatBuffer.RemoveAt(0);
+                continue;
+            }
+
             float waitTime = attackTime;
 
             AttackAnimation attackerAnimation = attack.attacker.GetComponent<AttackAnimation>();
@@ -185,14 +193,14 @@ public class CombatSequencer : MonoBehaviour
     public bool ExecuteAttack(Attack attack)
     {
 
-        if(attack.defender == null)
+        if(attack.defender == null || attack.defenderCS == null)
         {
 
             return false;
         }
 
         // Calculate hit chance
-        float hitChance = ((float)attack.attackerCS.accuracy - (float)attack.defenderCS.evasion) / (float)attack.attackerCS.accuracy * 100f;
+        float hitChance = ((float)attack.attackerCS.stats.accuracy - (float)attack.defenderCS.stats.evasion) / (float)attack.attackerCS.stats.accuracy * 100f;
         bool hitSuccessful = Random.Range(0, 100) <= hitChance;
         string text;
         Color textColor = Color.red;
@@ -202,14 +210,15 @@ public class CombatSequencer : MonoBehaviour
             // Calculate damage
             int damage = Random.Range(attack.minDamage, attack.maxDamage + 1);            
 
-            float multiplier = attack.attackerCS.damageDealtMultiplier * attack.defenderCS.damageTakenMultiplier;
-
-            damage = (int)(damage * multiplier);    
+            float multiplier = attack.attackerCS.stats.damageDealtMultiplier * attack.defenderCS.stats.damageTakenMultiplier;
+            
+            int armorReduction = Mathf.Max(0, attack.defenderCS.stats.armor - attack.attackerCS.stats.armorPenetration);
+            damage = (int)(Mathf.Max(0, damage - armorReduction) * multiplier);
 
             // Determine if the attack is critical
-            if (Random.Range(0, 100) < attack.attackerCS.critChance)
+            if (Random.Range(0, 100) < attack.attackerCS.stats.critChance)
             {
-                damage *= attack.attackerCS.critMultiplier;
+                damage *= attack.attackerCS.stats.critMultiplier;
                 textColor = Color.yellow;
             }
 

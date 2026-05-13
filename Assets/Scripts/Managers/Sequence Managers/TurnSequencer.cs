@@ -9,6 +9,7 @@ public class TurnSequencer : MonoBehaviour
     private bool turnLock = false;
     private int turnLockCount = 0;
     private bool actionTaken = false;
+    private bool inanimateTurnTaken = false;
     private Queue<Vector2Int> playerMovementQueue = new();
     private PlayerCharacterSheet playerCharacter;
     private SpellCaster spellCaster;
@@ -48,6 +49,13 @@ public class TurnSequencer : MonoBehaviour
             return;
         }
 
+        if(inanimateTurnTaken)
+        {
+            
+            inanimateTurnTaken = false;
+            ProcessEntityTurns(entityMgr.inanimates);
+        }
+
         if (actionTaken)
         {
 
@@ -57,8 +65,9 @@ public class TurnSequencer : MonoBehaviour
             djMapMgr.UpdateCombinedMapPlayerAndNPC();
             ProcessEntityTurns(entityMgr.aggroEnemies);
             djMapMgr.PopulateEnemyMap();
-            ProcessEntityTurns(entityMgr.npcs);
+            ProcessEntityTurns(entityMgr.friendlies);
             djMapMgr.PopulateNPCMap();
+            inanimateTurnTaken = true;
             
             combatSeq.CommenceCombat();
             UpkeepEffects();
@@ -74,12 +83,11 @@ public class TurnSequencer : MonoBehaviour
         if (playerMovementQueue.Count > 0 && !pcMovement.IsMoving())
         {
 
+            inanimateTurnTaken = true;
             playerCharacter.Move(playerMovementQueue.Dequeue());
-            //actionTaken = true;
-            return true;
         }
 
-        movementManager.ProcessMovement();
+        movementManager.MoveNPCs();
         minimapMgr.UpdateDynamicIcons();
         visibilityMgr.UpdateVisibilities();
 
@@ -206,7 +214,7 @@ public class TurnSequencer : MonoBehaviour
             else
             {
 
-                playerMovementQueue.Clear();
+                //playerMovementQueue.Clear();
 
                 for (int i = 1; i < pathToDestination.Count; i++)
                 {
@@ -230,7 +238,7 @@ public class TurnSequencer : MonoBehaviour
             return false;
         }
 
-        if (targetCharacter != playerCharacter)
+        if (targetCharacter != playerCharacter && targetCharacter.gameObject != null)
         {
 
             playerCharacter.AttackCharacter(targetCharacter.gameObject);
@@ -354,6 +362,7 @@ public class TurnSequencer : MonoBehaviour
         entityMgr.TriggerStatusEffects();
         playerCharacter.BecomeHungrier();
         playerCharacter.DecrementCooldowns();
+        entityMgr.UpdateAllBarrier();
         spellCaster.UpdateSpellSlots();
         minimapMgr.UpdateDynamicIcons();
         namePlateMgr.IncrementDisplayTimer();
@@ -395,7 +404,7 @@ public class TurnSequencer : MonoBehaviour
         if (!seesTarget)
         {
 
-            foreach (GameObject entity in entityMgr.npcs)
+            foreach (GameObject entity in entityMgr.friendlies)
             {
 
                 if (LineOfSight.HasLOS(enemy, entity))

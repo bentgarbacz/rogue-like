@@ -36,7 +36,7 @@ public class Scroll : Item
     public bool MeetsRequirements()
     {
 
-        if(playerCharacter.strength >= strengthRequirement && playerCharacter.dexterity >= dexterityRequirement && playerCharacter.intelligence >= intelligenceRequirement)
+        if(playerCharacter.stats.strength >= strengthRequirement && playerCharacter.stats.dexterity >= dexterityRequirement && playerCharacter.stats.intelligence >= intelligenceRequirement)
         {
 
             return true;

@@ -7,7 +7,8 @@ using UnityEngine.UI;
 public class NameplateManager : MonoBehaviour
 {
 
-    [SerializeField]private Image bar;
+    [SerializeField]private Image healthBar;
+    [SerializeField]private Image barrierBar;
     [SerializeField]private TextMeshProUGUI text;
     private NpcCharacterSheet characterSheet;
     private CharacterHealth characterHealth;
@@ -28,12 +29,23 @@ public class NameplateManager : MonoBehaviour
         if(characterHealth != null)
         {
 
-            bar.fillAmount = (float)characterHealth.currentHealth / (float)characterHealth.maxHealth;
+            healthBar.fillAmount = (float)characterHealth.currentHealth / (float)characterSheet.stats.maxHealth;
+
+            if(characterSheet.stats.maxBarrier > 0)
+            {
+
+                barrierBar.fillAmount = (float)characterHealth.currentBarrier / (float)characterSheet.stats.maxBarrier;
+            }
+            else
+            {
+                
+                barrierBar.fillAmount = 0f;
+            }
 
         }else
         {
 
-            bar.fillAmount = 0f;
+            healthBar.fillAmount = 0f;
         }
     }
 
@@ -50,12 +62,12 @@ public class NameplateManager : MonoBehaviour
         if (characterSheet is EnemyCharacterSheet)
         {
 
-            bar.color = Color.white; // no tint for enemies, default image is red
+            healthBar.color = Color.white; // no tint for enemies, default image is red
         }
         else
         {
             
-            bar.color = Color.green;
+            healthBar.color = Color.green;
         }
 
         text.ForceMeshUpdate(true);

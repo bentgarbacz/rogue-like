@@ -16,7 +16,7 @@ public class Robes : Equipment
 
         this.type = EquipmentType.Chest;
 
-        this.bonusStatDictionary[StatType.Evasion] = 10;
+        this.bonusStatDictionary[StatType.MaxBarrier] = 10;
         this.bonusStatDictionary[StatType.MaxMana] = 10;
 
         SetDropChance(dropChance);

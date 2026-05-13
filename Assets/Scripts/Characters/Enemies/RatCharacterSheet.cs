@@ -10,15 +10,13 @@ public class RatCharacterSheet : EnemyCharacterSheet
     {
         
         base.Awake();
-        maxHealth = 15;
-        accuracy = 100;
-        minDamage = 1;
-        maxDamage = 3;
+        stats.maxHealth = 15;
+        stats.accuracy = 100;
+        stats.minDamage = 1;
+        stats.maxDamage = 3;
         level = 3;
-        speed = 15;
-        evasion = 75;
-
-        characterHealth.InitHealth(maxHealth);
+        stats.speed = 15;
+        stats.evasion = 75;
 
         dropTable = DropTableType.Rat;
         title = "Rat";

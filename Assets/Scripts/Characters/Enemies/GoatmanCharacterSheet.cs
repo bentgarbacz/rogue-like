@@ -13,16 +13,14 @@ public class GoatmanCharacterSheet : EnemyCharacterSheet
     {
         
         base.Awake();
-        maxHealth = 30;
-        accuracy = 600;
-        minDamage = 1;
-        maxDamage = 4;
+        stats.maxHealth = 30;
+        stats.accuracy = 600;
+        stats.minDamage = 1;
+        stats.maxDamage = 4;
         level = 4;
-        speed = 8;
-        evasion = 50;
+        stats.speed = 8;
+        stats.evasion = 50;
         
-
-        characterHealth.InitHealth(maxHealth);
 
         dropTable = DropTableType.None;
         title = "Goatman";
@@ -35,7 +33,7 @@ public class GoatmanCharacterSheet : EnemyCharacterSheet
 
         bool hasEnraged = false;
 
-        if(characterHealth.currentHealth < characterHealth.maxHealth * 0.6 && enrageStage1 ==false)
+        if(characterHealth.currentHealth < stats.maxHealth * 0.6 && enrageStage1 ==false)
         {
             
             enrageStage1 = true;
@@ -43,7 +41,7 @@ public class GoatmanCharacterSheet : EnemyCharacterSheet
             statusEffectMgr.AddEffect(new Enrage(this, int.MaxValue, 0.3f));
         }
 
-        if(characterHealth.currentHealth < characterHealth.maxHealth * 0.3 && enrageStage2 ==false)
+        if(characterHealth.currentHealth < stats.maxHealth * 0.3 && enrageStage2 ==false)
         {
             
             enrageStage2 = true;

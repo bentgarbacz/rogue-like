@@ -142,7 +142,7 @@ public class NpcCharacterSheet : CharacterSheet
             return false;
         }
 
-        Attack attack = new(this.gameObject, targetEntity, minDamage, maxDamage, speed);
+        Attack attack = new(this.gameObject, targetEntity, stats.minDamage, stats.maxDamage, stats.speed);
         combatSeq.AddAttack(attack);
 
         return true;

@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using System;
 using UnityEngine.UI;
+using System.Threading;
 
 public class UpdateUIElements : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class UpdateUIElements : MonoBehaviour
     public TextMeshProUGUI healthStatusHUD;
     public Image healthBar;
     public Image hungerBar;
+    public Image barrierBar;
     public Image xpBar;
     public TextMeshProUGUI manaStatusHUD;
     public Image manaBar;
@@ -27,6 +29,7 @@ public class UpdateUIElements : MonoBehaviour
     public TextMeshProUGUI evasionStatus;
     public TextMeshProUGUI accuracyStatus;
     public TextMeshProUGUI damageRangeStatus;
+    public TextMeshProUGUI barrierStatus;
     public TextMeshProUGUI freeStatPointsStatus;
     public GameObject hero;
     private PlayerCharacterSheet playerCharacter;
@@ -47,32 +50,46 @@ public class UpdateUIElements : MonoBehaviour
         if(playerCharacter)
         {
 
-            healthStatusHUD.SetText(playerHealth.currentHealth.ToString() + " / " + playerHealth.maxHealth.ToString());
-            healthBar.fillAmount = (float)playerHealth.currentHealth / (float)playerHealth.maxHealth;
+            healthStatusHUD.SetText(playerHealth.currentHealth.ToString() + " / " + playerCharacter.stats.maxHealth.ToString());
+            healthBar.fillAmount = (float)playerHealth.currentHealth / (float)playerCharacter.stats.maxHealth;
             hungerBar.fillAmount = (float)playerCharacter.hunger / (float)playerCharacter.maxHunger;
+
+            if(playerCharacter.stats.maxBarrier > 0)
+            {
+
+                barrierBar.fillAmount = (float)playerHealth.currentBarrier / (float)playerCharacter.stats.maxBarrier;
+            }
+            else
+            {
+                
+                barrierBar.fillAmount = 0f;
+            }
+            
             xpBar.fillAmount = (float)playerCharacter.totalXP / (float)playerCharacter.GetCurrentLevelUpBreakpoint();
-            manaStatusHUD.SetText(playerCharacter.mana.ToString() + " / " + playerCharacter.maxMana.ToString());
-            manaBar.fillAmount = (float)playerCharacter.mana / (float)playerCharacter.maxMana;
+            manaStatusHUD.SetText(playerCharacter.mana.ToString() + " / " + playerCharacter.stats.maxMana.ToString());
+            manaBar.fillAmount = (float)playerCharacter.mana / (float)playerCharacter.stats.maxMana;
  
 
-            healthStatus.SetText("Health: " + playerHealth.currentHealth.ToString() + " / " + playerHealth.maxHealth.ToString());
+            healthStatus.SetText("Health: " + playerHealth.currentHealth.ToString() + " / " + playerCharacter.stats.maxHealth.ToString());
             hungerStatus.SetText("Hunger: " + playerCharacter.hunger.ToString());
             experienceStatus.SetText("Experience: " + playerCharacter.totalXP.ToString() + " / " + playerCharacter.GetCurrentLevelUpBreakpoint().ToString());
-            manaStatus.SetText("Mana: " + playerCharacter.mana.ToString() + " / " + playerCharacter.maxMana.ToString());
+            manaStatus.SetText("Mana: " + playerCharacter.mana.ToString() + " / " + playerCharacter.stats.maxMana.ToString());
 
-            strengthStatus.SetText("Strength: " + playerCharacter.strength.ToString());
-            dexterityStatus.SetText("Dexterity: " + playerCharacter.dexterity.ToString());
-            intelligenceStatus.SetText("Intelligence: " + playerCharacter.intelligence.ToString());
+            strengthStatus.SetText("Strength: " + playerCharacter.stats.strength.ToString());
+            dexterityStatus.SetText("Dexterity: " + playerCharacter.stats.dexterity.ToString());
+            intelligenceStatus.SetText("Intelligence: " + playerCharacter.stats.intelligence.ToString());
             freeStatPointsStatus.SetText("Available Stat Points: " + playerCharacter.freeStatPoints.ToString());
 
-            speedStatus.SetText("Speed: " + playerCharacter.speed.ToString());
-            critChanceStatus.SetText("Crit Chance: " + playerCharacter.critChance.ToString());
-            accuracyStatus.SetText("Accuracy: " + playerCharacter.accuracy.ToString());
+            speedStatus.SetText("Speed: " + playerCharacter.stats.speed.ToString());
+            critChanceStatus.SetText("Crit Chance: " + playerCharacter.stats.critChance.ToString());
+            accuracyStatus.SetText("Accuracy: " + playerCharacter.stats.accuracy.ToString());
 
-            armorStatus.SetText("Armor: " + playerCharacter.armor.ToString());
-            evasionStatus.SetText("Evasion: " + playerCharacter.evasion.ToString());
+            armorStatus.SetText("Armor: " + playerCharacter.stats.armor.ToString());
+            evasionStatus.SetText("Evasion: " + playerCharacter.stats.evasion.ToString());
 
-            damageRangeStatus.SetText("Damage: " + playerCharacter.minDamage.ToString() + " - " + playerCharacter.maxDamage.ToString());
+            damageRangeStatus.SetText("Damage: " + playerCharacter.stats.minDamage.ToString() + " - " + playerCharacter.stats.maxDamage.ToString());
+
+            barrierStatus.SetText("Barrier: " + playerCharacter.stats.maxBarrier);
 
         }else
         {

@@ -20,7 +20,9 @@ public class Equipment : Item
             { StatType.Intelligence, 0 },
             { StatType.Speed, 0 },
             { StatType.CritChance, 0 },
+            { StatType.CritMultiplier, 0 },
             { StatType.Armor, 0 },
+            { StatType.ArmorPenetration, 0 },
             { StatType.Evasion, 0 },
             { StatType.Accuracy, 0 },
             { StatType.MinDamage, 0 },
@@ -29,7 +31,8 @@ public class Equipment : Item
             { StatType.MaxMana, 0 },
             { StatType.StrengthRequirement, 0 },
             { StatType.DexterityRequirement, 0 },
-            { StatType.IntelligenceRequirement, 0 }
+            { StatType.IntelligenceRequirement, 0 },
+            { StatType.MaxBarrier, 0 }
         };
 
         type = EquipmentType.None;

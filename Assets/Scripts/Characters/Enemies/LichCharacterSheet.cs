@@ -17,15 +17,14 @@ public class LichCharacterSheet : EnemyCharacterSheet
     {
 
         base.Awake();
-        maxHealth = 12;
-        accuracy = 100;
-        minDamage = 2;
-        maxDamage = 4;
+        stats.maxHealth = 12;
+        stats.accuracy = 100;
+        stats.minDamage = 2;
+        stats.maxDamage = 4;
         level = 5;
-        speed = 9;
-        evasion = 30;
+        stats.speed = 9;
+        stats.evasion = 30;
 
-        characterHealth.InitHealth(maxHealth);
         levitating.StartLevitating();
 
         dropTable = DropTableType.Witch;
@@ -74,7 +73,7 @@ public class LichCharacterSheet : EnemyCharacterSheet
                 if(inRange)
                 {
 
-                    Attack attack = new(this.gameObject, targetEntity, minDamage, maxDamage, speed, projectile);
+                    Attack attack = new(this.gameObject, targetEntity, stats.minDamage, stats.maxDamage, stats.speed, projectile);
                     combatSeq.AddAttack(attack);
 
                     attackCooldown = 3;

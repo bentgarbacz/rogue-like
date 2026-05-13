@@ -24,12 +24,12 @@ public class Weaken : StatusEffect
 
     public override void StartEffect()
     {
-        affectedCharacter.damageDealtMultiplier *= (1f - damageMultiplier);
+        affectedCharacter.stats.damageDealtMultiplier *= (1f - damageMultiplier);
     }
 
     public override void EndEffect()
     {
-        affectedCharacter.damageDealtMultiplier /= (1f - damageMultiplier);
+        affectedCharacter.stats.damageDealtMultiplier /= (1f - damageMultiplier);
     }
 
     public override string GetDescription()

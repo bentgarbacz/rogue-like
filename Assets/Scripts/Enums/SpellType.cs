@@ -17,5 +17,6 @@ public enum SpellType
     EnrageSpell,
     ResilienceSpell,
     WeakenSpell,
-    VulnerableSpell
+    VulnerableSpell,
+    ThrowTrap
 }

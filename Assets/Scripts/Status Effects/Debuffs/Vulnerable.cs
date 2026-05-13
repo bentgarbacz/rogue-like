@@ -24,12 +24,12 @@ public class Vulnerable : StatusEffect
 
     public override void StartEffect()
     {
-        affectedCharacter.damageTakenMultiplier *= (1f + damageMultiplierTaken);
+        affectedCharacter.stats.damageTakenMultiplier *= (1f + damageMultiplierTaken);
     }
 
     public override void EndEffect()
     {
-        affectedCharacter.damageTakenMultiplier /= (1f + damageMultiplierTaken);
+        affectedCharacter.stats.damageTakenMultiplier /= (1f + damageMultiplierTaken);
     }
 
     public override string GetDescription()

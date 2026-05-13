@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 
 [RequireComponent(typeof(MoveToTarget))]
 public class CharacterSheet : MonoBehaviour
@@ -9,22 +10,8 @@ public class CharacterSheet : MonoBehaviour
 
     public ObjectLocation loc;
     public CharacterHealth characterHealth;
-    public int maxHealth = 1;
-    public int accuracy = 100;
-    public int minDamage = 0;
-    public int maxDamage = 0;
+    public CharacterStats stats;
     public int level = 0;
-    public int speed;
-    public int critChance;
-    public int critMultiplier = 2;
-    public int vitality = 0;
-    public int strength = 0;
-    public int dexterity = 0;
-    public int intelligence = 0;
-    public int armor = 0;
-    public int evasion = 0;
-    public float damageDealtMultiplier = 1f;
-    public float damageTakenMultiplier = 1f;
     public bool isActionBlocked = false;
     public DropTableType dropTable = DropTableType.None;
     public StatusEffectManager statusEffectMgr;
@@ -50,10 +37,7 @@ public class CharacterSheet : MonoBehaviour
 
         GetComponent<MoveToTarget>().target = transform.position;
         loc.coord = new Vector2Int((int)transform.position.x, (int)transform.position.z);
-        characterHealth.InitHealth(maxHealth);
 
-        statusEffectMgr = gameObject.AddComponent<StatusEffectManager>();
-        audioSource = gameObject.AddComponent<AudioSource>();
         missClip = Resources.Load<AudioClip>("Sounds/Miss");
     }
 
@@ -104,18 +88,6 @@ public class CharacterSheet : MonoBehaviour
     {
 
         return title;
-    }
-
-    public virtual void ProcessStatusEffects()
-    {
-
-        if (statusEffectMgr == null)
-        {
-
-            return;
-        }
-
-        statusEffectMgr.ProcessStatusEffects();
     }
 
     public virtual void OnDeath()

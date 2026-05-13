@@ -22,6 +22,7 @@ public class NPCGenerator : MonoBehaviour
     [SerializeField] private GameObject floater;
     [SerializeField] private GameObject stoneGolem;
     [SerializeField] private GameObject lich;
+    [SerializeField] private GameObject trap;
     private readonly Vector3 spawnPosOffset = new(0, 0.1f, 0);
 
     void Start()
@@ -43,7 +44,8 @@ public class NPCGenerator : MonoBehaviour
             {NPCType.Skull, skull},
             {NPCType.Floater, floater},
             {NPCType.StoneGolem, stoneGolem},
-            {NPCType.Lich, lich}
+            {NPCType.Lich, lich},
+            {NPCType.Trap, trap}
         };
     }
 
@@ -57,7 +59,7 @@ public class NPCGenerator : MonoBehaviour
         newChest.GetComponent<ObjectVisibility>().Initialize();
         entityMgr.AddGameObject(newChest);
 
-        Loot newLoot = newChest.GetComponent<Loot>();
+        Loot newLoot = newChest.GetComponent<Chest>();
         newLoot.loc.coord = new Vector2Int((int)spawnPos.x, (int)spawnPos.z);
         tileMgr.GetTile(newLoot.loc.coord).AddEntity(newChest);
     }
@@ -103,9 +105,32 @@ public class NPCGenerator : MonoBehaviour
         tileMgr.GetTile(spawnCoord).AddEntity(npc);
 
         entityMgr.AddGameObject(npc);
-        entityMgr.npcs.Add(npc);
+        entityMgr.friendlies.Add(npc);
 
         return npc;
+
+    }
+
+    public GameObject CreateTrap(Vector3 spawnPos)
+    {
+
+        Vector2Int spawnCoord = new((int)spawnPos.x, (int)spawnPos.z);
+
+        GameObject trapObj = GetPrefab(NPCType.Trap, spawnPos + spawnPosOffset);
+
+        if (tileMgr.occupiedlist.Contains(spawnCoord))
+        {
+            return null;
+        }
+
+        trapObj.GetComponent<ObjectVisibility>().Initialize();
+        
+        // Traps don't block tiles, but they are still added to the level
+        tileMgr.GetTile(spawnCoord).AddEntity(trapObj);
+        entityMgr.AddGameObject(trapObj);
+        entityMgr.inanimates.Add(trapObj);
+
+        return trapObj;
 
     }
 

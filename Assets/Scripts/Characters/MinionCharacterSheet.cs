@@ -26,7 +26,7 @@ public class MinionCharacterSheet : NpcCharacterSheet
 
         if (!djm.enemyMap.Keys.Contains(loc.coord))
         {
-
+            
             Wander();
             return;
         }

@@ -9,6 +9,9 @@ using UnityEngine.Rendering;
 /// </summary>
 public static class TransparencyManager
 {
+    private static Dictionary<Renderer, Material> originalMaterials = new Dictionary<Renderer, Material>();
+    private static Dictionary<Renderer, bool> isConfiguredForTransparency = new Dictionary<Renderer, bool>();
+
     /// <summary>
     /// Sets the transparency level of a material on a given renderer.
     /// Automatically configures the material for transparency rendering.
@@ -25,14 +28,26 @@ public static class TransparencyManager
 
         alpha = Mathf.Clamp01(alpha); // Ensure alpha is between 0 and 1
 
-        Material newMat = new Material(renderer.material);
-        ConfigureForTransparency(newMat);
+        // Store the original material if we haven't already
+        if (!originalMaterials.ContainsKey(renderer))
+        {
+            originalMaterials[renderer] = new Material(renderer.sharedMaterial);
+            isConfiguredForTransparency[renderer] = false;
+        }
+
+        // Only configure once per renderer
+        Material newMat = new Material(originalMaterials[renderer]);
+        if (!isConfiguredForTransparency[renderer])
+        {
+            ConfigureForTransparency(newMat);
+            isConfiguredForTransparency[renderer] = true;
+        }
 
         Color color = newMat.color;
         color.a = alpha;
         newMat.color = color;
 
-        renderer.material = newMat;
+        renderer.sharedMaterial = newMat;
     }
 
     /// <summary>
@@ -47,14 +62,31 @@ public static class TransparencyManager
             return;
         }
 
-        Material newMat = new Material(renderer.material);
-        ConfigureForOpaque(newMat);
+        // If we have the original material stored, use it
+        if (originalMaterials.ContainsKey(renderer))
+        {
+            Material newMat = new Material(originalMaterials[renderer]);
+            ConfigureForOpaque(newMat);
+            isConfiguredForTransparency[renderer] = false;
 
-        Color color = newMat.color;
-        color.a = 1f;
-        newMat.color = color;
+            Color color = newMat.color;
+            color.a = 1f;
+            newMat.color = color;
 
-        renderer.material = newMat;
+            renderer.sharedMaterial = newMat;
+        }
+        else
+        {
+            // Fallback if no original was stored
+            Material newMat = new Material(renderer.sharedMaterial);
+            ConfigureForOpaque(newMat);
+
+            Color color = newMat.color;
+            color.a = 1f;
+            newMat.color = color;
+
+            renderer.sharedMaterial = newMat;
+        }
     }
 
     /// <summary>
@@ -63,14 +95,14 @@ public static class TransparencyManager
     /// <param name="material">The material to configure</param>
     private static void ConfigureForTransparency(Material material)
     {
-        material.SetFloat("_Mode", 3f);
+        material.SetOverrideTag("RenderType", "Transparent");
         material.SetInt("_SrcBlend", (int)BlendMode.SrcAlpha);
         material.SetInt("_DstBlend", (int)BlendMode.OneMinusSrcAlpha);
         material.SetInt("_ZWrite", 0);
+        
         material.DisableKeyword("_ALPHATEST_ON");
         material.EnableKeyword("_ALPHABLEND_ON");
         material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
-        material.renderQueue = 3000;
     }
 
     /// <summary>
@@ -79,13 +111,13 @@ public static class TransparencyManager
     /// <param name="material">The material to configure</param>
     private static void ConfigureForOpaque(Material material)
     {
-        material.SetFloat("_Mode", 0f);
+        material.SetOverrideTag("RenderType", "Opaque");
         material.SetInt("_SrcBlend", (int)BlendMode.One);
         material.SetInt("_DstBlend", (int)BlendMode.Zero);
         material.SetInt("_ZWrite", 1);
+        
         material.DisableKeyword("_ALPHATEST_ON");
         material.DisableKeyword("_ALPHABLEND_ON");
         material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
-        material.renderQueue = 2000;
     }
 }

@@ -51,7 +51,7 @@ public class PoisonousStrike : Spell
                     if(combatSeq.CheckMeleeAttackValidity(caster, target))
                     {
 
-                        Attack attack = new(caster, target, minDamage, maxDamage, attackingCharacter.speed);
+                        Attack attack = new(caster, target, minDamage, maxDamage, attackingCharacter.stats.speed);
                         attack.AttachStatusEffect(new Poison(defendingCharacter, duration, damagePerTurn), 1f);                        
                         combatSeq.AddAttack(attack);
 
@@ -65,7 +65,7 @@ public class PoisonousStrike : Spell
                     if(combatSeq.CheckProjectileAttackValidity(caster, target, rangedWeapon.bonusStatDictionary[StatType.Range]))
                     {
 
-                        Attack attack = new(caster, target, minDamage, maxDamage, attackingCharacter.speed, rangedWeapon.projectile);
+                        Attack attack = new(caster, target, minDamage, maxDamage, attackingCharacter.stats.speed, rangedWeapon.projectile);
                         attack.AttachStatusEffect(new Poison(defendingCharacter, duration, damagePerTurn), 1f);                        
                         combatSeq.AddAttack(attack);
                         

@@ -19,8 +19,8 @@ public class NPCMovementManager : MonoBehaviour
 
         if(addSuccessful)
         {
-
-           return; 
+            
+            return; 
         }
 
         if(movementCommands[targetCharacter].isLocked)
@@ -36,11 +36,11 @@ public class NPCMovementManager : MonoBehaviour
         }
     }
 
-    public void ProcessMovement()
+    public void MoveNPCs()
     {
 
         float waitTime = baseWaitTime;
-
+        
         foreach(CharacterSheet currChar in movementCommands.Keys)
         {
             
@@ -60,7 +60,7 @@ public class NPCMovementManager : MonoBehaviour
             }
         }
 
-        movementCommands = new();
+        movementCommands.Clear();
     }
 
     public bool RemoveCharacter(CharacterSheet characterSheet)

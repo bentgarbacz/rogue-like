@@ -11,6 +11,7 @@ public class Tile : MonoBehaviour
     [SerializeField] private IconType iconType = IconType.None;
     [SerializeField] private bool actionable = true;
     private MeshRenderer meshRenderer;
+    public Renderer tileRenderer;
     private BoxCollider boxCollider;
 
     void Awake()
@@ -18,6 +19,7 @@ public class Tile : MonoBehaviour
 
         meshRenderer = GetComponent<MeshRenderer>();
         boxCollider = GetComponent<BoxCollider>();
+        tileRenderer = GetComponent<Renderer>();
 
         SetState(false);
     }

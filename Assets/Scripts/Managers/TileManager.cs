@@ -207,39 +207,6 @@ public class TileManager : MonoBehaviour
         visibilityManager.UpdateVisibilities();
     }
 
-    public void MakeAdjacentWallsTransparent(Vector2Int coord, float transparencyLevel = 0.3f)
-    {
-
-        List<Vector2Int> directions = NeighborVals.allDirectionsList;
-
-        foreach (Vector2Int d in directions)
-        {
-
-            Vector2Int checkCoord = new(coord.x + d.x, coord.y + d.y);
-
-            if (!tileDict.ContainsKey(checkCoord))
-            {
-
-                continue;
-            }
-
-            Tile tile = tileDict[checkCoord];
-
-            // Only apply transparency to walls (non-actionable tiles)
-            if (!tile.IsActionable())
-            {
-
-                Renderer renderer = tile.gameObject.GetComponent<Renderer>();
-                if (renderer != null)
-                {
-
-                    TransparencyManager.SetTransparency(renderer, transparencyLevel);
-                    transparentTiles.Add(checkCoord);
-                }
-            }
-        }
-    }
-
     public void ReturnTransparentTilesToOpaque()
     {
 
@@ -263,5 +230,24 @@ public class TileManager : MonoBehaviour
         }
 
         transparentTiles.Clear();
+    }
+
+    public List<Tile> GetTilesInRadius(Vector2Int center, int radius)
+    {
+
+        List<Tile> tilesInRadius = new();
+        HashSet<Vector2Int> coordsInRadius = GameFunctions.GetCircleCoords(center, radius);
+
+        foreach (Vector2Int coord in coordsInRadius)
+        {
+
+            if (tileDict.ContainsKey(coord))
+            {
+
+                tilesInRadius.Add(tileDict[coord]);
+            }
+        }
+
+        return tilesInRadius;
     }
 }

@@ -7,12 +7,11 @@ using UnityEngine;
 
 public class PlayerCharacterSheet : CharacterSheet
 {
+    public int mana = 0;
     public int hunger;
     public int maxHunger = 1000;
     private int hungerBuffer = 0;
     public int totalXP = 0;
-    public int mana;
-    public int maxMana = 30;
     public int levelUpBreakpoint = 50;
     public int freeStatPoints = 0;
     public AudioClip stepAudioClip;
@@ -28,8 +27,10 @@ public class PlayerCharacterSheet : CharacterSheet
     public int dexterityBonus = 0;
     public int intelligenceBonus = 0;
     public int armorBonus = 0;
+    public int armorPenetrationBonus = 0;
     public int evasionBonus = 0;
     public int maxHealthBonus = 0;
+    public int maxBarrierBonus = 0;
     public int maxManaBonus = 0;
     public int visibilityRadius = 5;
     public Dictionary<SpellType, int> knownSpells = new();
@@ -43,19 +44,18 @@ public class PlayerCharacterSheet : CharacterSheet
     {
 
         base.Awake();
-        maxHealth = 20;
-        accuracy = 1000;
-        minDamage = 1;
-        maxDamage = 3;
+        stats.maxHealth = 20;
+        stats.maxMana = 30;
+        stats.accuracy = 1000;
+        stats.minDamage = 1;
+        stats.maxDamage = 3;
         level = 1;
-        speed = 10;
+        stats.speed = 10;
         hunger = maxHunger;
-        mana = maxMana;
-        armor = 0;
-        evasion = 50;
+        mana = stats.maxMana;
+        stats.armor = 0;
+        stats.evasion = 50;
         title = "Player";
-
-        characterHealth.InitHealth(maxHealth);
 
         attackClip = Resources.Load<AudioClip>("Sounds/Strike");
         stepAudioClip = Resources.Load<AudioClip>("Sounds/Step");
@@ -102,8 +102,7 @@ public class PlayerCharacterSheet : CharacterSheet
     public void GainMana(int gainValue)
     {
 
-        mana = System.Math.Min(maxMana, mana + gainValue);
-
+        mana = System.Math.Min(stats.maxMana, mana + gainValue);
         updateStats.RefreshUI();
     }
 
@@ -112,7 +111,7 @@ public class PlayerCharacterSheet : CharacterSheet
 
         audioSource.PlayOneShot(levelUpAudioClip);
 
-        characterHealth.Heal(maxHealth / 4);
+        characterHealth.Heal(stats.maxHealth / 4);
         freeStatPoints += 5;
 
         level += 1;
@@ -235,19 +234,19 @@ public class PlayerCharacterSheet : CharacterSheet
             if (mainHandWeapon is RangedWeapon rangedWeapon)
             {
 
-                attackOccurred = TryQueueRangedAttack(rangedWeapon, defender, speed) || attackOccurred;
+                attackOccurred = TryQueueRangedAttack(rangedWeapon, defender, stats.speed) || attackOccurred;
             }
             else
             {
 
-                attackOccurred = TryQueueMeleeAttack(mainHandWeapon, defender, defendingCharacter, speed) || attackOccurred;
+                attackOccurred = TryQueueMeleeAttack(mainHandWeapon, defender, defendingCharacter, stats.speed) || attackOccurred;
             }
         }
 
         // Attempt off-hand attack (if not a shield)
         if (offHandWeapon != null && offHandWeapon is not Shield)
         {
-            int offHandSpeed = speed / 2; // 0.5x speed penalty for off-hand
+            int offHandSpeed = stats.speed / 2; // 0.5x speed penalty for off-hand
 
             if (offHandWeapon is RangedWeapon rangedOffHand)
             {
@@ -281,7 +280,7 @@ public class PlayerCharacterSheet : CharacterSheet
             if ( combatSeq.CheckMeleeAttackValidity(this.gameObject, defender) )
             {
                 
-                Attack attack = new(this.gameObject, defender, minDamage, maxDamage, speed);
+                Attack attack = new(this.gameObject, defender, stats.minDamage, stats.maxDamage, stats.speed);
                 combatSeq.AddAttack(attack);
                 attackOccurred = true;
             }
@@ -308,13 +307,6 @@ public class PlayerCharacterSheet : CharacterSheet
     {
 
         updateStats.RefreshUI();
-    }
-
-    public override void ProcessStatusEffects()
-    {
-
-        statusEffectMgr.ProcessStatusEffects();
-        UpdateStatusNotifications();
     }
 
     public void UpdateStatusNotifications()
@@ -352,9 +344,7 @@ public class PlayerCharacterSheet : CharacterSheet
     public void RevealAroundPC()
     {
 
-        tileMgr.ReturnTransparentTilesToOpaque();
         tileMgr.RevealTiles(GameFunctions.GetCircleCoords(loc.coord, visibilityRadius));
-        tileMgr.MakeAdjacentWallsTransparent(loc.coord);
     }
 
     public override void OnDeath()

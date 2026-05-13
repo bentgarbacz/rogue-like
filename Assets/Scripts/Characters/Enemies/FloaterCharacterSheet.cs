@@ -5,7 +5,7 @@ using UnityEngine;
 public class FloaterCharacterSheet : EnemyCharacterSheet
 {
 
-    public float explodeRadius = 2f;
+    public int explodeRadius = 2;
     public int explosionMinDamage = 4;
     public int explosionMaxDamage = 6;
     public GameObject explosionPrefab;
@@ -16,15 +16,14 @@ public class FloaterCharacterSheet : EnemyCharacterSheet
     {
 
         base.Awake();
-        maxHealth = 8;
-        accuracy = 100;
-        minDamage = 1;
-        maxDamage = 3;
+        stats.maxHealth = 8;
+        stats.maxBarrier = 12;
+        stats.accuracy = 100;
+        stats.minDamage = 1;
+        stats.maxDamage = 3;
         level = 3;
-        speed = 11;
-        evasion = 50;
-
-        characterHealth.InitHealth(maxHealth);
+        stats.speed = 11;
+        stats.evasion = 50;
 
         dropTable = DropTableType.Goblin;
         title = "Floater";
@@ -40,10 +39,10 @@ public class FloaterCharacterSheet : EnemyCharacterSheet
         
         GameObject explosionObject = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
 
-        Explosion explosionComponent = explosionObject.GetComponent<Explosion>();
+        Explosion explosion = explosionObject.GetComponent<Explosion>();
 
-        explosionComponent.InitExplosion(explodeRadius, explosionMinDamage, explosionMaxDamage, this.gameObject);
-        explosionComponent.SetExplosion();
+        explosion.InitExplosion(explodeRadius, explosionMinDamage, explosionMaxDamage, this.gameObject);
+        explosion.SetExplosion();
 
         base.OnDeath();
     }
