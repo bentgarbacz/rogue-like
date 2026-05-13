@@ -36,7 +36,7 @@ public class Fireball : Spell
             return false;
         }
         
-        Attack attack = new(caster, target, minDamage, maxDamage, caster.GetComponent<CharacterSheet>().speed, projectileType);
+        Attack attack = new(caster, target, minDamage, maxDamage, caster.GetComponent<CharacterSheet>().stats.speed, projectileType);
         combatSeq.AddAttack(attack);
 
         ResetCooldown(caster);

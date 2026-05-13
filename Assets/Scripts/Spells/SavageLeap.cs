@@ -60,7 +60,7 @@ public class SavageLeap : Spell
                 return false;
             }
 
-            Attack attack = new(caster, target, minDamage, maxDamage, attackingCharacter.speed);
+            Attack attack = new(caster, target, minDamage, maxDamage, attackingCharacter.stats.speed);
             combatSeq.AddAttack(attack);
 
             ResetCooldown(caster);

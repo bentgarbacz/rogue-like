@@ -16,15 +16,13 @@ public class WitchCharacterSheet : EnemyCharacterSheet
     {
 
         base.Awake();
-        maxHealth = 8;
-        accuracy = 100;
-        minDamage = 1;
-        maxDamage = 3;
+        stats.maxHealth = 8;
+        stats.accuracy = 100;
+        stats.minDamage = 1;
+        stats.maxDamage = 3;
         level = 3;
-        speed = 11;
-        evasion = 50;
-
-        characterHealth.InitHealth(maxHealth);
+        stats.speed = 11;
+        stats.evasion = 50;
 
         dropTable = DropTableType.Witch;
         title = "Witch";
@@ -72,7 +70,7 @@ public class WitchCharacterSheet : EnemyCharacterSheet
                 if(inRange)
                 {
 
-                    Attack attack = new(this.gameObject, targetEntity, minDamage, maxDamage, speed, projectile);
+                    Attack attack = new(this.gameObject, targetEntity, stats.minDamage, stats.maxDamage, stats.speed, projectile);
                     combatSeq.AddAttack(attack);
 
                     attackCooldown = 3;

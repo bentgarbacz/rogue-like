@@ -14,5 +14,6 @@ public enum NPCType
     Skull,
     Floater,
     StoneGolem,
-    Lich
+    Lich,
+    Trap
 }

@@ -139,7 +139,7 @@ public class DijkstraMapManager : MonoBehaviour
     public void PopulateNPCMap()
     {
 
-        npcMap = CreateLayeredMap(entityMgr.npcs, 10);
+        npcMap = CreateLayeredMap(entityMgr.friendlies, 10);
         //string filePath = @"C:\Users\bentg\Downloads\NPCmap_output.txt";
         //PrintMapToFile(npcMap, filePath);
     }

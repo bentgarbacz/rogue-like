@@ -7,17 +7,22 @@ public class PlayerCamera : MonoBehaviour
 {
     public GameObject focalPoint;
     public float panSpeed = 2f;
-    private Vector3 localRotation;
     public float minYBound = 20f;
     public float maxYBound = 40f;
     public float minFov = 10f;
     public float maxFov = 40f;
     public float zoomSensitivity = 20f;
-    private float fov = 0;
-    [SerializeField] GameObject hero;
-    [SerializeField] Camera MinimapCamera;
-    [SerializeField] private TileManager tileMgr;
     public string cameraDirection = "North";
+
+    private float fov = 0;
+    private float wallCheckTimer = 0f;
+    private const float wallCheckInterval = 0.25f;
+    private Vector3 localRotation;
+    private ObjectLocation pcLocation;
+
+    [SerializeField] private GameObject hero;
+    [SerializeField] private Camera MinimapCamera;
+    [SerializeField] private TileManager tileMgr;
 
     void Start()
     {
@@ -25,6 +30,7 @@ public class PlayerCamera : MonoBehaviour
         fov = Camera.main.fieldOfView;
         RotateCamera(Input.GetAxis("Mouse X") * panSpeed, Input.GetAxis("Mouse Y") * panSpeed);
         SetFocalPoint(hero);
+        pcLocation = hero.GetComponent<ObjectLocation>();
     }
 
     void LateUpdate()
@@ -88,6 +94,16 @@ public class PlayerCamera : MonoBehaviour
     private void UpdateWallTransparency()
     {
 
+        wallCheckTimer += Time.deltaTime;
+
+        if(wallCheckTimer < wallCheckInterval)
+        {
+
+            return;
+        }
+
+        wallCheckTimer = 0f;
+
         if (tileMgr == null || hero == null)
         {
 
@@ -97,12 +113,9 @@ public class PlayerCamera : MonoBehaviour
         // Restore all previously transparent tiles to opaque
         tileMgr.ReturnTransparentTilesToOpaque();
 
-        // Get hero position
-        Vector3 heroPos = hero.transform.position;
-        Vector2Int heroCoord = new Vector2Int((int)heroPos.x, (int)heroPos.z);
 
         // Determine cardinal/intercardinal direction based on camera rotation
-        List<Vector2Int> directionsToCheck = new();
+        List<Vector2Int> checkDirections = new();
 
         // Normalize rotation angle to 0-360
         float angle = localRotation.x % 360f;
@@ -114,83 +127,148 @@ public class PlayerCamera : MonoBehaviour
         {
             cameraDirection = "West";
 
-            if(!tileMgr.tileDict[heroCoord - Vector2Int.left].IsActionable())
+            Vector2Int checkCoord1 = pcLocation.coord - Vector2Int.left;
+            Vector2Int checkCoord2 = pcLocation.coord - new Vector2Int(-2, 0);
+
+            if(HallwayCheck(checkCoord1, checkCoord2))
             {
-                directionsToCheck.Add(Vector2Int.left); 
-                directionsToCheck.Add(new Vector2Int(-1, 1)); 
-                directionsToCheck.Add(new Vector2Int(-1, -1)); 
+                // 5x5 radius facing west
+                checkDirections.Add(Vector2Int.left); 
+                checkDirections.Add(new Vector2Int(-2, 0));
+                checkDirections.Add(new Vector2Int(-1, 1)); 
+                checkDirections.Add(new Vector2Int(-1, -1));
+                checkDirections.Add(new Vector2Int(-2, 1));
+                checkDirections.Add(new Vector2Int(-2, -1));
+                checkDirections.Add(new Vector2Int(-1, 2));
+                checkDirections.Add(new Vector2Int(-1, -2));
+                checkDirections.Add(new Vector2Int(-2, 2));
+                checkDirections.Add(new Vector2Int(-2, -2));
             }
         }
         else if (angle >= 22.5f && angle < 67.5f)
         {
             cameraDirection = "NorthWest";
-            directionsToCheck.Add(Vector2Int.up); 
-            directionsToCheck.Add(Vector2Int.left); 
-            directionsToCheck.Add(new Vector2Int(-1, 1)); 
+            // 5x5 radius facing northwest
+            checkDirections.Add(Vector2Int.up); 
+            checkDirections.Add(Vector2Int.left); 
+            checkDirections.Add(new Vector2Int(-1, 1));
+            checkDirections.Add(new Vector2Int(0, 2));
+            checkDirections.Add(new Vector2Int(-2, 0));
+            checkDirections.Add(new Vector2Int(-2, 1));
+            checkDirections.Add(new Vector2Int(-1, 2));
+            checkDirections.Add(new Vector2Int(-2, 2));
         }
         else if (angle >= 67.5f && angle < 112.5f)
         {
             cameraDirection = "North";
-            
-            if(!tileMgr.tileDict[heroCoord - Vector2Int.up].IsActionable())
-            {
 
-                directionsToCheck.Add(Vector2Int.up); 
-                directionsToCheck.Add(new Vector2Int(1, 1)); 
-                directionsToCheck.Add(new Vector2Int(-1, 1));
+            Vector2Int checkCoord1 = pcLocation.coord - Vector2Int.up;
+            Vector2Int checkCoord2 = pcLocation.coord - new Vector2Int(0, 2);
+
+            if(HallwayCheck(checkCoord1, checkCoord2))
+            {
+                // 5x5 radius facing north
+                checkDirections.Add(Vector2Int.up); 
+                checkDirections.Add(new Vector2Int(0, 2));
+                checkDirections.Add(new Vector2Int(1, 1)); 
+                checkDirections.Add(new Vector2Int(-1, 1));
+                checkDirections.Add(new Vector2Int(1, 2));
+                checkDirections.Add(new Vector2Int(-1, 2));
+                checkDirections.Add(new Vector2Int(2, 1));
+                checkDirections.Add(new Vector2Int(-2, 1));
+                checkDirections.Add(new Vector2Int(2, 2));
+                checkDirections.Add(new Vector2Int(-2, 2));
             }
         }
         else if (angle >= 112.5f && angle < 157.5f)
         {
             cameraDirection = "NorthEast";
-            directionsToCheck.Add(Vector2Int.up); 
-            directionsToCheck.Add(new Vector2Int(1, 1)); 
-            directionsToCheck.Add(Vector2Int.right);  
+            // 5x5 radius facing northeast
+            checkDirections.Add(Vector2Int.up); 
+            checkDirections.Add(Vector2Int.right);
+            checkDirections.Add(new Vector2Int(1, 1));
+            checkDirections.Add(new Vector2Int(0, 2));
+            checkDirections.Add(new Vector2Int(2, 0));
+            checkDirections.Add(new Vector2Int(2, 1));
+            checkDirections.Add(new Vector2Int(1, 2));
+            checkDirections.Add(new Vector2Int(2, 2));
         }
         else if (angle >= 157.5f && angle < 202.5f)
         {
             cameraDirection = "East";
-            
-            if(!tileMgr.tileDict[heroCoord - Vector2Int.right].IsActionable())
-            {
 
-                directionsToCheck.Add(Vector2Int.right); 
-                directionsToCheck.Add(new Vector2Int(1, 1)); 
-                directionsToCheck.Add(new Vector2Int(1, -1)); 
+            Vector2Int checkCoord1 = pcLocation.coord - Vector2Int.right;
+            Vector2Int checkCoord2 = pcLocation.coord - new Vector2Int(2, 0);
+
+            if(HallwayCheck(checkCoord1, checkCoord2))
+            {
+                // 5x5 radius facing east
+                checkDirections.Add(Vector2Int.right); 
+                checkDirections.Add(new Vector2Int(2, 0));
+                checkDirections.Add(new Vector2Int(1, 1)); 
+                checkDirections.Add(new Vector2Int(1, -1));
+                checkDirections.Add(new Vector2Int(2, 1));
+                checkDirections.Add(new Vector2Int(2, -1));
+                checkDirections.Add(new Vector2Int(1, 2));
+                checkDirections.Add(new Vector2Int(1, -2));
+                checkDirections.Add(new Vector2Int(2, 2));
+                checkDirections.Add(new Vector2Int(2, -2));
             }
         }
         else if (angle >= 202.5f && angle < 247.5f)
         {
             cameraDirection = "SouthEast";
-            directionsToCheck.Add(Vector2Int.down); 
-            directionsToCheck.Add(Vector2Int.right); 
-            directionsToCheck.Add(new Vector2Int(1, -1)); 
+            // 5x5 radius facing southeast
+            checkDirections.Add(Vector2Int.down); 
+            checkDirections.Add(Vector2Int.right);
+            checkDirections.Add(new Vector2Int(1, -1));
+            checkDirections.Add(new Vector2Int(0, -2));
+            checkDirections.Add(new Vector2Int(2, 0));
+            checkDirections.Add(new Vector2Int(2, -1));
+            checkDirections.Add(new Vector2Int(1, -2));
+            checkDirections.Add(new Vector2Int(2, -2));
         }
         else if (angle >= 247.5f && angle < 292.5f)
         {
             cameraDirection = "South";
 
-            if(!tileMgr.tileDict[heroCoord - Vector2Int.down].IsActionable())
-            {
+            Vector2Int checkCoord1 = pcLocation.coord - Vector2Int.down;
+            Vector2Int checkCoord2 = pcLocation.coord - new Vector2Int(0, -2);
 
-                directionsToCheck.Add(Vector2Int.down);
-                directionsToCheck.Add(new Vector2Int(1, -1));
-                directionsToCheck.Add(new Vector2Int(-1, -1));
+            if(HallwayCheck(checkCoord1, checkCoord2))
+            {
+                // 5x5 radius facing south
+                checkDirections.Add(Vector2Int.down);
+                checkDirections.Add(new Vector2Int(0, -2));
+                checkDirections.Add(new Vector2Int(1, -1));
+                checkDirections.Add(new Vector2Int(-1, -1));
+                checkDirections.Add(new Vector2Int(1, -2));
+                checkDirections.Add(new Vector2Int(-1, -2));
+                checkDirections.Add(new Vector2Int(2, -1));
+                checkDirections.Add(new Vector2Int(-2, -1));
+                checkDirections.Add(new Vector2Int(2, -2));
+                checkDirections.Add(new Vector2Int(-2, -2));
             }
         }
         else if (angle >= 292.5f && angle < 337.5f)
         {
             cameraDirection = "SouthWest";
-            directionsToCheck.Add(Vector2Int.left);
-            directionsToCheck.Add(new Vector2Int(-1, -1));
-            directionsToCheck.Add(Vector2Int.down);
+            // 5x5 radius facing southwest
+            checkDirections.Add(Vector2Int.left);
+            checkDirections.Add(Vector2Int.down);
+            checkDirections.Add(new Vector2Int(-1, -1));
+            checkDirections.Add(new Vector2Int(0, -2));
+            checkDirections.Add(new Vector2Int(-2, 0));
+            checkDirections.Add(new Vector2Int(-2, -1));
+            checkDirections.Add(new Vector2Int(-1, -2));
+            checkDirections.Add(new Vector2Int(-2, -2));
         }
 
         // Make tiles transparent in the calculated directions
-        foreach (Vector2Int direction in directionsToCheck)
+        foreach (Vector2Int direction in checkDirections)
         {
 
-            Vector2Int checkCoord = heroCoord - direction;
+            Vector2Int checkCoord = pcLocation.coord - direction;
 
             if (tileMgr.tileDict.ContainsKey(checkCoord))
             {
@@ -201,16 +279,33 @@ public class PlayerCamera : MonoBehaviour
                 if (!tile.IsActionable())
                 {
 
-                    Renderer renderer = tile.gameObject.GetComponent<Renderer>();
-                    if (renderer != null)
-                    {
-
-                        TransparencyManager.SetTransparency(renderer, 0.3f);
-                        tileMgr.transparentTiles.Add(checkCoord);
-                    }
+                    TransparencyManager.SetTransparency(tile.tileRenderer, 0.3f);
+                    tileMgr.transparentTiles.Add(checkCoord);
                 }
             }
         }
+    }
+
+    private bool HallwayCheck(Vector2Int checkCoord1, Vector2Int checkCoord2)
+    {
+
+        bool bool1 = false;
+        bool bool2 = false;
+
+
+        if(tileMgr.tileDict.ContainsKey(checkCoord1))
+        {
+
+            bool1 = tileMgr.tileDict[checkCoord1].IsActionable();
+        }
+
+        if(tileMgr.tileDict.ContainsKey(checkCoord2))
+        {
+
+            bool2 = tileMgr.tileDict[checkCoord2].IsActionable();
+        }
+
+        return !(bool1 && bool2);
     }
 }
 

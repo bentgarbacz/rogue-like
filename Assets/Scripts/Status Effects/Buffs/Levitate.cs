@@ -13,8 +13,6 @@ public class Levitate : StatusEffect
         this.duration = duration;
 
         this.sprite = Resources.Load<Sprite>("Pixel Art/Wing");
-
-        affectedCharacter.gameObject.GetComponent<Levitating>().StartLevitating();
     }
 
     public override int Effect()
@@ -22,6 +20,12 @@ public class Levitate : StatusEffect
 
         duration -= 1;
         return duration;
+    }
+
+    public override void StartEffect()
+    {
+        
+        affectedCharacter.gameObject.GetComponent<Levitating>().StartLevitating();
     }
 
     public override void EndEffect()

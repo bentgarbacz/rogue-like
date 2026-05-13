@@ -6,7 +6,9 @@ public enum StatType
     Intelligence,
     Speed,
     CritChance,
+    CritMultiplier,
     Armor,
+    ArmorPenetration,
     Evasion,
     Accuracy,
     Range,
@@ -14,6 +16,7 @@ public enum StatType
     MaxDamage,
     MaxHealth,
     MaxMana,
+    MaxBarrier,
     StrengthRequirement,
     DexterityRequirement,
     IntelligenceRequirement

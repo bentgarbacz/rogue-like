@@ -15,17 +15,14 @@ public class StoneGolemCharacterSheet : EnemyCharacterSheet
     {
         base.Awake();
         
-        // Stone Golem: Large stone statue that hits hard but moves slowly
         title = "Stone Golem";
-        maxHealth = 50; // High health
-        minDamage = 8;  // High damage
-        maxDamage = 12;
-        speed = 3;      // Slower speed
-        armor = 5;      // High armor
-        evasion = 0;    // No evasion
-        level = 5;      // Higher level
-
-        characterHealth.InitHealth(maxHealth);
+        stats.maxHealth = 50;
+        stats.minDamage = 8;
+        stats.maxDamage = 12;
+        stats.speed = 3;
+        stats.armor = 5;
+        stats.evasion = 0;
+        level = 5;      
 
         dropTable = DropTableType.None;
 
@@ -41,7 +38,6 @@ public class StoneGolemCharacterSheet : EnemyCharacterSheet
         {
             skipTurnCount += 1;
             
-            // Visual indication: darken color and show "..." notification
             StartCoroutine(ShowSkipTurnEffect());
             
             return;
@@ -70,13 +66,14 @@ public class StoneGolemCharacterSheet : EnemyCharacterSheet
             
             if (tileMgr.levelCoords.Contains(twoStepCoord) && !tileMgr.occupiedlist.Contains(twoStepCoord))
             {
-                //movementManager.AddMovement(this, twoStepCoord);
+
                 Move(twoStepCoord);
                 attackCoord = twoStepCoord;
+                
             }
             else
             {
-                //movementManager.AddMovement(this, targetCoord);
+
                 Move(targetCoord);
                 attackCoord = targetCoord;
             }

@@ -13,7 +13,8 @@ public class EntityManager : MonoBehaviour
     public HashSet<GameObject> entitiesInLevel = new();
     public HashSet<GameObject> enemies = new();
     public HashSet<GameObject> aggroEnemies = new();
-    public HashSet<GameObject> npcs = new();
+    public HashSet<GameObject> friendlies = new();
+    public HashSet<GameObject> inanimates = new();
     public HashSet<Loot> itemContainers = new();
     [SerializeField] private CombatSequencer combatSeq;
     [SerializeField] private TurnSequencer ts;
@@ -31,15 +32,22 @@ public class EntityManager : MonoBehaviour
         playerCharacter = hero.GetComponent<PlayerCharacterSheet>();
     }
 
+    public HashSet<GameObject> GetAllNPCs()
+    {
+        
+        return new HashSet<GameObject>(enemies.Union(friendlies));
+    }
+
     public void TriggerStatusEffects()
     {
 
-        playerCharacter.ProcessStatusEffects();
+        playerCharacter.statusEffectMgr.ProcessStatusEffects();
+        playerCharacter.UpdateStatusNotifications();
 
-        foreach (GameObject enemy in enemies.ToList())
+        foreach (GameObject npc in GetAllNPCs().ToList())
         {
 
-            enemy.GetComponent<CharacterSheet>().ProcessStatusEffects();
+            npc.GetComponent<StatusEffectManager>().ProcessStatusEffects();
         }
     }
 
@@ -55,12 +63,16 @@ public class EntityManager : MonoBehaviour
     public void KillEntity(GameObject target)
     {
 
+        Vector2Int targetCoord = target.GetComponent<ObjectLocation>().coord;
+
         combatSeq.PruneCombatBuffer(target);
 
         aggroEnemies.Remove(target);
-        tileMgr.occupiedlist.Remove(target.GetComponent<ObjectLocation>().coord);
+        tileMgr.occupiedlist.Remove(targetCoord);
+        tileMgr.GetTile(targetCoord).RemoveEntity(target);
         enemies.Remove(target);
-        npcs.Remove(target);
+        friendlies.Remove(target);
+        inanimates.Remove(target);
         entitiesInLevel.Remove(target);
         visibilityMgr.RemoveObject(target);
 
@@ -118,7 +130,8 @@ public class EntityManager : MonoBehaviour
 
         entitiesInLevel = new();
         aggroEnemies = new();
-        npcs = new();
+        friendlies = new();
+        inanimates = new();
 
         tileMgr.RefreshLayout();
         visibilityMgr.Refresh();
@@ -137,5 +150,17 @@ public class EntityManager : MonoBehaviour
         }
 
         aggroEnemies = new HashSet<GameObject>();
+    }
+
+    public void UpdateAllBarrier()
+    {
+        
+        playerCharacter.characterHealth.UpdateBarrier();
+
+        foreach(GameObject npc in GetAllNPCs())
+        {
+            
+            npc.GetComponent<CharacterHealth>().UpdateBarrier();
+        }
     }
 }

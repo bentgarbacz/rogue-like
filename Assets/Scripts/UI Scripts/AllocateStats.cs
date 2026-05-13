@@ -36,19 +36,19 @@ public class AllocateStats : MonoBehaviour
             {
 
                 playerCharacter.freeStatPoints -= 1;
-                playerCharacter.strength += 1;
+                playerCharacter.stats.strength += 1;
 
             }else if(statType == StatType.Dexterity)
             {
 
                 playerCharacter.freeStatPoints -= 1;
-                playerCharacter.dexterity += 1;
+                playerCharacter.stats.dexterity += 1;
 
             }else if(statType == StatType.Intelligence)
             {
 
                 playerCharacter.freeStatPoints -= 1;
-                playerCharacter.intelligence += 1;
+                playerCharacter.stats.intelligence += 1;
             }
 
             im.UpdateStats();

@@ -115,6 +115,15 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a8de573a55ccb6140a093a60bde043d0, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5852054501752156602}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a8de573a55ccb6140a093a60bde043d0, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3168053698299208658}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a8de573a55ccb6140a093a60bde043d0, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6601819576821219107}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a8de573a55ccb6140a093a60bde043d0, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 910194049373050374}
   m_SourcePrefab: {fileID: 100100000, guid: a8de573a55ccb6140a093a60bde043d0, type: 3}
 --- !u!1 &2415684302311000984 stripped
 GameObject:
@@ -211,6 +220,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5294ecea600c22f4eb21799baf7cf0f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  defaultColor: {r: 1, g: 1, b: 1, a: 1}
   highlightColor: {r: 1, g: 0, b: 0, a: 1}
   actionDescription: Attack
   highlighted: 0
@@ -260,22 +270,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   loc: {fileID: 2457163770862900132}
   characterHealth: {fileID: 8853969091896449700}
-  maxHealth: 1
-  accuracy: 100
-  minDamage: 0
-  maxDamage: 0
+  stats: {fileID: 3168053698299208658}
   level: 0
-  speed: 0
-  critChance: 0
-  critMultiplier: 2
-  vitality: 0
-  strength: 0
-  dexterity: 0
-  intelligence: 0
-  armor: 0
-  evasion: 0
+  isActionBlocked: 0
   dropTable: 0
-  audioSource: {fileID: 0}
+  statusEffectMgr: {fileID: 910194049373050374}
+  audioSource: {fileID: 6601819576821219107}
   attackClip: {fileID: 0}
   missClip: {fileID: 0}
   title: N/A
@@ -348,8 +348,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72e87b7061dffdb4eb8b7b698e1343c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 0
   currentHealth: 0
+  currentBarrier: 0
 --- !u!114 &-2603409206887810016
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -374,3 +374,143 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 099e8e90c6096bc41bbbe90aa62ddacc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LockManager
+--- !u!114 &3168053698299208658
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2415684302311000984}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84beb27b521b01240a53075dc5cf0f86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CharacterStats
+  maxHealth: 1
+  maxBarrier: 0
+  maxMana: 0
+  accuracy: 100
+  minDamage: 0
+  maxDamage: 0
+  speed: 0
+  critChance: 0
+  critMultiplier: 2
+  strength: 0
+  dexterity: 0
+  intelligence: 0
+  armor: 0
+  armorPenetration: 0
+  evasion: 0
+  damageDealtMultiplier: 1
+  damageTakenMultiplier: 1
+  barrierCooldown: 10
+  barrierRegen: 3
+--- !u!82 &6601819576821219107
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2415684302311000984}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!114 &910194049373050374
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2415684302311000984}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bfe4823f8735d334c82b0da590251152, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StatusEffectManager

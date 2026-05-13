@@ -7,13 +7,11 @@ public class PlayerHealth : CharacterHealth
 
     [SerializeField] private UpdateUIElements updateStats;
 
-    public override int TakeDamage(int damage)
+    public override void TakeDamage(int damage)
     {
 
-        int damageTaken = base.TakeDamage(damage);
+        base.TakeDamage(damage);
         updateStats.RefreshUI();
-
-        return damageTaken;
     }
 
     public override void Heal(int healValue)

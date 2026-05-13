@@ -27,13 +27,13 @@ public class StoneSkin : StatusEffect
     public override void StartEffect()
     {
         
-        affectedCharacter.armor += armorIncrease;
+        affectedCharacter.stats.armor += armorIncrease;
     }
 
     public override void EndEffect()
     {
 
-        affectedCharacter.armor -= armorIncrease;
+        affectedCharacter.stats.armor -= armorIncrease;
     }
 
     public override string GetDescription()

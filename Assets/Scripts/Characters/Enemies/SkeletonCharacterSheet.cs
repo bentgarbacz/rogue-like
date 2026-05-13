@@ -9,15 +9,13 @@ public class SkeletonCharacterSheet : EnemyCharacterSheet
     public override void Awake()
     {
         base.Awake();
-        maxHealth = 8;
-        accuracy = 100;
-        minDamage = 1;
-        maxDamage = 3;
+        stats.maxHealth = 8;
+        stats.accuracy = 100;
+        stats.minDamage = 1;
+        stats.maxDamage = 3;
         level = 3;
-        speed = 11;
-        evasion = 50;
-
-        characterHealth.InitHealth(maxHealth);
+        stats.speed = 11;
+        stats.evasion = 50;
 
         dropTable = DropTableType.Skeleton;
         title = "Skeleton";

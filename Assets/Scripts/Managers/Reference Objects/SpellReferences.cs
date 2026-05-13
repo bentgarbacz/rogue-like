@@ -28,5 +28,6 @@ public class SpellReferences : MonoBehaviour
         spellDictionary.Add(SpellType.ResilienceSpell, new ResilienceSpell());
         spellDictionary.Add(SpellType.WeakenSpell, new WeakenSpell());
         spellDictionary.Add(SpellType.VulnerableSpell, new VulnerableSpell());
+        spellDictionary.Add(SpellType.ThrowTrap, new ThrowTrap());
     }
 }

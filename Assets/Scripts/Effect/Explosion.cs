@@ -7,11 +7,11 @@ public class Explosion : MonoBehaviour
 
     private TurnSequencer ts;
     private CombatSequencer combatSeq;
-    private EntityManager entityMgr;
+    private TileManager tileMgr;
     private LockManager lockMgr;
     public AudioClip explosionClip;
     public AudioSource audioSource;
-    public float explodeRadius = 1f;
+    public int explodeRadius = 1;
     public int explosionMinDamage = 0;
     public int explosionMaxDamage = 1;
     public GameObject exploder;
@@ -22,14 +22,14 @@ public class Explosion : MonoBehaviour
         
         ts = managers.GetComponent<TurnSequencer>();
         combatSeq = managers.GetComponent<CombatSequencer>();
-        entityMgr = managers.GetComponent<EntityManager>();
+        tileMgr = managers.GetComponent<TileManager>();
 
         lockMgr = GetComponent<LockManager>();
 
         explosionClip = Resources.Load<AudioClip>("Sounds/Explode");
     }
 
-    public void InitExplosion(float explodeRadius, int explosionMinDamage, int explosionMaxDamage, GameObject exploder)
+    public void InitExplosion(int explodeRadius, int explosionMinDamage, int explosionMaxDamage, GameObject exploder)
     {
         
         this.explodeRadius = explodeRadius;
@@ -41,36 +41,36 @@ public class Explosion : MonoBehaviour
     public void SetExplosion()
     {
         
+        lockMgr.AcquireCombatLock();
+        lockMgr.AcquireTurnLock();
+
+        Vector2Int explosionCenter = exploder.GetComponent<ObjectLocation>().coord;
+        List<Tile> affectedTiles = tileMgr.GetTilesInRadius(explosionCenter, explodeRadius);
+
+        foreach (Tile tile in affectedTiles)
+        {
+
+            foreach (GameObject target in new HashSet<GameObject>(tile.entitiesOnTile))
+            {
+
+                if (target == null || target == exploder) continue;
+
+                CharacterHealth ch = target.GetComponent<CharacterHealth>();
+
+                if (ch == null ) continue;
+
+                Attack attack = new(exploder, target, explosionMinDamage, explosionMaxDamage, 0);
+                combatSeq.ExecuteAttack(attack);
+            }
+        }
+
         StartCoroutine(Explode());
     }
 
     private IEnumerator Explode()
     {
 
-        lockMgr.AcquireCombatLock();
-        lockMgr.AcquireTurnLock();
-
         audioSource.PlayOneShot(explosionClip);
-
-        foreach (GameObject target in new HashSet<GameObject>(entityMgr.entitiesInLevel))
-        {
-
-            if (target == null || target == exploder) continue;
-
-            CharacterSheet targetSheet = target.GetComponent<CharacterSheet>();
-            CharacterHealth ch = target.GetComponent<CharacterHealth>();
-
-            if (ch == null || targetSheet == null) continue;
-
-            float distance = Vector3.Distance(target.transform.position, transform.position);
-
-            if (distance <= explodeRadius)
-            {
-                
-                Attack attack = new(exploder, target, explosionMinDamage, explosionMaxDamage, 0);
-                combatSeq.ExecuteAttack(attack);
-            }
-        }
 
         yield return new WaitForSeconds(0.5f);
 
