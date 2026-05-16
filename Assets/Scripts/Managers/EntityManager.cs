@@ -159,7 +159,7 @@ public class EntityManager : MonoBehaviour
 
         foreach(GameObject npc in GetAllNPCs())
         {
-            
+
             npc.GetComponent<CharacterHealth>().UpdateBarrier();
         }
     }

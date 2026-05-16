@@ -6,8 +6,8 @@ public class CombatSequencer : MonoBehaviour
 {
 
     public bool fighting = false;
-    private bool combatLock = false;
-    private int combatLockCount = 0;
+    [SerializeField ]private bool combatLock = false;
+    [SerializeField] private int combatLockCount = 0;
     public float attackTime = 0.5f;
     public float trimTime = 0.25f;
     private List<Attack> combatBuffer = new();

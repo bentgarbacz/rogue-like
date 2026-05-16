@@ -7,7 +7,7 @@ public class SummonSkull : Spell
 
     private NPCGenerator npcGen;
     private TileManager tileMgr;
-    private EntityManager entityMgr;
+    private MiniMapManager miniMapMgr;
     private NPCType npcType = NPCType.Skull;
 
     public SummonSkull()
@@ -25,7 +25,7 @@ public class SummonSkull : Spell
         GameObject managers = GameObject.Find("System Managers");
 
         tileMgr = managers.GetComponent<TileManager>();
-        entityMgr = managers.GetComponent<EntityManager>();
+        miniMapMgr = managers.GetComponent<UIActiveManager>().mapPanel.GetComponent<MiniMapManager>();
     }
 
     public override bool Cast(GameObject caster, GameObject target)
@@ -65,6 +65,7 @@ public class SummonSkull : Spell
             return false;
         }
 
+        miniMapMgr.AddIcon(minion);
         minion.GetComponent<ObjectVisibility>().SetVisibility(true);
 
         return true;

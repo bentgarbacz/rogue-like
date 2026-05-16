@@ -5,6 +5,7 @@ using UnityEngine;
 public class SkeletonCharacterSheet : EnemyCharacterSheet
 {
     private NPCGenerator npcGen;
+    private MiniMapManager miniMapMgr;
 
     public override void Awake()
     {
@@ -22,6 +23,7 @@ public class SkeletonCharacterSheet : EnemyCharacterSheet
 
         attackClip = Resources.Load<AudioClip>("Sounds/Skeleton");
         npcGen = GameObject.Find("Map Generator").GetComponent<NPCGenerator>();
+        miniMapMgr = managers.GetComponent<UIActiveManager>().mapPanel.GetComponent<MiniMapManager>();
     }
     
     public override void AggroBehavior()
@@ -33,6 +35,8 @@ public class SkeletonCharacterSheet : EnemyCharacterSheet
     {
         
         GameObject newSkeletalRemains = npcGen.CreateEnemy(NPCType.SkeletalRemains, loc.Coord3d());
+        newSkeletalRemains.transform.rotation = transform.rotation;
+        miniMapMgr.AddIcon(newSkeletalRemains);
         entityMgr.aggroEnemies.Add(newSkeletalRemains);
     }
 }

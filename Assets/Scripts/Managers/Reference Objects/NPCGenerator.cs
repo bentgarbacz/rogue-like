@@ -9,6 +9,7 @@ public class NPCGenerator : MonoBehaviour
     [SerializeField] private EntityManager entityMgr;
     [SerializeField] private TileManager tileMgr;
     [SerializeField] private GameObject chest;
+    [SerializeField] private GameObject mimicChest;
     [SerializeField] private GameObject skeleton;
     [SerializeField] private GameObject skeletalRemains;
     [SerializeField] private GameObject skeletonArcher;
@@ -23,6 +24,7 @@ public class NPCGenerator : MonoBehaviour
     [SerializeField] private GameObject stoneGolem;
     [SerializeField] private GameObject lich;
     [SerializeField] private GameObject trap;
+    [SerializeField] private GameObject mimic;
     private readonly Vector3 spawnPosOffset = new(0, 0.1f, 0);
 
     void Start()
@@ -32,6 +34,7 @@ public class NPCGenerator : MonoBehaviour
         {
 
             {NPCType.Chest, chest},
+            {NPCType.MimicChest, mimicChest},
             {NPCType.Skeleton, skeleton},
             {NPCType.SkeletalRemains, skeletalRemains},
             {NPCType.SkeletonArcher, skeletonArcher},
@@ -45,21 +48,37 @@ public class NPCGenerator : MonoBehaviour
             {NPCType.Floater, floater},
             {NPCType.StoneGolem, stoneGolem},
             {NPCType.Lich, lich},
-            {NPCType.Trap, trap}
+            {NPCType.Trap, trap},
+            {NPCType.Mimic, mimic}
         };
     }
 
-    public void CreateChest(Vector3 spawnPos)
+    //The int passed to mimic chance is treated as a % chance.
+    //  The default 5 value is treated as 5% chance to occur.
+    //  Values below 0 and above 100 are treated as 0% and 100% respectively.
+    public void CreateChest(Vector3 spawnPos, int mimicChance = 5)
     {
+
+        GameObject newChest;
 
         int yRotation = Random.Range(0, 8) * 45;
         Quaternion spawnQuart = Quaternion.Euler(0, yRotation, 0);
 
-        GameObject newChest = Instantiate(chest, spawnPos + spawnPosOffset, spawnQuart);
+        if(mimicChance > Random.Range(0, 100))
+        {
+
+            newChest = Instantiate(mimicChest, spawnPos + spawnPosOffset, spawnQuart);
+        }
+        else
+        {
+            
+            newChest = Instantiate(chest, spawnPos + spawnPosOffset, spawnQuart);
+        }
+
         newChest.GetComponent<ObjectVisibility>().Initialize();
         entityMgr.AddGameObject(newChest);
 
-        Loot newLoot = newChest.GetComponent<Chest>();
+        Interactable newLoot = newChest.GetComponent<Interactable>();
         newLoot.loc.coord = new Vector2Int((int)spawnPos.x, (int)spawnPos.z);
         tileMgr.GetTile(newLoot.loc.coord).AddEntity(newChest);
     }

@@ -2,6 +2,7 @@ public enum NPCType
 {
 
     Chest,
+    MimicChest,
     Skeleton,
     SkeletalRemains,
     SkeletonArcher,
@@ -15,5 +16,6 @@ public enum NPCType
     Floater,
     StoneGolem,
     Lich,
-    Trap
+    Trap,
+    Mimic,
 }
