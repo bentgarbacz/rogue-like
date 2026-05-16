@@ -3742,6 +3742,7 @@ MonoBehaviour:
   map: {fileID: 49063693}
   iconPrefab: {fileID: 6493111393066296836, guid: b232fd823f342b947a8a667ae3d920b4, type: 3}
   enemyIcon: {fileID: 21300000, guid: 6f9da8c7928e7854e93b4df7e75af59d, type: 3}
+  minionIcon: {fileID: 21300000, guid: 092c30a331fe72f43a21ec107a610937, type: 3}
   pcIcon: {fileID: 21300000, guid: 37b119cb65ac6cd4081956c1a5b5ba1d, type: 3}
   objectIcon: {fileID: 21300000, guid: 5b231d089c9109e41a9fad7d16a5d63e, type: 3}
   tileIcon: {fileID: 21300000, guid: db410e84be16df241a51d807898ce7ae, type: 3}
@@ -6182,6 +6183,7 @@ GameObject:
   - component: {fileID: 438385577}
   - component: {fileID: 438385578}
   - component: {fileID: 438385579}
+  - component: {fileID: 438385580}
   m_Layer: 0
   m_Name: Map Generator
   m_TagString: Untagged
@@ -6219,10 +6221,11 @@ MonoBehaviour:
   entityMgr: {fileID: 1314207894}
   tileMgr: {fileID: 1314207901}
   miniMapManager: {fileID: 313091427}
+  lockMgr: {fileID: 0}
   wallJoiner: {fileID: 1025472403522751266, guid: 20f1a7c70bc0d8948ab390c0e7b73c5e, type: 3}
   debugObjects:
   - {fileID: 357321811}
-  - {fileID: 1937730749}
+  - {fileID: 2862989877180478519}
 --- !u!114 &438385576
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6238,6 +6241,7 @@ MonoBehaviour:
   entityMgr: {fileID: 1314207894}
   tileMgr: {fileID: 1314207901}
   chest: {fileID: 6493254730876405042, guid: 3d2a97183afeb6843a3d22f8ee50bf01, type: 3}
+  mimicChest: {fileID: 5675867341250746780, guid: ab7ad3a2d13aaad46948eda1858f2064, type: 3}
   skeleton: {fileID: 7806514022559795084, guid: 3b210d9e70f6a1f4b9e6170b08367086, type: 3}
   skeletalRemains: {fileID: 3564674477248252701, guid: f07e4c749f8358849b82bce143f9dd26, type: 3}
   skeletonArcher: {fileID: 3972246722018788467, guid: f114ea6c3de591b44808cb9aa30df140, type: 3}
@@ -6252,6 +6256,7 @@ MonoBehaviour:
   stoneGolem: {fileID: 1222550511502223975, guid: f3aa2ad5a8787d14f9aaf1955776d8c1, type: 3}
   lich: {fileID: 862274426324552958, guid: 8ac96bd939f785e49857ea6c3c024c6b, type: 3}
   trap: {fileID: 2111670555710385504, guid: 6a1af8f8c8bc18742bc6ced02b71ad70, type: 3}
+  mimic: {fileID: 4764054851135056331, guid: 433e8146c6e09ba4e8fa6ee307cd5349, type: 3}
 --- !u!114 &438385577
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6277,7 +6282,7 @@ MonoBehaviour:
   catacombEntrance: {fileID: 8240057085656814339, guid: f6b63ce657227bd4c9f0ea79119baacf, type: 3}
   catacombExit: {fileID: 2862989877608427773, guid: 57670d2158c8b544a9c7250631b130e5, type: 3}
   catacombDoor: {fileID: 5245498800819785574, guid: c4b3e4b4019ff174daac85013a1d921a, type: 3}
-  possibleEnemyTypes: 010000000100000001000000
+  possibleEnemyTypes: 020000000200000002000000
 --- !u!114 &438385578
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6321,6 +6326,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   entityMgr: {fileID: 1314207894}
   tileMgr: {fileID: 1314207901}
+--- !u!114 &438385580
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 438385571}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f81fd6cff72a75f49b16eaa891c9d926, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DebugBiome
+  entityMgr: {fileID: 1314207894}
+  npcGen: {fileID: 438385576}
+  wallJoiner: {fileID: 1025472403522751266, guid: 20f1a7c70bc0d8948ab390c0e7b73c5e, type: 3}
+  tileMgr: {fileID: 1314207901}
+  debugFloorTile: {fileID: 5133640373961792348, guid: 7757bc0a763a3294bb55791b905f95e8, type: 3}
+  debugWallTile: {fileID: 1782573672562638614, guid: 58c8f0fdd8afbce49877d4fac9c426c7, type: 3}
+  debugEntrance: {fileID: 3243858601297699272, guid: ca6c1c0bed0ff1348b1894f78457dd17, type: 3}
+  debugExit: {fileID: 3023304844976089483, guid: c67629badd1eb99478f19be1448c743e, type: 3}
 --- !u!1001 &444728522
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -22805,6 +22830,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0858690206951944bb4cefe5dfdae9de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  turnLockCount: 0
+  actionTaken: 0
   entityMgr: {fileID: 1314207894}
   tileMgr: {fileID: 1314207901}
   uiam: {fileID: 1314207895}
@@ -22815,6 +22842,7 @@ MonoBehaviour:
   visibilityMgr: {fileID: 1314207902}
   djMapMgr: {fileID: 438385579}
   movementManager: {fileID: 1314207903}
+  levelGen: {fileID: 438385574}
 --- !u!4 &1314207892
 Transform:
   m_ObjectHideFlags: 0
@@ -22918,6 +22946,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fighting: 0
+  combatLock: 0
+  combatLockCount: 0
   attackTime: 0.333
   trimTime: 0.25
   entityMgr: {fileID: 1314207894}
@@ -23032,6 +23062,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 099e8e90c6096bc41bbbe90aa62ddacc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LockManager
+  turnLockCount: 0
+  combatLockCount: 0
 --- !u!1 &1338763342
 GameObject:
   m_ObjectHideFlags: 0
@@ -33983,11 +34015,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1935344260}
   m_CullTransparentMesh: 1
---- !u!1 &1937730749 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2862989877608427773, guid: 57670d2158c8b544a9c7250631b130e5, type: 3}
-  m_PrefabInstance: {fileID: 444728522}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1940858193
 GameObject:
   m_ObjectHideFlags: 0
@@ -38251,6 +38278,11 @@ MonoBehaviour:
   type: 1
   defaultSprite: {fileID: 21300000, guid: a1ec9517e34fdf3438545ded402ce606, type: 3}
   parentLoot: {fileID: 0}
+--- !u!1 &2862989877180478519 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2862989877608427773, guid: 57670d2158c8b544a9c7250631b130e5, type: 3}
+  m_PrefabInstance: {fileID: 444728522}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6442338754152421631
 Transform:
   m_ObjectHideFlags: 0
@@ -38525,6 +38557,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 099e8e90c6096bc41bbbe90aa62ddacc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LockManager
+  turnLockCount: 0
+  combatLockCount: 0
 --- !u!114 &6442338754152421652
 MonoBehaviour:
   m_ObjectHideFlags: 0

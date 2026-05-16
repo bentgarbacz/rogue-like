@@ -8,6 +8,7 @@ public class MiniMapManager : MonoBehaviour
     [SerializeField] private GameObject map;
     [SerializeField] private GameObject iconPrefab;
     [SerializeField] private Sprite enemyIcon;
+    [SerializeField] private Sprite minionIcon;
     [SerializeField] private Sprite pcIcon;
     [SerializeField] private Sprite objectIcon;
     [SerializeField] private Sprite tileIcon;
@@ -136,6 +137,12 @@ public class MiniMapManager : MonoBehaviour
 
                 mic.SetIcon(enemyIcon);
                 mic.InitializeController(newObject, enemyIcon, currentCharacter.loc.coord, characterLayer, 0.66f);
+            }
+            else if (currentCharacter is MinionCharacterSheet mc)
+            {
+
+                mic.SetIcon(minionIcon);
+                mic.InitializeController(newObject, minionIcon, currentCharacter.loc.coord, characterLayer, 0.66f);
             }
 
             dynamicObjectIcons.Add(mic);

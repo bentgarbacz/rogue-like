@@ -295,7 +295,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   loc: {fileID: -5054675689994192384}
   characterHealth: {fileID: 5356192193897022395}
-  stats: {fileID: 0}
+  stats: {fileID: -503536938621640877}
   level: 0
   isActionBlocked: 0
   dropTable: 0

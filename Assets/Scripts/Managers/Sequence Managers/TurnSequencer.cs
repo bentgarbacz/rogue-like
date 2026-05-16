@@ -7,8 +7,8 @@ using UnityEngine.InputSystem;
 public class TurnSequencer : MonoBehaviour
 {
     private bool turnLock = false;
-    private int turnLockCount = 0;
-    private bool actionTaken = false;
+    [SerializeField] private int turnLockCount = 0;
+    [SerializeField] private bool actionTaken = false;
     private bool inanimateTurnTaken = false;
     private Queue<Vector2Int> playerMovementQueue = new();
     private PlayerCharacterSheet playerCharacter;
@@ -24,6 +24,7 @@ public class TurnSequencer : MonoBehaviour
     [SerializeField] private VisibilityManager visibilityMgr;
     [SerializeField] private DijkstraMapManager djMapMgr;
     [SerializeField] private NPCMovementManager movementManager;
+    [SerializeField] private LevelGenerator levelGen;
 
     void Start()
     {
@@ -97,7 +98,7 @@ public class TurnSequencer : MonoBehaviour
     private bool ProcessPlayerInput()
     {
 
-        if (!Mouse.current.leftButton.wasPressedThisFrame || uiam.IsPointerOverUI() || combatSeq.fighting || (turnLock && !IsPlayerMoving()))
+        if (!Mouse.current.leftButton.wasPressedThisFrame || uiam.IsPointerOverUI() || combatSeq.fighting || (turnLock && !IsPlayerMoving()) || levelGen.IsGenerating())
         {
 
             return false;
@@ -128,6 +129,12 @@ public class TurnSequencer : MonoBehaviour
         uiam.HideAssignSpell();
         
         playerMovementQueue.Clear();
+
+        if(actionTaken)
+        {
+            
+            return true;
+        }
 
         if (HandleInteractable(targetInteractable))
         {

@@ -4,9 +4,9 @@ public class LockManager : MonoBehaviour
 {
 
     TurnSequencer turnSeq;
-    int turnLockCount = 0;
+    [SerializeField] private int turnLockCount = 0;
     CombatSequencer combatSeq;
-    int combatLockCount = 0;
+    [SerializeField] private int combatLockCount = 0;
 
     void Awake()
     {

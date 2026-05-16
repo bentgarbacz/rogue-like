@@ -6,6 +6,7 @@ public class Exit : Interactable
 {
 
     private LevelGenerator levelGenerator;
+    public BiomeType targetBiome = BiomeType.Catacomb;
 
     void Start()
     {
@@ -16,8 +17,13 @@ public class Exit : Interactable
     public override bool Interact()
     {
                              
-        levelGenerator.NewLevel(levelGenerator.biomeDict[BiomeType.Catacomb]);
+        levelGenerator.NewLevel(levelGenerator.biomeDict[targetBiome]);
         
         return true;
+    }
+
+    public void SetTargetBiome(BiomeType biome)
+    {
+        targetBiome = biome;
     }
 }

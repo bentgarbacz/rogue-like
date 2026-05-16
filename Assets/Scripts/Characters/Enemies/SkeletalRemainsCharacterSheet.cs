@@ -8,6 +8,7 @@ public class SkeletalRemainsCharacterSheet : EnemyCharacterSheet
     private int dormancyTurns = 5;
     private bool willRespawn = false;
     private NPCGenerator npcGen;
+    private MiniMapManager miniMapMgr;
 
     public override void Awake()
     {
@@ -27,6 +28,7 @@ public class SkeletalRemainsCharacterSheet : EnemyCharacterSheet
         attackClip = Resources.Load<AudioClip>("Sounds/Skeleton");
 
         npcGen = GameObject.Find("Map Generator").GetComponent<NPCGenerator>();
+        miniMapMgr = managers.GetComponent<UIActiveManager>().mapPanel.GetComponent<MiniMapManager>();
     }
 
     public override void AggroBehavior()
@@ -51,7 +53,9 @@ public class SkeletalRemainsCharacterSheet : EnemyCharacterSheet
         if(willRespawn)
         {
             
-            npcGen.CreateEnemy(NPCType.Skeleton, loc.Coord3d());
+            GameObject skeleton = npcGen.CreateEnemy(NPCType.Skeleton, loc.Coord3d());
+            skeleton.transform.rotation = transform.rotation;
+            miniMapMgr.AddIcon(skeleton);
             return;
         }
 

@@ -16,7 +16,7 @@ public static class LootTableReferences
             {
                 DropTableType.DebugChest,
                 new List<Item>(){
-                                    new ThrowTrapScroll(100),
+                                    new TelekinesisScroll(100),
                                     new EnrageSpellScroll(100),
                                     new ResilienceSpellScroll(100),
                                     new WeakenSpellScroll(100),

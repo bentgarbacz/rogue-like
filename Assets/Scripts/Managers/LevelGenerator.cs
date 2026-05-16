@@ -8,6 +8,7 @@ using System.Linq;
 
 [RequireComponent(typeof(CaveBiome))]
 [RequireComponent(typeof(CatacombBiome))]
+[RequireComponent(typeof(DebugBiome))]
 
 public class LevelGenerator : MonoBehaviour
 {
@@ -15,9 +16,11 @@ public class LevelGenerator : MonoBehaviour
     [SerializeField] private EntityManager entityMgr;
     [SerializeField] private TileManager tileMgr;
     [SerializeField] private MiniMapManager miniMapManager;
+    [SerializeField] private LockManager lockMgr;
     [SerializeField] private GameObject wallJoiner;
     [SerializeField] private List<GameObject> debugObjects = new();
     public Dictionary<BiomeType, Biome> biomeDict;
+    private bool generatingLevel = false;
     
     void Start()
     {
@@ -26,7 +29,8 @@ public class LevelGenerator : MonoBehaviour
         {
             
             { BiomeType.Catacomb, GetComponent<CatacombBiome>() },
-            { BiomeType.Cave, GetComponent<CaveBiome>() }
+            { BiomeType.Cave, GetComponent<CaveBiome>() },
+            { BiomeType.Debug, GetComponent<DebugBiome>() }
         };
         
         NewLevel(biomeDict[BiomeType.Cave]);        
@@ -34,6 +38,13 @@ public class LevelGenerator : MonoBehaviour
 
     public void NewLevel(Biome biome)
     {
+        if(generatingLevel)
+        {
+            
+            return;
+        }
+
+        generatingLevel = true;
 
         Vector2Int firstTileCoord;
 
@@ -42,8 +53,13 @@ public class LevelGenerator : MonoBehaviour
         miniMapManager.DrawIcons(entityMgr.entitiesInLevel);
         miniMapManager.UpdateDynamicIcons();
         entityMgr.AddGameObject(entityMgr.hero);
-        entityMgr.playerCharacter.Move(firstTileCoord); 
+
+
+        entityMgr.playerCharacter.Teleport(firstTileCoord);
+
         MoveDebugObjects();
+
+        generatingLevel = false;
     }
 
     private void MoveDebugObjects()
@@ -68,5 +84,11 @@ public class LevelGenerator : MonoBehaviour
                 exit.loc.coord = entityMgr.playerCharacter.loc.coord;
             }
         }
+    }
+
+    public bool IsGenerating()
+    {
+        
+        return generatingLevel;
     }
 }
