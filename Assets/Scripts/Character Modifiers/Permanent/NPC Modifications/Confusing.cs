@@ -6,7 +6,7 @@ public class Confusing : CharacterModifier
 {
     public int teleportRadius = 4;
 
-    public Confusing(CharacterSheet affectedCharacter, int teleportRadius = 3)
+    public Confusing(CharacterSheet affectedCharacter, int teleportRadius = 4)
     {
         this.descriptors.Add(ModifierDescriptor.Permanent);
         this.descriptors.Add(ModifierDescriptor.OnHit);
