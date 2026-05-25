@@ -38,7 +38,7 @@ public class GoatmanCharacterSheet : EnemyCharacterSheet
             
             enrageStage1 = true;
             hasEnraged = true;
-            statusEffectMgr.AddEffect(new Enrage(this, int.MaxValue, 0.3f));
+            characterModMgr.AddModifier(new Enrage(this, int.MaxValue, 0.3f));
         }
 
         if(characterHealth.currentHealth < stats.maxHealth * 0.3 && enrageStage2 ==false)
@@ -46,7 +46,7 @@ public class GoatmanCharacterSheet : EnemyCharacterSheet
             
             enrageStage2 = true;
             hasEnraged = true;
-            statusEffectMgr.AddEffect(new Enrage(this, int.MaxValue, 0.3f));
+            characterModMgr.AddModifier(new Enrage(this, int.MaxValue, 0.3f));
         }
 
         if(characterHealth.currentHealth == 1 && enrageStage3 ==false)
@@ -54,7 +54,7 @@ public class GoatmanCharacterSheet : EnemyCharacterSheet
             
             enrageStage3 = true;
             hasEnraged = true;
-            statusEffectMgr.AddEffect(new Enrage(this, int.MaxValue, 0.3f));
+            characterModMgr.AddModifier(new Enrage(this, int.MaxValue, 0.3f));
         }
 
         if(hasEnraged == true)

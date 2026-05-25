@@ -66,7 +66,7 @@ MonoBehaviour:
   level: 0
   isActionBlocked: 0
   dropTable: 0
-  statusEffectMgr: {fileID: 7197278157325940423}
+  characterModMgr: {fileID: 7197278157325940423}
   audioSource: {fileID: 6990595050000876360}
   attackClip: {fileID: 0}
   missClip: {fileID: 0}

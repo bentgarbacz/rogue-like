@@ -6,13 +6,13 @@ using UnityEngine.TextCore.Text;
 public class CharacterHealth : MonoBehaviour
 {
 
-    public int currentHealth;
-    public int currentBarrier;
+    public int currentHealth = 0;
+    public int currentBarrier = 0;
     private int currentBarrierTimer = 0;
     protected EntityManager entityMgr;
     protected CharacterSheet characterSheet;
 
-    public void Awake()
+    public virtual void Awake()
     {
 
         GameObject managers = GameObject.Find("System Managers");

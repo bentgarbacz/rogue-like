@@ -10,6 +10,8 @@ public class NameplateManager : MonoBehaviour
     [SerializeField]private Image healthBar;
     [SerializeField]private Image barrierBar;
     [SerializeField]private TextMeshProUGUI text;
+    [SerializeField] private GridLayoutGroup ModifierGrid;
+    [SerializeField] private GameObject notificationPrefab;
     private NpcCharacterSheet characterSheet;
     private CharacterHealth characterHealth;
     private ObjectHighlighter characterHighlighter;
@@ -71,8 +73,8 @@ public class NameplateManager : MonoBehaviour
         }
 
         text.ForceMeshUpdate(true);
-
-        uiam.OpenNameplatePanel();
+        UpdateModifierNotifications();
+        uiam.OpenNameplatePanel();  
     }
 
     public void ClearCharacter()
@@ -105,6 +107,38 @@ public class NameplateManager : MonoBehaviour
         {
 
             displayTime += 1;
+        }
+
+        UpdateModifierNotifications();
+    }
+
+    public void UpdateModifierNotifications()
+    {
+
+        if(characterSheet == null)
+        {
+            
+            return;
+        }
+
+        for(int i = 0; i < ModifierGrid.transform.childCount; i++)
+        {
+
+            Destroy(ModifierGrid.transform.GetChild(i).gameObject);
+        }
+
+        foreach(CharacterModifier mod in characterSheet.characterModMgr.GetCharacterModifiers())
+        {
+
+            if(mod.descriptors.Contains(ModifierDescriptor.NoVisual))
+            {
+                
+                continue;
+            }
+
+            GameObject newNotification = Instantiate(notificationPrefab);
+            newNotification.GetComponent<CharacterModificationNotification>().SetInfo(mod, true);
+            newNotification.transform.SetParent(ModifierGrid.transform, false);
         }
     }
 }

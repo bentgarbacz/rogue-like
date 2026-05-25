@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class CombatSequencer : MonoBehaviour
 {
 
     public bool fighting = false;
+    //public event System.Action CombatEnded;
     [SerializeField ]private bool combatLock = false;
     [SerializeField] private int combatLockCount = 0;
     public float attackTime = 0.5f;
@@ -15,7 +17,7 @@ public class CombatSequencer : MonoBehaviour
     [SerializeField] private TileManager tileMgr;
     [SerializeField] private ProjectileReferences allProjectiles;
 
-    public void CommenceCombat()
+    public bool CommenceCombat()
     {
 
         if(combatBuffer.Count > 0 && fighting == false)
@@ -25,7 +27,10 @@ public class CombatSequencer : MonoBehaviour
             fighting = true;
             SortBuffer();
             StartCoroutine(CombatTurns());
+            return true;
         }
+
+        return false;
     }
 
     public void IncrementCombatLock(int count = 1)
@@ -140,7 +145,7 @@ public class CombatSequencer : MonoBehaviour
 
             attackerAnimation.MeleeAttack();
 
-            yield return new WaitForSeconds(waitTime - trimTime); //Trim some time here because it feels more responsive
+            //yield return new WaitForSeconds(waitTime - trimTime); //Trim some time here because it feels more responsive
             
 
             
@@ -160,12 +165,14 @@ public class CombatSequencer : MonoBehaviour
                 attack.attackerCS.audioSource.PlayOneShot(attack.attackerCS.missClip);
             }
 
-            yield return new WaitForSeconds(trimTime); //Wait out time trimmed from above
+            //yield return new WaitForSeconds(trimTime); //Wait out time trimmed from above
+            yield return new WaitForSeconds(waitTime);
             combatBuffer.RemoveAt(0);            
         }
         
         //signals that fighting for the turn is over and regular gameplay can resume
         fighting = false;
+        //CombatEnded?.Invoke();
     }
 
     public bool CheckMeleeAttackValidity(GameObject attacker, GameObject defender)
@@ -227,8 +234,8 @@ public class CombatSequencer : MonoBehaviour
             // Apply damage to the defender
             attack.defenderCS.characterHealth.TakeDamage(damage);
 
-            // Resolve status effects
-            attack.ResolveEffects();
+            // Resolve Modifiers
+            attack.ResolveModifier();
 
         }
         else
@@ -284,7 +291,7 @@ public class Attack
     public int maxDamage;
     public int speed;
     public ProjectileType projectileType;
-    public Dictionary<StatusEffect, float> statusEffects;
+    public Dictionary<CharacterModifier, float> characterMods;
 
     public Attack(GameObject attacker, GameObject defender, int minDamage, int maxDamage, int speed, ProjectileType projectileType = ProjectileType.None)
     {
@@ -299,29 +306,47 @@ public class Attack
         this.maxDamage = maxDamage;
         this.speed = speed;
         this.projectileType = projectileType;
-        this.statusEffects = new();
+        this.characterMods = new();
+
+        AttachInherentModifiers();
     }
 
-    public void AttachStatusEffect(StatusEffect statusEffect, float procChance)
+    private void AttachInherentModifiers()
+    {
+        
+        CharacterModifierManager modManager = attackerCS.characterModMgr;
+
+        foreach(CharacterModifier mod in modManager.GetCharacterModifiers())
+        {
+            
+            if(mod.descriptors.Contains(ModifierDescriptor.OnHit))
+            {
+
+                AttachModifier(mod.GetCombatModifier(defenderCS), mod.procChance);
+            }
+        }
+    }
+
+    public void AttachModifier(CharacterModifier characterMod, float procChance)
     {
 
         //Percentage chance to proc is stored as a value between 1 and 0, where 1 = 100% and 0 = 0%
         procChance = Mathf.Max(procChance, 0);
         procChance = Mathf.Min(procChance, 1);
 
-        statusEffects.Add(statusEffect, procChance);
+        characterMods.Add(characterMod, procChance);
     }
 
-    public void ResolveEffects()
+    public void ResolveModifier()
     {
 
-        foreach (StatusEffect currentEffect in statusEffects.Keys)
+        foreach (CharacterModifier currentMod in characterMods.Keys)
         {
 
-            if (Random.Range(0f, 1f) <= statusEffects[currentEffect])
+            if (Random.Range(0f, 1f) <= characterMods[currentMod])
             {
                 
-                defenderCS.statusEffectMgr.AddEffect(currentEffect);
+                defenderCS.characterModMgr.AddModifier(currentMod);
             }
         }
     }

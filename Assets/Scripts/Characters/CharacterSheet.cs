@@ -14,7 +14,7 @@ public class CharacterSheet : MonoBehaviour
     public int level = 0;
     public bool isActionBlocked = false;
     public DropTableType dropTable = DropTableType.None;
-    public StatusEffectManager statusEffectMgr;
+    public CharacterModifierManager characterModMgr;
     protected TileManager tileMgr;
     protected EntityManager entityMgr;
     protected LockManager lockMgr;

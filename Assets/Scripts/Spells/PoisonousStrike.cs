@@ -34,6 +34,12 @@ public class PoisonousStrike : Spell
 
             Equipment mainHandWeapon = (Equipment)im.equipmentSlotsDictionary[ItemSlotType.MainHand].item;
 
+            if(mainHandWeapon == null)
+            {
+                
+                return false;
+            }
+
             CharacterSheet attackingCharacter = caster.GetComponent<CharacterSheet>();
             CharacterSheet defendingCharacter = target.GetComponent<CharacterSheet>();
             
@@ -52,7 +58,7 @@ public class PoisonousStrike : Spell
                     {
 
                         Attack attack = new(caster, target, minDamage, maxDamage, attackingCharacter.stats.speed);
-                        attack.AttachStatusEffect(new Poison(defendingCharacter, duration, damagePerTurn), 1f);                        
+                        attack.AttachModifier(new Poison(defendingCharacter, duration, damagePerTurn), 1f);                        
                         combatSeq.AddAttack(attack);
 
                         ResetCooldown(caster);
@@ -66,7 +72,7 @@ public class PoisonousStrike : Spell
                     {
 
                         Attack attack = new(caster, target, minDamage, maxDamage, attackingCharacter.stats.speed, rangedWeapon.projectile);
-                        attack.AttachStatusEffect(new Poison(defendingCharacter, duration, damagePerTurn), 1f);                        
+                        attack.AttachModifier(new Poison(defendingCharacter, duration, damagePerTurn), 1f);                        
                         combatSeq.AddAttack(attack);
                         
                         ResetCooldown(caster);

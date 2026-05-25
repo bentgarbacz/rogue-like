@@ -28,9 +28,9 @@ public class WeakenSpell : Spell
         }
         
         CharacterSheet targetCharacter = target.GetComponent<CharacterSheet>();
-        StatusEffectManager statusEffectManager = target.GetComponent<StatusEffectManager>();
+        CharacterModifierManager characterModMgr = target.GetComponent<CharacterModifierManager>();
 
-        statusEffectManager.AddEffect(new Weaken(targetCharacter, duration, damageMultiplier));
+        characterModMgr.AddModifier(new Weaken(targetCharacter, duration, damageMultiplier));
         ResetCooldown(caster);
 
         return true;

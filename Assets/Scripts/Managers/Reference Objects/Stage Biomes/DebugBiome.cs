@@ -66,8 +66,8 @@ public class DebugBiome : Biome
                 // Spawn entrance
                 if (x == 0 && y == 0)
                 {
-                    CreateEntranceTile(spawnPos, position);
-                    dungeonCoords.Add(position);
+                    //CreateEntranceTile(spawnPos, position);
+                    //dungeonCoords.Add(position);
                 }
                 // Spawn main exit
                 else if (x == gridSize - 1 && y == gridSize - 1)
@@ -85,10 +85,10 @@ public class DebugBiome : Biome
         }
 
         // Spawn all NPC types in a grid pattern
-        SpawnAllNPCs(startPosition, gridSize);
+        //SpawnAllNPCs(startPosition, gridSize);
 
         // Spawn biome exits
-        SpawnBiomeExits(dungeonCoords, startPosition, gridSize);
+        //SpawnBiomeExits(dungeonCoords, startPosition, gridSize);
 
         // Generate walls around the dungeon
         GenerateWalls(dungeonCoords);
