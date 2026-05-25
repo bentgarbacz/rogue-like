@@ -37,7 +37,7 @@ public class IceBolt : Spell
         }
 
         Attack attack = new(caster, target, minDamage, maxDamage, caster.GetComponent<CharacterSheet>().stats.speed, projectileType);
-        attack.AttachStatusEffect(new Frozen(target.GetComponent<CharacterSheet>(), duration), freezeChance);
+        attack.AttachModifier(new Frozen(target.GetComponent<CharacterSheet>(), duration), freezeChance);
         combatSeq.AddAttack(attack);
 
         ResetCooldown(caster);

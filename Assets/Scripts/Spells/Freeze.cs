@@ -29,9 +29,9 @@ public class Freeze : Spell
         }
 
         CharacterSheet targetCharacter = target.GetComponent<CharacterSheet>();
-        StatusEffectManager statusEffectManager = target.GetComponent<StatusEffectManager>();
+        CharacterModifierManager characterModMgr = target.GetComponent<CharacterModifierManager>();
 
-        statusEffectManager.AddEffect(new Frozen(targetCharacter, duration));
+        characterModMgr.AddModifier(new Frozen(targetCharacter, duration));
         ResetCooldown(caster);
 
         return true;

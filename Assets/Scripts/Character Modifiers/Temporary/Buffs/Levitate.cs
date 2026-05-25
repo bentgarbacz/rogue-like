@@ -1,0 +1,45 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Levitate : CharacterModifier
+{
+
+    public Levitate(CharacterSheet affectedCharacter, int duration)
+    {
+
+        this.descriptors.Add(ModifierDescriptor.Buff);
+        this.descriptors.Add(ModifierDescriptor.Temporary);
+        this.descriptors.Add(ModifierDescriptor.Unique);
+        
+        this.affectedCharacter = affectedCharacter;
+        this.duration = duration;
+
+        this.sprite = Resources.Load<Sprite>("Pixel Art/Wing");
+    }
+
+    public override int Effect()
+    {
+
+        duration -= 1;
+        return duration;
+    }
+
+    public override void StartEffect()
+    {
+        
+        affectedCharacter.gameObject.GetComponent<Levitating>().StartLevitating();
+    }
+
+    public override void EndEffect()
+    {
+
+        affectedCharacter.gameObject.GetComponent<Levitating>().EndLevitating();
+    }
+
+    public override string GetDescription()
+    {
+
+        return "Float in the air";
+    }
+}

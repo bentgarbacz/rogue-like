@@ -10,6 +10,7 @@ public class TurnSequencer : MonoBehaviour
     [SerializeField] private int turnLockCount = 0;
     [SerializeField] private bool actionTaken = false;
     private bool inanimateTurnTaken = false;
+    //private bool postCombatPending = false;
     private Queue<Vector2Int> playerMovementQueue = new();
     private PlayerCharacterSheet playerCharacter;
     private SpellCaster spellCaster;
@@ -33,10 +34,23 @@ public class TurnSequencer : MonoBehaviour
         playerCharacter = entityMgr.hero.GetComponent<PlayerCharacterSheet>();
         spellCaster = entityMgr.hero.GetComponent<SpellCaster>();
         pcMovement = playerCharacter.GetComponent<MoveToTarget>();
+        //combatSeq.CombatEnded += OnCombatEnded;
     }
 
     void Update()
     {
+
+        //if(combatSeq.fighting)
+        //{
+
+        //    return;
+        //}
+
+        //if (postCombatPending && !turnLock)
+        //{
+        //    ProcessPostCombat();
+        //    return;
+        //}
 
         if (ProcessPlayerInput())
         {
@@ -44,7 +58,7 @@ public class TurnSequencer : MonoBehaviour
             return;
         }
 
-        if (combatSeq.fighting || turnLock)
+        if (turnLock || combatSeq.fighting)
         {
 
             return;
@@ -69,8 +83,13 @@ public class TurnSequencer : MonoBehaviour
             ProcessEntityTurns(entityMgr.friendlies);
             djMapMgr.PopulateNPCMap();
             inanimateTurnTaken = true;
-            
+
             combatSeq.CommenceCombat();
+            //if (!combatSeq.CommenceCombat())
+            //{
+            //    UpkeepEffects();
+            //    AggroNearbyEnemies();
+            //}
             UpkeepEffects();
             AggroNearbyEnemies();
         }
@@ -363,10 +382,31 @@ public class TurnSequencer : MonoBehaviour
         actionTaken = true;
     }
 
+    /*
+    private void OnDestroy()
+    {
+        if (combatSeq != null)
+        {
+            combatSeq.CombatEnded -= OnCombatEnded;
+        }
+    }
+
+    private void OnCombatEnded()
+    {
+        postCombatPending = true;
+    }
+
+    private void ProcessPostCombat()
+    {
+        postCombatPending = false;
+        UpkeepEffects();
+        AggroNearbyEnemies();
+    }*/
+
     public void UpkeepEffects()
     {
 
-        entityMgr.TriggerStatusEffects();
+        entityMgr.TriggerModifiers();
         playerCharacter.BecomeHungrier();
         playerCharacter.DecrementCooldowns();
         entityMgr.UpdateAllBarrier();

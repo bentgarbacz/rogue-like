@@ -28,9 +28,9 @@ public class EnrageSpell : Spell
         }
 
         CharacterSheet targetCharacter = target.GetComponent<CharacterSheet>();
-        StatusEffectManager statusEffectManager = target.GetComponent<StatusEffectManager>();
+        CharacterModifierManager characterModMgr = target.GetComponent<CharacterModifierManager>();
 
-        statusEffectManager.AddEffect(new Enrage(targetCharacter, duration, damageMultiplier));
+        characterModMgr.AddModifier(new Enrage(targetCharacter, duration, damageMultiplier));
         ResetCooldown(caster);
 
         return true;

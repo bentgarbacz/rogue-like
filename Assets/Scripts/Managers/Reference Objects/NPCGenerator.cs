@@ -25,6 +25,7 @@ public class NPCGenerator : MonoBehaviour
     [SerializeField] private GameObject lich;
     [SerializeField] private GameObject trap;
     [SerializeField] private GameObject mimic;
+    private readonly int totalModifiers = 6;
     private readonly Vector3 spawnPosOffset = new(0, 0.1f, 0);
 
     void Start()
@@ -103,6 +104,8 @@ public class NPCGenerator : MonoBehaviour
         entityMgr.AddGameObject(enemy);
         entityMgr.enemies.Add(enemy);
 
+        ApplyRandomNPCModifiers(enemy);
+
         return enemy;
     }
     
@@ -151,6 +154,48 @@ public class NPCGenerator : MonoBehaviour
 
         return trapObj;
 
+    }
+
+    private void ApplyRandomNPCModifiers(GameObject npc)
+    {
+
+        CharacterSheet characterSheet = npc.GetComponent<CharacterSheet>();
+
+        // Randomly determine 0-3 modifiers to apply
+        int newModifierCount = Random.Range(0, 4);
+
+        // Choose unique indices
+        HashSet<int> selectedIndices = new HashSet<int>();
+        while (selectedIndices.Count < newModifierCount)
+        {
+            selectedIndices.Add(Random.Range(0, totalModifiers));
+        }
+
+        // Apply the selected modifiers
+        foreach (int index in selectedIndices)
+        {
+            ApplyModifierByIndex(index, characterSheet.characterModMgr, characterSheet);
+        }
+    }
+
+    private void ApplyModifierByIndex(int index, CharacterModifierManager modifierManager, CharacterSheet characterSheet)
+    {
+
+        CharacterModifier newModifier = index switch
+        {
+            0 => new Confusing(characterSheet),
+            1 => new Nimble(characterSheet),
+            2 => new Poisonous(characterSheet),
+            3 => new Precise(characterSheet),
+            4 => new Stout(characterSheet),
+            5 => new Piercing(characterSheet),
+            _ => null
+        };
+
+        if (newModifier != null)
+        {
+            modifierManager.AddModifier(newModifier);
+        }
     }
 
     private GameObject GetPrefab(NPCType npcType, Vector3 spawnPos)

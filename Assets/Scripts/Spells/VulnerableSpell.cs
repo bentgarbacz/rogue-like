@@ -28,9 +28,9 @@ public class VulnerableSpell : Spell
         }
         
         CharacterSheet targetCharacter = target.GetComponent<CharacterSheet>();
-        StatusEffectManager statusEffectManager = target.GetComponent<StatusEffectManager>();
+        CharacterModifierManager characterModMgr = target.GetComponent<CharacterModifierManager>();
 
-        statusEffectManager.AddEffect(new Vulnerable(targetCharacter, duration, damageMultiplierTaken));
+        characterModMgr.AddModifier(new Vulnerable(targetCharacter, duration, damageMultiplierTaken));
         ResetCooldown(caster);
 
         return true;

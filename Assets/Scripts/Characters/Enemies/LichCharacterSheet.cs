@@ -122,7 +122,7 @@ public class LichCharacterSheet : EnemyCharacterSheet
             {
 
                 Vector3 summonPos = new(summonCoord.x, transform.position.y, summonCoord.y);
-                GameObject skeleton = npcGen.CreateEnemy(NPCType.Skull, summonPos);
+                GameObject skeleton = npcGen.CreateEnemy(NPCType.SkeletalRemains, summonPos);
 
                 if (skeleton != null)
                 {

@@ -53,13 +53,16 @@ public class LevelGenerator : MonoBehaviour
         miniMapManager.DrawIcons(entityMgr.entitiesInLevel);
         miniMapManager.UpdateDynamicIcons();
         entityMgr.AddGameObject(entityMgr.hero);
+        
+        entityMgr.hero.SetActive(false);
 
+        foreach (GameObject dbg in debugObjects)
+        {
+            if (dbg != null)
+                dbg.SetActive(false);
+        }
 
-        entityMgr.playerCharacter.Teleport(firstTileCoord);
-
-        MoveDebugObjects();
-
-        generatingLevel = false;
+        StartCoroutine(DelayedPostGeneration(firstTileCoord));
     }
 
     private void MoveDebugObjects()
@@ -84,6 +87,24 @@ public class LevelGenerator : MonoBehaviour
                 exit.loc.coord = entityMgr.playerCharacter.loc.coord;
             }
         }
+    }
+
+    private IEnumerator DelayedPostGeneration(Vector2Int firstTileCoord)
+    {
+        yield return new WaitForSeconds(0.5f);
+
+        entityMgr.playerCharacter.Teleport(firstTileCoord);
+
+        entityMgr.hero.SetActive(true);
+
+        foreach (GameObject dbg in debugObjects)
+        {
+            if (dbg != null)
+                dbg.SetActive(true);
+        }
+
+        MoveDebugObjects();
+        generatingLevel = false;
     }
 
     public bool IsGenerating()

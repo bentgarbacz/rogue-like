@@ -23,9 +23,9 @@ public class Fortify : Spell
     {
 
         CharacterSheet casterCharacter = caster.GetComponent<CharacterSheet>();
-        StatusEffectManager statusEffectManager = caster.GetComponent<StatusEffectManager>();
+        CharacterModifierManager characterModMgr = caster.GetComponent<CharacterModifierManager>();
 
-        caster.GetComponent<StatusEffectManager>().AddEffect(new StoneSkin(casterCharacter, duration, armorIncrease));
+        characterModMgr.AddModifier(new StoneSkin(casterCharacter, duration, armorIncrease));
         ResetCooldown(caster);
 
         if(casterCharacter is PlayerCharacterSheet pc)

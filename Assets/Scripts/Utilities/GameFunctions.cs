@@ -175,7 +175,7 @@ public static class GameFunctions
         loot.AddItems(droppedItems);
 
         entityMgr.AddGameObject(lootContainer);
-        entityMgr.itemContainers.Add(loot);
+        entityMgr.itemContainers.Add(lootContainer);
 
         miniMapManager.AddIcon(lootContainer);
 

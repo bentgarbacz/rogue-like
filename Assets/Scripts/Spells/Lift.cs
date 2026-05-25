@@ -30,7 +30,7 @@ public class Lift : Spell
         if (target.TryGetComponent<CharacterSheet>(out var targetCharacterSheet))
         {
 
-            target.GetComponent<StatusEffectManager>().AddEffect(new Levitate(targetCharacterSheet, duration));
+            target.GetComponent<CharacterModifierManager>().AddModifier(new Levitate(targetCharacterSheet, duration));
             return true;
         }
 

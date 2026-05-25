@@ -23,7 +23,7 @@ public class MimicChest : Loot
         npcGenerator = GameObject.Find("Map Generator").GetComponent<NPCGenerator>();
 
         cantSpawnClip = Resources.Load<AudioClip>("Sounds/clack");
-        entityMgr.itemContainers.Add(this);
+        entityMgr.itemContainers.Add(this.gameObject);
     }
 
     public override bool Interact()

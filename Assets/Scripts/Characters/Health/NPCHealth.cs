@@ -7,13 +7,10 @@ public class NPCHealth : CharacterHealth
 
     private NameplateManager npm;
 
-    void Start()
+    public override void Awake()
     {
-        
-        npm = GameObject.Find("CanvasHUD").transform.GetChild(10).GetComponent<NameplateManager>();
-        
-        currentHealth = characterSheet.stats.maxHealth;
-        currentBarrier = characterSheet.stats.maxBarrier;
+        base.Awake();
+        npm = GameObject.Find("CanvasHUD").transform.GetChild(10).GetComponent<NameplateManager>();        
     }
 
     public override void TakeDamage(int damage)

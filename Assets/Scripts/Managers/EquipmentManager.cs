@@ -22,11 +22,11 @@ public class EquipmentManager : MonoBehaviour
 
     public void UpdateStats()
     { 
-        //End all active status effects to remove their stat modifications
-        List<StatusEffect> activeStatusEffects = playerCharacter.statusEffectMgr.GetStatusEffects();
-        foreach(StatusEffect effect in activeStatusEffects)
+        //End all active modifiers to remove their stat modifications
+        List<CharacterModifier> activeCharacterMods = playerCharacter.characterModMgr.GetCharacterModifiers();
+        foreach(CharacterModifier mod in activeCharacterMods)
         {
-            effect.EndEffect();
+            mod.EndEffect();
         }
 
         //Subtract stat bonuses from all stats
@@ -127,10 +127,10 @@ public class EquipmentManager : MonoBehaviour
         playerHealth.currentBarrier = Mathf.Min(playerHealth.currentBarrier, playerCharacter.stats.maxBarrier);
         playerCharacter.mana = Mathf.Min(playerCharacter.mana, stats.maxMana);
 
-        //Reapply all active status effects after stat recalculation
-        foreach(StatusEffect effect in activeStatusEffects)
+        //Reapply all active modifiers after stat recalculation
+        foreach(CharacterModifier mod in activeCharacterMods)
         {
-            effect.StartEffect();
+            mod.StartEffect();
         }
 
         playerCharacter.UpdateUI();

@@ -267,6 +267,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 099e8e90c6096bc41bbbe90aa62ddacc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LockManager
+  turnLockCount: 0
+  combatLockCount: 0
 --- !u!114 &3811043770248520170
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -285,7 +287,7 @@ MonoBehaviour:
   level: 0
   isActionBlocked: 0
   dropTable: 0
-  statusEffectMgr: {fileID: 24288233701359170}
+  characterModMgr: {fileID: 24288233701359170}
   audioSource: {fileID: -6163230136273940249}
   attackClip: {fileID: 0}
   missClip: {fileID: 0}

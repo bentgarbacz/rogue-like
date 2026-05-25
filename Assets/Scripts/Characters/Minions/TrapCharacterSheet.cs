@@ -5,8 +5,6 @@ using UnityEngine;
 public class TrapCharacterSheet : MinionCharacterSheet
 {
     public int explodeRadius = 1;
-    public int explosionMinDamage = 3;
-    public int explosionMaxDamage = 5;
     public GameObject explosionPrefab;
     private bool arming = true;
     
@@ -15,8 +13,8 @@ public class TrapCharacterSheet : MinionCharacterSheet
         base.Awake();
         
         stats.maxHealth = 1;
-        stats.minDamage = 0;
-        stats.maxDamage = 0;
+        stats.minDamage = 3;
+        stats.maxDamage = 5;
         stats.speed = 0;
         stats.evasion = 0;
         stats.accuracy = 5000;
@@ -55,7 +53,7 @@ public class TrapCharacterSheet : MinionCharacterSheet
         
         if (explosionComponent != null)
         {
-            explosionComponent.InitExplosion(explodeRadius, explosionMinDamage, explosionMaxDamage, this.gameObject);
+            explosionComponent.InitExplosion(explodeRadius, stats.minDamage, stats.maxDamage, this.gameObject);
             explosionComponent.SetExplosion();
         }
     }

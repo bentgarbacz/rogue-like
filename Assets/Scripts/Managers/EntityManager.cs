@@ -15,7 +15,7 @@ public class EntityManager : MonoBehaviour
     public HashSet<GameObject> aggroEnemies = new();
     public HashSet<GameObject> friendlies = new();
     public HashSet<GameObject> inanimates = new();
-    public HashSet<Loot> itemContainers = new();
+    public HashSet<GameObject> itemContainers = new();
     [SerializeField] private CombatSequencer combatSeq;
     [SerializeField] private TurnSequencer ts;
     [SerializeField] private MiniMapManager minimapMgr;
@@ -38,16 +38,16 @@ public class EntityManager : MonoBehaviour
         return new HashSet<GameObject>(enemies.Union(friendlies));
     }
 
-    public void TriggerStatusEffects()
+    public void TriggerModifiers()
     {
 
-        playerCharacter.statusEffectMgr.ProcessStatusEffects();
-        playerCharacter.UpdateStatusNotifications();
+        playerCharacter.characterModMgr.ProcessModifiers();
+        playerCharacter.UpdateModifierNotifications();
 
         foreach (GameObject npc in GetAllNPCs().ToList())
         {
 
-            npc.GetComponent<StatusEffectManager>().ProcessStatusEffects();
+            npc.GetComponent<CharacterModifierManager>().ProcessModifiers();
         }
     }
 

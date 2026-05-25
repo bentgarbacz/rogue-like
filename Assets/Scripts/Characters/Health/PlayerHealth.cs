@@ -7,6 +7,12 @@ public class PlayerHealth : CharacterHealth
 
     [SerializeField] private UpdateUIElements updateStats;
 
+    public override void Awake()
+    {
+        base.Awake();
+        updateStats.RefreshUI();
+    }
+
     public override void TakeDamage(int damage)
     {
 

@@ -18,7 +18,7 @@ public class Chest : Loot
 
         
         AddItems(LootTableReferences.CreateItems(lootTable));  
-        entityMgr.itemContainers.Add(this);
+        entityMgr.itemContainers.Add(this.gameObject);
     }
 
     public override void DiscardIfEmpty()

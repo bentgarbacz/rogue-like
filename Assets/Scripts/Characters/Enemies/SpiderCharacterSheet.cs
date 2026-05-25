@@ -6,7 +6,7 @@ using UnityEngine;
 public class SpiderCharacterSheet : EnemyCharacterSheet
 {
 
-    public int poisonChance;
+    public float poisonChance;
     public int poisonDuration;
     public int poisonDamage;
 
@@ -21,7 +21,7 @@ public class SpiderCharacterSheet : EnemyCharacterSheet
         level = 3;
         stats.speed = 15;
         stats.evasion = 75;
-        poisonChance = 50;
+        poisonChance = 0.3f;
         poisonDuration = 3;
         poisonDamage = 1;
 
@@ -55,7 +55,7 @@ public class SpiderCharacterSheet : EnemyCharacterSheet
         Attack attack = new(this.gameObject, targetEntity, stats.minDamage, stats.maxDamage, stats.speed);
         Poison poison = new(targetEntity.GetComponent<CharacterSheet>(), 3, stats.minDamage);
 
-        attack.AttachStatusEffect(poison, 0.3f);
+        attack.AttachModifier(poison, poisonChance);
         combatSeq.AddAttack(attack);
 
         return true;

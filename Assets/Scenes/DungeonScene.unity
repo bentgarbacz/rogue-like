@@ -20003,10 +20003,10 @@ GameObject:
   m_Component:
   - component: {fileID: 1171624147}
   - component: {fileID: 1171624148}
-  - component: {fileID: 1171624150}
   - component: {fileID: 1171624149}
+  - component: {fileID: 1171624150}
   m_Layer: 5
-  m_Name: Status Effects Panel
+  m_Name: Character Modification Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -20059,7 +20059,7 @@ MonoBehaviour:
   m_ChildAlignment: 0
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 50, y: 75}
+  m_CellSize: {x: 50, y: 50}
   m_Spacing: {x: 15, y: 15}
   m_Constraint: 0
   m_ConstraintCount: 2
@@ -20072,10 +20072,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1171624146}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 11a4355fade4fda4da0c1454b39dce36, type: 3}
+  m_Script: {fileID: 11500000, guid: 0f47eb5a61842c940a3d8370e2dadfa5, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
-  statusEffectGrid: {fileID: 1171624149}
+  m_EditorClassIdentifier: Assembly-CSharp::ModificationNotificationManager
+  ModifierGrid: {fileID: 1171624149}
   notificationPrefab: {fileID: 2532955743489736437, guid: fd3636fdf93c6bf44b19774c7fe5a0cc, type: 3}
 --- !u!1001 &1191892555
 PrefabInstance:
@@ -34993,6 +34993,7 @@ RectTransform:
   - {fileID: 423384791}
   - {fileID: 293861287}
   - {fileID: 1146872925}
+  - {fileID: 1984632682}
   m_Father: {fileID: 896522263}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
@@ -35053,6 +35054,8 @@ MonoBehaviour:
   healthBar: {fileID: 1906340100}
   barrierBar: {fileID: 423384792}
   text: {fileID: 293861288}
+  ModifierGrid: {fileID: 1984632683}
+  notificationPrefab: {fileID: 2532955743489736437, guid: fd3636fdf93c6bf44b19774c7fe5a0cc, type: 3}
   displayTime: 0
 --- !u!114 &1977274822
 MonoBehaviour:
@@ -35213,6 +35216,66 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1982741847}
   m_CullTransparentMesh: 1
+--- !u!1 &1984632681
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1984632682}
+  - component: {fileID: 1984632683}
+  m_Layer: 5
+  m_Name: Character Modifiers
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1984632682
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1984632681}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1977274816}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.1}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: -71.04999}
+  m_SizeDelta: {x: 500, y: 62.100014}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1984632683
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1984632681}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a8695521f0d02e499659fee002a26c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.GridLayoutGroup
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 1
+  m_StartCorner: 0
+  m_StartAxis: 0
+  m_CellSize: {x: 50, y: 50}
+  m_Spacing: {x: 15, y: 15}
+  m_Constraint: 0
+  m_ConstraintCount: 2
 --- !u!1 &1989627305
 GameObject:
   m_ObjectHideFlags: 0
@@ -38395,7 +38458,7 @@ MonoBehaviour:
   level: 0
   isActionBlocked: 0
   dropTable: 0
-  statusEffectMgr: {fileID: 6442338754152421654}
+  characterModMgr: {fileID: 6442338754152421654}
   audioSource: {fileID: 6442338754152421653}
   attackClip: {fileID: 0}
   missClip: {fileID: 0}
@@ -38426,7 +38489,7 @@ MonoBehaviour:
   maxManaBonus: 0
   visibilityRadius: 5
   updateStats: {fileID: 896522264}
-  snm: {fileID: 1171624150}
+  modNotificationMgr: {fileID: 1171624150}
   turnSequencer: {fileID: 1314207891}
 --- !u!114 &6442338754152421643
 MonoBehaviour:

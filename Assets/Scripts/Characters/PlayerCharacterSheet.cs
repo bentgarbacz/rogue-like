@@ -37,7 +37,7 @@ public class PlayerCharacterSheet : CharacterSheet
     private InventoryManager im;
     private CombatSequencer combatSeq;
     [SerializeField] private UpdateUIElements updateStats;
-    [SerializeField] private StatusNotificationManager snm;
+    [SerializeField] private ModificationNotificationManager modNotificationMgr;
     [SerializeField] private TurnSequencer turnSequencer;
 
     public override void Awake()
@@ -309,10 +309,16 @@ public class PlayerCharacterSheet : CharacterSheet
         updateStats.RefreshUI();
     }
 
-    public void UpdateStatusNotifications()
+    public void UpdateModifierNotifications()
     {
 
-        snm.UpdateStatusNotifications(statusEffectMgr.GetStatusEffects());
+        modNotificationMgr.UpdateModifierNotifications();
+    }
+
+    public void AddModificationNotification(CharacterModifier newMod)
+    {
+        
+        modNotificationMgr.AddMod(newMod);
     }
 
     public override bool Move(Vector2Int newCoord, float waitTime = 0f)
