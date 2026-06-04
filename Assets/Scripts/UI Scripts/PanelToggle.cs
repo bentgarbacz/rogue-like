@@ -49,4 +49,11 @@ public class PanelToggle : MonoBehaviour
         audioSource.Play();
         uiam.ToggleMap();
     }
+
+    public void ClickLog()
+    {
+
+        audioSource.Play();
+        uiam.ToggleLogPanel();
+    }
 }

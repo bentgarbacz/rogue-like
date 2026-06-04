@@ -17,6 +17,7 @@ public class LevelGenerator : MonoBehaviour
     [SerializeField] private TileManager tileMgr;
     [SerializeField] private MiniMapManager miniMapManager;
     [SerializeField] private LockManager lockMgr;
+    [SerializeField] private LogManager logMgr;
     [SerializeField] private GameObject wallJoiner;
     [SerializeField] private List<GameObject> debugObjects = new();
     public Dictionary<BiomeType, Biome> biomeDict;
@@ -49,6 +50,8 @@ public class LevelGenerator : MonoBehaviour
         Vector2Int firstTileCoord;
 
         entityMgr.CleanUp();
+        logMgr.ClearLog();
+        logMgr.CreateLogEntry("You delve deeper into the " + biome.title, Color.cyan);
         firstTileCoord = biome.GenerateLevel(tileMgr.levelCoords);    
         miniMapManager.DrawIcons(entityMgr.entitiesInLevel);
         miniMapManager.UpdateDynamicIcons();

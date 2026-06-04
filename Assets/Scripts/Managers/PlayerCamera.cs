@@ -23,6 +23,8 @@ public class PlayerCamera : MonoBehaviour
     [SerializeField] private GameObject hero;
     [SerializeField] private Camera MinimapCamera;
     [SerializeField] private TileManager tileMgr;
+    [SerializeField] private LogManager logMgr;
+
 
     void Start()
     {
@@ -55,7 +57,7 @@ public class PlayerCamera : MonoBehaviour
                 RotateCamera(Input.GetAxis("Mouse X") * panSpeed, Input.GetAxis("Mouse Y") * panSpeed);
             }
 
-            if(Input.GetAxis("Mouse ScrollWheel") != 0)
+            if(Input.GetAxis("Mouse ScrollWheel") != 0 && !logMgr.IsMouseOver())
             {
                 
                 ZoomCamera(Input.GetAxis("Mouse ScrollWheel") * zoomSensitivity);

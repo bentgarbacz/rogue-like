@@ -57,7 +57,7 @@ public class NPCGenerator : MonoBehaviour
     //The int passed to mimic chance is treated as a % chance.
     //  The default 5 value is treated as 5% chance to occur.
     //  Values below 0 and above 100 are treated as 0% and 100% respectively.
-    public void CreateChest(Vector3 spawnPos, int mimicChance = 5)
+    public void CreateChest(Vector3 spawnPos, int mimicChance = 100)
     {
 
         GameObject newChest;
@@ -160,6 +160,8 @@ public class NPCGenerator : MonoBehaviour
     {
 
         CharacterSheet characterSheet = npc.GetComponent<CharacterSheet>();
+        //ApplyModifierByIndex(0, characterSheet.characterModMgr, characterSheet);
+        //return;
 
         // Randomly determine 0-3 modifiers to apply
         int newModifierCount = Random.Range(0, 4);
