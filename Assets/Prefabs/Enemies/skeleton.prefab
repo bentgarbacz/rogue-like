@@ -199,6 +199,8 @@ MonoBehaviour:
   title: N/A
   aggroNoise: {fileID: 0}
   aggroRange: 10
+  skeletonMesh: {fileID: -2432090755550338912, guid: a3a81c74945f8d44a87afa42e572ed57, type: 3}
+  pileOfBonesMesh: {fileID: -2432090755550338912, guid: 25ddefba928fd0f458224b28e1a621ee, type: 3}
 --- !u!114 &4570589818020675942
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -9,14 +9,11 @@ public class CharacterHealth : MonoBehaviour
     public int currentHealth = 0;
     public int currentBarrier = 0;
     private int currentBarrierTimer = 0;
-    protected EntityManager entityMgr;
     protected CharacterSheet characterSheet;
 
     public virtual void Awake()
     {
 
-        GameObject managers = GameObject.Find("System Managers");
-        entityMgr = managers.GetComponent<EntityManager>();
         characterSheet = GetComponent<CharacterSheet>();
 
         currentHealth = characterSheet.stats.maxHealth;
@@ -53,7 +50,7 @@ public class CharacterHealth : MonoBehaviour
         if (currentHealth <= 0)
         {
 
-            Die();
+            characterSheet.Die();
         }
     }
 
@@ -100,13 +97,5 @@ public class CharacterHealth : MonoBehaviour
             
             currentBarrierTimer += 1;
         }
-    }
-
-    private void Die()
-    {
-
-        entityMgr.KillEntity(this.gameObject);
-        characterSheet.OnDeath();
-        Destroy(this.gameObject);
     }
 }

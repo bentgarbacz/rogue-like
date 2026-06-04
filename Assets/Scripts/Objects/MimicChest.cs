@@ -9,6 +9,7 @@ public class MimicChest : Loot
     private AudioClip cantSpawnClip;
     private CombatSequencer combatSeq;
     private MiniMapManager miniMapMgr;
+    private LogManager logMgr;
     public int minDamage = 2;
     public int maxDamage = 7;
     public int speed = 5;
@@ -20,6 +21,7 @@ public class MimicChest : Loot
         entityMgr = managers.GetComponent<EntityManager>();
         combatSeq = managers.GetComponent<CombatSequencer>();        
         miniMapMgr = managers.GetComponent<UIActiveManager>().mapPanel.GetComponent<MiniMapManager>();
+        logMgr = managers.GetComponent<UIActiveManager>().logPanel.GetComponent<LogManager>();
         npcGenerator = GameObject.Find("Map Generator").GetComponent<NPCGenerator>();
 
         cantSpawnClip = Resources.Load<AudioClip>("Sounds/clack");
@@ -34,6 +36,8 @@ public class MimicChest : Loot
         
         if (mimic != null)
         {
+
+            logMgr.CreateLogEntry("The chest is a mimic", Color.red);
 
             Attack attack = new(mimic, entityMgr.hero, minDamage, maxDamage, speed);
             combatSeq.ExecuteAttack(attack);

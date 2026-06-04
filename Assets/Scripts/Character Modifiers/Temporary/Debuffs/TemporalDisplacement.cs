@@ -5,30 +5,31 @@ public class TemporalDisplacement : CharacterModifier
 {   
     public int radius = 3;
     private TileManager tileMgr;
+    private CombatSequencer combatSeq;
 
     public TemporalDisplacement(CharacterSheet affectedCharacter, int radius = 3)
     {
 
-        this.descriptors.Add(ModifierDescriptor.Temporary);
+        this.descriptors.Add(ModifierDescriptor.OneShot);
         this.descriptors.Add(ModifierDescriptor.Debuff);
         this.descriptors.Add(ModifierDescriptor.NoVisual);
 
         this.affectedCharacter = affectedCharacter;
         this.radius = radius;
-        this.duration = 1;
         this.sprite = Resources.Load<Sprite>("Pixel Art/Spells/TemporalDisplacement");
 
-        tileMgr = GameObject.Find("System Managers").GetComponent<TileManager>();
+        GameObject managers = GameObject.Find("System Managers");
+
+        tileMgr = managers.GetComponent<TileManager>();
+        combatSeq = managers.GetComponent<CombatSequencer>();
     }
 
 
-    public override int Effect()
+    public override void StartEffect()
     {
 
         TeleportToRandomTile();
-
-        duration -= 1;
-        return duration;
+        combatSeq.PruneCombatBuffer(affectedCharacter.gameObject);
     }
 
     public override string GetDescription()

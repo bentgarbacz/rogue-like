@@ -10,7 +10,6 @@ public class TurnSequencer : MonoBehaviour
     [SerializeField] private int turnLockCount = 0;
     [SerializeField] private bool actionTaken = false;
     private bool inanimateTurnTaken = false;
-    //private bool postCombatPending = false;
     private Queue<Vector2Int> playerMovementQueue = new();
     private PlayerCharacterSheet playerCharacter;
     private SpellCaster spellCaster;
@@ -34,23 +33,10 @@ public class TurnSequencer : MonoBehaviour
         playerCharacter = entityMgr.hero.GetComponent<PlayerCharacterSheet>();
         spellCaster = entityMgr.hero.GetComponent<SpellCaster>();
         pcMovement = playerCharacter.GetComponent<MoveToTarget>();
-        //combatSeq.CombatEnded += OnCombatEnded;
     }
 
     void Update()
     {
-
-        //if(combatSeq.fighting)
-        //{
-
-        //    return;
-        //}
-
-        //if (postCombatPending && !turnLock)
-        //{
-        //    ProcessPostCombat();
-        //    return;
-        //}
 
         if (ProcessPlayerInput())
         {
@@ -85,11 +71,6 @@ public class TurnSequencer : MonoBehaviour
             inanimateTurnTaken = true;
 
             combatSeq.CommenceCombat();
-            //if (!combatSeq.CommenceCombat())
-            //{
-            //    UpkeepEffects();
-            //    AggroNearbyEnemies();
-            //}
             UpkeepEffects();
             AggroNearbyEnemies();
         }
@@ -382,27 +363,6 @@ public class TurnSequencer : MonoBehaviour
         actionTaken = true;
     }
 
-    /*
-    private void OnDestroy()
-    {
-        if (combatSeq != null)
-        {
-            combatSeq.CombatEnded -= OnCombatEnded;
-        }
-    }
-
-    private void OnCombatEnded()
-    {
-        postCombatPending = true;
-    }
-
-    private void ProcessPostCombat()
-    {
-        postCombatPending = false;
-        UpkeepEffects();
-        AggroNearbyEnemies();
-    }*/
-
     public void UpkeepEffects()
     {
 
@@ -413,7 +373,6 @@ public class TurnSequencer : MonoBehaviour
         spellCaster.UpdateSpellSlots();
         minimapMgr.UpdateDynamicIcons();
         namePlateMgr.IncrementDisplayTimer();
-        //visibilityMgr.UpdateVisibilities();
     }
 
     private void MoveOneSpace(List<Vector2Int> pathToDestination)

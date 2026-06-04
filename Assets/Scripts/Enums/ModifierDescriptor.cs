@@ -8,5 +8,6 @@ public enum ModifierDescriptor
     Permanent,
     OneShot, // Modifier does not linger, it applies it's effect and disapears
     OnHit, // Does something when affected character lands a hit in combat
-    NoVisual
+    NoVisual, // Do not create character modifier notifications 
+    PlayerCharacterOnly
 }

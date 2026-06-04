@@ -32,6 +32,8 @@ public class UIActiveManager : MonoBehaviour
     public bool assignSpellContainerIsOpen = true;
     public GameObject nameplatePanel;
     public bool nameplatePanelIsOpen = true;
+    public GameObject logPanel;
+    public bool logPanelIsOpen = true;
     public GameObject mapPanel;
     public GameObject mapIconPanel;
     public bool mapPanelIsOpen = true;
@@ -56,6 +58,7 @@ public class UIActiveManager : MonoBehaviour
         CloseCharacterPanel();
         CloseLootPanel();
         CloseNameplatePanel();
+        CloseLogPanel();
         
         pausePanel.SetActive(false);
         
@@ -163,9 +166,40 @@ public class UIActiveManager : MonoBehaviour
         CloseLootPanel();
         CloseInventoryPanel();
         CloseCharacterPanel();
+        CloseLogPanel();
         HideTooltip();
         HideItemDrag();      
         HideAssignSpell();      
+    }
+
+    public void OpenLogPanel()
+    {
+        if (logPanelIsOpen == false)
+        {
+            logPanelIsOpen = true;
+            logPanel.SetActive(logPanelIsOpen);
+        }
+    }
+
+    public void CloseLogPanel()
+    {
+        if (logPanelIsOpen == true)
+        {
+            logPanelIsOpen = false;
+            logPanel.SetActive(logPanelIsOpen);
+        }
+    }
+
+    public void ToggleLogPanel()
+    {
+        if (logPanelIsOpen)
+        {
+            CloseLogPanel();
+        }
+        else if (!logPanelIsOpen && !pauseIsOpen)
+        {
+            OpenLogPanel();
+        }
     }
 
     public void OpenCharacterPanel()

@@ -16,6 +16,13 @@ public class CatacombBiome : Biome
     [SerializeField] private GameObject catacombExit;
     [SerializeField] private GameObject catacombDoor;
     private readonly float exitSpawnPosVertOffset = 0.88f;
+
+    public CatacombBiome()
+    {
+        
+        title = "Catacomb";
+    }
+
     public List<NPCType> possibleEnemyTypes = new()
     {
 

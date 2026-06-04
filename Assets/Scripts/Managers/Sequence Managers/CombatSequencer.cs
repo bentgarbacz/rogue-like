@@ -7,7 +7,6 @@ public class CombatSequencer : MonoBehaviour
 {
 
     public bool fighting = false;
-    //public event System.Action CombatEnded;
     [SerializeField ]private bool combatLock = false;
     [SerializeField] private int combatLockCount = 0;
     public float attackTime = 0.5f;
@@ -16,6 +15,13 @@ public class CombatSequencer : MonoBehaviour
     [SerializeField] private EntityManager entityMgr;
     [SerializeField] private TileManager tileMgr;
     [SerializeField] private ProjectileReferences allProjectiles;
+    private LogManager logMgr;
+
+    void Awake()
+    {
+        
+        logMgr = GameObject.Find("System Managers").GetComponent<UIActiveManager>().logPanel.GetComponent<LogManager>();
+    }
 
     public bool CommenceCombat()
     {
@@ -23,7 +29,6 @@ public class CombatSequencer : MonoBehaviour
         if(combatBuffer.Count > 0 && fighting == false)
         {
             
-            //Initiates combat and notifies listeners
             fighting = true;
             SortBuffer();
             StartCoroutine(CombatTurns());
@@ -142,12 +147,7 @@ public class CombatSequencer : MonoBehaviour
                 projectile.Shoot(attack.defender, attack.attackerCS.audioSource);
             } 
 
-
-            attackerAnimation.MeleeAttack();
-
-            //yield return new WaitForSeconds(waitTime - trimTime); //Trim some time here because it feels more responsive
-            
-
+            attackerAnimation.MeleeAttack();            
             
             if(ExecuteAttack(attack))
             {
@@ -165,14 +165,12 @@ public class CombatSequencer : MonoBehaviour
                 attack.attackerCS.audioSource.PlayOneShot(attack.attackerCS.missClip);
             }
 
-            //yield return new WaitForSeconds(trimTime); //Wait out time trimmed from above
             yield return new WaitForSeconds(waitTime);
             combatBuffer.RemoveAt(0);            
         }
         
         //signals that fighting for the turn is over and regular gameplay can resume
         fighting = false;
-        //CombatEnded?.Invoke();
     }
 
     public bool CheckMeleeAttackValidity(GameObject attacker, GameObject defender)
@@ -206,6 +204,8 @@ public class CombatSequencer : MonoBehaviour
             return false;
         }
 
+        string logText = "";
+
         // Calculate hit chance
         float hitChance = ((float)attack.attackerCS.stats.accuracy - (float)attack.defenderCS.stats.evasion) / (float)attack.attackerCS.stats.accuracy * 100f;
         bool hitSuccessful = Random.Range(0, 100) <= hitChance;
@@ -230,6 +230,7 @@ public class CombatSequencer : MonoBehaviour
             }
 
             text = damage.ToString();
+            logText = attack.attackerCS.title + " hit " + attack.defenderCS.title + " for " + damage.ToString();
 
             // Apply damage to the defender
             attack.defenderCS.characterHealth.TakeDamage(damage);
@@ -243,11 +244,11 @@ public class CombatSequencer : MonoBehaviour
 
             textColor = Color.white;
             text = "Miss";
+            logText = attack.attackerCS.title + " missed it's attack";
         }
 
-        
-        //attack.defender.GetComponent<TextNotificationManager>().CreateNotificationOrder(attack.defender.transform.position, 2f, text, textColor);
         attack.defender.GetComponent<TextNotificationManager>().CreateNotificationOrder(2f, text, textColor);
+        logMgr.CreateLogEntry(logText, textColor);
         return hitSuccessful;
     }
 

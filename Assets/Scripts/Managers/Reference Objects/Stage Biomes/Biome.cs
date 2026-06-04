@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,6 +10,7 @@ public class Biome : MonoBehaviour
     [SerializeField] protected NPCGenerator npcGen;
     [SerializeField] private GameObject wallJoiner;
     [SerializeField] protected TileManager tileMgr;
+    public String title = "NULL";
 
     public virtual void CreateTile(Vector3 spawnPos, Vector2Int position, int spawnRNG)
     {

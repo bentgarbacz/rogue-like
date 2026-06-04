@@ -80,6 +80,7 @@ public class PlayerCharacterSheet : CharacterSheet
         {
 
             GetComponent<TextNotificationManager>().CreateNotificationOrder(3f, "Level Up!", Color.yellow);
+            logMgr.CreateLogEntry("You have gained a level", Color.yellow);
 
             while (totalXP >= levelUpBreakpoint)
             {
@@ -94,6 +95,7 @@ public class PlayerCharacterSheet : CharacterSheet
         {
 
             GetComponent<TextNotificationManager>().CreateNotificationOrder(2f, XP.ToString() + " XP", Color.green);
+            logMgr.CreateLogEntry("You have gained " + XP.ToString() + " XP", Color.green);
         }
 
         updateStats.RefreshUI();

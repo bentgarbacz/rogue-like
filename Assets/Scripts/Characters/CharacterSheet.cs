@@ -24,6 +24,7 @@ public class CharacterSheet : MonoBehaviour
     public string title = "N/A";
     protected GameObject managers;
     protected TextNotificationManager notificationManager;
+    protected LogManager logMgr;
 
     public virtual void Awake()
     {
@@ -31,6 +32,7 @@ public class CharacterSheet : MonoBehaviour
         managers = GameObject.Find("System Managers");
         tileMgr = managers.GetComponent<TileManager>();
         entityMgr = managers.GetComponent<EntityManager>();
+        logMgr = logMgr = managers.GetComponent<UIActiveManager>().logPanel.GetComponent<LogManager>();
 
         lockMgr = GetComponent<LockManager>();
         notificationManager = GetComponent<TextNotificationManager>();
@@ -94,6 +96,15 @@ public class CharacterSheet : MonoBehaviour
     {
 
         return;
+    }
+
+    public virtual void Die()
+    {
+
+        logMgr.CreateLogEntry(title + " has been slain", Color.grey);
+        entityMgr.KillEntity(this.gameObject);
+        OnDeath();
+        Destroy(this.gameObject);
     }
 
     public virtual void OnDamage()

@@ -21,6 +21,12 @@ public class CaveBiome : Biome
     private int repeatWalks = 100;
     public List<NPCType> possibleEnemyTypes = new();
 
+    public CaveBiome()
+    {
+        
+        title = "Cave";
+    }
+
     public override void CreateTile(Vector3 spawnPos, Vector2Int position, int spawnRNG)
     {
 
