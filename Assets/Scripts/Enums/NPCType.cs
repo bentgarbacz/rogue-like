@@ -18,4 +18,5 @@ public enum NPCType
     Lich,
     Trap,
     Mimic,
+    Rogue,
 }

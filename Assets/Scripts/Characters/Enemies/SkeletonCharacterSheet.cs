@@ -86,7 +86,7 @@ public class SkeletonCharacterSheet : EnemyCharacterSheet
             return;
         }
 
-        notificationManager.CreateNotificationOrder(2f, "...", Color.gray);
+        notificationMgr.CreateNotificationOrder(2f, "...", Color.gray);
     }
 
     private void BecomeSkeleton()
@@ -106,12 +106,4 @@ public class SkeletonCharacterSheet : EnemyCharacterSheet
         dormancyCountdown = dormancyTime;
     }
 
-    //public override void OnDeath()
-    //{
-    //    
-    //    GameObject newSkeletalRemains = npcGen.CreateEnemy(NPCType.SkeletalRemains, loc.Coord3d());
-    //    newSkeletalRemains.transform.rotation = transform.rotation;
-    //    miniMapMgr.AddIcon(newSkeletalRemains);
-    //    entityMgr.aggroEnemies.Add(newSkeletalRemains);
-    //}
 }

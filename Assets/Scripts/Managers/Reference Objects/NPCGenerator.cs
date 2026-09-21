@@ -25,6 +25,7 @@ public class NPCGenerator : MonoBehaviour
     [SerializeField] private GameObject lich;
     [SerializeField] private GameObject trap;
     [SerializeField] private GameObject mimic;
+    [SerializeField] private GameObject rogue;
     private readonly int totalModifiers = 6;
     private readonly Vector3 spawnPosOffset = new(0, 0.1f, 0);
 
@@ -50,7 +51,8 @@ public class NPCGenerator : MonoBehaviour
             {NPCType.StoneGolem, stoneGolem},
             {NPCType.Lich, lich},
             {NPCType.Trap, trap},
-            {NPCType.Mimic, mimic}
+            {NPCType.Mimic, mimic},
+            {NPCType.Rogue, rogue}
         };
     }
 

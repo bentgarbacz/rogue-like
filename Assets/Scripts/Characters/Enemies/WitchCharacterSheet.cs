@@ -94,7 +94,8 @@ public class WitchCharacterSheet : EnemyCharacterSheet
             }else
             {
                
-                Flee(djm.playerAndNpcMap);
+                List<Dictionary<Vector2Int, float>> fleeMaps = new List< Dictionary<Vector2Int, float> > { djm.playerMap, djm.npcMap };
+                Flee(fleeMaps);
             }
 
             attackCooldown -= 1;

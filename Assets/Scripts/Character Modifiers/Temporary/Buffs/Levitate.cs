@@ -11,7 +11,6 @@ public class Levitate : CharacterModifier
         this.descriptors.Add(ModifierDescriptor.Buff);
         this.descriptors.Add(ModifierDescriptor.Temporary);
         this.descriptors.Add(ModifierDescriptor.Unique);
-        
         this.affectedCharacter = affectedCharacter;
         this.duration = duration;
 

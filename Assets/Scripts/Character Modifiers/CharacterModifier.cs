@@ -10,6 +10,7 @@ public class CharacterModifier
     public CharacterSheet affectedCharacter;
     public int duration = 0;
     public float procChance = 0f;
+    public int damageDealt = 0;
     public Sprite sprite;
 
     public virtual int Effect()

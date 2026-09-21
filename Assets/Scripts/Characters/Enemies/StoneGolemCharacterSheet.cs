@@ -16,11 +16,11 @@ public class StoneGolemCharacterSheet : EnemyCharacterSheet
         base.Awake();
         
         title = "Stone Golem";
-        stats.maxHealth = 50;
-        stats.minDamage = 8;
-        stats.maxDamage = 12;
+        stats.maxHealth = 25;
+        stats.minDamage = 4;
+        stats.maxDamage = 8;
         stats.speed = 3;
-        stats.armor = 5;
+        stats.armor = 1;
         stats.evasion = 0;
         level = 5;      
 
@@ -98,7 +98,7 @@ public class StoneGolemCharacterSheet : EnemyCharacterSheet
         renderer.material.color = originalColor * 0.2f; // Darker version
         
         // Show "..." notification
-        notificationManager.CreateNotificationOrder(2f, "...", Color.gray);
+        notificationMgr.CreateNotificationOrder(2f, "...", Color.gray);
         
         // Wait a bit then reset color
         yield return new WaitForSeconds(0.5f);

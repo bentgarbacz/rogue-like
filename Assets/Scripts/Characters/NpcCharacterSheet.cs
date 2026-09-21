@@ -42,45 +42,54 @@ public class NpcCharacterSheet : CharacterSheet
 
         Vector2Int chosenCoord = neighbors[UnityEngine.Random.Range(0, neighbors.Count)];
         movementManager.AddMovement(this, chosenCoord);
-        //Move(chosenCoord, waitTime);
-
-        //Vector2Int randomDirection = new(loc.coord.x + Direction2D.GetRandomDirection().x, loc.coord.y + Direction2D.GetRandomDirection().y);
-
-        //if(tileMgr.levelCoords.Contains(randomDirection))
-        //{
-
-        //    Move(randomDirection, waitTime);
-        //}
     }
 
-    public virtual void Flee(Dictionary<Vector2Int, float> fleeMap)
+    public virtual void Flee(List<Dictionary<Vector2Int, float>> mapsOfInterest)
     {
 
         Vector2Int fleePath = loc.coord;
         float fleeVal = float.MinValue;
+        Dictionary<Vector2Int, float> minNeighborTiles = new();
 
+        //You need to get the minimum interest values of all neighboring tiles in order 
+        // to find the tile that is furthest away from all entities you are interested in fleeing from.
         foreach (Vector2Int currCoord in PathFinder.GetNeighbors(loc.coord, tileMgr.levelCoords))
         {
-
-            if(!fleeMap.ContainsKey(currCoord))
-            {
-                
-                continue;
-            }
-
-            if(fleeMap[currCoord] > fleeVal && !tileMgr.occupiedlist.Contains(currCoord))
-            {
-                
-                fleeVal = fleeMap[currCoord];
-                fleePath = currCoord;
-            }        
-        }
-
-        if (tileMgr.levelCoords.Contains(fleePath))
-        {
             
-            movementManager.AddMovement(this, fleePath);
+            minNeighborTiles.Add(currCoord, float.MaxValue);
+
+            foreach(Dictionary<Vector2Int, float> currMap in mapsOfInterest)
+            {
+                
+                if(!currMap.ContainsKey(currCoord))
+                {
+                    
+                    continue;
+                }
+
+                float checkVal = currMap[currCoord];
+
+                if(checkVal < minNeighborTiles[currCoord])
+                {
+                    
+                    minNeighborTiles[currCoord] = checkVal;
+                }
+            }                
         }
+
+        foreach (Vector2Int checkCoord in minNeighborTiles.Keys)
+        {
+            float checkFleeVal = minNeighborTiles[checkCoord];
+
+            if(checkFleeVal > fleeVal && !tileMgr.occupiedlist.Contains(checkCoord))
+            {
+                
+                fleeVal = checkFleeVal;
+                fleePath = checkCoord;
+            }
+        }
+
+        movementManager.AddMovement(this, fleePath);
     }
 
     protected List<Vector2Int> ShuffleNeighbors(List<Vector2Int> neighborPoints)
@@ -98,27 +107,6 @@ public class NpcCharacterSheet : CharacterSheet
         }
 
         return shuffledNeighbors;
-    }
-
-    protected List<Vector2Int> GetCardinalNeighbors(List<Vector2Int> neighborPoints)
-    {
-
-        List<Vector2Int> cardinalNeighbors = new();
-
-        foreach (Vector2Int point in neighborPoints)
-        {
-
-            Vector2Int offset = point - loc.coord;
-
-            if (Direction2D.cardinalDirectionsList.Contains(offset))
-            {
-
-                cardinalNeighbors.Add(point);
-            }
-
-        }
-
-        return cardinalNeighbors;
     }
 
     protected virtual bool AttackEntity(Vector2Int coord)
@@ -154,7 +142,7 @@ public class NpcCharacterSheet : CharacterSheet
         List<Vector2Int> neighborPoints = new(PathFinder.GetNeighbors(startCoord, tileMgr.levelCoords));
         neighborPoints = ShuffleNeighbors(neighborPoints);
 
-        List<Vector2Int> cardinalNeighbors = GetCardinalNeighbors(neighborPoints);
+        HashSet<Vector2Int> cardinalNeighbors = new(PathFinder.GetNeighbors(startCoord, tileMgr.levelCoords, false));
 
         Vector2Int targetCoord = startCoord;
         float minDist = float.MaxValue;

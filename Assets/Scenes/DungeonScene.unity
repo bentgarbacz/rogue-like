@@ -546,7 +546,6 @@ MonoBehaviour:
   verticalLayoutTransform: {fileID: 953925499}
   scrollRect: {fileID: 67116299}
   mouseOver: {fileID: 67116300}
-  maxLogEntries: 100
 --- !u!114 &67116298
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -566,7 +565,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 2
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -576,7 +575,7 @@ MonoBehaviour:
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
-    m_HighlightedSprite: {fileID: 0}
+    m_HighlightedSprite: {fileID: 21300000, guid: f9b07acaf7f4755459c2f6ca318506cf, type: 3}
     m_PressedSprite: {fileID: 0}
     m_SelectedSprite: {fileID: 0}
     m_DisabledSprite: {fileID: 0}
@@ -6447,6 +6446,7 @@ MonoBehaviour:
   lich: {fileID: 862274426324552958, guid: 8ac96bd939f785e49857ea6c3c024c6b, type: 3}
   trap: {fileID: 2111670555710385504, guid: 6a1af8f8c8bc18742bc6ced02b71ad70, type: 3}
   mimic: {fileID: 4764054851135056331, guid: 433e8146c6e09ba4e8fa6ee307cd5349, type: 3}
+  rogue: {fileID: 0}
 --- !u!114 &438385577
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15469,10 +15469,10 @@ MonoBehaviour:
   m_Padding:
     m_Left: 10
     m_Right: 10
-    m_Top: 0
-    m_Bottom: 20
+    m_Top: 5
+    m_Bottom: 5
   m_ChildAlignment: 4
-  m_Spacing: 15
+  m_Spacing: 12
   m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 0

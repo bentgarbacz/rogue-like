@@ -39,6 +39,7 @@ public class LevelGenerator : MonoBehaviour
 
     public void NewLevel(Biome biome)
     {
+
         if(generatingLevel)
         {
             
@@ -61,8 +62,12 @@ public class LevelGenerator : MonoBehaviour
 
         foreach (GameObject dbg in debugObjects)
         {
+            
             if (dbg != null)
+            {
+                
                 dbg.SetActive(false);
+            }
         }
 
         StartCoroutine(DelayedPostGeneration(firstTileCoord));
