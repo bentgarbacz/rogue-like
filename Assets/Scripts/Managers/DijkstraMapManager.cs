@@ -13,7 +13,7 @@ public class DijkstraMapManager : MonoBehaviour
     public Dictionary<Vector2Int, float> enemyMap = new();
     public Dictionary<Vector2Int, float> lootMap = new();
     public Dictionary<Vector2Int, float> npcMap = new();
-    public Dictionary<Vector2Int, float> playerAndNpcMap = new();
+    //public Dictionary<Vector2Int, float> playerAndNpcMap = new();
 
 
     public Dictionary<Vector2Int, float> LayerMaps(List<Dictionary<Vector2Int, float>> maps)
@@ -144,12 +144,12 @@ public class DijkstraMapManager : MonoBehaviour
         //PrintMapToFile(npcMap, filePath);
     }
     
-    public void UpdateCombinedMapPlayerAndNPC()
-    {
+    //public void UpdateCombinedMapPlayerAndNPC()
+    //{
         
-        List<Dictionary<Vector2Int, float>> maps = new() {npcMap, playerMap};
-        playerAndNpcMap = LayerMaps(maps);
-    }
+    //    List<Dictionary<Vector2Int, float>> maps = new() {npcMap, playerMap};
+    //    playerAndNpcMap = LayerMaps(maps);
+    //}
 
     public float GetPlayerMapValue(Vector2Int coord)
     {

@@ -15,7 +15,11 @@ public class CharacterHealth : MonoBehaviour
     {
 
         characterSheet = GetComponent<CharacterSheet>();
+    }
 
+    public virtual void Start()
+    {
+        
         currentHealth = characterSheet.stats.maxHealth;
         currentBarrier = characterSheet.stats.maxBarrier;
     }

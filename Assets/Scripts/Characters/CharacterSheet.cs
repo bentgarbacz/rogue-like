@@ -23,7 +23,7 @@ public class CharacterSheet : MonoBehaviour
     public AudioClip missClip;
     public string title = "N/A";
     protected GameObject managers;
-    protected TextNotificationManager notificationManager;
+    protected TextNotificationManager notificationMgr;
     protected LogManager logMgr;
 
     public virtual void Awake()
@@ -35,7 +35,7 @@ public class CharacterSheet : MonoBehaviour
         logMgr = logMgr = managers.GetComponent<UIActiveManager>().logPanel.GetComponent<LogManager>();
 
         lockMgr = GetComponent<LockManager>();
-        notificationManager = GetComponent<TextNotificationManager>();
+        notificationMgr = GetComponent<TextNotificationManager>();
 
         GetComponent<MoveToTarget>().target = transform.position;
         loc.coord = new Vector2Int((int)transform.position.x, (int)transform.position.z);

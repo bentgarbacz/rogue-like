@@ -44,7 +44,7 @@ public class SkeletalRemainsCharacterSheet : EnemyCharacterSheet
             return;
         }
 
-        notificationManager.CreateNotificationOrder(2f, "...", Color.gray);
+        notificationMgr.CreateNotificationOrder(2f, "...", Color.gray);
     }
 
     public override void OnDeath()

@@ -79,7 +79,7 @@ public class PlayerCharacterSheet : CharacterSheet
         if (totalXP >= levelUpBreakpoint)
         {
 
-            GetComponent<TextNotificationManager>().CreateNotificationOrder(3f, "Level Up!", Color.yellow);
+            notificationMgr.CreateNotificationOrder(3f, "Level Up!", Color.yellow);
             logMgr.CreateLogEntry("You have gained a level", Color.yellow);
 
             while (totalXP >= levelUpBreakpoint)
@@ -94,7 +94,7 @@ public class PlayerCharacterSheet : CharacterSheet
         else
         {
 
-            GetComponent<TextNotificationManager>().CreateNotificationOrder(2f, XP.ToString() + " XP", Color.green);
+            notificationMgr.CreateNotificationOrder(2f, XP.ToString() + " XP", Color.green);
             logMgr.CreateLogEntry("You have gained " + XP.ToString() + " XP", Color.green);
         }
 
@@ -130,7 +130,17 @@ public class PlayerCharacterSheet : CharacterSheet
     public void SatiateHunger(int hungerValue)
     {
 
-        hunger = System.Math.Min(maxHunger, hunger + hungerValue);
+        if(!characterModMgr.GetPermMods().OfType<Vampirism>().Any())
+        {
+            
+            hunger = System.Math.Min(maxHunger, hunger + hungerValue);
+
+        } 
+        else
+        {
+            
+            logMgr.CreateLogEntry("Mortal food does not sate your vampiric bloodlust", Color.darkRed);
+        }     
 
         UpdateUI();
     }
@@ -161,7 +171,8 @@ public class PlayerCharacterSheet : CharacterSheet
 
                 hunger = 0;
                 characterHealth.TakeDamage(1);
-                GetComponent<TextNotificationManager>().CreateNotificationOrder(2f, "Hungry!", Color.red);
+                logMgr.CreateLogEntry("Your hunger causes you to take damage", Color.darkRed);
+                notificationMgr.CreateNotificationOrder(2f, "Starving!", Color.darkRed);
             }
 
             hungerBuffer = 0;

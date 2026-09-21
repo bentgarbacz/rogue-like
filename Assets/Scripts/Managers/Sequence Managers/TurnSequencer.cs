@@ -63,7 +63,7 @@ public class TurnSequencer : MonoBehaviour
             actionTaken = false;
 
             djMapMgr.PopulatePlayerMap();
-            djMapMgr.UpdateCombinedMapPlayerAndNPC();
+            //djMapMgr.UpdateCombinedMapPlayerAndNPC();
             ProcessEntityTurns(entityMgr.aggroEnemies);
             djMapMgr.PopulateEnemyMap();
             ProcessEntityTurns(entityMgr.friendlies);

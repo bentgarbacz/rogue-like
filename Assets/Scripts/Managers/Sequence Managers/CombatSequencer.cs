@@ -231,12 +231,13 @@ public class CombatSequencer : MonoBehaviour
 
             text = damage.ToString();
             logText = attack.attackerCS.title + " hit " + attack.defenderCS.title + " for " + damage.ToString();
+            logMgr.CreateLogEntry(logText, textColor);
 
             // Apply damage to the defender
             attack.defenderCS.characterHealth.TakeDamage(damage);
 
             // Resolve Modifiers
-            attack.ResolveModifier();
+            attack.ResolveModifier(damage);
 
         }
         else
@@ -245,10 +246,11 @@ public class CombatSequencer : MonoBehaviour
             textColor = Color.white;
             text = "Miss";
             logText = attack.attackerCS.title + " missed it's attack";
+            logMgr.CreateLogEntry(logText, textColor);
         }
 
         attack.defender.GetComponent<TextNotificationManager>().CreateNotificationOrder(2f, text, textColor);
-        logMgr.CreateLogEntry(logText, textColor);
+        
         return hitSuccessful;
     }
 
@@ -338,7 +340,7 @@ public class Attack
         characterMods.Add(characterMod, procChance);
     }
 
-    public void ResolveModifier()
+    public void ResolveModifier(int damageDealt)
     {
 
         foreach (CharacterModifier currentMod in characterMods.Keys)
@@ -347,6 +349,7 @@ public class Attack
             if (Random.Range(0f, 1f) <= characterMods[currentMod])
             {
                 
+                currentMod.damageDealt = damageDealt;
                 defenderCS.characterModMgr.AddModifier(currentMod);
             }
         }

@@ -10,6 +10,7 @@ public class EnemyCharacterSheet : NpcCharacterSheet
 
     public AudioClip aggroNoise;
     public float aggroRange = 10;
+    public float deaggroMultiplier = 1.5f;
 
     public override void Awake()
     {
@@ -62,19 +63,35 @@ public class EnemyCharacterSheet : NpcCharacterSheet
 
     protected virtual bool GetAggroStatus()
     {
+
+        float aggroVal = float.MaxValue;
         
-        if(djm.playerAndNpcMap.ContainsKey(loc.coord))
+        if( djm.playerMap.ContainsKey(loc.coord) )
         {
             
-            float aggroVal = djm.playerAndNpcMap[loc.coord];
-
-            if(aggroVal >= aggroRange * 1.5)
+            if(djm.playerMap[loc.coord] < aggroVal)
             {
                 
-                return false;
+                aggroVal = djm.playerMap[loc.coord];
+            }
+        }
+        
+        if( djm.npcMap.ContainsKey(loc.coord) )
+        {
+            
+            if(djm.npcMap[loc.coord] < aggroVal)
+            {
+                
+                aggroVal = djm.npcMap[loc.coord];
             }
         }
 
+        if(aggroVal >= aggroRange * deaggroMultiplier || aggroVal == float.MaxValue)
+        {
+            
+            return false;
+        }
+        
         return true;
     }
 

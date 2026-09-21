@@ -22,7 +22,8 @@ public class PlayerMoveToTarget : MoveToTarget
         initialY = 0.1f;
         moving = true;
         this.target = target;
-        distance = Vector3.Distance(new Vector3(target.x, 0, target.z), new Vector3(transform.position.x, 0, transform.position.z));
+        initialDistance = Vector3.Distance(new Vector3(target.x, 0, target.z), new Vector3(transform.position.x, 0, transform.position.z));
+        distance = initialDistance;
 
         lockMgr.AcquireTurnLock();
         lockMgr.AcquireCombatLock();

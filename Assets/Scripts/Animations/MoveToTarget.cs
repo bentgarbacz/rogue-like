@@ -18,6 +18,7 @@ public class MoveToTarget : MonoBehaviour
     protected float initialY;
     protected LockManager lockMgr;
     protected float distance;
+    protected float initialDistance;
     protected bool moving = false;
 
     void Awake()
@@ -50,7 +51,8 @@ public class MoveToTarget : MonoBehaviour
             {
 
                 currentPos = transform.position;
-                arcPos = Mathf.Clamp(CalcArc(distance), 0f, 1f);
+                float progress = Mathf.Clamp01(1f - (distance / initialDistance));
+                arcPos = CalcArc(progress);
                 targetPos = target + new Vector3(0, arcPos, 0);
             }
             else
@@ -80,16 +82,16 @@ public class MoveToTarget : MonoBehaviour
         initialY = 0.1f;
         moving = true;
         this.target = target;
-        distance = Vector3.Distance(new Vector3(target.x, 0, target.z), new Vector3(transform.position.x, 0, transform.position.z));
+        initialDistance = Vector3.Distance(new Vector3(target.x, 0, target.z), new Vector3(transform.position.x, 0, transform.position.z));
+        distance = initialDistance;
 
         lockMgr.AcquireTurnLock();
         lockMgr.AcquireCombatLock();
     }
 
-    private float CalcArc(float xVal)
+    private float CalcArc(float progress)
     {
-
-        return -Mathf.Pow(xVal, 2) + Mathf.Sqrt(2) * xVal;
+        return 3f * progress * (1f - progress);
     }
 
     public float GetRemainingDistance()
